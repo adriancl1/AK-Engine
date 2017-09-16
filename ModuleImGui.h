@@ -1,9 +1,9 @@
 #ifndef __MODULEIMGUI_H__
 #define __MODULEIMGUI_H__
 
+#pragma once
 #include "Module.h"
-#include <vector>
-
+#include "Globals.h"
 
 class ModuleImGui : public Module
 {
@@ -11,16 +11,13 @@ public:
 	ModuleImGui(Application* app, bool start_enabled = true);
 	~ModuleImGui();
 
-	bool Init();
+	bool Start();
+	update_status Update(float dt);
+	update_status PreUpdate(float dt);
 	bool CleanUp();
 
-	update_status PreUpdate(float dt) override;
-	update_status Update(float dt) override;
+public:
 
-	bool show_test_window;
-	bool show_another_window;
-
-	SDL_Window *windowUI = nullptr;
 };
 
 #endif // __MODULEIMGUI_H__
