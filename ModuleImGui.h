@@ -4,6 +4,7 @@
 #include "Module.h"
 #include <vector>
 
+
 class ModuleImGui : public Module
 {
 public:
@@ -15,6 +16,11 @@ public:
 
 	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
+
+	bool show_test_window;
+	bool show_another_window;
+
+	SDL_Window *windowUI = nullptr;
 };
 
 #endif // __MODULEIMGUI_H__
