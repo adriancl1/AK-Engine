@@ -36,8 +36,24 @@ update_status ModuleImGui::PreUpdate(float dt)
 // Update
 update_status ModuleImGui::Update(float dt)
 {
+	if (ImGui::Button("Open Demo"))
+	{
+		testWindowActive = true;
+	}
+	else if (ImGui::Button("Close Demo"))
+	{
+		testWindowActive = false;
+	}
+	if (ImGui::Button("Close App"))
+	{
+		return UPDATE_STOP;
+	}
 
-	ImGui::ShowTestWindow();
+	if (testWindowActive)
+	{
+		ImGui::ShowTestWindow();
+	}
+	
 	ImGui::Render();
 
 	return UPDATE_CONTINUE;

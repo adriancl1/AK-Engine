@@ -16,8 +16,8 @@ public:
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
-public:
-
+private:
+	bool testWindowActive = false;
 };
 
 #endif // __MODULEIMGUI_H__
