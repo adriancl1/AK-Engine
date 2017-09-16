@@ -16,6 +16,9 @@
     <Filter Include="Sources\Helpers">
       <UniqueIdentifier>{121f8e6b-df36-4ab0-be0d-601ddfc9e503}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\ImGui">
+      <UniqueIdentifier>{320f44f7-469f-45cd-a508-24d42c98eae6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -75,6 +78,30 @@
     <ClInclude Include="MemLeaks.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="imgui-1.51\imconfig.h">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\imgui.h">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\imgui_internal.h">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\stb_rect_pack.h">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\stb_truetype.h">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui-1.51\stb_textedit.h">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleImGui.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdl_gl3.h">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -121,6 +148,21 @@
     </ClCompile>
     <ClCompile Include="PhysBody3D.cpp">
       <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.51\imgui.cpp">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.51\imgui_demo.cpp">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui-1.51\imgui_draw.cpp">
+      <Filter>Sources\Tools\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleImGui.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdl_gl3.cpp">
+      <Filter>Sources\Tools\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
