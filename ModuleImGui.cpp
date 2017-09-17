@@ -99,7 +99,7 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 
 	if (ImGui::CollapsingHeader("Debug Options"))
 	{
-		if (ImGui::Checkbox("View Demo", &openMenuWindow))
+		if (ImGui::Checkbox("View Menu", &openMenuWindow))
 		{
 			menuActive = !menuActive;
 		}
