@@ -21,6 +21,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 bool ModuleRenderer3D::Init()
 {
 	LOG("Creating 3D Renderer context");
+	App->imGui->AddLogToWindow("Creating 3D Renderer context");
 	bool ret = true;
 	
 	//Create context
@@ -28,14 +29,18 @@ bool ModuleRenderer3D::Init()
 	if(context == NULL)
 	{
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+		App->imGui->AddLogToWindow("OpenGL context could not be created!");
 		ret = false;
 	}
 	
 	if(ret == true)
 	{
 		//Use Vsync
-		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
+		if (VSYNC && SDL_GL_SetSwapInterval(1) < 0)
+		{
 			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+			App->imGui->AddLogToWindow("Warning: Unable to set VSync!");
+		}
 
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -46,6 +51,7 @@ bool ModuleRenderer3D::Init()
 		if(error != GL_NO_ERROR)
 		{
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			App->imGui->AddLogToWindow("Error initializing OpenGL!");
 			ret = false;
 		}
 
@@ -58,6 +64,7 @@ bool ModuleRenderer3D::Init()
 		if(error != GL_NO_ERROR)
 		{
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			App->imGui->AddLogToWindow("Error initializing OpenGL!");
 			ret = false;
 		}
 		
@@ -72,6 +79,7 @@ bool ModuleRenderer3D::Init()
 		if(error != GL_NO_ERROR)
 		{
 			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			App->imGui->AddLogToWindow("Error initializing OpenGL!");
 			ret = false;
 		}
 		
@@ -132,6 +140,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
+	App->imGui->AddLogToWindow("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
 

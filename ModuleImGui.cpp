@@ -37,6 +37,7 @@ ModuleImGui::~ModuleImGui()
 bool ModuleImGui::Start()
 {
 	LOG("Loading Intro assets");
+	AddLogToWindow("Loading Intro assets");
 	bool ret = true;
 
 	glewInit();
@@ -74,6 +75,11 @@ update_status ModuleImGui::Update(float dt)
 		return UPDATE_STOP;
 	}
 	
+	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+	{
+		AddLogToWindow("hi");
+	}
+
 	ImGui::Render();
 
 	return UPDATE_CONTINUE;
@@ -81,7 +87,6 @@ update_status ModuleImGui::Update(float dt)
 
 bool ModuleImGui::CleanUp()
 {
-	LOG("Unloading Intro scene");
 	ImGui_ImplSdlGL3_Shutdown();
 	return true;
 }
@@ -162,7 +167,7 @@ void ModuleImGui::ShowMenuWindow(bool* p_open)
 	{
 		closeApp = true;
 	}
-	ImGui::End();
+	ImGui::End(); 
 }
 
 void ModuleImGui::ShowConsoleWindow(bool* p_open)
@@ -182,5 +187,21 @@ void ModuleImGui::ShowConsoleWindow(bool* p_open)
 
 	//ImGui::Text("%s", consoleText);
 
+	if (ImGui::Button("Clear"))
+	{
+		consoleText.clear();
+	}
+
+	for (int i = consoleText.size() - 1; i >= 0; i--)
+	{
+		std::string s = consoleText[i];
+		ImGui::Text("%s", consoleText[i].c_str());
+	}
+
 	ImGui::End();
+}
+
+void ModuleImGui::AddLogToWindow(std::string toAdd)
+{
+	consoleText.push_back(toAdd);
 }
