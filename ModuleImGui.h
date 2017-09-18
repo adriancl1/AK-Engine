@@ -18,14 +18,17 @@ public:
 	bool CleanUp();
 
 private:
+	//ImGui Menu Active Booleans
 	bool testWindowActive = false;
 	bool menuActive = false;
+	bool consoleActive = false;
 	bool closeApp = false;
 
 //ImGui
 public:
 	IMGUI_API void ShowMenuWindow(bool* p_open = NULL);
 	IMGUI_API void ShowDebugWindow(bool* p_open = NULL);
+	IMGUI_API void ShowConsoleWindow(bool* p_open = NULL);
 };
 
 #endif // __MODULEIMGUI_H__

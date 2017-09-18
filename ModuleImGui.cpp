@@ -65,6 +65,10 @@ update_status ModuleImGui::Update(float dt)
 	{
 		ImGui::ShowTestWindow();
 	}
+	if (consoleActive)
+	{
+		ShowConsoleWindow();
+	}
 	if (closeApp)
 	{
 		return UPDATE_STOP;
@@ -85,6 +89,7 @@ bool ModuleImGui::CleanUp()
 void ModuleImGui::ShowDebugWindow(bool* p_open)
 {
 	static bool openMenuWindow = false;
+	static bool openConsoleWindow = false;
 
 	// Demonstrate the various window flags. Typically you would just use the default.
 	ImGuiWindowFlags window_flags = 0;
@@ -101,10 +106,14 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 
 	if (ImGui::CollapsingHeader("Debug Options"))
 	{
-		if (ImGui::Checkbox("View Menu", &openMenuWindow))
+		if (ImGui::Checkbox("Show Menu", &openMenuWindow))
 		{
 			menuActive = !menuActive;
-		}		
+		}	
+		if (ImGui::Checkbox("Show Console", &openConsoleWindow))
+		{
+			consoleActive = !consoleActive;
+		}
 	}
 	ImGui::End();
 }
@@ -133,7 +142,7 @@ void ModuleImGui::ShowMenuWindow(bool* p_open)
 	{
 		ImGui::TextWrapped("Options Menu");
 
-		if (ImGui::Checkbox("View Demo", &openTestWindow))
+		if (ImGui::Checkbox("Show Demo", &openTestWindow))
 		{
 			testWindowActive = !testWindowActive;
 		}
@@ -153,5 +162,25 @@ void ModuleImGui::ShowMenuWindow(bool* p_open)
 	{
 		closeApp = true;
 	}
+	ImGui::End();
+}
+
+void ModuleImGui::ShowConsoleWindow(bool* p_open)
+{
+	// Demonstrate the various window flags. Typically you would just use the default.
+	ImGuiWindowFlags window_flags = 0;
+
+	if (!ImGui::Begin("Console", p_open, window_flags))
+	{
+		// Early out if the window is collapsed, as an optimization.
+		ImGui::End();
+		return;
+	}
+
+	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
+	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
+
+	//ImGui::Text("%s", consoleText);
+
 	ImGui::End();
 }
