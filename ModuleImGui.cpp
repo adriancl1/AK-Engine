@@ -1,9 +1,11 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Math.h"
 #include "ModuleImGui.h"
 #include "imgui-1.51\imgui.h"
 #include "imgui-1.51\imgui_impl_sdl_gl3.h"
 #include "Glew\include\glew.h"
+
 
 #pragma comment( lib, "Glew/libx86/glew32.lib" )
 
@@ -102,7 +104,7 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 		if (ImGui::Checkbox("View Menu", &openMenuWindow))
 		{
 			menuActive = !menuActive;
-		}
+		}		
 	}
 	ImGui::End();
 }
