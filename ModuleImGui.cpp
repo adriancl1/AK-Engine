@@ -33,7 +33,7 @@ ModuleImGui::ModuleImGui(Application* app, bool start_enabled) : Module(app, sta
 ModuleImGui::~ModuleImGui()
 {}
 
-// Load assets
+//Load assets
 bool ModuleImGui::Start()
 {
 	LOG("Loading Intro assets");
@@ -46,14 +46,14 @@ bool ModuleImGui::Start()
 	return ret;
 }
 
-// PreUpdate
+//PreUpdate
 update_status ModuleImGui::PreUpdate(float dt)
 {
 	ImGui_ImplSdlGL3_NewFrame(App->window->GetWindow());
 	return(UPDATE_CONTINUE);
 }
 
-// Update
+//Update
 update_status ModuleImGui::Update(float dt)
 {
 	ShowDebugWindow();
@@ -70,14 +70,13 @@ update_status ModuleImGui::Update(float dt)
 	{
 		ShowConsoleWindow();
 	}
+	if (mathPlaygroundActive)
+	{
+		ShowMathWindow();
+	}
 	if (closeApp)
 	{
 		return UPDATE_STOP;
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-	{
-		AddLogToWindow("hi");
 	}
 
 	ImGui::Render();
@@ -95,6 +94,7 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 {
 	static bool openMenuWindow = false;
 	static bool openConsoleWindow = false;
+	static bool openMathPlaygroundWindow = false;
 
 	// Demonstrate the various window flags. Typically you would just use the default.
 	ImGuiWindowFlags window_flags = 0;
@@ -118,6 +118,10 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 		if (ImGui::Checkbox("Show Console", &openConsoleWindow))
 		{
 			consoleActive = !consoleActive;
+		}
+		if (ImGui::Checkbox("Show Math Test Playground", &openMathPlaygroundWindow))
+		{
+			mathPlaygroundActive = !mathPlaygroundActive;
 		}
 	}
 	ImGui::End();
@@ -194,7 +198,6 @@ void ModuleImGui::ShowConsoleWindow(bool* p_open)
 
 	for (int i = consoleText.size() - 1; i >= 0; i--)
 	{
-		std::string s = consoleText[i];
 		ImGui::Text("%s", consoleText[i].c_str());
 	}
 
@@ -204,4 +207,143 @@ void ModuleImGui::ShowConsoleWindow(bool* p_open)
 void ModuleImGui::AddLogToWindow(std::string toAdd)
 {
 	consoleText.push_back(toAdd);
+}
+
+void ModuleImGui::ShowMathWindow(bool* p_open)
+{
+	// Demonstrate the various window flags. Typically you would just use the default.
+	ImGuiWindowFlags window_flags = 0;
+
+	if (!ImGui::Begin("Math Library Tests", p_open, window_flags))
+	{
+		// Early out if the window is collapsed, as an optimization.
+		ImGui::End();
+		return;
+	}
+
+	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
+	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
+
+	ImGui::Text("Fill the following parameters:");
+
+	if (ImGui::CollapsingHeader("Intersection Sphere-Sphere"))
+	{
+		ImGui::Text("Sphere 1:");
+		ImGui::InputInt("Radius", &sphereRadius);
+		ImGui::InputInt("X", &sphereX);
+		ImGui::InputInt("Y", &sphereY);
+		ImGui::InputInt("Z", &sphereZ);
+
+		ImGui::Text("Sphere 2:");
+		ImGui::InputInt("Radius 2", &sphereRadius2);
+		ImGui::InputInt("X 2", &sphereX2);
+		ImGui::InputInt("Y 2", &sphereY2);
+		ImGui::InputInt("Z 2", &sphereZ2);
+
+
+		if (ImGui::Button("Run Math Test"))
+		{
+			math::Sphere sphere1(float3(sphereX, sphereY, sphereZ), sphereRadius);
+			math::Sphere sphere2(float3(sphereX2, sphereY2, sphereZ2), sphereRadius2);
+
+			intersects = sphere1.Intersects(sphere2);
+
+			if (intersects)
+			{
+				intersectsTrue = true;
+				intersectsFalse = false;
+			}
+			else
+			{
+				intersectsTrue = false;
+				intersectsFalse = true;
+			}
+		}
+
+		if (intersectsTrue)
+		{
+			ImGui::Text("True");
+		}
+		if (intersectsFalse)
+		{
+			ImGui::Text("False");
+		}
+	}
+
+	if (ImGui::CollapsingHeader("Intersection Sphere-Capsule"))
+	{
+		ImGui::Text("Sphere 1:");
+		ImGui::InputInt("Sphere 1 Radius", &sphereRadius);
+		ImGui::InputInt("X", &sphereX);
+		ImGui::InputInt("Y", &sphereY);
+		ImGui::InputInt("Z", &sphereZ);
+
+		ImGui::Text("Capsule 1:");
+		ImGui::InputInt("Capsule 1 Radius", &capsuleRadius);
+		ImGui::InputInt("Bottom X", &capsuleBotX);
+		ImGui::InputInt("Bottom Y", &capsuleBotY);
+		ImGui::InputInt("Bottom Z", &capsuleBotZ);
+		ImGui::InputInt("Top X", &capsuleTopX);
+		ImGui::InputInt("Top Y", &capsuleTopY);
+		ImGui::InputInt("Top Z", &capsuleTopZ);
+
+		if (ImGui::Button("Run Math Test"))
+		{
+			math::Sphere sphere1(float3(sphereX, sphereY, sphereZ), sphereRadius);
+			math::Capsule capsule1(float3(capsuleBotX, capsuleBotY, capsuleBotZ), float3(capsuleTopX, capsuleTopY, capsuleTopZ), capsuleRadius);
+
+			intersects = sphere1.Intersects(capsule1);
+
+			if (intersects)
+			{
+				intersectsTrue = true;
+				intersectsFalse = false;
+			}
+			else
+			{
+				intersectsTrue = false;
+				intersectsFalse = true;
+			}
+		}
+		if (intersectsTrue)
+		{
+			ImGui::Text("True");
+		}
+		if (intersectsFalse)
+		{
+			ImGui::Text("False");
+		}
+	}
+
+	if (ImGui::Button("Reset"))
+	{
+		//Properties Sphere 1
+		sphereRadius = 0;
+		sphereX = 0;
+		sphereY = 0;
+		sphereZ = 0;
+
+		//Sphere 2
+		sphereRadius2 = 0;
+		sphereX2 = 0;
+		sphereY2 = 0;
+		sphereZ2 = 0;
+
+		//Capsule 1
+		capsuleRadius = 0;
+		capsuleBotX = 0;
+		capsuleBotY = 0;
+		capsuleBotZ = 0;
+		capsuleTopX = 0;
+		capsuleTopY = 0;
+		capsuleTopZ = 0;
+
+		//Booleans
+		intersects = false;
+		intersectsTrue = false;
+		intersectsFalse = false;
+	}
+
+
+	ImGui::End();
 }

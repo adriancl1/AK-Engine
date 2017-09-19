@@ -24,6 +24,7 @@ private:
 	bool testWindowActive = false;
 	bool menuActive = false;
 	bool consoleActive = false;
+	bool mathPlaygroundActive = false;
 	bool closeApp = false;
 	std::vector<std::string> consoleText;
 
@@ -32,7 +33,36 @@ public:
 	IMGUI_API void ShowMenuWindow(bool* p_open = NULL);
 	IMGUI_API void ShowDebugWindow(bool* p_open = NULL);
 	IMGUI_API void ShowConsoleWindow(bool* p_open = NULL);
+	IMGUI_API void ShowMathWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
+
+//Math Geometric Shape
+public:
+	//Properties Sphere 1
+	int sphereRadius = 0;
+	int sphereX = 0;
+	int sphereY = 0;
+	int sphereZ = 0;
+
+	//Sphere 2
+	int sphereRadius2 = 0;
+	int sphereX2 = 0;
+	int sphereY2 = 0;
+	int sphereZ2 = 0;
+
+	//Capsule 1
+	int capsuleRadius = 0;
+	int capsuleBotX = 0;
+	int capsuleBotY = 0;
+	int capsuleBotZ = 0;
+	int capsuleTopX = 0;
+	int capsuleTopY = 0;
+	int capsuleTopZ = 0;
+
+	//Booleans
+	bool intersects = false;
+	bool intersectsTrue = false;
+	bool intersectsFalse = false;
 };
 
 #endif // __MODULEIMGUI_H__
