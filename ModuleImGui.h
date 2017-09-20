@@ -1,5 +1,5 @@
-#ifndef __MODULEIMGUI_H__
-#define __MODULEIMGUI_H__
+#ifndef __ModuleImGui_H__
+#define __MODULEImGui_H__
 
 #pragma once
 #include "Module.h"
@@ -25,6 +25,7 @@ private:
 	bool menuActive = false;
 	bool consoleActive = false;
 	bool mathPlaygroundActive = false;
+	bool configurationActive = false;
 	bool closeApp = false;
 	std::vector<std::string> consoleText;
 
@@ -34,6 +35,7 @@ public:
 	IMGUI_API void ShowDebugWindow(bool* p_open = NULL);
 	IMGUI_API void ShowConsoleWindow(bool* p_open = NULL);
 	IMGUI_API void ShowMathWindow(bool* p_open = NULL);
+	IMGUI_API void ShowConfigurationWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
 
 //Math Geometric Shape
@@ -65,4 +67,4 @@ public:
 	bool intersectsFalse = false;
 };
 
-#endif // __MODULEIMGUI_H__
+#endif // __ModuleImGui_H__

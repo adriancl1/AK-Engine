@@ -56,6 +56,64 @@ update_status ModuleImGui::PreUpdate(float dt)
 //Update
 update_status ModuleImGui::Update(float dt)
 {
+	//Main Menu Bar
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Quit", "ESC"))
+			{
+				return UPDATE_STOP;
+			}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::MenuItem("Console"))
+			{
+				consoleActive = !consoleActive;
+			}
+			if (ImGui::MenuItem("Math Test Playground"))
+			{
+				mathPlaygroundActive = !mathPlaygroundActive;
+			}
+			if (ImGui::MenuItem("Configuration"))
+			{
+				configurationActive = !configurationActive;
+			}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Help"))
+		{
+			if (ImGui::MenuItem("ImGui Demo"))
+			{
+				testWindowActive = !testWindowActive;
+			}
+			if (ImGui::MenuItem("Documentation"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/blob/master/README.md", NULL, NULL, SW_SHOWNORMAL); // This should be the wiki when we have one.
+			}
+			if (ImGui::MenuItem("Latest Release"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/releases", NULL, NULL, SW_SHOWNORMAL); 
+			}
+			if (ImGui::MenuItem("Report a bug"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/issues", NULL, NULL, SW_SHOWNORMAL); 
+			}
+
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
+
+	//-----
+
 	ShowDebugWindow();
 
 	if (menuActive)
@@ -73,6 +131,10 @@ update_status ModuleImGui::Update(float dt)
 	if (mathPlaygroundActive)
 	{
 		ShowMathWindow();
+	}
+	if (configurationActive)
+	{
+		ShowConfigurationWindow();
 	}
 	if (closeApp)
 	{
@@ -344,6 +406,45 @@ void ModuleImGui::ShowMathWindow(bool* p_open)
 		intersectsFalse = false;
 	}
 
+
+	ImGui::End();
+}
+
+
+void ModuleImGui::ShowConfigurationWindow(bool* p_open)
+{
+	if (!ImGui::Begin("Configuration", p_open))
+	{
+		// Early out if the window is collapsed, as an optimization.
+		ImGui::End();
+		return;
+	}
+
+	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
+	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
+
+	ImGui::Text("Options");
+
+	if (ImGui::CollapsingHeader("Application"))
+	{
+
+	}
+	if (ImGui::CollapsingHeader("Window"))
+	{
+
+	}
+	if (ImGui::CollapsingHeader("File System"))
+	{
+
+	}
+	if (ImGui::CollapsingHeader("Input"))
+	{
+
+	}
+	if (ImGui::CollapsingHeader("Hardware"))
+	{
+
+	}
 
 	ImGui::End();
 }
