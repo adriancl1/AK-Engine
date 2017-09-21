@@ -45,6 +45,11 @@ bool ModuleImGui::Start()
 	glewInit();
 	ImGui_ImplSdlGL3_Init(App->window->GetWindow());
 
+	openMenuWindow = false;
+	openConsoleWindow = false;
+	openConfigurationWindow = false;
+	openMathPlaygroundWindow = false;
+
 	return ret;
 }
 
@@ -75,14 +80,17 @@ update_status ModuleImGui::Update(float dt)
 		{
 			if (ImGui::MenuItem("Console"))
 			{
+				openConsoleWindow = !openConsoleWindow;
 				consoleActive = !consoleActive;
 			}
 			if (ImGui::MenuItem("Math Test Playground"))
 			{
+				openMathPlaygroundWindow = !openMathPlaygroundWindow;
 				mathPlaygroundActive = !mathPlaygroundActive;
 			}
 			if (ImGui::MenuItem("Configuration"))
 			{
+				openConfigurationWindow = !openConfigurationWindow;
 				configurationActive = !configurationActive;
 			}
 
@@ -156,10 +164,6 @@ bool ModuleImGui::CleanUp()
 
 void ModuleImGui::ShowDebugWindow(bool* p_open)
 {
-	static bool openMenuWindow = false;
-	static bool openConsoleWindow = false;
-	static bool openMathPlaygroundWindow = false;
-
 	// Demonstrate the various window flags. Typically you would just use the default.
 	ImGuiWindowFlags window_flags = 0;
 
@@ -186,6 +190,10 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 		if (ImGui::Checkbox("Show Math Test Playground", &openMathPlaygroundWindow))
 		{
 			mathPlaygroundActive = !mathPlaygroundActive;
+		}
+		if (ImGui::Checkbox("Show Configuration", &openConfigurationWindow))
+		{
+			configurationActive = !configurationActive;
 		}
 	}
 	ImGui::End();
