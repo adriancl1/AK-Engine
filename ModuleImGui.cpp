@@ -12,6 +12,8 @@
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 #define IM_MAX(_A,_B)       (((_A) >= (_B)) ? (_A) : (_B))
 
+#define MAX_FPS_MS_COUNT 81
+
 //Displays usefull information about that option
 static void ShowHelpMarker(const char* desc)
 {
@@ -427,7 +429,12 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 
 	if (ImGui::CollapsingHeader("Application"))
 	{
-
+		CycleFPSAndMsData(App->GetFPS(), App->GetMs());
+		char title[25];
+		sprintf_s(title, 25, "Framerate %.1f", FPSData[FPSData.size() - 1]);
+		ImGui::PlotHistogram("##framerate", &FPSData[0], FPSData.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+		sprintf_s(title, 25, "Milliseconds %0.1f", MsData[MsData.size() - 1]);
+		ImGui::PlotHistogram("##milliseconds", &MsData[0], MsData.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
 	}
 	if (ImGui::CollapsingHeader("Window"))
 	{
@@ -447,4 +454,35 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 	}
 
 	ImGui::End();
+}
+
+void ModuleImGui::CycleFPSAndMsData(float fps, float ms)
+{
+	//FPS
+	if (FPSData.size() >= MAX_FPS_MS_COUNT)
+	{
+		for (int i = 0; i < MAX_FPS_MS_COUNT - 2; i++)
+		{
+			FPSData[i] = FPSData[i + 1];
+		}
+		FPSData[MAX_FPS_MS_COUNT - 1] = fps;
+	}
+	else
+	{
+			FPSData.push_back(fps);
+	}
+
+	//MS
+	if (MsData.size() >= MAX_FPS_MS_COUNT)
+	{
+		for (int i = 0; i < MAX_FPS_MS_COUNT - 2; i++)
+		{
+			MsData[i] = MsData[i + 1];
+		}
+		MsData[MAX_FPS_MS_COUNT - 1] = ms;
+	}
+	else
+	{
+		MsData.push_back(ms);
+	}
 }

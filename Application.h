@@ -23,10 +23,13 @@ public:
 	ModulePhysics3D* physics;
 	ModuleImGui* imGui;
 
+
 private:
 
 	Timer	ms_timer;
 	float	dt;
+	float lastFPS = 0;
+	float lastMs = 0;
 	p2List<Module*> list_modules;
 
 public:
@@ -37,6 +40,9 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+
+	float GetFPS();
+	float GetMs();
 
 private:
 

@@ -28,6 +28,8 @@ private:
 	bool configurationActive = false;
 	bool closeApp = false;
 	std::vector<std::string> consoleText;
+	std::vector<float> FPSData;
+	std::vector<float> MsData;
 
 //ImGui
 public:
@@ -37,6 +39,9 @@ public:
 	IMGUI_API void ShowMathWindow(bool* p_open = NULL);
 	IMGUI_API void ShowConfigurationWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
+
+private:
+	void CycleFPSAndMsData(float fps, float ms);
 
 //Math Geometric Shape
 public:

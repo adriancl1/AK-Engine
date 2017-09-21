@@ -25,6 +25,9 @@
     <Filter Include="Sources\Tools\MathGeo\extra">
       <UniqueIdentifier>{8b1af300-6879-40f1-af2f-0679f79167ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\parson">
+      <UniqueIdentifier>{eaac0f6f-56d2-48b9-9bfb-ce079f10ec18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -270,6 +273,9 @@
     <ClInclude Include="Math.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="parson\parson.h">
+      <Filter>Sources\Tools\parson</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -421,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="MathGeo\Time\Clock.cpp">
       <Filter>Sources\Tools\MathGeo\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="parson\parson.c">
+      <Filter>Sources\Tools\parson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
