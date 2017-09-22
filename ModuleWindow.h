@@ -21,6 +21,11 @@ public:
 	void SetTitle(const char* title);
 
 	SDL_Window* GetWindow() const;
+	void ResizeWindow(int width, int height);
+	void SetFullscreen(bool fullscreen);
+	void SetBrightness(float value);
+	void SetBorderless(bool borderless);
+	void SetFullDesktop(bool fullDesktop);
 
 public:
 	//The surface contained by the window

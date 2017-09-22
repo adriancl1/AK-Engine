@@ -31,6 +31,13 @@ private:
 	std::vector<float> FPSData;
 	std::vector<float> MsData;
 
+	bool fullscreen;
+	bool fullDesktop;
+	bool borderless;
+	int windowWidth;
+	int windowHeight;
+	float brightness;
+
 //ImGui
 public:
 	IMGUI_API void ShowMenuWindow(bool* p_open = NULL);

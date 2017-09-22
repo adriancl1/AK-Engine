@@ -45,6 +45,13 @@ bool ModuleImGui::Start()
 	glewInit();
 	ImGui_ImplSdlGL3_Init(App->window->GetWindow());
 
+	fullscreen = WIN_FULLSCREEN;
+	fullDesktop = WIN_FULLSCREEN_DESKTOP;
+	borderless = WIN_BORDERLESS;
+	windowHeight = SCREEN_HEIGHT;
+	windowWidth = SCREEN_WIDTH;
+	brightness = 1;
+
 	return ret;
 }
 
@@ -438,7 +445,31 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 	}
 	if (ImGui::CollapsingHeader("Window"))
 	{
-
+		if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f, "%.2f"))
+		{
+			App->window->SetBrightness(brightness);
+		}
+		if (ImGui::SliderInt("Width", &windowWidth, 1, 1920))
+		{
+			App->window->ResizeWindow(windowWidth, windowHeight);
+		}
+		if (ImGui::SliderInt("Height", &windowHeight, 1, 1080))
+		{
+			App->window->ResizeWindow(windowWidth, windowHeight);
+		}
+		if (ImGui::Checkbox("Fullscreen", &fullscreen))
+		{
+			App->window->SetFullscreen(fullscreen);
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Borderless", &borderless))
+		{
+			App->window->SetBorderless(borderless);
+		}
+		if (ImGui::Checkbox("Full Desktop", &fullDesktop))
+		{
+			App->window->SetFullDesktop(fullDesktop);
+		}
 	}
 	if (ImGui::CollapsingHeader("File System"))
 	{

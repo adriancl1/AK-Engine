@@ -286,7 +286,7 @@ tick_t Clock::TicksPerSec()
 #endif
 }
 
-unsigned long long Clock::Rdtsc()
+/*unsigned long long Clock::Rdtsc()
 {
 #if defined(_MSC_VER) && !defined(WIN8PHONE)
 	return __rdtsc();
@@ -301,6 +301,6 @@ unsigned long long Clock::Rdtsc()
 #else
 	return Clock::Tick();
 #endif
-}
+}*/
 
 MATH_END_NAMESPACE
