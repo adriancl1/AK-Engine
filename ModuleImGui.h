@@ -50,6 +50,13 @@ public:
 private:
 	void CycleFPSAndMsData(float fps, float ms);
 
+private:
+	//Booleans for ImGui Checkbox buttons
+	bool openMenuWindow;
+	bool openConsoleWindow;
+	bool openConfigurationWindow;
+	bool openMathPlaygroundWindow;
+
 //Math Geometric Shape
 public:
 	//Properties Sphere 1
