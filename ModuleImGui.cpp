@@ -475,6 +475,19 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		{
 			App->window->ResizeWindow(windowWidth, windowHeight);
 		}
+
+		ImGui::Text("Refresh Rate:");
+		ImGui::SameLine();
+		SDL_DisplayMode dm;
+		SDL_GetDesktopDisplayMode(0, &dm);
+		if (SDL_GetDesktopDisplayMode(0, &dm) != 0) 
+		{
+			SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+			App->imGui->AddLogToWindow("SDL_GetDesktopDisplayMode failed!");
+		
+		}
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%d", dm.refresh_rate);
+
 		if (ImGui::Checkbox("Fullscreen", &fullscreen))
 		{
 			App->window->SetFullscreen(fullscreen);
@@ -501,10 +514,21 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 	{
 		SDL_version compiled;
 		SDL_VERSION(&compiled);
-		ImGui::Text("SDL Version: %d.%d.%d", compiled.major, compiled.minor, compiled.patch);
+
+		ImGui::Text("SDL Version: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%d.%d.%d", compiled.major, compiled.minor, compiled.patch);
+
 		ImGui::Separator();
-		ImGui::Text("CPUs: %i (Cache: %iKB)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
-		ImGui::Text("System RAM: %iGB", SDL_GetSystemRAM()/1000);
+
+		ImGui::Text("CPUs:");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%i (Cache: %iKB)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
+
+		ImGui::Text("System RAM:");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%iGB", SDL_GetSystemRAM() / 1000);
+
 		ImGui::Separator();
 
 	}
