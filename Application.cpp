@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "parson\parson.h"
 
+
 Application::Application()
 {
 	window = new ModuleWindow(this);
@@ -122,9 +123,12 @@ bool Application::CleanUp()
 	bool ret = true;
 	p2List_item<Module*>* item = list_modules.getLast();
 
+	JSON_Value * configValue = json_parse_file("config.json");
+	JSON_Object * configObject = json_value_get_object(configValue);
+
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->CleanUp();
+		ret = item->data->CleanUp(json_object_dotget_object(configObject, item->data->name.c_str()));
 		item = item->prev;
 	}
 	return ret;

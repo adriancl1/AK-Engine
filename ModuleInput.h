@@ -23,7 +23,7 @@ public:
 
 	bool Init(JSON_Object* data = nullptr);
 	update_status PreUpdate(float dt);
-	bool CleanUp();
+	bool CleanUp(JSON_Object* data = nullptr);
 
 	KEY_STATE GetKey(int id) const
 	{

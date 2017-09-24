@@ -170,7 +170,7 @@ update_status ModuleImGui::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleImGui::CleanUp()
+bool ModuleImGui::CleanUp(JSON_Object* data)
 {
 	ImGui_ImplSdlGL3_Shutdown();
 	return true;

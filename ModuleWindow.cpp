@@ -89,7 +89,6 @@ bool ModuleWindow::Init(JSON_Object* data)
 		{
 			App->imGui->AddLogToWindow("Window config loaded");
 
-			title = json_object_dotget_string(data, "title");
 			width = json_object_dotget_number(data, "width");
 			height= json_object_dotget_number(data, "height");
 			brightness = json_object_dotget_number(data, "brightness");
@@ -154,21 +153,18 @@ SDL_Window * ModuleWindow::GetWindow() const
 }
 
 // Called before quitting
-bool ModuleWindow::CleanUp()
+bool ModuleWindow::CleanUp(JSON_Object* data)
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
 	App->imGui->AddLogToWindow("Destroying SDL window and quitting all SDL systems"); 
 	
-	/* TODO: It should save the configuration
-
-	JSON_Value * configValue = json_parse_file("config.json");
-	JSON_Object * configObject = json_value_get_object(configValue);
-
-	JSON_Object * windowConfig = json_object_dotget_object(configObject, "window");
-	json_object_dotset_number(windowConfig, "width", (double) width);
-	json_object_dotset_boolean(windowConfig, "fullscreen", (fullscreen) ? 1 : 0);
-
-	*/
+	/* TODO: It should save the configuration */
+	json_object_dotset_number(data, "width", width);
+	json_object_dotset_number(data, "height", height);
+	json_object_dotset_number(data, "brightness", brightness);
+	json_object_dotset_boolean(data, "fullscreen", fullscreen);
+	json_object_dotset_boolean(data, "fullDesktop", fullDesktop);
+	json_object_dotset_boolean(data, "borderless", borderless);
 
 	//Destroy window
 	if(window != NULL)

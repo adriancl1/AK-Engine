@@ -17,7 +17,7 @@ public:
 	bool Init(JSON_Object* data = nullptr);
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
-	bool CleanUp();
+	bool CleanUp(JSON_Object* data = nullptr);
 
 	void OnResize(int width, int height);
 

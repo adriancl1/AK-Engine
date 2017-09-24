@@ -125,7 +125,7 @@ update_status ModuleInput::PreUpdate(float dt)
 }
 
 // Called before quitting
-bool ModuleInput::CleanUp()
+bool ModuleInput::CleanUp(JSON_Object* data)
 {
 	LOG("Quitting SDL input event subsystem.");
 	App->imGui->AddLogToWindow("Quitting SDL input event subsystem."); 

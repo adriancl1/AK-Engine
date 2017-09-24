@@ -52,7 +52,7 @@ bool ModuleAudio::Init(JSON_Object* data)
 }
 
 // Called before quitting
-bool ModuleAudio::CleanUp()
+bool ModuleAudio::CleanUp(JSON_Object* data)
 {
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem.");
 	App->imGui->AddLogToWindow("Freeing sound FX, closing Mixer and Audio subsystem.");

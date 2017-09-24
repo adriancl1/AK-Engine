@@ -4,7 +4,6 @@
   "physics": {},
   "renderer": {},
   "window": {
-    "title": "AK Engine",
     "width": 1580,
     "height": 1024,
     "fullscreen": false,

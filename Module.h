@@ -47,7 +47,7 @@ public:
 		return UPDATE_CONTINUE;
 	}
 
-	virtual bool CleanUp() 
+	virtual bool CleanUp(JSON_Object* data = nullptr)
 	{ 
 		return true; 
 	}

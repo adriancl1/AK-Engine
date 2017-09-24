@@ -138,7 +138,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 }
 
 // Called before quitting
-bool ModuleRenderer3D::CleanUp()
+bool ModuleRenderer3D::CleanUp(JSON_Object* data)
 {
 	LOG("Destroying 3D Renderer");
 	App->imGui->AddLogToWindow("Destroying 3D Renderer");
