@@ -11,6 +11,7 @@
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "renderer";
 }
 
 // Destructor
@@ -18,7 +19,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
 // Called before render is available
-bool ModuleRenderer3D::Init()
+bool ModuleRenderer3D::Init(JSON_Object* data)
 {
 	LOG("Creating 3D Renderer context");
 	App->imGui->AddLogToWindow("Creating 3D Renderer context");

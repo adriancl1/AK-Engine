@@ -23,7 +23,7 @@ public:
 	ModulePhysics3D(Application* app, bool start_enabled = true);
 	~ModulePhysics3D();
 
-	bool Init();
+	bool Init(JSON_Object* data = nullptr);
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);

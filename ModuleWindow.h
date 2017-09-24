@@ -15,17 +15,22 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
-	bool Init();
+	bool Init(JSON_Object* data = nullptr);
 	bool CleanUp();
 
 	void SetTitle(const char* title);
 
 	SDL_Window* GetWindow() const;
 	void ResizeWindow(int width, int height);
+	void GetWindowSize(int& width, int& height);
 	void SetFullscreen(bool fullscreen);
+	bool GetFullscreen();
 	void SetBrightness(float value);
+	float GetBrightness();
 	void SetBorderless(bool borderless);
+	bool GetBorderless();
 	void SetFullDesktop(bool fullDesktop);
+	bool GetFullDesktop();
 
 public:
 	//The surface contained by the window
@@ -33,6 +38,14 @@ public:
 private:
 	//The window we'll be rendering to
 	SDL_Window* window;
+
+	std::string title;
+	int width;
+	int height;
+	float brightness;
+	bool fullscreen;
+	bool fullDesktop;
+	bool borderless;
 };
 
 #endif // __ModuleWindow_H__

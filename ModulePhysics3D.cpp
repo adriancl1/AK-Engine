@@ -23,6 +23,8 @@ ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(
 	broad_phase = new btDbvtBroadphase();
 	solver = new btSequentialImpulseConstraintSolver();
 	debug_draw = new DebugDrawer();
+
+	name = "physics";
 }
 
 // Destructor
@@ -36,7 +38,7 @@ ModulePhysics3D::~ModulePhysics3D()
 }
 
 // Render not available yet----------------------------------
-bool ModulePhysics3D::Init()
+bool ModulePhysics3D::Init(JSON_Object* data)
 {
 	LOG("Creating 3D Physics simulation");
 	App->imGui->AddLogToWindow("Creating 3D Physics simulation");

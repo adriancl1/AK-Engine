@@ -1,11 +1,13 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "parson\parson.h"
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	window = NULL;
 	screen_surface = NULL;
+	name = "window";
 }
 
 // Destructor
@@ -14,7 +16,7 @@ ModuleWindow::~ModuleWindow()
 }
 
 // Called before render is available
-bool ModuleWindow::Init()
+bool ModuleWindow::Init(JSON_Object* data)
 {
 	LOG("Init SDL window & surface");
 	App->imGui->AddLogToWindow("Init SDL window & surface");
@@ -28,36 +30,107 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
-		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
-		//Use OpenGL 2.1
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-
-		if(WIN_FULLSCREEN == true)
+		if (data == nullptr)
 		{
-			flags |= SDL_WINDOW_FULLSCREEN;
+			App->imGui->AddLogToWindow("Window config couldn't load, using default values!");
+			//Create window
+			width = SCREEN_WIDTH * SCREEN_SIZE;
+			height = SCREEN_HEIGHT * SCREEN_SIZE;
+			brightness = 1;
+			Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+
+			//Use OpenGL 2.1
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+			if (WIN_FULLSCREEN == true)
+			{
+				fullscreen = true;
+				flags |= SDL_WINDOW_FULLSCREEN;
+			}
+
+			else
+			{
+				fullscreen = false;
+			}
+
+			if (WIN_RESIZABLE == true)
+			{
+				flags |= SDL_WINDOW_RESIZABLE;
+			}
+
+			if (WIN_BORDERLESS == true)
+			{
+				borderless = true;
+				flags |= SDL_WINDOW_BORDERLESS;
+			}
+
+			else
+			{
+				borderless = false;
+			}
+
+			if (WIN_FULLSCREEN_DESKTOP == true)
+			{
+				fullDesktop = true;
+				flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+			}
+
+			else
+			{
+				fullDesktop = false;
+			}
+
+			window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		}
 
-		if(WIN_RESIZABLE == true)
+		else
 		{
-			flags |= SDL_WINDOW_RESIZABLE;
-		}
+			App->imGui->AddLogToWindow("Window config loaded");
 
-		if(WIN_BORDERLESS == true)
-		{
-			flags |= SDL_WINDOW_BORDERLESS;
-		}
+			title = json_object_dotget_string(data, "title");
+			width = json_object_dotget_number(data, "width");
+			height= json_object_dotget_number(data, "height");
+			brightness = json_object_dotget_number(data, "brightness");
+			fullscreen = json_object_dotget_boolean(data, "fullscreen");
+			fullDesktop = json_object_dotget_boolean(data, "fullDesktop");
+			borderless = json_object_dotget_boolean(data, "borderless");
+			
+			width = width * SCREEN_SIZE;
+			height = height * SCREEN_SIZE;
 
-		if(WIN_FULLSCREEN_DESKTOP == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-		}
+			Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+			//Use OpenGL 2.1
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+			if (fullscreen == true)
+			{
+				flags |= SDL_WINDOW_FULLSCREEN;
+			}
+
+			if (WIN_RESIZABLE == true)
+			{
+				flags |= SDL_WINDOW_RESIZABLE;
+			}
+
+			if (borderless == true)
+			{
+				flags |= SDL_WINDOW_BORDERLESS;
+			}
+
+			if (fullDesktop == true)
+			{
+				flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+			}
+
+			window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+
+			SDL_SetWindowBrightness(window, brightness);
+			
+		}
 
 		if(window == NULL)
 		{
@@ -85,6 +158,17 @@ bool ModuleWindow::CleanUp()
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
 	App->imGui->AddLogToWindow("Destroying SDL window and quitting all SDL systems"); 
+	
+	/* TODO: It should save the configuration
+
+	JSON_Value * configValue = json_parse_file("config.json");
+	JSON_Object * configObject = json_value_get_object(configValue);
+
+	JSON_Object * windowConfig = json_object_dotget_object(configObject, "window");
+	json_object_dotset_number(windowConfig, "width", (double) width);
+	json_object_dotset_boolean(windowConfig, "fullscreen", (fullscreen) ? 1 : 0);
+
+	*/
 
 	//Destroy window
 	if(window != NULL)
@@ -99,12 +183,21 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::SetTitle(const char* title)
 {
+	this->title = title;
 	SDL_SetWindowTitle(window, title);
 }
 
 void ModuleWindow::ResizeWindow(int width, int height)
 {
+	this->width = width;
+	this->height = height;
 	SDL_SetWindowSize(window, width, height);
+}
+
+void ModuleWindow::GetWindowSize(int& width, int& height)
+{
+	width = this->width;
+	height = this->height;
 }
 
 void ModuleWindow::SetFullscreen(bool fullscreen)
@@ -112,14 +205,30 @@ void ModuleWindow::SetFullscreen(bool fullscreen)
 	Uint32 flags;
 	if (fullscreen == true)
 	{
+		this->fullscreen = true;
 		flags |= SDL_WINDOW_FULLSCREEN;
+	}
+	else if (fullscreen == false)
+	{
+		this->fullscreen = false;
 	}
 	SDL_SetWindowFullscreen(window, flags);
 }
 
+bool ModuleWindow::GetFullscreen()
+{
+	return fullscreen;
+}
+
 void ModuleWindow::SetBrightness(float value)
 {
+	brightness = value;
 	SDL_SetWindowBrightness(window, value);
+}
+
+float ModuleWindow::GetBrightness()
+{
+	return brightness;
 }
 
 void ModuleWindow::SetBorderless(bool borderless)
@@ -127,12 +236,19 @@ void ModuleWindow::SetBorderless(bool borderless)
 	Uint32 flags;
 	if (borderless == true)
 	{
+		borderless = true;
 		SDL_SetWindowBordered(window, SDL_FALSE);
 	}
 	else
 	{
+		borderless = false;
 		SDL_SetWindowBordered(window, SDL_TRUE);
 	}
+}
+
+bool ModuleWindow::GetBorderless()
+{
+	return borderless;
 }
 
 void ModuleWindow::SetFullDesktop(bool fullDesktop)
@@ -140,7 +256,17 @@ void ModuleWindow::SetFullDesktop(bool fullDesktop)
 	Uint32 flags;
 	if (fullDesktop == true)
 	{
+		this->fullDesktop = true;
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
+	else
+	{
+		this->fullDesktop = false;
+	}
 	SDL_SetWindowFullscreen(window, flags);
+}
+
+bool ModuleWindow::GetFullDesktop()
+{
+	return fullDesktop;
 }

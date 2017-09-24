@@ -1,7 +1,8 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-#pragma once
+#include <string>
+#include "parson\parson.h"
 
 class Application;
 struct PhysBody3D;
@@ -13,6 +14,7 @@ private :
 
 public:
 	Application* App;
+	std::string name;
 
 	Module(Application* parent, bool start_enabled = true) : App(parent)
 	{}
@@ -20,7 +22,7 @@ public:
 	virtual ~Module()
 	{}
 
-	virtual bool Init() 
+	virtual bool Init(JSON_Object* data = nullptr) 
 	{
 		return true; 
 	}
@@ -52,5 +54,6 @@ public:
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
+
 };
 #endif // __MODULE_H__

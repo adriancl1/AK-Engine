@@ -51,12 +51,11 @@ bool ModuleImGui::Start()
 	openMathPlaygroundWindow = false;
 	openAboutWindow = false;
 
-	fullscreen = WIN_FULLSCREEN;
-	fullDesktop = WIN_FULLSCREEN_DESKTOP;
-	borderless = WIN_BORDERLESS;
-	windowHeight = SCREEN_HEIGHT;
-	windowWidth = SCREEN_WIDTH;
-	brightness = 1;
+	fullscreen = App->window->GetFullscreen();
+	fullDesktop = App->window->GetFullDesktop();
+	borderless = App->window->GetBorderless();
+	App->window->GetWindowSize(windowWidth, windowHeight);
+	brightness = App->window->GetBrightness();
 
 
 	return ret;
