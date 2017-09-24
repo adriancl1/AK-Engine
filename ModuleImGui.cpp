@@ -492,7 +492,7 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 			App->window->SetFullscreen(fullscreen);
 		}
 		ImGui::SameLine();
-		if (ImGui::Checkbox("Borderless", &borderless))
+		if (ImGui::Checkbox("Windowed Borderless", &borderless))
 		{
 			App->window->SetBorderless(borderless);
 		}
