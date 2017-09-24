@@ -13,6 +13,8 @@
 #define IM_MAX(_A,_B)       (((_A) >= (_B)) ? (_A) : (_B))
 
 #define MAX_FPS_MS_COUNT 81
+#define GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX 0x9048
+#define GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX 0x9049
 
 //Displays usefull information about that option
 static void ShowHelpMarker(const char* desc)
@@ -530,6 +532,37 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 
 		ImGui::Separator();
 
+		ImGui::Text("GPU:");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%s", (const char*)glGetString(GL_RENDERER));
+
+		ImGui::Text("GPU Vendor:");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%s", (const char*)glGetString(GL_VENDOR));
+
+		ImGui::Text("VRAM Budget:");
+		ImGui::SameLine();
+		int totalVRAM = 0;
+		glGetIntegerv(GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX, &totalVRAM);
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%i", totalVRAM / 1000);
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "MB");
+
+		ImGui::Text("VRAM available:");
+		ImGui::SameLine();
+		int currentVRAM = 0;
+		glGetIntegerv(GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX, &currentVRAM);
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%i", currentVRAM / 1000);
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "MB");
+
+		ImGui::Text("VRAM usage:");
+		ImGui::SameLine();
+		int VRAMUsage = totalVRAM - currentVRAM;
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%i", VRAMUsage / 1000);
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(255, 255, 0, 100), "MB");
+		
 	}
 
 	ImGui::End();
