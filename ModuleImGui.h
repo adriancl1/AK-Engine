@@ -26,7 +26,10 @@ private:
 	bool consoleActive = false;
 	bool mathPlaygroundActive = false;
 	bool configurationActive = false;
+	bool aboutActive = false;
+
 	bool closeApp = false;
+
 	std::vector<std::string> consoleText;
 	std::vector<float> FPSData;
 	std::vector<float> MsData;
@@ -45,6 +48,7 @@ public:
 	IMGUI_API void ShowConsoleWindow(bool* p_open = NULL);
 	IMGUI_API void ShowMathWindow(bool* p_open = NULL);
 	IMGUI_API void ShowConfigurationWindow(bool* p_open = NULL);
+	IMGUI_API void ShowAboutWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
 
 private:
@@ -56,6 +60,7 @@ private:
 	bool openConsoleWindow;
 	bool openConfigurationWindow;
 	bool openMathPlaygroundWindow;
+	bool openAboutWindow;
 
 //Math Geometric Shape
 public:

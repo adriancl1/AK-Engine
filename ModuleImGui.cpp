@@ -49,6 +49,7 @@ bool ModuleImGui::Start()
 	openConsoleWindow = false;
 	openConfigurationWindow = false;
 	openMathPlaygroundWindow = false;
+	openAboutWindow = false;
 
 	fullscreen = WIN_FULLSCREEN;
 	fullDesktop = WIN_FULLSCREEN_DESKTOP;
@@ -131,7 +132,6 @@ update_status ModuleImGui::Update(float dt)
 	}
 
 	//-----
-
 	ShowDebugWindow();
 
 	if (menuActive)
@@ -154,6 +154,11 @@ update_status ModuleImGui::Update(float dt)
 	{
 		ShowConfigurationWindow();
 	}
+	if (aboutActive)
+	{
+		ShowAboutWindow();
+	}
+
 	if (closeApp)
 	{
 		return UPDATE_STOP;
@@ -202,6 +207,10 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 		if (ImGui::Checkbox("Show Configuration", &openConfigurationWindow))
 		{
 			configurationActive = !configurationActive;
+		}
+		if (ImGui::Checkbox("Show About..", &openAboutWindow))
+		{
+			aboutActive = !aboutActive;
 		}
 	}
 	ImGui::End();
@@ -490,8 +499,62 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 	}
 	if (ImGui::CollapsingHeader("Hardware"))
 	{
+		SDL_version compiled;
+		SDL_VERSION(&compiled);
+		ImGui::Text("SDL Version: %d.%d.%d", compiled.major, compiled.minor, compiled.patch);
+		ImGui::Separator();
+		ImGui::Text("CPUs: %i (Cache: %iKB)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
+		ImGui::Text("System RAM: %iGB", SDL_GetSystemRAM()/1000);
+		ImGui::Separator();
 
 	}
+
+	ImGui::End();
+}
+
+void ModuleImGui::ShowAboutWindow(bool* p_open)
+{
+	// Demonstrate the various window flags. Typically you would just use the default.
+	ImGuiWindowFlags window_flags = 0;
+
+	if (!ImGui::Begin("About", p_open, window_flags))
+	{
+		// Early out if the window is collapsed, as an optimization.
+		ImGui::End();
+		return;
+	}
+
+	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
+	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
+
+										
+	ImGui::Text("Name: AK Engine.");
+	ImGui::Text("3D Engine made with C++ and OpenGL for an assignment in a Game Design & Development degree.");
+	ImGui::Text("Authors: Marc Fabian, Adrian Castillo and Marc Lopez.");
+	
+	if (ImGui::CollapsingHeader("Libraries used"))
+	{
+		if (ImGui::MenuItem("SDL 2.0.4"))
+		{
+			ShellExecuteA(NULL, "open", "https://www.libsdl.org/index.php", NULL, NULL, SW_SHOWNORMAL);
+		}
+		if (ImGui::MenuItem("MathGeoLib 1.3"))
+		{
+			ShellExecuteA(NULL, "open", "http://clb.demon.fi/MathGeoLib/nightly/", NULL, NULL, SW_SHOWNORMAL);
+		}
+		if (ImGui::MenuItem("ImGui 1.52 WIP"))
+		{
+			ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
+		}
+	}
+	if (ImGui::CollapsingHeader("License"))
+	{
+		if (ImGui::MenuItem("License Apache 2.0"))
+		{
+			ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/blob/master/LICENSE", NULL, NULL, SW_SHOWNORMAL);
+		}
+	}
+
 
 	ImGui::End();
 }
