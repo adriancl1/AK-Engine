@@ -531,6 +531,62 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(255, 255, 0, 100), "%iGB", SDL_GetSystemRAM() / 1000);
 
+		//CPU Capabilities
+		ImGui::Text("Caps: ");
+		ImGui::SameLine();
+		
+		if (SDL_HasRDTSC())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "RDTSC");
+			ImGui::SameLine();
+		}
+		if (SDL_HasAltiVec())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "Altivec");
+			ImGui::SameLine();
+		}
+		if (SDL_Has3DNow())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "3DNow");
+			ImGui::SameLine();
+		}
+		if (SDL_HasMMX())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "MMX");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "SSE");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE2())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "SSE2");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE3())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "SSE3");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE41())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "SSE41");
+			ImGui::SameLine();
+		}
+		if (SDL_HasSSE42())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "SSE42");
+			ImGui::SameLine();
+		}
+		if (SDL_HasAVX())
+		{
+			ImGui::TextColored(ImVec4(255, 255, 0, 100), "AVX");
+			ImGui::SameLine();
+		}
+		ImGui::NewLine();
+
 		ImGui::Separator();
 
 		ImGui::Text("GPU:");
@@ -603,6 +659,23 @@ void ModuleImGui::ShowAboutWindow(bool* p_open)
 		{
 			ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
 		}
+		if (ImGui::MenuItem("Bullet 2.84"))
+		{
+			ShellExecuteA(NULL, "open", "http://bulletphysics.org/wordpress/", NULL, NULL, SW_SHOWNORMAL);
+		}
+		if (ImGui::MenuItem("Brofiler 1.1.2"))
+		{
+			ShellExecuteA(NULL, "open", "http://brofiler.com/", NULL, NULL, SW_SHOWNORMAL);
+		}
+		if (ImGui::MenuItem("Glew 2.0.0"))
+		{
+			ShellExecuteA(NULL, "open", "http://glew.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+		}
+		if (ImGui::MenuItem("OpenGl 3.1"))
+		{
+			ShellExecuteA(NULL, "open", "https://www.opengl.org/", NULL, NULL, SW_SHOWNORMAL);
+		}
+	
 	}
 	if (ImGui::CollapsingHeader("License"))
 	{
