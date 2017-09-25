@@ -1,4 +1,6 @@
-﻿# AK Engine
+[![Build status](https://ci.appveyor.com/api/projects/status/qj9ypm2i7pqfqbaa?svg=true)](https://ci.appveyor.com/project/MarcLF/ak-engine)
+
+# AK Engine
 
 AK Engine purpose is to be used as an experimentation and learning tool as well as a project for Game Design & Development degree that we are currently coursing.
 
