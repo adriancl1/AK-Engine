@@ -39,6 +39,7 @@ private:
 	bool borderless;
 	int windowWidth;
 	int windowHeight;
+	int volume;
 	float brightness;
 
 //ImGui

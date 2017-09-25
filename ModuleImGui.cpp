@@ -59,7 +59,7 @@ bool ModuleImGui::Start()
 	borderless = App->window->GetBorderless();
 	App->window->GetWindowSize(windowWidth, windowHeight);
 	brightness = App->window->GetBrightness();
-
+	volume = 50;
 
 	return ret;
 }
@@ -463,6 +463,17 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		sprintf_s(title, 25, "Milliseconds %0.1f", MsData[MsData.size() - 1]);
 		ImGui::PlotHistogram("##milliseconds", &MsData[0], MsData.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
 	}
+	if ((ImGui::CollapsingHeader("Audio")))
+	{
+		if (ImGui::SliderInt("Master Volume", &volume, 1, 100))
+		{
+			Mix_Volume(-1, volume);
+		}
+			
+	}
+
+
+
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f, "%.2f"))
