@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "parson\parson.h"
-
+#include "Brofiler-1.1.2\Brofiler.h"
 
 Application::Application()
 {
@@ -43,6 +43,8 @@ bool Application::Init()
 {
 	bool ret = true;
 
+	BROFILER_CATEGORY("Aplication Init", Profiler::Color::AliceBlue);
+
 	// Call Init() in all modules
 	p2List_item<Module*>* item = list_modules.getFirst();
 
@@ -61,6 +63,8 @@ bool Application::Init()
 
 	while(item != NULL && ret == true)
 	{
+		BROFILER_CATEGORY("%s Init", item->data->name.c_str(), Brofiler::Color::AliceBlue);
+
 		ret = item->data->Start();
 		item = item->next;
 	}

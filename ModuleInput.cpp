@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Brofiler-1.1.2\Brofiler.h"
 #include "ModuleInput.h"
 
 #define MAX_KEYS 300
@@ -22,6 +23,8 @@ ModuleInput::~ModuleInput()
 // Called before render is available
 bool ModuleInput::Init(JSON_Object* data)
 {
+	BROFILER_CATEGORY("Module Input Init", Profiler::Color::AliceBlue);
+
 	LOG("Init SDL input event system");
 	App->imGui->AddLogToWindow("Init SDL input event system");
 	bool ret = true;

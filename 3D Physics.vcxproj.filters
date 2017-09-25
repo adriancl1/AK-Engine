@@ -28,6 +28,9 @@
     <Filter Include="Sources\Tools\parson">
       <UniqueIdentifier>{eaac0f6f-56d2-48b9-9bfb-ce079f10ec18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\Brofiler">
+      <UniqueIdentifier>{9fc971a7-4492-429e-850b-70b42b777420}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -275,6 +278,9 @@
     </ClInclude>
     <ClInclude Include="parson\parson.h">
       <Filter>Sources\Tools\parson</Filter>
+    </ClInclude>
+    <ClInclude Include="Brofiler-1.1.2\Brofiler.h">
+      <Filter>Sources\Tools\Brofiler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

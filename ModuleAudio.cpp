@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Brofiler-1.1.2\Brofiler.h"
 #include "ModuleAudio.h"
 #include "ModuleImGui.h"
 
@@ -17,6 +18,8 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init(JSON_Object* data)
 {
+	BROFILER_CATEGORY("Module Audio Init", Profiler::Color::AliceBlue);
+
 	LOG("Loading Audio Mixer");
 	App->imGui->AddLogToWindow("Loading Audio Mixer"); 
 	bool ret = true;

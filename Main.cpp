@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "MemLeaks.h"
+#include "Brofiler-1.1.2\Brofiler.h"
 
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
@@ -28,6 +29,7 @@ int main(int argc, char ** argv)
 
 	while (state != MAIN_EXIT)
 	{
+		BROFILER_FRAME("Main Loop");
 		switch (state)
 		{
 		case MAIN_CREATION:

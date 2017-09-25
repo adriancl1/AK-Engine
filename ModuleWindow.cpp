@@ -1,7 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Brofiler-1.1.2\Brofiler.h"
 #include "ModuleWindow.h"
 #include "parson\parson.h"
+
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -18,6 +20,8 @@ ModuleWindow::~ModuleWindow()
 // Called before render is available
 bool ModuleWindow::Init(JSON_Object* data)
 {
+	BROFILER_CATEGORY("Module Window Init", Profiler::Color::AliceBlue);
+
 	LOG("Init SDL window & surface");
 	App->imGui->AddLogToWindow("Init SDL window & surface");
 	bool ret = true;

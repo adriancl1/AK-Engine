@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "SDL\include\SDL_opengl.h"
+#include "Brofiler-1.1.2\Brofiler.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -21,6 +22,8 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init(JSON_Object* data)
 {
+	BROFILER_CATEGORY("Module Render Init", Profiler::Color::AliceBlue);
+
 	LOG("Creating 3D Renderer context");
 	App->imGui->AddLogToWindow("Creating 3D Renderer context");
 	bool ret = true;
@@ -115,12 +118,14 @@ bool ModuleRenderer3D::Init(JSON_Object* data)
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	BROFILER_CATEGORY("Module Renderer PreUpdate", Profiler::Color::AliceBlue);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());
-
+	
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 

@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Brofiler-1.1.2\Brofiler.h"
 #include "ModulePhysics3D.h"
 #include "PhysBody3D.h"
 #include "Primitive.h"
@@ -40,6 +41,8 @@ ModulePhysics3D::~ModulePhysics3D()
 // Render not available yet----------------------------------
 bool ModulePhysics3D::Init(JSON_Object* data)
 {
+	BROFILER_CATEGORY("Module Physics 3D Init", Profiler::Color::AliceBlue);
+
 	LOG("Creating 3D Physics simulation");
 	App->imGui->AddLogToWindow("Creating 3D Physics simulation");
 	bool ret = true;
