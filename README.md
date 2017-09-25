@@ -1,4 +1,4 @@
-# AK Engine
+﻿# AK Engine
 
 AK Engine purpose is to be used as an experimentation and learning tool as well as a project for Game Design & Development degree that we are currently coursing.
 
@@ -10,6 +10,11 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 (press + if you want to add +1 or - if you want to add -1 to the corresponding integer)
 
 ## Changelog
+Version 0.2:
+- Added Configuration window.
+- Brofiler Integrated.
+- Added Json & Parson.
+
 Version 0.1:
 - Added Console.
 - MathGeoLib integration.
