@@ -61,6 +61,8 @@ bool ModuleImGui::Start()
 	brightness = App->window->GetBrightness();
 	volume = 50;
 
+	wireframe = false;
+
 	return ret;
 }
 
@@ -166,8 +168,6 @@ update_status ModuleImGui::Update(float dt)
 		return UPDATE_STOP;
 	}
 
-	ImGui::Render();
-
 	return UPDATE_CONTINUE;
 }
 
@@ -216,6 +216,11 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 		}
 	}
 	ImGui::End();
+}
+
+void ModuleImGui::Draw()const
+{
+	ImGui::Render();
 }
 
 void ModuleImGui::ShowMenuWindow(bool* p_open)
@@ -336,6 +341,8 @@ void ModuleImGui::ShowMathWindow(bool* p_open)
 		{
 			math::Sphere sphere1(float3(sphereX, sphereY, sphereZ), sphereRadius);
 			math::Sphere sphere2(float3(sphereX2, sphereY2, sphereZ2), sphereRadius2);
+
+			App->sceneEditor->AddSphere(sphereRadius, vec3(sphereX, sphereY, sphereZ));
 
 			intersects = sphere1.Intersects(sphere2);
 
@@ -522,6 +529,33 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 	if (ImGui::CollapsingHeader("Input"))
 	{
 
+	}
+	if (ImGui::CollapsingHeader("Renderer"))
+	{
+		if (ImGui::Checkbox("Wireframe Mode", &wireframe))
+		{
+			App->sceneEditor->SetToWireframe(wireframe);
+		}
+		if (ImGui::Checkbox("Depth Test", &App->renderer3D->depthTest))
+		{
+			App->renderer3D->SetDepthTest();
+		}
+		if (ImGui::Checkbox("Cull Face", &App->renderer3D->cullFace))
+		{
+			App->renderer3D->SetCullFace();
+		}
+		if (ImGui::Checkbox("Lighting", &App->renderer3D->lighting))
+		{
+			App->renderer3D->SetLighting();
+		}
+		if (ImGui::Checkbox("Color Material", &App->renderer3D->colorMaterial))
+		{
+			App->renderer3D->SetColorMaterial();
+		}
+		if (ImGui::Checkbox("2D Textures", &App->renderer3D->texture2D))
+		{
+			App->renderer3D->SetTexture2D();
+		}
 	}
 	if (ImGui::CollapsingHeader("Hardware"))
 	{

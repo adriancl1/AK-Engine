@@ -21,12 +21,24 @@ public:
 
 	void OnResize(int width, int height);
 
+	void SetDepthTest();
+	void SetCullFace();
+	void SetLighting();
+	void SetColorMaterial();
+	void SetTexture2D();
+
 public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+
+	bool depthTest;
+	bool cullFace;
+	bool lighting;
+	bool colorMaterial;
+	bool texture2D;
 };
 
 #endif //__ModuleRenderer_H__

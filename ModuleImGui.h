@@ -1,7 +1,6 @@
 #ifndef __ModuleImGui_H__
-#define __MODULEImGui_H__
+#define __ModuleImGui_H__
 
-#pragma once
 #include "Module.h"
 #include "Globals.h"
 #include "imgui-1.51\imgui.h"
@@ -18,6 +17,8 @@ public:
 	update_status Update(float dt);
 	update_status PreUpdate(float dt);
 	bool CleanUp(JSON_Object* data = nullptr);
+
+	void Draw() const;
 
 private:
 	//ImGui Menu Active Booleans
@@ -41,6 +42,8 @@ private:
 	int windowHeight;
 	int volume;
 	float brightness;
+
+	bool wireframe;
 
 //ImGui
 public:

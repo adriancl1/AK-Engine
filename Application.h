@@ -11,6 +11,7 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
+#include "ModuleSceneEditor.h"
 
 class Application
 {
@@ -22,6 +23,7 @@ public:
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
 	ModuleImGui* imGui;
+	ModuleSceneEditor* sceneEditor;
 
 
 private:

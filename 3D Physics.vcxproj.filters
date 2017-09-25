@@ -282,6 +282,9 @@
     <ClInclude Include="Brofiler-1.1.2\Brofiler.h">
       <Filter>Sources\Tools\Brofiler</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleSceneEditor.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -436,6 +439,9 @@
     </ClCompile>
     <ClCompile Include="parson\parson.c">
       <Filter>Sources\Tools\parson</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneEditor.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
