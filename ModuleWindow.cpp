@@ -162,13 +162,14 @@ bool ModuleWindow::CleanUp(JSON_Object* data)
 	LOG("Destroying SDL window and quitting all SDL systems");
 	App->imGui->AddLogToWindow("Destroying SDL window and quitting all SDL systems"); 
 	
-	/* TODO: It should save the configuration */
-	json_object_dotset_number(data, "width", width);
-	json_object_dotset_number(data, "height", height);
-	json_object_dotset_number(data, "brightness", brightness);
-	json_object_dotset_boolean(data, "fullscreen", fullscreen);
-	json_object_dotset_boolean(data, "fullDesktop", fullDesktop);
-	json_object_dotset_boolean(data, "borderless", borderless);
+	JSON_Object* windowData = json_object_dotget_object(data, name.c_str());
+
+	json_object_dotset_number(windowData, "width", width);
+	json_object_dotset_number(windowData, "height", height);
+	json_object_dotset_boolean(windowData, "fullscreen", fullscreen);
+	json_object_dotset_boolean(windowData, "fullDesktop", fullDesktop);
+	json_object_dotset_boolean(windowData, "borderless", borderless);
+	json_object_dotset_number(windowData, "brightness", brightness);
 
 	//Destroy window
 	if(window != NULL)
@@ -200,15 +201,15 @@ void ModuleWindow::GetWindowSize(int& width, int& height)
 	height = this->height;
 }
 
-void ModuleWindow::SetFullscreen(bool fullscreen)
+void ModuleWindow::SetFullscreen(bool fscreen)
 {
 	Uint32 flags;
-	if (fullscreen == true)
+	if (fscreen == true)
 	{
 		this->fullscreen = true;
 		flags |= SDL_WINDOW_FULLSCREEN;
 	}
-	else if (fullscreen == false)
+	else if (fscreen == false)
 	{
 		this->fullscreen = false;
 	}
@@ -231,10 +232,10 @@ float ModuleWindow::GetBrightness()
 	return brightness;
 }
 
-void ModuleWindow::SetBorderless(bool borderless)
+void ModuleWindow::SetBorderless(bool bdless)
 {
 	Uint32 flags;
-	if (borderless == true)
+	if (bdless == true)
 	{
 		borderless = true;
 		SDL_SetWindowBordered(window, SDL_FALSE);
@@ -251,10 +252,10 @@ bool ModuleWindow::GetBorderless()
 	return borderless;
 }
 
-void ModuleWindow::SetFullDesktop(bool fullDesktop)
+void ModuleWindow::SetFullDesktop(bool fDesktop)
 {
 	Uint32 flags;
-	if (fullDesktop == true)
+	if (fDesktop == true)
 	{
 		this->fullDesktop = true;
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;

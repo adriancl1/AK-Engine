@@ -127,14 +127,16 @@ bool Application::CleanUp()
 	bool ret = true;
 	p2List_item<Module*>* item = list_modules.getLast();
 
-	JSON_Value * configValue = json_parse_file("config.json");
-	JSON_Object * configObject = json_value_get_object(configValue);
+	JSON_Value* configValue = json_parse_file("config.json");
+	JSON_Object* objectData = json_value_get_object(configValue);
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
-		ret = item->data->CleanUp(json_object_dotget_object(configObject, item->data->name.c_str()));
+		ret = item->data->CleanUp(objectData);
 		item = item->prev;
 	}
+	json_serialize_to_file(configValue, "config.json");
+
 	return ret;
 }
 
