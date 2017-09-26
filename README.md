@@ -8,10 +8,18 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 - To Collapse - Uncollapse windows use LMB.
 - To click red buttons use LMB.
 - To interact with check boxes use LMB.
-- To add or remove any kind of integer value use LMB on the respective button 
-(press + if you want to add +1 or - if you want to add -1 to the corresponding integer)
+- To add or remove any kind of integer value use LMB on the respective button (press + if you want to add +1 or - if you want to add -1 to the corresponding integer).
+- To rotate the camera use right click.
+- To move the camera use: A/D (left/right), W/S (forwards/backwards), R/F (up/down).
+
 
 ## Changelog
+Version 0.2.5:
+- Added Scene with a grid.
+- Added options to configuration window, including: Audio volume & pause/resume, creation of 3D geometry into the scene, and more hardware info.
+- Camera movement 
+- Most changes on configuration are saved when you exit the engine.
+
 Version 0.2:
 - Added Configuration window.
 - Brofiler Integrated.
