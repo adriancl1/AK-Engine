@@ -51,6 +51,8 @@ bool ModuleAudio::Init(JSON_Object* data)
 		ret = true;
 	}
 
+	pausedMusic = true;
+
 	return ret;
 }
 
@@ -129,6 +131,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 		}
 	}
 
+	pausedMusic = false;
 	LOG("Successfully playing %s", path);
 	App->imGui->AddLogToWindow("Successfully playing music.");
 	return ret;
@@ -169,4 +172,22 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+void ModuleAudio::PauseMusic()
+{
+	if (!pausedMusic)
+	{
+		Mix_PauseMusic();
+		pausedMusic = true;
+	}
+}
+
+void ModuleAudio::ResumeMusic()
+{
+	if (pausedMusic)
+	{
+		Mix_ResumeMusic();
+		pausedMusic = false;
+	}
 }

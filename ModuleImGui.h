@@ -28,6 +28,7 @@ private:
 	bool mathPlaygroundActive = false;
 	bool configurationActive = false;
 	bool aboutActive = false;
+	bool createGeometryActive = false;
 
 	bool closeApp = false;
 
@@ -54,6 +55,7 @@ public:
 	IMGUI_API void ShowMathWindow(bool* p_open = NULL);
 	IMGUI_API void ShowConfigurationWindow(bool* p_open = NULL);
 	IMGUI_API void ShowAboutWindow(bool* p_open = NULL);
+	IMGUI_API void ShowCreateGeometryWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
 
 private:
@@ -66,6 +68,7 @@ private:
 	bool openConfigurationWindow;
 	bool openMathPlaygroundWindow;
 	bool openAboutWindow;
+	bool openCreateGeometryWindow;
 
 //Math Geometric Shape
 public:

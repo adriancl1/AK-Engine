@@ -53,6 +53,7 @@ bool ModuleImGui::Start()
 	openConfigurationWindow = false;
 	openMathPlaygroundWindow = false;
 	openAboutWindow = false;
+	openCreateGeometryWindow = false;
 
 	fullscreen = App->window->GetFullscreen();
 	fullDesktop = App->window->GetFullDesktop();
@@ -60,7 +61,7 @@ bool ModuleImGui::Start()
 	App->window->GetWindowSize(windowWidth, windowHeight);
 	brightness = App->window->GetBrightness();
 	title = (char*)App->window->GetTitle();
-	volume = 50;
+	volume = 128;
 
 	wireframe = false;
 
@@ -101,6 +102,11 @@ update_status ModuleImGui::Update(float dt)
 			{
 				openMathPlaygroundWindow = !openMathPlaygroundWindow;
 				mathPlaygroundActive = !mathPlaygroundActive;
+			}
+			if (ImGui::MenuItem("Create Geometry"))
+			{
+				openCreateGeometryWindow = !openCreateGeometryWindow;
+				createGeometryActive= !createGeometryActive;
 			}
 			if (ImGui::MenuItem("Configuration"))
 			{
@@ -155,6 +161,10 @@ update_status ModuleImGui::Update(float dt)
 	{
 		ShowMathWindow();
 	}
+	if (createGeometryActive)
+	{
+		ShowCreateGeometryWindow();
+	}
 	if (configurationActive)
 	{
 		ShowConfigurationWindow();
@@ -206,6 +216,10 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 		if (ImGui::Checkbox("Show Math Test Playground", &openMathPlaygroundWindow))
 		{
 			mathPlaygroundActive = !mathPlaygroundActive;
+		}
+		if (ImGui::Checkbox("Show Create Geometry", &openCreateGeometryWindow))
+		{
+			createGeometryActive = !createGeometryActive;
 		}
 		if (ImGui::Checkbox("Show Configuration", &openConfigurationWindow))
 		{
@@ -473,9 +487,18 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 	}
 	if ((ImGui::CollapsingHeader("Audio")))
 	{
-		if (ImGui::SliderInt("Master Volume", &volume, 1, 100))
+		if (ImGui::Button("Resume music"))
 		{
-			Mix_Volume(-1, volume);
+			App->audio->ResumeMusic();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Pause music"))
+		{
+			App->audio->PauseMusic();
+		}
+		if (ImGui::SliderInt("Master Volume", &volume, 0, 128))
+		{
+			Mix_VolumeMusic(volume);
 		}
 			
 	}
@@ -735,6 +758,83 @@ void ModuleImGui::ShowAboutWindow(bool* p_open)
 		}
 	}
 
+
+	ImGui::End();
+}
+
+void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
+{
+	// Demonstrate the various window flags. Typically you would just use the default.
+	ImGuiWindowFlags window_flags = 0;
+
+	if (!ImGui::Begin("Create Geometry", p_open, window_flags))
+	{
+		// Early out if the window is collapsed, as an optimization.
+		ImGui::End();
+		return;
+	}
+
+	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
+	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
+
+	ImGui::Text("Fill the following parameters:");
+	if (ImGui::CollapsingHeader("Sphere"))
+	{
+		static float createSphereRadius = 0;
+		static float createSpherePosX = 0, createSpherePosY = 0, createSpherePosZ = 0;
+		ImGui::SliderFloat("Sphere Radius", &createSphereRadius, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Sphere X", &createSpherePosX, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Sphere Y", &createSpherePosY, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Sphere Z", &createSpherePosZ, -5.0f, 5.0f, "%.2f");
+		if (ImGui::Button("Create!") && createSphereRadius > 0.0f)
+		{
+			App->sceneEditor->AddSphere(createSphereRadius, vec3(createSpherePosX, createSpherePosY, createSpherePosZ));
+			createSphereRadius = 0;
+			createSpherePosX = 0;
+			createSpherePosY = 0;
+			createSpherePosZ = 0;
+		}
+	}
+	if (ImGui::CollapsingHeader("Cube"))
+	{
+		static float createCubeX = 0, createCubeY = 0, createCubeZ = 0;
+		static float createCubePosX = 0, createCubePosY = 0, createCubePosZ = 0;
+		ImGui::SliderFloat("Cube X", &createCubeX, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Y", &createCubeY, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Z", &createCubeZ, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Position X", &createCubePosX, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Position Y", &createCubePosY, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Position Z", &createCubePosZ, -5.0f, 5.0f, "%.2f");
+		if (ImGui::Button("Create!") && createCubeX > 0.0f && createCubeY > 0.0f && createCubeZ > 0.0f)
+		{
+			App->sceneEditor->AddCube(vec3(createCubeX, createCubeY, createCubeZ), vec3(createCubePosX, createCubePosY, createCubePosZ));
+			createCubePosX = 0;
+			createCubePosY = 0;
+			createCubePosZ = 0;
+			createCubeX = 0;
+			createCubeY = 0;
+			createCubeZ = 0;
+		}
+	}
+	if (ImGui::CollapsingHeader("Cylinder"))
+	{
+		static float createCylinderRadius = 0, createCylinderHeight = 0;
+		static float createCylinderPosX = 0, createCylinderPosY = 0, createCylinderPosZ = 0;
+		ImGui::SliderFloat("Cylinder radius", &createCylinderRadius, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cylinder height", &createCylinderHeight, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cylinder Position X", &createCylinderPosX, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cylinder Position Y", &createCylinderPosY, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cylinder Position Z", &createCylinderPosZ, -5.0f, 5.0f, "%.2f");
+		if (ImGui::Button("Create!") && createCylinderHeight > 0.0f && createCylinderRadius > 0.0f)
+		{
+			App->sceneEditor->AddCylinder(createCylinderRadius, createCylinderHeight, vec3(createCylinderPosX, createCylinderPosY, createCylinderPosZ));
+			createCylinderRadius = 0;
+			createCylinderHeight = 0;
+			createCylinderPosX = 0;
+			createCylinderPosY = 0;
+			createCylinderPosZ = 0;
+		}
+	}
 
 	ImGui::End();
 }

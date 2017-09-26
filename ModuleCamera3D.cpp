@@ -48,7 +48,7 @@ update_status ModuleCamera3D::Update(float dt)
 	float speed = 20.0f * dt;
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 8.0f * dt;
-	if (App->physics->debug) {
+
 		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
 
@@ -98,7 +98,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 			Position = Reference + Z * length(Position);
 		}
-	}
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();

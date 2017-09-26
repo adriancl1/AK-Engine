@@ -29,6 +29,12 @@ bool ModuleSceneEditor::Init(JSON_Object* data)
 {
 	return true;
 }
+
+bool ModuleSceneEditor::Start()
+{
+	App->audio->PlayMusic("audio/walkwithme.ogg");
+	return true;
+}
 bool ModuleSceneEditor::CleanUp(JSON_Object* data)
 {
 	return true;

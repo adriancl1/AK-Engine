@@ -12,6 +12,7 @@ public:
 	~ModuleSceneEditor();
 
 	bool Init(JSON_Object* data = nullptr);
+	bool Start();
 	bool CleanUp(JSON_Object* data = nullptr);
 
 	update_status PreUpdate(float dt);
