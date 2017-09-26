@@ -357,8 +357,6 @@ void ModuleImGui::ShowMathWindow(bool* p_open)
 			math::Sphere sphere1(float3(sphereX, sphereY, sphereZ), sphereRadius);
 			math::Sphere sphere2(float3(sphereX2, sphereY2, sphereZ2), sphereRadius2);
 
-			App->sceneEditor->AddSphere(sphereRadius, vec3(sphereX, sphereY, sphereZ));
-
 			intersects = sphere1.Intersects(sphere2);
 
 			if (intersects)

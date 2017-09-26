@@ -33,6 +33,8 @@ bool ModuleSceneEditor::Init(JSON_Object* data)
 bool ModuleSceneEditor::Start()
 {
 	App->audio->PlayMusic("audio/walkwithme.ogg");
+	App->camera->Move(vec3(0, 1, 0));
+
 	return true;
 }
 bool ModuleSceneEditor::CleanUp(JSON_Object* data)
@@ -67,6 +69,10 @@ void ModuleSceneEditor::Draw()
 	{
 		(*it)->Render();
 	}
+
+	Plane p(0, 0, 0, 100);
+	p.color = White;
+	p.Render();
 }
 
 void ModuleSceneEditor::SetToWireframe(bool wframe)

@@ -30,6 +30,7 @@ private:
 
 	Timer	ms_timer;
 	float	dt;
+	float startTime;
 	float lastFPS = 0;
 	float lastMs = 0;
 	p2List<Module*> list_modules;

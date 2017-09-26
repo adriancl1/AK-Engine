@@ -261,7 +261,7 @@ void Plane::InnerRender() const
 {
 	glLineWidth(1.0f);
 
-	glBegin(GL_QUADS);
+	glBegin(GL_LINES);
 
 	float d = 200.0f;
 

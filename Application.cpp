@@ -79,13 +79,13 @@ bool Application::Init()
 void Application::PrepareUpdate()
 {
 	ms_timer.Start();
-	dt = (float)ms_timer.Read() / 1000.0f;
+	startTime = (float)ms_timer.Read() / 1000.0f;
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	dt = (float)ms_timer.Read() / 1000.0f - dt;
+	dt = (float)ms_timer.Read() / 1000.0f - startTime;
 	lastFPS = 1.0f / dt;
 	lastMs = (float) ms_timer.Read();
 }
