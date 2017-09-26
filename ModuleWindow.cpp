@@ -143,6 +143,7 @@ bool ModuleWindow::Init(JSON_Object* data)
 		}
 		else
 		{
+			SetTitle(TITLE);
 			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
 		}
@@ -181,6 +182,12 @@ bool ModuleWindow::CleanUp(JSON_Object* data)
 	SDL_Quit();
 	return true;
 }
+
+const char* ModuleWindow::GetTitle() const
+{
+	return title.c_str();
+}
+
 
 void ModuleWindow::SetTitle(const char* title)
 {

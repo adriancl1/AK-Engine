@@ -35,6 +35,7 @@ private:
 	std::vector<float> FPSData;
 	std::vector<float> MsData;
 
+	char* title;
 	bool fullscreen;
 	bool fullDesktop;
 	bool borderless;

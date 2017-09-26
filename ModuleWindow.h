@@ -18,6 +18,7 @@ public:
 	bool Init(JSON_Object* data = nullptr);
 	bool CleanUp(JSON_Object* data = nullptr);
 
+	const char* GetTitle()const;
 	void SetTitle(const char* title);
 
 	SDL_Window* GetWindow() const;

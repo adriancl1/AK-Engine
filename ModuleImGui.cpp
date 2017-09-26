@@ -59,6 +59,7 @@ bool ModuleImGui::Start()
 	borderless = App->window->GetBorderless();
 	App->window->GetWindowSize(windowWidth, windowHeight);
 	brightness = App->window->GetBrightness();
+	title = (char*)App->window->GetTitle();
 	volume = 50;
 
 	wireframe = false;
@@ -456,14 +457,14 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		return;
 	}
 
+	CycleFPSAndMsData(App->GetFPS(), App->GetMs());
+
 	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
 	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
 
 	ImGui::Text("Options");
-
 	if (ImGui::CollapsingHeader("Application"))
 	{
-		CycleFPSAndMsData(App->GetFPS(), App->GetMs());
 		char title[25];
 		sprintf_s(title, 25, "Framerate %.1f", FPSData[FPSData.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &FPSData[0], FPSData.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
@@ -483,6 +484,10 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 
 	if (ImGui::CollapsingHeader("Window"))
 	{
+		if (ImGui::InputText("Title", title, 120, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+		{
+			App->window->SetTitle(title);
+		}
 		if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f, "%.2f"))
 		{
 			App->window->SetBrightness(brightness);
@@ -528,7 +533,7 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 	}
 	if (ImGui::CollapsingHeader("Input"))
 	{
-
+		ImGui::Text("Mouse X: %i | Mouse Y: %i", App->input->GetMouseX(), App->input->GetMouseY());
 	}
 	if (ImGui::CollapsingHeader("Renderer"))
 	{
