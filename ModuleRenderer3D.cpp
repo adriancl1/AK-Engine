@@ -174,6 +174,56 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
+	glLineWidth(2.0f);
+	glBegin(GL_TRIANGLES);
+	//Face 1
+	glVertex3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, 1.f, 0.f);
+	glVertex3f(0.f, 0.f, 0.f);
+
+	glVertex3f(0.f, 0.f, 1.f);
+	glVertex3f(0.f, 1.f, 1.f);
+	glVertex3f(0.f, 1.f, 0.f);
+
+	//Face 2
+	glVertex3f(1.f, 1.f, 0.f);
+	glVertex3f(1.f, 0.f, 0.f);
+	glVertex3f(0.f, 0.f, 0.f);
+	
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(0.f, 1.f, 0.f);
+	glVertex3f(1.f, 1.f, 0.f);
+
+	//Face 3
+	glVertex3f(1.f, 0.f, 1.f);
+	glVertex3f(1.f, 0.f, 0.f);
+	glVertex3f(1.f, 1.f, 0.f);
+
+	glVertex3f(1.f, 1.f, 0.f);
+	glVertex3f(1.f, 1.f, 1.f);
+	glVertex3f(1.f, 0.f, 1.f);
+
+	//Face 4
+	glVertex3f(0.f, 1.f, 1.f);
+	glVertex3f(0.f, 0.f, 1.f);
+	glVertex3f(1.f, 0.f, 1.f);
+
+	glVertex3f(1.f, 0.f, 1.f);
+	glVertex3f(1.f, 1.f, 1.f);
+	glVertex3f(0.f, 1.f, 1.f);
+
+	//Face 5
+	glVertex3f(1.f, 1.f, 1.f);
+	glVertex3f(1.f, 1.f, 0.f);
+	glVertex3f(0.f, 1.f, 0.f);
+
+	glVertex3f(0.f, 1.f, 0.f);
+	glVertex3f(0.f, 1.f, 1.f);
+	glVertex3f(1.f, 1.f, 1.f);
+	glEnd();
+
+	glLineWidth(1.0f);
+
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
