@@ -23,14 +23,17 @@ public:
 	void SetToWireframe(bool wframe);
 
 	void AddCube(vec3 size, vec3 pos = vec3(0,0,0));
+	void AddCube1(vec3 size, vec3 pos = vec3(0, 0, 0));
 	void AddCylinder(float radius, float height, vec3 pos = vec3(0, 0, 0));
 	void AddSphere(float radius, vec3 pos = vec3(0, 0, 0));
 
 private:
 	//For now ----
 	std::list<Cube*> sceneCubes;
+	std::list<Cube1*> sceneCubes1;
 	std::list<Cylinder*> sceneCylinders;
 	std::list<Sphere*> sceneSpheres;
+	int geometryID;
 	//--------
 
 	bool wframe;

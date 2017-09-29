@@ -175,7 +175,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
 	glLineWidth(2.0f);
-	glBegin(GL_TRIANGLES);
+	/*glBegin(GL_TRIANGLES);
 	//Face 1
 	glVertex3f(0.f, 0.f, 1.f);
 	glVertex3f(0.f, 1.f, 0.f);
@@ -220,7 +220,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glVertex3f(0.f, 1.f, 0.f);
 	glVertex3f(0.f, 1.f, 1.f);
 	glVertex3f(1.f, 1.f, 1.f);
-	glEnd();
+	glEnd();*/
 
 	glLineWidth(1.0f);
 

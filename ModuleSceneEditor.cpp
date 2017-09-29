@@ -13,6 +13,11 @@ ModuleSceneEditor::~ModuleSceneEditor()
 		delete sceneCubes.front();
 		sceneCubes.pop_front();
 	}
+	while (!sceneCubes1.empty())
+	{
+		delete sceneCubes1.front();
+		sceneCubes1.pop_front();
+	}
 	while (!sceneCylinders.empty())
 	{
 		delete sceneCylinders.front();
@@ -61,6 +66,10 @@ void ModuleSceneEditor::Draw()
 	{
 		(*it)->Render();
 	}
+	for (std::list<Cube1*>::iterator it = sceneCubes1.begin(); it != sceneCubes1.end(); ++it)
+	{
+		(*it)->Render();
+	}
 	for (std::list<Cylinder*>::iterator it = sceneCylinders.begin(); it != sceneCylinders.end(); ++it)
 	{
 		(*it)->Render();
@@ -83,6 +92,10 @@ void ModuleSceneEditor::SetToWireframe(bool wframe)
 		{
 			(*it)->wire = true;
 		}
+		for (std::list<Cube1*>::iterator it = sceneCubes1.begin(); it != sceneCubes1.end(); ++it)
+		{
+			(*it)->wire = true;
+		}
 		for (std::list<Cylinder*>::iterator it = sceneCylinders.begin(); it != sceneCylinders.end(); ++it)
 		{
 			(*it)->wire = true;
@@ -95,6 +108,10 @@ void ModuleSceneEditor::SetToWireframe(bool wframe)
 	else
 	{
 		for (std::list<Cube*>::iterator it = sceneCubes.begin(); it != sceneCubes.end(); ++it)
+		{
+			(*it)->wire = false;
+		}
+		for (std::list<Cube1*>::iterator it = sceneCubes1.begin(); it != sceneCubes1.end(); ++it)
 		{
 			(*it)->wire = false;
 		}
@@ -115,7 +132,28 @@ void ModuleSceneEditor::AddCube(vec3 size, vec3 pos)
 	cube->size.Set(size.x, size.y, size.z);
 	cube->SetPos(pos.x, pos.y, pos.z);
 
+	if (wframe)
+	{
+		cube->wire = true;
+	}
+
 	sceneCubes.push_back(cube);
+
+	App->physics->AddBody(*cube);
+}
+
+void ModuleSceneEditor::AddCube1(vec3 size, vec3 pos)
+{
+	Cube1* cube = new Cube1(size.x, size.y, size.z, geometryID++);
+	cube->size.Set(size.x, size.y, size.z);
+	cube->SetPos(pos.x, pos.y, pos.z);
+
+	if (wframe)
+	{
+		cube->wire = true;
+	}
+
+	sceneCubes1.push_back(cube);
 
 	App->physics->AddBody(*cube);
 }
@@ -127,6 +165,11 @@ void ModuleSceneEditor::AddCylinder(float radius, float height, vec3 pos)
 	cyl->height = height;
 	cyl->SetPos(pos.x, pos.y, pos.z);
 
+	if (wframe)
+	{
+		cyl->wire = true;
+	}
+
 	sceneCylinders.push_back(cyl);
 
 	App->physics->AddBody(*cyl);
@@ -137,6 +180,11 @@ void ModuleSceneEditor::AddSphere(float radius, vec3 pos)
 	Sphere* sph = new Sphere;
 	sph->radius = radius;
 	sph->SetPos(pos.x, pos.y, pos.z);
+
+	if (wframe)
+	{
+		sph->wire = true;
+	}
 
 	sceneSpheres.push_back(sph);
 

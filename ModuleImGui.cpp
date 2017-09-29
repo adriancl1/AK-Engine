@@ -814,6 +814,27 @@ void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
 			createCubeZ = 0;
 		}
 	}
+	if (ImGui::CollapsingHeader("Cube drawn with vertex array"))
+	{
+		static float createCube1X = 0, createCube1Y = 0, createCube1Z = 0;
+		static float createCube1PosX = 0, createCube1PosY = 0, createCube1PosZ = 0;
+		ImGui::SliderFloat("Cube X", &createCube1X, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Y", &createCube1Y, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Z", &createCube1Z, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Position X", &createCube1PosX, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Position Y", &createCube1PosY, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube Position Z", &createCube1PosZ, -5.0f, 5.0f, "%.2f");
+		if (ImGui::Button("Create!") && createCube1X > 0.0f && createCube1Y > 0.0f && createCube1Z > 0.0f)
+		{
+			App->sceneEditor->AddCube1(vec3(createCube1X, createCube1Y, createCube1Z), vec3(createCube1PosX, createCube1PosY, createCube1PosZ));
+			createCube1PosX = 0;
+			createCube1PosY = 0;
+			createCube1PosZ = 0;
+			createCube1X = 0;
+			createCube1Y = 0;
+			createCube1Z = 0;
+		}
+	}
 	if (ImGui::CollapsingHeader("Cylinder"))
 	{
 		static float createCylinderRadius = 0, createCylinderHeight = 0;

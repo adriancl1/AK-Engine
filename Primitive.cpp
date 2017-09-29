@@ -1,9 +1,11 @@
 
 #include "Globals.h"
+#include "Glew\include\glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "Primitive.h"
 #include "glut/glut.h"
+
 
 #pragma comment (lib, "glut/glut32.lib")
 
@@ -155,6 +157,70 @@ void Cube::InnerRender() const
 	glVertex3f(-sx, -sy,  sz);
 
 	glEnd();
+}
+
+// CUBE1 - DRAWN WITH VERTEX ARRAYS ============================================
+Cube1::Cube1(int ID) : Primitive(), size(1.0f, 1.0f, 1.0f)
+{
+	type = PrimitiveTypes::Primitive_Cube;
+	myID = ID;
+}
+
+Cube1::Cube1(float sizeX, float sizeY, float sizeZ, int ID) : Primitive(), size(sizeX, sizeY, sizeZ)
+{
+	type = PrimitiveTypes::Primitive_Cube;
+	myID = ID;
+
+	float vertexPoints[108] = { 
+		0, 0, sizeZ, 
+		0, sizeY, 0,
+		0, 0, 0,
+		0, 0, sizeZ,
+		0, sizeY, sizeZ,
+		0, sizeY, 0,
+		sizeX, sizeY, 0,
+		sizeX, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+		0, sizeY, 0,
+		sizeX, sizeY, 0,
+		sizeX, 0, sizeZ,
+		sizeX, 0, 0,
+		sizeX, sizeY, 0,
+		sizeX, sizeY, 0,
+		sizeX, sizeY, sizeZ,
+		sizeX, 0, sizeZ,
+		0, sizeY, sizeZ,
+		0, 0, sizeZ,
+		sizeX, 0, sizeZ,
+		sizeX, 0, sizeZ,
+		sizeX, sizeY, sizeZ,
+		0, sizeY, sizeZ,
+		sizeX, sizeY, sizeZ,
+		sizeX, sizeY, 0,
+		0, sizeY, 0,
+		0, sizeY, 0,
+		0, sizeY, sizeZ,
+		sizeX, sizeY, sizeZ,
+		sizeX, 0, sizeZ,
+		0, 0, 0,
+		sizeX, 0, 0,
+		0, 0, 0,
+		sizeX, 0, sizeZ,
+		0, 0, sizeZ};
+
+	glGenBuffers(1, (GLuint*) &(myID));
+	glBindBuffer(GL_ARRAY_BUFFER, myID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 108, vertexPoints, GL_STATIC_DRAW);
+}
+
+void Cube1::InnerRender() const
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, myID);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glDrawArrays(GL_TRIANGLES, 0, 36 * 3);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 // SPHERE ============================================
