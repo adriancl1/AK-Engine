@@ -52,12 +52,26 @@ class Cube1 : public Primitive
 {
 public:
 	Cube1(int ID);
-	Cube1(float sizeX, float sizeY, float sizeZ, int ID);
+	Cube1(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
 public:
 	vec3 size;
 private:
 	int myID;
+};
+
+// ============================================
+class Cube2 : public Primitive
+{
+public:
+	Cube2(int ID);
+	Cube2(float sizeX, float sizeY, float sizeZ);
+	void InnerRender() const;
+public:
+	vec3 size;
+private:
+	uint myID;
+	uint myVertices;
 };
 
 // ============================================

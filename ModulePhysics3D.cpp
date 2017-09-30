@@ -119,8 +119,12 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 // ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		debug = !debug;
+	if (!ImGui::GetIO().WantCaptureKeyboard)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) 
+		{
+			debug = !debug;
+		}
 	}
 
 	if(debug == true)
@@ -255,6 +259,32 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass)
 
 // ---------------------------------------------------------
 PhysBody3D* ModulePhysics3D::AddBody(const Cube1& cube, float mass)
+{
+	btCollisionShape* colShape = new btBoxShape(btVector3(cube.size.x*0.5f, cube.size.y*0.5f, cube.size.z*0.5f));
+	shapes.add(colShape);
+
+	btTransform startTransform;
+	startTransform.setFromOpenGLMatrix(&cube.transform);
+
+	btVector3 localInertia(0, 0, 0);
+	if (mass != 0.f)
+		colShape->calculateLocalInertia(mass, localInertia);
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	motions.add(myMotionState);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+
+	btRigidBody* body = new btRigidBody(rbInfo);
+	PhysBody3D* pbody = new PhysBody3D(body);
+
+	world->addRigidBody(body);
+	bodies.add(pbody);
+
+	return pbody;
+}
+
+// ---------------------------------------------------------
+PhysBody3D* ModulePhysics3D::AddBody(const Cube2& cube, float mass)
 {
 	btCollisionShape* colShape = new btBoxShape(btVector3(cube.size.x*0.5f, cube.size.y*0.5f, cube.size.z*0.5f));
 	shapes.add(colShape);

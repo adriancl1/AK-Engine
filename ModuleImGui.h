@@ -36,7 +36,7 @@ private:
 	std::vector<float> FPSData;
 	std::vector<float> MsData;
 
-	char* title;
+	char title[128] = "AK Engine";
 	bool fullscreen;
 	bool fullDesktop;
 	bool borderless;
@@ -46,6 +46,7 @@ private:
 	float brightness;
 
 	bool wireframe;
+
 
 //ImGui
 public:

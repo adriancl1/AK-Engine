@@ -60,7 +60,7 @@ bool ModuleImGui::Start()
 	borderless = App->window->GetBorderless();
 	App->window->GetWindowSize(windowWidth, windowHeight);
 	brightness = App->window->GetBrightness();
-	title = (char*)App->window->GetTitle();
+	strcpy_s(title, App->window->GetTitle());
 	volume = 128;
 
 	wireframe = false;
@@ -477,11 +477,11 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 	ImGui::Text("Options");
 	if (ImGui::CollapsingHeader("Application"))
 	{
-		char title[25];
-		sprintf_s(title, 25, "Framerate %.1f", FPSData[FPSData.size() - 1]);
-		ImGui::PlotHistogram("##framerate", &FPSData[0], FPSData.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
-		sprintf_s(title, 25, "Milliseconds %0.1f", MsData[MsData.size() - 1]);
-		ImGui::PlotHistogram("##milliseconds", &MsData[0], MsData.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
+		char frameMStitle[25];
+		sprintf_s(frameMStitle, 25, "Framerate %.1f", FPSData[FPSData.size() - 1]);
+		ImGui::PlotHistogram("##framerate", &FPSData[0], FPSData.size(), 0, frameMStitle, 0.0f, 100.0f, ImVec2(310, 100));
+		sprintf_s(frameMStitle, 25, "Milliseconds %0.1f", MsData[MsData.size() - 1]);
+		ImGui::PlotHistogram("##milliseconds", &MsData[0], MsData.size(), 0, frameMStitle, 0.0f, 40.0f, ImVec2(310, 100));
 	}
 	if ((ImGui::CollapsingHeader("Audio")))
 	{
@@ -505,7 +505,7 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 
 	if (ImGui::CollapsingHeader("Window"))
 	{
-		if (ImGui::InputText("Title", title, 120, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
+		if (ImGui::InputText("Title", title, IM_ARRAYSIZE(title), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll))
 		{
 			App->window->SetTitle(title);
 		}
@@ -784,7 +784,7 @@ void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
 		ImGui::SliderFloat("Sphere X", &createSpherePosX, -5.0f, 5.0f, "%.2f");
 		ImGui::SliderFloat("Sphere Y", &createSpherePosY, -5.0f, 5.0f, "%.2f");
 		ImGui::SliderFloat("Sphere Z", &createSpherePosZ, -5.0f, 5.0f, "%.2f");
-		if (ImGui::Button("Create!") && createSphereRadius > 0.0f)
+		if (ImGui::Button("Create Sphere!") && createSphereRadius > 0.0f)
 		{
 			App->sceneEditor->AddSphere(createSphereRadius, vec3(createSpherePosX, createSpherePosY, createSpherePosZ));
 			createSphereRadius = 0;
@@ -803,7 +803,7 @@ void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
 		ImGui::SliderFloat("Cube Position X", &createCubePosX, -5.0f, 5.0f, "%.2f");
 		ImGui::SliderFloat("Cube Position Y", &createCubePosY, -5.0f, 5.0f, "%.2f");
 		ImGui::SliderFloat("Cube Position Z", &createCubePosZ, -5.0f, 5.0f, "%.2f");
-		if (ImGui::Button("Create!") && createCubeX > 0.0f && createCubeY > 0.0f && createCubeZ > 0.0f)
+		if (ImGui::Button("Create Cube!") && createCubeX > 0.0f && createCubeY > 0.0f && createCubeZ > 0.0f)
 		{
 			App->sceneEditor->AddCube(vec3(createCubeX, createCubeY, createCubeZ), vec3(createCubePosX, createCubePosY, createCubePosZ));
 			createCubePosX = 0;
@@ -818,13 +818,13 @@ void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
 	{
 		static float createCube1X = 0, createCube1Y = 0, createCube1Z = 0;
 		static float createCube1PosX = 0, createCube1PosY = 0, createCube1PosZ = 0;
-		ImGui::SliderFloat("Cube X", &createCube1X, 0, 5.0f, "%.2f");
-		ImGui::SliderFloat("Cube Y", &createCube1Y, 0, 5.0f, "%.2f");
-		ImGui::SliderFloat("Cube Z", &createCube1Z, 0, 5.0f, "%.2f");
-		ImGui::SliderFloat("Cube Position X", &createCube1PosX, -5.0f, 5.0f, "%.2f");
-		ImGui::SliderFloat("Cube Position Y", &createCube1PosY, -5.0f, 5.0f, "%.2f");
-		ImGui::SliderFloat("Cube Position Z", &createCube1PosZ, -5.0f, 5.0f, "%.2f");
-		if (ImGui::Button("Create!") && createCube1X > 0.0f && createCube1Y > 0.0f && createCube1Z > 0.0f)
+		ImGui::SliderFloat("Cube1 X", &createCube1X, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube1 Y", &createCube1Y, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube1 Z", &createCube1Z, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube1 Position X", &createCube1PosX, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube1 Position Y", &createCube1PosY, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube1 Position Z", &createCube1PosZ, -5.0f, 5.0f, "%.2f");
+		if (ImGui::Button("Create Cube1!") && createCube1X > 0.0f && createCube1Y > 0.0f && createCube1Z > 0.0f)
 		{
 			App->sceneEditor->AddCube1(vec3(createCube1X, createCube1Y, createCube1Z), vec3(createCube1PosX, createCube1PosY, createCube1PosZ));
 			createCube1PosX = 0;
@@ -833,6 +833,27 @@ void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
 			createCube1X = 0;
 			createCube1Y = 0;
 			createCube1Z = 0;
+		}
+	}
+	if (ImGui::CollapsingHeader("Cube drawn with indices (draw elements)"))
+	{
+		static float createCube2X = 0, createCube2Y = 0, createCube2Z = 0;
+		static float createCube2PosX = 0, createCube2PosY = 0, createCube2PosZ = 0;
+		ImGui::SliderFloat("Cube2 X", &createCube2X, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube2 Y", &createCube2Y, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube2 Z", &createCube2Z, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube2 Position X", &createCube2PosX, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube2 Position Y", &createCube2PosY, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Cube2 Position Z", &createCube2PosZ, -5.0f, 5.0f, "%.2f");
+		if (ImGui::Button("Create Cube2!") && createCube2X > 0.0f && createCube2Y > 0.0f && createCube2Z > 0.0f)
+		{
+			App->sceneEditor->AddCube2(vec3(createCube2X, createCube2Y, createCube2Z), vec3(createCube2PosX, createCube2PosY, createCube2PosZ));
+			createCube2PosX = 0;
+			createCube2PosY = 0;
+			createCube2PosZ = 0;
+			createCube2X = 0;
+			createCube2Y = 0;
+			createCube2Z = 0;
 		}
 	}
 	if (ImGui::CollapsingHeader("Cylinder"))
@@ -844,7 +865,7 @@ void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
 		ImGui::SliderFloat("Cylinder Position X", &createCylinderPosX, -5.0f, 5.0f, "%.2f");
 		ImGui::SliderFloat("Cylinder Position Y", &createCylinderPosY, -5.0f, 5.0f, "%.2f");
 		ImGui::SliderFloat("Cylinder Position Z", &createCylinderPosZ, -5.0f, 5.0f, "%.2f");
-		if (ImGui::Button("Create!") && createCylinderHeight > 0.0f && createCylinderRadius > 0.0f)
+		if (ImGui::Button("Create Cylinder!") && createCylinderHeight > 0.0f && createCylinderRadius > 0.0f)
 		{
 			App->sceneEditor->AddCylinder(createCylinderRadius, createCylinderHeight, vec3(createCylinderPosX, createCylinderPosY, createCylinderPosZ));
 			createCylinderRadius = 0;

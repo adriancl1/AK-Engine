@@ -166,52 +166,55 @@ Cube1::Cube1(int ID) : Primitive(), size(1.0f, 1.0f, 1.0f)
 	myID = ID;
 }
 
-Cube1::Cube1(float sizeX, float sizeY, float sizeZ, int ID) : Primitive(), size(sizeX, sizeY, sizeZ)
+Cube1::Cube1(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
 {
 	type = PrimitiveTypes::Primitive_Cube;
-	myID = ID;
+
+	float offsetX = sizeX*0.5f;
+	float offsetY = sizeY*0.5f;
+	float offsetZ = sizeZ*0.5f;
 
 	float vertexPoints[108] = { 
-		0, 0, sizeZ, 
-		0, sizeY, 0,
-		0, 0, 0,
-		0, 0, sizeZ,
-		0, sizeY, sizeZ,
-		0, sizeY, 0,
-		sizeX, sizeY, 0,
-		sizeX, 0, 0,
-		0, 0, 0,
-		0, 0, 0,
-		0, sizeY, 0,
-		sizeX, sizeY, 0,
-		sizeX, 0, sizeZ,
-		sizeX, 0, 0,
-		sizeX, sizeY, 0,
-		sizeX, sizeY, 0,
-		sizeX, sizeY, sizeZ,
-		sizeX, 0, sizeZ,
-		0, sizeY, sizeZ,
-		0, 0, sizeZ,
-		sizeX, 0, sizeZ,
-		sizeX, 0, sizeZ,
-		sizeX, sizeY, sizeZ,
-		0, sizeY, sizeZ,
-		sizeX, sizeY, sizeZ,
-		sizeX, sizeY, 0,
-		0, sizeY, 0,
-		0, sizeY, 0,
-		0, sizeY, sizeZ,
-		sizeX, sizeY, sizeZ,
-		sizeX, 0, sizeZ,
-		0, 0, 0,
-		sizeX, 0, 0,
-		0, 0, 0,
-		sizeX, 0, sizeZ,
-		0, 0, sizeZ};
+		-offsetX, -offsetY, sizeZ - offsetZ,
+		-offsetX, sizeY - offsetY, -offsetZ,
+		-offsetX, -offsetY, -offsetZ,
+		-offsetX, -offsetY, sizeZ - offsetZ,
+		-offsetX, sizeY - offsetY, sizeZ - offsetZ,
+		-offsetX, sizeY - offsetY, -offsetZ,
+		sizeX - offsetX, sizeY - offsetY, -offsetZ,
+		sizeX - offsetX, -offsetY, -offsetZ,
+		-offsetX, -offsetY, -offsetZ,
+		-offsetX, -offsetY, -offsetZ,
+		-offsetX, sizeY - offsetY, -offsetZ,
+		sizeX - offsetX, sizeY - offsetY, -offsetZ,
+		sizeX - offsetX, -offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, -offsetY, -offsetZ,
+		sizeX - offsetX, sizeY - offsetY, -offsetZ,
+		sizeX - offsetX, sizeY - offsetY, -offsetZ,
+		sizeX - offsetX, sizeY - offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, -offsetY, sizeZ - offsetZ,
+		-offsetX, sizeY - offsetY, sizeZ - offsetZ,
+		-offsetX, -offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, -offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, -offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, sizeY - offsetY, sizeZ - offsetZ,
+		-offsetX, sizeY - offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, sizeY - offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, sizeY - offsetY, -offsetZ,
+		-offsetX, sizeY - offsetY, -offsetZ,
+		-offsetX, sizeY - offsetY, -offsetZ,
+		-offsetX, sizeY - offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, sizeY - offsetY, sizeZ - offsetZ,
+		sizeX - offsetX, -offsetY, sizeZ - offsetZ,
+		-offsetX, -offsetY, -offsetY - offsetZ,
+		sizeX - offsetX, -offsetY, -offsetZ,
+		-offsetX, -offsetY, -offsetZ,
+		sizeX - offsetX, -offsetY, sizeZ - offsetZ,
+		-offsetX, -offsetY, sizeZ - offsetZ };
 
 	glGenBuffers(1, (GLuint*) &(myID));
 	glBindBuffer(GL_ARRAY_BUFFER, myID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 108, vertexPoints, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 108, &vertexPoints, GL_STATIC_DRAW);
 }
 
 void Cube1::InnerRender() const
@@ -221,6 +224,83 @@ void Cube1::InnerRender() const
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, 36 * 3);
 	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+// CUBE1 - DRAWN WITH VERTEX ARRAYS ============================================
+Cube2::Cube2(int ID) : Primitive(), size(1.0f, 1.0f, 1.0f)
+{
+	type = PrimitiveTypes::Primitive_Cube;
+	myID = ID;
+}
+
+Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
+{
+	type = PrimitiveTypes::Primitive_Cube;
+	 
+	float offsetX = sizeX * 0.5;
+	float offsetY = sizeY * 0.5;
+	float offsetZ = sizeZ * 0.5;
+
+	float vertices[24] = {
+		-offsetX, -offsetY, sizeZ - offsetZ, // 0
+		sizeX - offsetX, -offsetY, sizeZ - offsetZ, // 1
+		sizeX - offsetX, sizeY - offsetY, sizeZ - offsetZ, // 2
+		-offsetX, sizeY - offsetY, sizeZ - offsetZ,  // 3
+		-offsetX, -offsetY, -offsetZ,  // 4
+		sizeX - offsetX, -offsetY, -offsetZ, // 5
+		sizeX - offsetX, sizeY - offsetY, -offsetZ, // 6
+		-offsetX, sizeY - offsetY, -offsetZ // 7
+	}; 
+
+	glGenBuffers(1, &myVertices);
+	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	uint index[36] =
+	{
+		0, 1, 2, 2, 3, 0, 1, 5, 6, 6, 2, 1, 7, 6, 5, 5, 4, 7, 4, 0, 3, 3, 7, 4, 4, 5, 1, 1, 0, 4, 3, 2, 6, 6, 7, 3 
+	};
+
+
+
+	glGenBuffers(1, &myID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, myID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), index, GL_STATIC_DRAW);
+}
+
+void Cube2::InnerRender() const
+{
+	/*glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
+	glVertexPointer(3, GL_FLOAT, 0, &myVertices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, myID);
+	glDrawElements(GL_TRIANGLES, myID, GL_UNSIGNED_INT, NULL);
+	glDisableClientState(GL_VERTEX_ARRAY);*/
+	
+
+	/*glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+
+	// draw a cube
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, index);
+
+	// deactivate vertex arrays after drawing
+	glDisableClientState(GL_VERTEX_ARRAY);*/
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+
+	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, myID);
+	glDrawElements(GL_TRIANGLES, sizeof(GLuint) * 36, GL_UNSIGNED_SHORT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
 }
 
 // SPHERE ============================================
