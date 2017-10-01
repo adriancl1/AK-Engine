@@ -1,0 +1,7 @@
+version: 0.{build}
+image: Visual Studio 2017
+configuration: Release
+clone_folder: C:\AK-Engine\AK Engine.sln
+build:
+  project: '\AK Engine.sln'
+  verbosity: minimal
