@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/github/webhook?id=k8bk9sf3ww00ly5x)](https://ci.appveyor.com/project/MarcLF/ak-engine)
+[![Build status](https://ci.appveyor.com/api/projects/status/k8bk9sf3ww00ly5x?svg=true)](https://ci.appveyor.com/project/MarcLF/ak-engine)
 
 # AK Engine
 
