@@ -144,8 +144,7 @@ void ModuleSceneEditor::AddCylinder(float radius, float height, vec3 pos)
 
 void ModuleSceneEditor::AddSphere(float radius, vec3 pos)
 {
-	Sphere* sph = new Sphere;
-	sph->radius = radius;
+	Sphere* sph = new Sphere(radius, 12, 24);
 	sph->SetPos(pos.x, pos.y, pos.z);
 
 	if (wframe == true)

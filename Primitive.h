@@ -1,7 +1,8 @@
-
 #pragma once
+
 #include "glmath.h"
 #include "Color.h"
+#include <vector>
 
 enum PrimitiveTypes
 {
@@ -79,10 +80,15 @@ class Sphere : public Primitive
 {
 public:
 	Sphere();
-	Sphere(float radius);
+	Sphere(float radius, unsigned int rings, unsigned int sectors);
 	void InnerRender() const;
 public:
 	float radius;
+protected:
+	std::vector<float> vertices;
+	std::vector<float> normals;
+	std::vector<float> texcoords;
+	std::vector<ushort> indices;
 };
 
 // ============================================

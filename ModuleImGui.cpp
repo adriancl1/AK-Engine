@@ -497,11 +497,8 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		if (ImGui::SliderInt("Master Volume", &volume, 0, 128))
 		{
 			Mix_VolumeMusic(volume);
-		}
-			
+		}	
 	}
-
-
 
 	if (ImGui::CollapsingHeader("Window"))
 	{
@@ -690,7 +687,6 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		ImGui::TextColored(ImVec4(0.90f, 0.70f, 0.00f, 1.0f), "%i", VRAMUsage / 1000);
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.90f, 0.70f, 0.00f, 1.0f), "MB");
-		
 	}
 
 	ImGui::End();
