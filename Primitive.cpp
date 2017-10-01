@@ -252,6 +252,11 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 		-offsetX, sizeY - offsetY, -offsetZ // 7
 	}; */
 
+	/*uint index[36] =
+	{
+	0, 1, 2, 2, 3, 0, 1, 5, 6, 6, 2, 1, 7, 6, 5, 5, 4, 7, 4, 0, 3, 3, 7, 4, 4, 5, 1, 1, 0, 4, 3, 2, 6, 6, 7, 3
+	};*/
+
 	float vertices[24] = 
 	{
 		-offsetX, -offsetY, -offsetZ, // 0
@@ -267,18 +272,11 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	/*uint index[36] =
+	GLushort index[36] =
 	{
-		0, 1, 2, 2, 3, 0, 1, 5, 6, 6, 2, 1, 7, 6, 5, 5, 4, 7, 4, 0, 3, 3, 7, 4, 4, 5, 1, 1, 0, 4, 3, 2, 6, 6, 7, 3 
-	};*/
-
-	uint index[18] =
-	{
-		3,2,0, 1,3,0, 2,6,0, 6,4,0, 4,5,0, 5,1,0
+		0,2,3, 0,3,1, 0,6,2, 0,4,6, 0,5,4, 0,1,5, 7,6,5, 5,6,4, 1,3,7, 7,5,1, 7,3,2, 2,6,7
 	};
 	
-
-	// 2,0,1,2,1,3,7,1,3,7,5,1,6,4,5,6,5,7,2,0,4,2,4,6,0,4,5,0,5,1,2,7,3,2,6,7
 	glGenBuffers(1, &myID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, myID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), index, GL_STATIC_DRAW);
