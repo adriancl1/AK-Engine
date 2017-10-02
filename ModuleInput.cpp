@@ -43,6 +43,8 @@ bool ModuleInput::Init(JSON_Object* data)
 // Called every draw update
 update_status ModuleInput::PreUpdate(float dt)
 {
+	BROFILER_CATEGORY("Module Input PreUpdate", Profiler::Color::AliceBlue);
+
 	SDL_PumpEvents();
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);

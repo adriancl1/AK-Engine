@@ -119,6 +119,8 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 // ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
+	BROFILER_CATEGORY("Module Physics Update", Profiler::Color::AliceBlue);
+
 	if (!ImGui::GetIO().WantCaptureKeyboard)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) 

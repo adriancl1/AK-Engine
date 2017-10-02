@@ -41,8 +41,7 @@ bool ModuleCamera3D::CleanUp(JSON_Object* data)
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	// Implement a debug camera with keys and mouse
-	// Now we can make this movememnt frame rate independant!
+	BROFILER_CATEGORY("Module Camera Update", Profiler::Color::AliceBlue);
 
 	vec3 newPos(0,0,0);
 	float speed = 8.0f * dt;

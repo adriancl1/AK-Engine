@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Brofiler-1.1.2\Brofiler.h"
 #include "ModuleSceneEditor.h"
 
 
@@ -17,6 +18,8 @@ ModuleSceneEditor::~ModuleSceneEditor()
 
 bool ModuleSceneEditor::Init(JSON_Object* data)
 {
+	BROFILER_CATEGORY("Module SceneEditor Start", Profiler::Color::AliceBlue);
+
 	return true;
 }
 

@@ -34,7 +34,6 @@ bool ModuleWindow::Init(JSON_Object* data)
 	}
 	else
 	{
-
 		if (data == nullptr)
 		{
 			App->imGui->AddLogToWindow("Window config couldn't load, using default values!");

@@ -41,6 +41,7 @@ ModuleImGui::~ModuleImGui()
 //Load assets
 bool ModuleImGui::Start()
 {
+	BROFILER_CATEGORY("Module ImGui Start", Profiler::Color::AliceBlue);
 	LOG("Loading Intro assets");
 	AddLogToWindow("Loading Intro assets");
 	bool ret = true;
@@ -78,6 +79,8 @@ update_status ModuleImGui::PreUpdate(float dt)
 //Update
 update_status ModuleImGui::Update(float dt)
 {
+	BROFILER_CATEGORY("Module ImGui Update", Profiler::Color::AliceBlue);
+
 	//Main Menu Bar
 	if (ImGui::BeginMainMenuBar())
 	{
