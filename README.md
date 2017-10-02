@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/3gsv4qx0eknqhfkr?retina=true)](https://ci.appveyor.com/project/MarcLF/ak-engine)
+﻿[![Build status](https://ci.appveyor.com/api/projects/status/3gsv4qx0eknqhfkr?retina=true)](https://ci.appveyor.com/project/MarcLF/ak-engine)
 
 # AK Engine
 
@@ -14,6 +14,13 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 
 
 ## Changelog
+Version 0.2.7
+* Cube draw through Direct Mode.
+* UI design updated.
+* Various new options to create different geometries.
+* Removed Glut usage.
+* Brofiler now displaying more information.
+
 Version 0.2.5:
 - Added Scene with a grid.
 - Added options to configuration window, including: Audio volume & pause/resume, creation of 3D geometry into the scene, and more hardware info.
