@@ -483,8 +483,9 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		{
 			App->audio->PauseMusic();
 		}
-		if (ImGui::SliderInt("Master Volume", &volume, 0, 128))
+		if (ImGui::SliderInt("Master Volume", &volume, 0, 100))
 		{
+			//TODO: Add more sound options
 			Mix_VolumeMusic(volume);
 		}	
 	}
