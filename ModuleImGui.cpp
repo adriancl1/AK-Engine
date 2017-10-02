@@ -42,6 +42,7 @@ ModuleImGui::~ModuleImGui()
 bool ModuleImGui::Start()
 {
 	BROFILER_CATEGORY("Module ImGui Start", Profiler::Color::AliceBlue);
+
 	LOG("Loading Intro assets");
 	AddLogToWindow("Loading Intro assets");
 	bool ret = true;
@@ -62,7 +63,7 @@ bool ModuleImGui::Start()
 	App->window->GetWindowSize(windowWidth, windowHeight);
 	brightness = App->window->GetBrightness();
 	strcpy_s(title, App->window->GetTitle());
-	volume = 128;
+	volume = 100;
 
 	wireframe = false;
 
