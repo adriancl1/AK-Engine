@@ -47,7 +47,6 @@ private:
 
 	bool wireframe;
 
-
 //ImGui
 public:
 	IMGUI_API void ShowMenuWindow(bool* p_open = NULL);

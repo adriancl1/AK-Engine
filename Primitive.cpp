@@ -236,22 +236,6 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 	float offsetY = sizeY * 0.5;
 	float offsetZ = sizeZ * 0.5;
 
-	/*float vertices[24] = {
-		-offsetX, -offsetY, sizeZ - offsetZ, // 0
-		sizeX - offsetX, -offsetY, sizeZ - offsetZ, // 1
-		sizeX - offsetX, sizeY - offsetY, sizeZ - offsetZ, // 2
-		-offsetX, sizeY - offsetY, sizeZ - offsetZ,  // 3
-		-offsetX, -offsetY, -offsetZ,  // 4
-		sizeX - offsetX, -offsetY, -offsetZ, // 5
-		sizeX - offsetX, sizeY - offsetY, -offsetZ, // 6
-		-offsetX, sizeY - offsetY, -offsetZ // 7
-	}; */
-
-	/*uint index[36] =
-	{
-	0, 1, 2, 2, 3, 0, 1, 5, 6, 6, 2, 1, 7, 6, 5, 5, 4, 7, 4, 0, 3, 3, 7, 4, 4, 5, 1, 1, 0, 4, 3, 2, 6, 6, 7, 3
-	};*/
-
 	float vertices[24] = 
 	{
 		-offsetX, -offsetY, -offsetZ, // 0
@@ -279,23 +263,6 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 
 void Cube2::InnerRender() const
 {
-	/*glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
-	glVertexPointer(3, GL_FLOAT, 0, &myVertices);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, myID);
-	glDrawElements(GL_TRIANGLES, myID, GL_UNSIGNED_INT, NULL);
-	glDisableClientState(GL_VERTEX_ARRAY);*/
-	
-
-	/*glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-
-	// draw a cube
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, index);
-
-	// deactivate vertex arrays after drawing
-	glDisableClientState(GL_VERTEX_ARRAY);*/
-
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
 
@@ -320,6 +287,8 @@ Sphere::Sphere() : Primitive(), radius(1.0f)
 
 Sphere::Sphere(float radius, unsigned int rings, unsigned int sectors)
 {
+	type = PrimitiveTypes::Primitive_Sphere;
+
 	float const R = 1. / (float)(rings - 1);
 	float const S = 1. / (float)(sectors - 1);
 	int r, s;
@@ -330,7 +299,9 @@ Sphere::Sphere(float radius, unsigned int rings, unsigned int sectors)
 	std::vector<GLfloat>::iterator v = vertices.begin();
 	std::vector<GLfloat>::iterator n = normals.begin();
 	std::vector<GLfloat>::iterator t = texcoords.begin();
-	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
+
+	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) 
+	{
 		float const y = sin(-M_PI_2 + M_PI * r * R);
 		float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
 		float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
@@ -349,7 +320,9 @@ Sphere::Sphere(float radius, unsigned int rings, unsigned int sectors)
 
 	indices.resize(rings * sectors * 4);
 	std::vector<GLushort>::iterator i = indices.begin();
-	for (r = 0; r < rings - 1; r++) for (s = 0; s < sectors - 1; s++) {
+
+	for (r = 0; r < rings - 1; r++) for (s = 0; s < sectors - 1; s++)
+	{
 		*i++ = r * sectors + s;
 		*i++ = r * sectors + (s + 1);
 		*i++ = (r + 1) * sectors + (s + 1);
@@ -469,5 +442,148 @@ void Plane::InnerRender() const
 		glVertex3f(d, 0.0f, i);
 	}
 
+	glEnd();
+}
+
+// PLANE NO GRID ==================================================
+PlaneNoGrid::PlaneNoGrid() : Primitive(), size(1.0f, 1.0f, 1.0f), constant(1)
+{
+	type = PrimitiveTypes::Primitive_PlaneNoGrid;
+}
+
+PlaneNoGrid::PlaneNoGrid(float sizeX, float sizeY, float sizeZ, float d) : Primitive(), size(sizeX, sizeY, sizeZ), constant(d)
+{
+	type = PrimitiveTypes::Primitive_PlaneNoGrid;
+
+	float vertices[12] =
+	{
+		0.0f, 0.0f, 0.0f, // 0
+		sizeX, 0.0f, 0.0f, // 1
+		sizeX, 0.0f, sizeZ, // 2
+		0.0f, 0.0f, sizeZ,  // 3
+	};
+	glGenBuffers(1, &myVertices);
+	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	GLushort index[6] =
+	{
+		0,2,1, 0,3,2
+	};
+
+	glGenBuffers(1, &myID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, myID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), index, GL_STATIC_DRAW);
+}
+
+void PlaneNoGrid::InnerRender() const
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+
+	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, myID);
+	glDrawElements(GL_TRIANGLES, sizeof(GLuint) * 6, GL_UNSIGNED_SHORT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+// CAPSULE ============================================
+Capsule::Capsule() : Primitive(), radius(1.0f), height(1.0f)
+{
+	type = PrimitiveTypes::Primitive_Cylinder;
+}
+
+Capsule::Capsule(float radius, float height, unsigned int rings, unsigned int sectors) : Primitive(), radius(radius), height(height)
+{
+	type = PrimitiveTypes::Primitive_Cylinder;
+
+	float const R = 1. / (float)(rings - 1);
+	float const S = 1. / (float)(sectors - 1);
+	int r, s;
+
+	vertices.resize(rings * sectors * 3);
+	normals.resize(rings * sectors * 3);
+	texcoords.resize(rings * sectors * 2);
+	std::vector<GLfloat>::iterator v = vertices.begin();
+	std::vector<GLfloat>::iterator n = normals.begin();
+	std::vector<GLfloat>::iterator t = texcoords.begin();
+
+	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) 
+	{
+		float const y = sin(-M_PI_2 + M_PI * r * R);
+		float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
+		float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
+
+		*t++ = s*S;
+		*t++ = r*R;
+
+		*v++ = x * radius;
+		*v++ = y * radius;
+		*v++ = z * radius;
+
+		*n++ = x;
+		*n++ = y;
+		*n++ = z;
+	}
+
+	indices.resize(rings * sectors * 4);
+	std::vector<GLushort>::iterator i = indices.begin();
+	for (r = 0; r < rings - 1; r++) for (s = 0; s < sectors - 1; s++) 
+	{
+		*i++ = r * sectors + s;
+		*i++ = r * sectors + (s + 1);
+		*i++ = (r + 1) * sectors + (s + 1);
+		*i++ = (r + 1) * sectors + s;
+	}
+}
+
+void Capsule::InnerRender() const
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+	glNormalPointer(GL_FLOAT, 0, &normals[0]);
+	glTexCoordPointer(2, GL_FLOAT, 0, &texcoords[0]);
+	glDrawElements(GL_QUADS, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
+
+	 int n = 30;
+
+	// Cylinder Bottom
+	glBegin(GL_POLYGON);
+
+	for (int i = 360; i >= 0; i -= (360 / n))
+	{
+		float a = i * M_PI / 180; // degrees to radians
+		glVertex3f(-height*0.5f, radius * cos(a), radius * sin(a));
+	}
+	glEnd();
+
+	// Cylinder Top
+	glBegin(GL_POLYGON);
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	for (int i = 0; i <= 360; i += (360 / n))
+	{
+		float a = i * M_PI / 180; // degrees to radians
+		glVertex3f(height * 0.5f, radius * cos(a), radius * sin(a));
+	}
+	glEnd();
+
+	// Cylinder "Cover"
+	glBegin(GL_QUAD_STRIP);
+	for (int i = 0; i < 480; i += (360 / n))
+	{
+		float a = i * M_PI / 180; // degrees to radians
+
+		glVertex3f(height*0.5f, radius * cos(a), radius * sin(a));
+		glVertex3f(-height*0.5f, radius * cos(a), radius * sin(a));
+	}
 	glEnd();
 }

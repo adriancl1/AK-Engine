@@ -156,3 +156,49 @@ void ModuleSceneEditor::AddSphere(float radius, vec3 pos)
 
 	App->physics->AddBody(*sph);
 }
+
+void ModuleSceneEditor::AddPlane(float x, float y, float z, float d, vec3 pos)
+{
+	Plane* pl = new Plane(x, y, z, d);
+	pl->constant = d;
+	
+	pl->SetPos(pos.x, pos.y, pos.z);
+
+	if (wframe == true)
+	{
+		pl->wire = true;
+	}
+
+	sceneObjects.push_back(pl);
+}
+
+void ModuleSceneEditor::AddPlaneNoGrid(float x, float y, float z, float d, vec3 pos)
+{
+	PlaneNoGrid* plN = new PlaneNoGrid(x, y, z, d);
+	plN->constant = d;
+
+	plN->SetPos(pos.x, pos.y, pos.z);
+
+	if (wframe == true)
+	{
+		plN->wire = false;
+	}
+
+	sceneObjects.push_back(plN);
+}
+
+void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
+{
+	Capsule* cap = new Capsule;
+	cap->radius = radius;
+	cap->height = height;
+	cap->SetPos(pos.x, pos.y, pos.z);
+
+	if (wframe == true)
+	{
+		cap->wire = true;
+	}
+
+	sceneObjects.push_back(cap);
+
+}

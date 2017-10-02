@@ -27,6 +27,9 @@ public:
 	void AddCube2(vec3 size, vec3 pos = vec3(0, 0, 0));
 	void AddCylinder(float radius, float height, vec3 pos = vec3(0, 0, 0));
 	void AddSphere(float radius, vec3 pos = vec3(0, 0, 0));
+	void AddPlane(float x, float y, float z, float d, vec3 pos = vec3(0, 0, 0));
+	void AddPlaneNoGrid(float x, float y, float z, float d, vec3 pos = vec3(0, 0, 0));
+	void AddCapsule(float radius, float height, vec3 pos = vec3(0, 0, 0));
 
 private:
 	//For now ----

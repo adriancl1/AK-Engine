@@ -11,7 +11,9 @@ enum PrimitiveTypes
 	Primitive_Plane,
 	Primitive_Cube,
 	Primitive_Sphere,
-	Primitive_Cylinder
+	Primitive_Cylinder,
+	Primitive_PlaneNoGrid,
+	Primitive_Capsule
 };
 
 class Primitive
@@ -125,4 +127,36 @@ public:
 public:
 	vec3 normal;
 	float constant;
+};
+
+class PlaneNoGrid : public Primitive
+{
+public:
+	PlaneNoGrid();
+	PlaneNoGrid(float x, float y, float z, float d);
+	void InnerRender() const;
+public:
+	float constant;
+public:
+	vec3 size;
+private:
+	uint myID;
+	uint myVertices;
+};
+
+// ============================================
+class Capsule : public Primitive
+{
+public:
+	Capsule();
+	Capsule(float radius, float height, unsigned int rings, unsigned int sectors);
+	void InnerRender() const;
+public:
+	float radius;
+	float height;
+protected:
+	std::vector<float> vertices;
+	std::vector<float> normals;
+	std::vector<float> texcoords;
+	std::vector<ushort> indices;
 };

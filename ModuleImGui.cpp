@@ -241,7 +241,6 @@ void ModuleImGui::Draw()const
 void ModuleImGui::ShowMenuWindow(bool* p_open)
 {
 	static bool openTestWindow = false;
-	static bool viewGrid = false;
 
 	// Demonstrate the various window flags. Typically you would just use the default.
 	ImGuiWindowFlags window_flags = 0;
@@ -265,16 +264,6 @@ void ModuleImGui::ShowMenuWindow(bool* p_open)
 		if (ImGui::Checkbox("Show Demo", &openTestWindow))
 		{
 			testWindowActive = !testWindowActive;
-		}
-	
-		if (ImGui::TreeNode("Graphic Options"))
-		{
-			ImGui::Text("Not functional");
-			if (ImGui::Checkbox("View ---", &viewGrid))
-			{
-			}
-
-			ImGui::TreePop();
 		}
 	}
 
@@ -869,6 +858,51 @@ void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
 			createCylinderPosX = 0;
 			createCylinderPosY = 0;
 			createCylinderPosZ = 0;
+		}
+	}
+	if (ImGui::CollapsingHeader("Plane"))
+	{
+		//TODO: Find a purpose for a Plane Constant or remove it
+		static float createPlaneX = 0, createPlaneY = 0, createPlaneZ = 0, createPlaneD = 0;
+		static float createPlanePosX = 0, createPlanePosY = 0, createPlanePosZ = 0;
+		ImGui::SliderFloat("Plane X", &createPlaneX, 0, 50.0f, "%.2f");
+		ImGui::SliderFloat("Plane Y", &createPlaneY, 0, 50.0f, "%.2f");
+		ImGui::SliderFloat("Plane Z", &createPlaneZ, 0, 50.0f, "%.2f");
+	  //ImGui::SliderFloat("Plane Constant", &createPlaneD, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Plane Position X", &createPlanePosX, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Plane Position Y", &createPlanePosY, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Plane Position Z", &createPlanePosZ, -5.0f, 5.0f, "%.2f");
+		if (ImGui::Button("Create Plane!") && createPlaneX > 0.0f && createPlaneY > 0.0f && createPlaneZ > 0.0f)
+		{
+			App->sceneEditor->AddPlaneNoGrid(createPlaneX, createPlaneY, createPlaneZ, createPlaneD, vec3(createPlanePosX, createPlanePosY, createPlanePosZ));
+			createPlaneX = 0;
+			createPlaneY = 0;
+			createPlaneZ = 0;
+			createPlaneD = 0;
+			createPlanePosX = 0;
+			createPlanePosY = 0;
+			createPlanePosZ = 0;
+		}
+	}
+	if (ImGui::CollapsingHeader("Capsule"))
+	{
+		static float createCapsuleRadius = 0, createCapsuleHeight = 0;
+		static float createCapsulePosX = 0, createCapsulePosY = 0, createCapsulePosZ = 0;
+		ImGui::SliderFloat("Capsule radius", &createCapsuleRadius, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Capsule height", &createCapsuleHeight, 0, 5.0f, "%.2f");
+		ImGui::SliderFloat("Capsule Position X", &createCapsulePosX, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Capsule Position Y", &createCapsulePosY, -5.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Capsule Position Z", &createCapsulePosZ, -5.0f, 5.0f, "%.2f");
+		if (ImGui::Button("Create Capsule!") && createCapsuleHeight > 0.0f && createCapsuleRadius > 0.0f)
+		{
+			App->sceneEditor->AddCylinder(createCapsuleRadius, createCapsuleHeight, vec3(createCapsulePosX, createCapsulePosY, createCapsulePosZ));
+			App->sceneEditor->AddSphere(createCapsuleRadius, vec3(createCapsulePosX + createCapsuleHeight/2.0f, createCapsulePosY, createCapsulePosZ));
+			App->sceneEditor->AddSphere(createCapsuleRadius, vec3(createCapsulePosX - createCapsuleHeight / 2.0f, createCapsulePosY, createCapsulePosZ));
+			createCapsuleRadius = 0;
+			createCapsuleHeight = 0;
+			createCapsulePosX = 0;
+			createCapsulePosY = 0;
+			createCapsulePosZ = 0;
 		}
 	}
 
