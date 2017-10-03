@@ -85,6 +85,11 @@ void ModuleSceneEditor::SetToWireframe(bool wframe)
 	}
 }
 
+bool ModuleSceneEditor::GetWireframe()const
+{
+	return wframe;
+}
+
 void ModuleSceneEditor::AddCube(vec3 size, vec3 pos)
 {
 	Cube* cube = new Cube;

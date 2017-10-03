@@ -14,7 +14,10 @@ public:
 	
 	uint idIndices = 0; // id in VRAM 
 	uint numIndices = 0;
-	unsigned short* indices = nullptr;
+	uint* indices = nullptr;
+
+	uint idNormals = 0; // id in VRAM
+	float* normals = nullptr;
 };
 
 class ModuleSceneEditor : public Module
@@ -33,6 +36,7 @@ public:
 
 	void Draw();
 	void SetToWireframe(bool wframe);
+	bool GetWireframe()const;
 
 	void AddCube(vec3 size, vec3 pos = vec3(0,0,0));
 	void AddCube1(vec3 size, vec3 pos = vec3(0, 0, 0));

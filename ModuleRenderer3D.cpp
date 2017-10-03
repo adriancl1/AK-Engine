@@ -330,21 +330,41 @@ void ModuleRenderer3D::SetTexture2D()
 
 void ModuleRenderer3D::Draw(Mesh toDraw)
 {
+	if (App->sceneEditor->GetWireframe() == true)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 	glPushMatrix();
+
+	//float m[16] = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
+
+	//glMultMatrixf(m);
+
+	if (toDraw.idNormals > 0)
+	{
+			glEnable(GL_LIGHTING);
+			glEnableClientState(GL_NORMAL_ARRAY);
+
+			glBindBuffer(GL_ARRAY_BUFFER, toDraw.idNormals);
+			glNormalPointer(GL_FLOAT, 0, NULL);
+	}
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-
 	glBindBuffer(GL_ARRAY_BUFFER, toDraw.idVertices);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);	
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw.idIndices);
-	glDrawElements(GL_TRIANGLES, sizeof(GLuint) * toDraw.numIndices, GL_UNSIGNED_SHORT, NULL);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDrawElements(GL_TRIANGLES, sizeof(uint) * toDraw.numIndices, GL_UNSIGNED_SHORT, NULL);
 
-	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 
 	glPopMatrix();
+	glUseProgram(0);
 }

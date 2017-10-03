@@ -44,10 +44,15 @@ bool ModuleGeometryImporter::LoadMesh(const char* fullPath)
 			m->vertices = new float[m->numVertices * 3];
 			memcpy(m->vertices, newMesh->mVertices, sizeof(float)* m->numVertices * 3);
 			LOG("New mesh with %d vertices", m->numVertices);
+
+			glGenBuffers(1,(GLuint*) &m->idVertices);
+			glBindBuffer(GL_ARRAY_BUFFER, m->idVertices);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->vertices, GL_STATIC_DRAW);
+
 			if (newMesh->HasFaces())
 			{
 				m->numIndices = newMesh->mNumFaces * 3;
-				m->indices = new GLushort[m->numIndices];
+				m->indices = new uint[m->numIndices];
 				for (uint i = 0; i < newMesh->mNumFaces; ++i) 
 				{ 
 					if (newMesh->mFaces[i].mNumIndices != 3)
@@ -56,22 +61,22 @@ bool ModuleGeometryImporter::LoadMesh(const char* fullPath)
 					}
 					else
 					{
-						memcpy(&m->indices[i * 3], newMesh->mFaces[i].mIndices, 3 * sizeof(GLushort));
+						memcpy(&m->indices[i * 3], newMesh->mFaces[i].mIndices, 3 * sizeof(uint));
 					}
-				}
-				glGenBuffers(1, &m->idVertices);
-				glBindBuffer(GL_ARRAY_BUFFER, m->idVertices);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(m->vertices), m->vertices, GL_STATIC_DRAW); 
+				} 
 
-				glGenBuffers(1, &m->idIndices);
+				glGenBuffers(1,(GLuint*) &m->idIndices);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->idIndices);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m->indices), m->indices, GL_STATIC_DRAW);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m->numIndices, m->indices, GL_STATIC_DRAW);
 			}
-			else
+			if (newMesh->HasNormals())
 			{
-				glGenBuffers(1, &m->idVertices);
-				glBindBuffer(GL_ARRAY_BUFFER, m->idVertices);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(m->vertices), m->vertices, GL_STATIC_DRAW);
+				m->normals = new float[m->numVertices * 3];
+				memcpy(m->normals, newMesh->mNormals, sizeof(float) * m->numVertices * 3);
+
+				glGenBuffers(1, (GLuint*) &(m->idNormals));
+				glBindBuffer(GL_ARRAY_BUFFER, m->idNormals);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->normals, GL_STATIC_DRAW);
 			}
 			App->sceneEditor->AddMesh(m);
 		}
