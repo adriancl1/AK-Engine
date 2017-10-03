@@ -30,11 +30,11 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp(JSON_Object* data = nullptr);
 
-	PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f);
+	PhysBody3D* AddBody(const pSphere& sphere, float mass = 1.0f);
 	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
 	PhysBody3D* AddBody(const Cube1& cube, float mass = 1.0f);
 	PhysBody3D* AddBody(const Cube2& cube, float mass = 1.0f);
-	PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
+	PhysBody3D* AddBody(const pCylinder& cylinder, float mass = 1.0f);
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);

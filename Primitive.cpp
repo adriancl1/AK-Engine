@@ -280,12 +280,12 @@ void Cube2::InnerRender() const
 }
 
 // SPHERE ============================================
-Sphere::Sphere() : Primitive(), radius(1.0f)
+pSphere::pSphere() : Primitive(), radius(1.0f)
 {
 	type = PrimitiveTypes::Primitive_Sphere;
 }
 
-Sphere::Sphere(float radius, unsigned int rings, unsigned int sectors)
+pSphere::pSphere(float radius, unsigned int rings, unsigned int sectors)
 {
 	type = PrimitiveTypes::Primitive_Sphere;
 
@@ -330,7 +330,7 @@ Sphere::Sphere(float radius, unsigned int rings, unsigned int sectors)
 	}
 }
 
-void Sphere::InnerRender() const
+void pSphere::InnerRender() const
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
@@ -344,17 +344,17 @@ void Sphere::InnerRender() const
 
 
 // CYLINDER ============================================
-Cylinder::Cylinder() : Primitive(), radius(1.0f), height(1.0f)
+pCylinder::pCylinder() : Primitive(), radius(1.0f), height(1.0f)
 {
 	type = PrimitiveTypes::Primitive_Cylinder;
 }
 
-Cylinder::Cylinder(float radius, float height) : Primitive(), radius(radius), height(height)
+pCylinder::pCylinder(float radius, float height) : Primitive(), radius(radius), height(height)
 {
 	type = PrimitiveTypes::Primitive_Cylinder;
 }
 
-void Cylinder::InnerRender() const
+void pCylinder::InnerRender() const
 {
 	int n = 30;
 
@@ -421,17 +421,17 @@ void pLine::InnerRender() const
 }
 
 // PLANE ==================================================
-Plane::Plane() : Primitive(), normal(0, 1, 0), constant(1)
+pPlane::pPlane() : Primitive(), normal(0, 1, 0), constant(1)
 {
 	type = PrimitiveTypes::Primitive_Plane;
 }
 
-Plane::Plane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
+pPlane::pPlane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
 {
 	type = PrimitiveTypes::Primitive_Plane;
 }
 
-void Plane::InnerRender() const
+void pPlane::InnerRender() const
 {
 	glLineWidth(1.0f);
 
@@ -499,12 +499,12 @@ void PlaneNoGrid::InnerRender() const
 }
 
 // CAPSULE ============================================
-Capsule::Capsule() : Primitive(), radius(1.0f), height(1.0f)
+pCapsule::pCapsule() : Primitive(), radius(1.0f), height(1.0f)
 {
 	type = PrimitiveTypes::Primitive_Cylinder;
 }
 
-Capsule::Capsule(float radius, float height, unsigned int rings, unsigned int sectors) : Primitive(), radius(radius), height(height)
+pCapsule::pCapsule(float radius, float height, unsigned int rings, unsigned int sectors) : Primitive(), radius(radius), height(height)
 {
 	type = PrimitiveTypes::Primitive_Cylinder;
 
@@ -548,7 +548,7 @@ Capsule::Capsule(float radius, float height, unsigned int rings, unsigned int se
 	}
 }
 
-void Capsule::InnerRender() const
+void pCapsule::InnerRender() const
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);

@@ -6,7 +6,6 @@
 #include "Glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include "Brofiler-1.1.2\Brofiler.h"
-#include "MathGeo\Geometry\Triangle.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -387,20 +386,9 @@ void ModuleRenderer3D::Draw(Mesh* toDraw)
 	glPopMatrix();
 	glUseProgram(0);
 
-	if (App->physics->debug && toDraw->idNormals>0)
+	if (App->physics->debug)
 	{
-		for (int i = 0; i < toDraw->numVertices; i += 3)
-		{
-			pLine n(toDraw->vertices[i], toDraw->vertices[i + 1], + toDraw->vertices[i + 2], toDraw->normals[i] + toDraw->vertices[i], toDraw->normals[i + 1] + toDraw->vertices[i + 1], toDraw->normals[i + 2] + toDraw->vertices[i + 2]);
-			n.Render();
-		}
-		for (int i = 0; i < toDraw->numVertices; i += 9)
-		{
-			Triangle face(float3(toDraw->vertices[i], toDraw->vertices[i + 1], toDraw->vertices[i + 2]), float3(toDraw->vertices[i + 3], toDraw->vertices[i + 4], toDraw->vertices[i + 5]), float3(toDraw->vertices[i + 6], toDraw->vertices[i + 7], toDraw->vertices[i + 8]));
-			float3 faceCenter = face.Centroid();
-			float3 faceNormal = face.NormalCCW();
-			pLine normal(faceCenter.x, faceCenter.y, faceCenter.z, faceCenter.x + faceNormal.x, faceCenter.y + faceNormal.y, faceCenter.z + faceNormal.z);
-			normal.Render();
-		}
+		toDraw->DrawDebug();
 	}
+	
 }

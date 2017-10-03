@@ -106,6 +106,9 @@ bool ModuleGeometryImporter::LoadMesh(const char* fullPath)
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->texCoords, GL_STATIC_DRAW);
 			}
 
+			m->enclosingBox.SetNegativeInfinity();
+			m->enclosingBox.Enclose((float3*)m->vertices, m->numVertices);
+
 			App->sceneEditor->AddMesh(m);
 		}
 		aiReleaseImport(scene); 

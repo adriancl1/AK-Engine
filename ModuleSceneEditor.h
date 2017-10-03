@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Primitive.h"
+#include "MathGeo\Geometry\AABB.h"
 #include <list>
 
 class Mesh
@@ -24,6 +25,10 @@ public:
 
 	uint idTexCoords = 0; // id in VRAM
 	float* texCoords = nullptr;
+
+	AABB enclosingBox;
+
+	void DrawDebug();
 	
 	~Mesh()
 	{

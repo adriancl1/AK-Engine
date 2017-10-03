@@ -78,11 +78,11 @@ private:
 };
 
 // ============================================
-class Sphere : public Primitive
+class pSphere : public Primitive
 {
 public:
-	Sphere();
-	Sphere(float radius, unsigned int rings, unsigned int sectors);
+	pSphere();
+	pSphere(float radius, unsigned int rings, unsigned int sectors);
 	void InnerRender() const;
 public:
 	float radius;
@@ -94,11 +94,11 @@ protected:
 };
 
 // ============================================
-class Cylinder : public Primitive
+class pCylinder : public Primitive
 {
 public:
-	Cylinder();
-	Cylinder(float radius, float height);
+	pCylinder();
+	pCylinder(float radius, float height);
 	void InnerRender() const;
 public:
 	float radius;
@@ -119,11 +119,11 @@ public:
 };
 
 // ============================================
-class Plane : public Primitive
+class pPlane : public Primitive
 {
 public:
-	Plane();
-	Plane(float x, float y, float z, float d);
+	pPlane();
+	pPlane(float x, float y, float z, float d);
 	void InnerRender() const;
 public:
 	vec3 normal;
@@ -146,11 +146,11 @@ private:
 };
 
 // ============================================
-class Capsule : public Primitive
+class pCapsule : public Primitive
 {
 public:
-	Capsule();
-	Capsule(float radius, float height, unsigned int rings, unsigned int sectors);
+	pCapsule();
+	pCapsule(float radius, float height, unsigned int rings, unsigned int sectors);
 	void InnerRender() const;
 public:
 	float radius;

@@ -1,4 +1,7 @@
 #include "Application.h"
+#include "Glew\include\glew.h"
+#include "MathGeo\Geometry\Triangle.h"
+#include "MathGeo\Math\float4x4.h"
 #include "Brofiler-1.1.2\Brofiler.h"
 #include "ModuleSceneEditor.h"
 
@@ -66,7 +69,7 @@ void ModuleSceneEditor::Draw()
 		App->renderer3D->Draw((*it));
 	}
 
-	Plane p(0, 0, 0, 100);
+	pPlane p(0, 0, 0, 100);
 	p.color = White;
 	p.Render();
 }
@@ -146,7 +149,7 @@ void ModuleSceneEditor::AddCube2(vec3 size, vec3 pos)
 
 void ModuleSceneEditor::AddCylinder(float radius, float height, vec3 pos)
 {
-	Cylinder* cyl = new Cylinder;
+	pCylinder* cyl = new pCylinder;
 	cyl->radius = radius;
 	cyl->height = height;
 	cyl->SetPos(pos.x, pos.y, pos.z);
@@ -163,7 +166,7 @@ void ModuleSceneEditor::AddCylinder(float radius, float height, vec3 pos)
 
 void ModuleSceneEditor::AddSphere(float radius, vec3 pos)
 {
-	Sphere* sph = new Sphere(radius, 12, 24);
+	pSphere* sph = new pSphere(radius, 12, 24);
 	sph->SetPos(pos.x, pos.y, pos.z);
 
 	if (wframe == true)
@@ -178,7 +181,7 @@ void ModuleSceneEditor::AddSphere(float radius, vec3 pos)
 
 void ModuleSceneEditor::AddPlane(float x, float y, float z, float d, vec3 pos)
 {
-	Plane* pl = new Plane(x, y, z, d);
+	pPlane* pl = new pPlane(x, y, z, d);
 	pl->constant = d;
 	
 	pl->SetPos(pos.x, pos.y, pos.z);
@@ -208,7 +211,7 @@ void ModuleSceneEditor::AddPlaneNoGrid(float x, float y, float z, float d, vec3 
 
 void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 {
-	Capsule* cap = new Capsule;
+	pCapsule* cap = new pCapsule;
 	cap->radius = radius;
 	cap->height = height;
 	cap->SetPos(pos.x, pos.y, pos.z);
@@ -225,4 +228,75 @@ void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 void ModuleSceneEditor::AddMesh(Mesh* newMesh)
 {
 	sceneMeshes.push_back(newMesh);
+}
+
+void Mesh::DrawDebug()
+{
+	if (idNormals>0)
+	{
+		for (int i = 0; i < numVertices; i += 3)
+		{
+			pLine n(vertices[i], vertices[i + 1], vertices[i + 2], normals[i] + vertices[i], normals[i + 1] + vertices[i + 1], normals[i + 2] + vertices[i + 2]);
+			n.color = Green;
+			n.Render();
+		}
+		for (int i = 0; i < numVertices; i += 9)
+		{
+			Triangle face(float3(vertices[i], vertices[i + 1], vertices[i + 2]), float3(vertices[i + 3], vertices[i + 4], vertices[i + 5]), float3(vertices[i + 6], vertices[i + 7], vertices[i + 8]));
+			float3 faceCenter = face.Centroid();
+			float3 faceNormal = face.NormalCCW();
+			pLine normal(faceCenter.x, faceCenter.y, faceCenter.z, faceCenter.x + faceNormal.x, faceCenter.y + faceNormal.y, faceCenter.z + faceNormal.z);
+			normal.color = Orange;
+			normal.Render();
+		}
+	}
+
+	//Draw enclosing box ----
+		float3 corners[8];
+		enclosingBox.GetCornerPoints(corners);
+
+		glPushMatrix();
+
+		glMultMatrixf((GLfloat*)float4x4::identity.Transposed().ptr());
+		glColor3f(Azure.r, Azure.g, Azure.b);
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		glBegin(GL_QUADS);
+
+		glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy, sz);
+		glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy, sz);
+		glVertex3fv((GLfloat*)&corners[7]); //glVertex3f( sx,  sy, sz);
+		glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx,  sy, sz);
+
+		glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
+		glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+		glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx,  sy, -sz);
+		glVertex3fv((GLfloat*)&corners[6]); //glVertex3f( sx,  sy, -sz);
+
+		glVertex3fv((GLfloat*)&corners[5]); //glVertex3f(sx, -sy,  sz);
+		glVertex3fv((GLfloat*)&corners[4]); //glVertex3f(sx, -sy, -sz);
+		glVertex3fv((GLfloat*)&corners[6]); //glVertex3f(sx,  sy, -sz);
+		glVertex3fv((GLfloat*)&corners[7]); //glVertex3f(sx,  sy,  sz);
+
+		glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+		glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
+		glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx,  sy,  sz);
+		glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx,  sy, -sz);
+
+		glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx, sy,  sz);
+		glVertex3fv((GLfloat*)&corners[7]); //glVertex3f( sx, sy,  sz);
+		glVertex3fv((GLfloat*)&corners[6]); //glVertex3f( sx, sy, -sz);
+		glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx, sy, -sz);
+
+		glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+		glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
+		glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy,  sz);
+		glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
+
+		glEnd();
+		glPopMatrix();
+
+		glColor3f(0, 0, 0);
+
 }
