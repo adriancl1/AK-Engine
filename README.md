@@ -10,10 +10,18 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 - To interact with check boxes use LMB.
 - To add or remove any kind of integer value use LMB on the respective button (press + if you want to add +1 or - if you want to add -1 to the corresponding integer).
 - To rotate the camera use right click.
-- To move the camera use: A/D (left/right), W/S (forwards/backwards), R/F (up/down).
+- To move the camera use: A/D (left/right), W/S (forwards/backwards), R/F (up/down). To move faster hold down L-Shift.
+- Drag and drop a .fbx file to import it into the scene.
+- Drag and drop a .wav file to play it.
+- Press F1 to activate debug features.
 
 
 ## Changelog
+Version 0.2.8
+* Cube draw through vertex array and draw elements (indices).
+* Import .fbx scenes and play .wav files through drag and drop.
+* New debug features on meshes.
+
 Version 0.2.7
 * Cube draw through Direct Mode.
 * UI design updated.
