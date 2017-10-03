@@ -401,6 +401,11 @@ Line::Line(float x, float y, float z) : Primitive(), origin(0, 0, 0), destinatio
 	type = PrimitiveTypes::Primitive_Line;
 }
 
+Line::Line(float oX, float oY, float oZ, float dX, float dY, float dZ) : Primitive(), origin(oX, oY, oZ), destination(dX, dY, dZ)
+{
+	type = PrimitiveTypes::Primitive_Line;
+}
+
 void Line::InnerRender() const
 {
 	glLineWidth(2.0f);

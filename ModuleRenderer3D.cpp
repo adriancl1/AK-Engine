@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleSceneEditor.h"
+#include "Primitive.h"
 #include "Glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include "Brofiler-1.1.2\Brofiler.h"
@@ -367,4 +368,13 @@ void ModuleRenderer3D::Draw(Mesh toDraw)
 
 	glPopMatrix();
 	glUseProgram(0);
+
+	if (App->physics->debug && toDraw.idNormals>0)
+	{
+		for (int i = 0; i < toDraw.numVertices; i += 3)
+		{
+			Line n(toDraw.vertices[i], toDraw.vertices[i + 1], +toDraw.vertices[i + 2], toDraw.normals[i] + toDraw.vertices[i], toDraw.normals[i + 1] + toDraw.vertices[i + 1], toDraw.normals[i + 2] + toDraw.vertices[i + 2]);
+			n.Render();
+		}
+	}
 }

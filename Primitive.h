@@ -111,6 +111,7 @@ class Line : public Primitive
 public:
 	Line();
 	Line(float x, float y, float z);
+	Line(float oX, float oY, float oZ, float dX, float dY, float dZ);
 	void InnerRender() const;
 public:
 	vec3 origin;
