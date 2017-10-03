@@ -94,6 +94,8 @@ update_status ModuleInput::PreUpdate(float dt)
 	bool quit = false;
 	char* fileDir = nullptr;
 	SDL_Event e;
+	uint length;
+
 	while(SDL_PollEvent(&e))
 	{
 		switch(e.type)
@@ -118,7 +120,19 @@ update_status ModuleInput::PreUpdate(float dt)
 				fileDir = e.drop.file;
 				// Shows directory of dropped file
 				LOG("%s dropped on window.", fileDir);
-				App->geometryImporter->LoadMesh(fileDir);
+				length = strlen(fileDir);
+				if (strcmp(&fileDir[length - 4], ".fbx") == 0 || strcmp(&fileDir[length - 4], ".FBX") == 0)
+				{
+					App->geometryImporter->LoadMesh(fileDir);
+				}
+				else if (strcmp(&fileDir[length - 4], ".wav") == 0 || strcmp(&fileDir[length - 4], ".WAV") == 0)
+				{
+					App->audio->PlayMusic(fileDir);
+				}
+				else
+				{
+					LOG("Unknown file format!");
+				}
 				SDL_free(fileDir);    // Free dropped_filedir memory
 				break;
 
