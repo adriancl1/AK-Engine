@@ -29,7 +29,7 @@ public:
 	void SetColorMaterial();
 	void SetTexture2D();
 
-	void Draw(Mesh toDraw);
+	void Draw(Mesh* toDraw);
 
 public:
 

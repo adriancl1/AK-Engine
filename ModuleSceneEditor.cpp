@@ -14,6 +14,12 @@ ModuleSceneEditor::~ModuleSceneEditor()
 		delete sceneObjects.front();
 		sceneObjects.pop_front();
 	}
+
+	while (!sceneMeshes.empty())
+	{
+		delete sceneMeshes.front();
+		sceneMeshes.pop_front();
+	}
 }
 
 bool ModuleSceneEditor::Init(JSON_Object* data)
@@ -57,7 +63,7 @@ void ModuleSceneEditor::Draw()
 
 	for (std::list<Mesh*>::iterator it = sceneMeshes.begin(); it != sceneMeshes.end(); ++it)
 	{
-		App->renderer3D->Draw((**it));
+		App->renderer3D->Draw((*it));
 	}
 
 	Plane p(0, 0, 0, 100);

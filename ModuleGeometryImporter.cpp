@@ -40,6 +40,8 @@ bool ModuleGeometryImporter::LoadMesh(const char* fullPath)
 		{
 			aiMesh* newMesh = scene->mMeshes[i];
 			Mesh* m = new Mesh;
+
+			//VERTICES
 			m->numVertices = newMesh->mNumVertices;
 			m->vertices = new float[m->numVertices * 3];
 			memcpy(m->vertices, newMesh->mVertices, sizeof(float)* m->numVertices * 3);
@@ -49,6 +51,7 @@ bool ModuleGeometryImporter::LoadMesh(const char* fullPath)
 			glBindBuffer(GL_ARRAY_BUFFER, m->idVertices);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->vertices, GL_STATIC_DRAW);
 
+			//INDICES
 			if (newMesh->HasFaces())
 			{
 				m->numIndices = newMesh->mNumFaces * 3;
@@ -69,6 +72,8 @@ bool ModuleGeometryImporter::LoadMesh(const char* fullPath)
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->idIndices);
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m->numIndices, m->indices, GL_STATIC_DRAW);
 			}
+
+			//NORMALS
 			if (newMesh->HasNormals())
 			{
 				m->normals = new float[m->numVertices * 3];
@@ -78,6 +83,29 @@ bool ModuleGeometryImporter::LoadMesh(const char* fullPath)
 				glBindBuffer(GL_ARRAY_BUFFER, m->idNormals);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->normals, GL_STATIC_DRAW);
 			}
+
+			//COLORS
+			if (newMesh->HasVertexColors(0))
+			{
+				m->colors = new float[m->numVertices * 3];
+				memcpy(m->colors, newMesh->mColors, sizeof(float) * m->numVertices * 3);
+
+				glGenBuffers(1, (GLuint*) &(m->idColors));
+				glBindBuffer(GL_ARRAY_BUFFER, m->idColors);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->colors, GL_STATIC_DRAW);
+			}
+
+			//TEXTURE COORDS
+			if (newMesh->HasTextureCoords(0))
+			{
+				m->texCoords = new float[m->numVertices * 3];
+				memcpy(m->texCoords, newMesh->mTextureCoords[0], sizeof(float) * m->numVertices * 3);
+
+				glGenBuffers(1, (GLuint*) &(m->idTexCoords));
+				glBindBuffer(GL_ARRAY_BUFFER, m->idTexCoords);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->texCoords, GL_STATIC_DRAW);
+			}
+
 			App->sceneEditor->AddMesh(m);
 		}
 		aiReleaseImport(scene); 

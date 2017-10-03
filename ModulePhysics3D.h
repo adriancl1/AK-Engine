@@ -74,7 +74,7 @@ public:
 	int	 getDebugMode() const;
 
 	DebugDrawModes mode;
-	Line line;
+	pLine line;
 	Primitive point;
 };
 

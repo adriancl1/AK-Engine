@@ -18,6 +18,41 @@ public:
 
 	uint idNormals = 0; // id in VRAM
 	float* normals = nullptr;
+
+	uint idColors = 0; // id in VRAM
+	float* colors = nullptr;
+
+	uint idTexCoords = 0; // id in VRAM
+	float* texCoords = nullptr;
+	
+	~Mesh()
+	{
+		if (vertices != nullptr)
+		{
+			delete[] vertices;
+			vertices = nullptr;
+		}
+		if (indices != nullptr)
+		{
+			delete[] indices;
+			indices = nullptr;
+		}
+		if (normals != nullptr)
+		{
+			delete[] normals;
+			normals = nullptr;
+		}
+		if (colors != nullptr)
+		{
+			delete[] colors;
+			colors = nullptr;
+		}
+		if (texCoords != nullptr)
+		{
+			delete[] texCoords;
+			texCoords = nullptr;
+		}
+	}
 };
 
 class ModuleSceneEditor : public Module

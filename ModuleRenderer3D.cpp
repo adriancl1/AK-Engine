@@ -6,6 +6,7 @@
 #include "Glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include "Brofiler-1.1.2\Brofiler.h"
+#include "MathGeo\Geometry\Triangle.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -329,7 +330,7 @@ void ModuleRenderer3D::SetTexture2D()
 	}
 }
 
-void ModuleRenderer3D::Draw(Mesh toDraw)
+void ModuleRenderer3D::Draw(Mesh* toDraw)
 {
 	if (App->sceneEditor->GetWireframe() == true)
 	{
@@ -345,23 +346,40 @@ void ModuleRenderer3D::Draw(Mesh toDraw)
 
 	//glMultMatrixf(m);
 
-	if (toDraw.idNormals > 0)
+	if (toDraw->idNormals > 0)
 	{
 			glEnable(GL_LIGHTING);
 			glEnableClientState(GL_NORMAL_ARRAY);
 
-			glBindBuffer(GL_ARRAY_BUFFER, toDraw.idNormals);
+			glBindBuffer(GL_ARRAY_BUFFER, toDraw->idNormals);
 			glNormalPointer(GL_FLOAT, 0, NULL);
 	}
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-	glBindBuffer(GL_ARRAY_BUFFER, toDraw.idVertices);
+	glBindBuffer(GL_ARRAY_BUFFER, toDraw->idVertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);	
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw.idIndices);
-	glDrawElements(GL_TRIANGLES, toDraw.numIndices, GL_UNSIGNED_INT, NULL);
+	if (toDraw->idTexCoords > 0)
+	{
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, toDraw->idTexCoords);
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+	}
 
+	if (toDraw->idColors > 0)
+	{
+		glEnableClientState(GL_COLOR_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, toDraw->idColors);
+		glColorPointer(3, GL_FLOAT, 0, NULL);
+	}
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw->idIndices);
+	glDrawElements(GL_TRIANGLES, toDraw->numIndices, GL_UNSIGNED_INT, NULL);
+
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
@@ -369,12 +387,20 @@ void ModuleRenderer3D::Draw(Mesh toDraw)
 	glPopMatrix();
 	glUseProgram(0);
 
-	if (App->physics->debug && toDraw.idNormals>0)
+	if (App->physics->debug && toDraw->idNormals>0)
 	{
-		for (int i = 0; i < toDraw.numVertices; i += 3)
+		for (int i = 0; i < toDraw->numVertices; i += 3)
 		{
-			Line n(toDraw.vertices[i], toDraw.vertices[i + 1], +toDraw.vertices[i + 2], toDraw.normals[i] + toDraw.vertices[i], toDraw.normals[i + 1] + toDraw.vertices[i + 1], toDraw.normals[i + 2] + toDraw.vertices[i + 2]);
+			pLine n(toDraw->vertices[i], toDraw->vertices[i + 1], + toDraw->vertices[i + 2], toDraw->normals[i] + toDraw->vertices[i], toDraw->normals[i + 1] + toDraw->vertices[i + 1], toDraw->normals[i + 2] + toDraw->vertices[i + 2]);
 			n.Render();
+		}
+		for (int i = 0; i < toDraw->numVertices; i += 9)
+		{
+			Triangle face(float3(toDraw->vertices[i], toDraw->vertices[i + 1], toDraw->vertices[i + 2]), float3(toDraw->vertices[i + 3], toDraw->vertices[i + 4], toDraw->vertices[i + 5]), float3(toDraw->vertices[i + 6], toDraw->vertices[i + 7], toDraw->vertices[i + 8]));
+			float3 faceCenter = face.Centroid();
+			float3 faceNormal = face.NormalCCW();
+			pLine normal(faceCenter.x, faceCenter.y, faceCenter.z, faceCenter.x + faceNormal.x, faceCenter.y + faceNormal.y, faceCenter.z + faceNormal.z);
+			normal.Render();
 		}
 	}
 }
