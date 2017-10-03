@@ -359,7 +359,7 @@ void ModuleRenderer3D::Draw(Mesh toDraw)
 	glVertexPointer(3, GL_FLOAT, 0, NULL);	
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw.idIndices);
-	glDrawElements(GL_TRIANGLES, sizeof(uint) * toDraw.numIndices, GL_UNSIGNED_SHORT, NULL);
+	glDrawElements(GL_TRIANGLES, toDraw.numIndices, GL_UNSIGNED_INT, NULL);
 
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
