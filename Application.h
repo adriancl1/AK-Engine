@@ -12,6 +12,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
 #include "ModuleSceneEditor.h"
+#include "ModuleGeometryImporter.h"
 
 class Application
 {
@@ -24,6 +25,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleImGui* imGui;
 	ModuleSceneEditor* sceneEditor;
+	ModuleGeometryImporter* geometryImporter;
 
 
 private:
@@ -53,3 +55,6 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 };
+
+// Give App pointer access everywhere
+extern Application* App;

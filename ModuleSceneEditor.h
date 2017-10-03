@@ -5,6 +5,18 @@
 #include "Primitive.h"
 #include <list>
 
+class Mesh
+{
+public:
+	uint idVertices = 0; // id in VRAM 
+	uint numVertices = 0;
+	float* vertices = nullptr;
+	
+	uint idIndices = 0; // id in VRAM 
+	uint numIndices = 0;
+	unsigned short* indices = nullptr;
+};
+
 class ModuleSceneEditor : public Module
 {
 public:
@@ -30,11 +42,12 @@ public:
 	void AddPlane(float x, float y, float z, float d, vec3 pos = vec3(0, 0, 0));
 	void AddPlaneNoGrid(float x, float y, float z, float d, vec3 pos = vec3(0, 0, 0));
 	void AddCapsule(float radius, float height, vec3 pos = vec3(0, 0, 0));
+	void AddMesh(Mesh* newMesh);
 
 private:
 	//For now ----
 	std::list<Primitive*> sceneObjects;
-	int geometryID;
+	std::list<Mesh*> sceneMeshes;
 	//--------
 
 	bool wframe;

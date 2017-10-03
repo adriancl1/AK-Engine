@@ -8,6 +8,8 @@
 
 #define MAX_LIGHTS 8
 
+class Mesh;
+
 class ModuleRenderer3D : public Module
 {
 public:
@@ -26,6 +28,8 @@ public:
 	void SetLighting();
 	void SetColorMaterial();
 	void SetTexture2D();
+
+	void Draw(Mesh toDraw);
 
 public:
 

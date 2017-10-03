@@ -26,14 +26,12 @@ bool ModuleInput::Init(JSON_Object* data)
 	BROFILER_CATEGORY("Module Input Init", Profiler::Color::AliceBlue);
 
 	LOG("Init SDL input event system");
-	App->imGui->AddLogToWindow("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
-		App->imGui->AddLogToWindow("SDL_EVENTS could not initialize!");
 		ret = false;
 	}
 
@@ -94,6 +92,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	mouse_x_motion = mouse_y_motion = 0;
 
 	bool quit = false;
+	char* fileDir = nullptr;
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
@@ -115,11 +114,18 @@ update_status ModuleInput::PreUpdate(float dt)
 			quit = true;
 			break;
 
+			case SDL_DROPFILE:      // In case if dropped file
+				fileDir = e.drop.file;
+				// Shows directory of dropped file
+				LOG("%s dropped on window.", fileDir);
+				App->geometryImporter->LoadMesh(fileDir);
+				SDL_free(fileDir);    // Free dropped_filedir memory
+				break;
+
 			case SDL_WINDOWEVENT:
-			{
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
-			}
+				break;
 		}
 	}
 
@@ -133,7 +139,6 @@ update_status ModuleInput::PreUpdate(float dt)
 bool ModuleInput::CleanUp(JSON_Object* data)
 {
 	LOG("Quitting SDL input event subsystem.");
-	App->imGui->AddLogToWindow("Quitting SDL input event subsystem."); 
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

@@ -55,6 +55,11 @@ void ModuleSceneEditor::Draw()
 		(*it)->Render();
 	}
 
+	for (std::list<Mesh*>::iterator it = sceneMeshes.begin(); it != sceneMeshes.end(); ++it)
+	{
+		App->renderer3D->Draw((**it));
+	}
+
 	Plane p(0, 0, 0, 100);
 	p.color = White;
 	p.Render();
@@ -204,4 +209,9 @@ void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 
 	sceneObjects.push_back(cap);
 
+}
+
+void ModuleSceneEditor::AddMesh(Mesh* newMesh)
+{
+	sceneMeshes.push_back(newMesh);
 }

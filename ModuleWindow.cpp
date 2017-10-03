@@ -23,20 +23,18 @@ bool ModuleWindow::Init(JSON_Object* data)
 	BROFILER_CATEGORY("Module Window Init", Profiler::Color::AliceBlue);
 
 	LOG("Init SDL window & surface");
-	App->imGui->AddLogToWindow("Init SDL window & surface");
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
-		App->imGui->AddLogToWindow("SDL_VIDEO could not initialize!");
 		ret = false;
 	}
 	else
 	{
 		if (data == nullptr)
 		{
-			App->imGui->AddLogToWindow("Window config couldn't load, using default values!");
+			LOG("Wndow config couldn't load, using default values!");
 			//Create window
 			width = SCREEN_WIDTH * SCREEN_SIZE;
 			height = SCREEN_HEIGHT * SCREEN_SIZE;
@@ -90,7 +88,7 @@ bool ModuleWindow::Init(JSON_Object* data)
 
 		else
 		{
-			App->imGui->AddLogToWindow("Window config loaded");
+			LOG("Window config loaded succesfully.")
 
 			width = json_object_dotget_number(data, "width");
 			height= json_object_dotget_number(data, "height");
@@ -137,7 +135,6 @@ bool ModuleWindow::Init(JSON_Object* data)
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-			App->imGui->AddLogToWindow("Window could not be created!");
 			ret = false;
 		}
 		else
@@ -160,7 +157,6 @@ SDL_Window * ModuleWindow::GetWindow() const
 bool ModuleWindow::CleanUp(JSON_Object* data)
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
-	App->imGui->AddLogToWindow("Destroying SDL window and quitting all SDL systems"); 
 	
 	JSON_Object* windowData = json_object_dotget_object(data, name.c_str());
 

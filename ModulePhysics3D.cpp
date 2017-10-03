@@ -44,7 +44,6 @@ bool ModulePhysics3D::Init(JSON_Object* data)
 	BROFILER_CATEGORY("Module Physics 3D Init", Profiler::Color::AliceBlue);
 
 	LOG("Creating 3D Physics simulation");
-	App->imGui->AddLogToWindow("Creating 3D Physics simulation");
 	bool ret = true;
 
 	return ret;
@@ -55,7 +54,6 @@ bool ModulePhysics3D::Init(JSON_Object* data)
 bool ModulePhysics3D::Start()
 {
 	LOG("Creating Physics environment");
-	App->imGui->AddLogToWindow("Creating Physics environment");
 
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
 	world->setDebugDrawer(debug_draw);
@@ -155,7 +153,6 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 bool ModulePhysics3D::CleanUp(JSON_Object* data)
 {
 	LOG("Destroying 3D Physics simulation");
-	App->imGui->AddLogToWindow("Destroying 3D Physics simulation");
 
 	// Remove from the world all collision bodies
 	for(int i = world->getNumCollisionObjects() - 1; i >= 0; i--)

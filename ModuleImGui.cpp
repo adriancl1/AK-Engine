@@ -36,7 +36,8 @@ ModuleImGui::ModuleImGui(Application* app, bool start_enabled) : Module(app, sta
 }
 
 ModuleImGui::~ModuleImGui()
-{}
+{
+}
 
 //Load assets
 bool ModuleImGui::Start()
@@ -44,7 +45,6 @@ bool ModuleImGui::Start()
 	BROFILER_CATEGORY("Module ImGui Start", Profiler::Color::AliceBlue);
 
 	LOG("Loading Intro assets");
-	AddLogToWindow("Loading Intro assets");
 	bool ret = true;
 
 	glewInit();
@@ -519,9 +519,7 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		SDL_GetDesktopDisplayMode(0, &dm);
 		if (SDL_GetDesktopDisplayMode(0, &dm) != 0) 
 		{
-			SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
-			App->imGui->AddLogToWindow("SDL_GetDesktopDisplayMode failed!");
-		
+			LOG("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());		
 		}
 		ImGui::TextColored(ImVec4(0.90f, 0.70f, 0.00f, 1.0f), "%d", dm.refresh_rate);
 
