@@ -170,42 +170,94 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
 	glLineWidth(2.0f);
-	/*glBegin(GL_TRIANGLES);
-	//Face 1
+
+	GLubyte checkImage[128][128][4];
+	for (int i = 0; i < 128; i++) {
+		for (int j = 0; j < 128; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	uint imageName = 0;
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &imageName);
+	glBindTexture(GL_TEXTURE_2D, imageName);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 128, 128,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+
+
+	glBegin(GL_TRIANGLES);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, imageName);
+
+	//Face 1 LEFT
 	glVertex3f(0.f, 0.f, 1.f);
+	glTexCoord2f(0.f, 1.f); 
 	glVertex3f(0.f, 1.f, 0.f);
+	glTexCoord2f(0.f, 0.f);
 	glVertex3f(0.f, 0.f, 0.f);
+	glTexCoord2f(0.f, 1.f);
 
 	glVertex3f(0.f, 0.f, 1.f);
+	glTexCoord2f(1.f, 1.f);
 	glVertex3f(0.f, 1.f, 1.f);
+	glTexCoord2f(1.f, 0.f);
 	glVertex3f(0.f, 1.f, 0.f);
+	glTexCoord2f(0.f, 0.f); 
 
-	//Face 2
+	//Face 2 FRONT
 	glVertex3f(1.f, 1.f, 0.f);
+	glTexCoord2f(1.f, 0.f); 
 	glVertex3f(1.f, 0.f, 0.f);
+	glTexCoord2f(1.f, 1.f);
 	glVertex3f(0.f, 0.f, 0.f);
+	glTexCoord2f(0.f, 1.f);
 	
 	glVertex3f(0.f, 0.f, 0.f);
+	glTexCoord2f(0.f, 1.f);
 	glVertex3f(0.f, 1.f, 0.f);
+	glTexCoord2f(0.f, 0.f);
 	glVertex3f(1.f, 1.f, 0.f);
+	glTexCoord2f(1.f, 0.f);
 
-	//Face 3
+	//Face 3 RIGHT
 	glVertex3f(1.f, 0.f, 1.f);
+	glTexCoord2f(1.f, 1.f);
 	glVertex3f(1.f, 0.f, 0.f);
+	glTexCoord2f(0.f, 1.f);
 	glVertex3f(1.f, 1.f, 0.f);
+	glTexCoord2f(0.f, 0.f);
 
 	glVertex3f(1.f, 1.f, 0.f);
+	glTexCoord2f(0.f, 0.f);
 	glVertex3f(1.f, 1.f, 1.f);
+	glTexCoord2f(1.f, 0.f);
 	glVertex3f(1.f, 0.f, 1.f);
+	glTexCoord2f(0.f, 1.f);
 
 	//Face 4
 	glVertex3f(0.f, 1.f, 1.f);
+	glTexCoord2f(1.f, 0.f);
 	glVertex3f(0.f, 0.f, 1.f);
+	glTexCoord2f(1.f, 1.f);
 	glVertex3f(1.f, 0.f, 1.f);
+	glTexCoord2f(0.f, 1.f);
 
 	glVertex3f(1.f, 0.f, 1.f);
+	glTexCoord2f(0.f, 1.f);
 	glVertex3f(1.f, 1.f, 1.f);
+	glTexCoord2f(0.f, 0.f);
 	glVertex3f(0.f, 1.f, 1.f);
+	glTexCoord2f(1.f, 0.f); 
 
 	//Face 5
 	glVertex3f(1.f, 1.f, 1.f);
@@ -215,7 +267,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glVertex3f(0.f, 1.f, 0.f);
 	glVertex3f(0.f, 1.f, 1.f);
 	glVertex3f(1.f, 1.f, 1.f);
-	glEnd();*/
+
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glLineWidth(1.0f);
 
