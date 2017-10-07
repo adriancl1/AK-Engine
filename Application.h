@@ -13,6 +13,7 @@
 #include "ModuleImGui.h"
 #include "ModuleSceneEditor.h"
 #include "ModuleGeometryImporter.h"
+#include "ModuleTextures.h"
 
 class Application
 {
@@ -26,7 +27,7 @@ public:
 	ModuleImGui* imGui;
 	ModuleSceneEditor* sceneEditor;
 	ModuleGeometryImporter* geometryImporter;
-
+	ModuleTextures* textures;
 
 private:
 

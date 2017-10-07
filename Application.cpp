@@ -13,6 +13,7 @@ Application::Application()
 	imGui = new ModuleImGui(this);
 	sceneEditor = new ModuleSceneEditor(this);
 	geometryImporter = new ModuleGeometryImporter(this);
+	textures = new ModuleTextures(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -27,6 +28,7 @@ Application::Application()
 	AddModule(imGui);
 	AddModule(geometryImporter);
 	AddModule(sceneEditor);
+	AddModule(textures);
 
 	// Renderer last!
 	AddModule(renderer3D);
