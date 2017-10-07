@@ -34,7 +34,7 @@ bool ModuleSceneEditor::Init(JSON_Object* data)
 
 bool ModuleSceneEditor::Start()
 {
-	App->audio->PlayMusic("audio/walkwithme.ogg");
+	//App->audio->PlayMusic("audio/walkwithme.ogg");
 	App->camera->Move(vec3(0, 1, 0));
 
 	return true;

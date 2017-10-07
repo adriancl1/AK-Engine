@@ -1,4 +1,5 @@
 #include "Globals.h"
+#include "Application.h"
 #include "Glew\include\glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -236,7 +237,7 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 	float offsetY = sizeY * 0.5;
 	float offsetZ = sizeZ * 0.5;
 
-	float vertices[24] = 
+	float vertices[36] = 
 	{
 		-offsetX, -offsetY, -offsetZ, // 0
 		sizeX - offsetX, -offsetY, -offsetZ, // 1
@@ -245,15 +246,39 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 		-offsetX, -offsetY, sizeZ - offsetZ,  // 4
 		sizeX - offsetX, -offsetY, sizeZ -offsetZ, // 5
 		-offsetX, sizeY - offsetY, sizeZ -offsetZ, // 6
-		sizeX -offsetX, sizeY - offsetY, sizeZ -offsetZ // 7
+		sizeX -offsetX, sizeY - offsetY, sizeZ -offsetZ, // 7
+		- offsetX, sizeY - offsetY, -offsetZ, // 8 // 2.1
+		sizeX - offsetX, sizeY - offsetY, -offsetZ,  // 9 // 3.1
+		-offsetX, -offsetY, -offsetZ, // 10 // 0.1
+		sizeX - offsetX, -offsetY, -offsetZ, // 11 // 1.1
 	};
 	glGenBuffers(1, &myVertices);
 	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	
+	float texturesToVertices[24]
+	{
+		1,1, // 0
+		0,1, // 1
+		1,0, // 2
+		0,0, // 3
+		0,1, // 4
+		1,1, // 5
+		0,0, // 6
+		1,0, // 7
+		0,1, // 8
+		1,1, // 9
+		0,0, // 10
+		1,0  // 11
+	};
+
+	glGenBuffers(1, &myTextCoords);
+	glBindBuffer(GL_ARRAY_BUFFER, myTextCoords);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texturesToVertices), texturesToVertices, GL_STATIC_DRAW);
 
 	GLushort index[36] =
 	{
-		0,2,3, 0,3,1, 0,6,2, 0,4,6, 0,5,4, 0,1,5, 7,6,5, 5,6,4, 1,3,7, 7,5,1, 7,3,2, 2,6,7
+		0,2,3, 0,3,1, 0,6,2, 0,4,6, 10,5,4, 10,11,5, 7,6,5, 5,6,4, 1,3,7, 7,5,1, 7,9,8, 8,6,7
 	};
 	
 	glGenBuffers(1, &myID);
@@ -263,20 +288,32 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 
 void Cube2::InnerRender() const
 {
+	uint imageName = App->textures->ImportImage("Assets/Lenna.png");
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glBindBuffer(GL_ARRAY_BUFFER, myVertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, imageName);
+
+	glBindBuffer(GL_ARRAY_BUFFER, myTextCoords);
+	glTexCoordPointer(2, GL_FLOAT, 0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, myID);
 	glDrawElements(GL_TRIANGLES, sizeof(GLuint) * 36, GL_UNSIGNED_SHORT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 // SPHERE ============================================

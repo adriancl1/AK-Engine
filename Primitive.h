@@ -75,6 +75,7 @@ public:
 private:
 	uint myID;
 	uint myVertices;
+	uint myTextCoords;
 };
 
 // ============================================

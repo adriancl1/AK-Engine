@@ -203,7 +203,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 128, 128,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);*/
 
-
 	glBegin(GL_TRIANGLES);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, imageLoaded);
@@ -211,14 +210,19 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	//Face 1 LEFT
 	glTexCoord2f(1.f, 1.f);
 	glVertex3f(0.f, 0.f, 1.f);
+
 	glTexCoord2f(0.f, 0.f);
 	glVertex3f(0.f, 1.f, 0.f);
+
 	glTexCoord2f(0.f, 1.f);
 	glVertex3f(0.f, 0.f, 0.f);
+
 	glTexCoord2f(1.f, 1.f);
 	glVertex3f(0.f, 0.f, 1.f);
+
 	glTexCoord2f(1.f, 0.f);
 	glVertex3f(0.f, 1.f, 1.f);
+
 	glTexCoord2f(0.f, 0.f);
 	glVertex3f(0.f, 1.f, 0.f);
 
@@ -341,7 +345,6 @@ bool ModuleRenderer3D::CleanUp(JSON_Object* data)
 	json_object_dotset_boolean(rendererData, "lighting", lighting);
 	json_object_dotset_boolean(rendererData, "colorMaterial", colorMaterial);
 	json_object_dotset_boolean(rendererData, "texture2D", texture2D);
-
 
 	return true;
 }

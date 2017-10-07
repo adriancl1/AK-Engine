@@ -30,7 +30,6 @@ public:
 	void SetTexture2D();
 
 	void Draw(Mesh* toDraw);
-	uint ImportImage(const char* image);
 	uint imageLoaded;
 
 public:
