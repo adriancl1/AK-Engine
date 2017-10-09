@@ -17,6 +17,9 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 
 
 ## Changelog
+Version 0.3
+* Textures drawn on cube with direct mode, indices and meshes.
+
 Version 0.2.8
 * Cube draw through vertex array and draw elements (indices).
 * Import .fbx scenes and play .wav files through drag and drop.
