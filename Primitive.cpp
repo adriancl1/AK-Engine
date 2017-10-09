@@ -288,7 +288,6 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 
 void Cube2::InnerRender() const
 {
-	uint imageName = App->textures->ImportImage("Assets/Lenna.png");
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
@@ -299,7 +298,7 @@ void Cube2::InnerRender() const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, imageName);
+	glBindTexture(GL_TEXTURE_2D, App->textures->mainTexture);
 
 	glBindBuffer(GL_ARRAY_BUFFER, myTextCoords);
 	glTexCoordPointer(2, GL_FLOAT, 0, 0);

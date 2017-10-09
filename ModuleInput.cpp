@@ -129,6 +129,10 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					App->audio->PlayMusic(fileDir);
 				}
+				else if (strcmp(&fileDir[length - 4], ".png") == 0 || strcmp(&fileDir[length - 4], ".PNG") == 0)
+				{
+					App->textures->ImportImage(fileDir);
+				}
 				else
 				{
 					LOG("Unknown file format!");

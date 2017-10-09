@@ -15,6 +15,8 @@ public:
 	bool CleanUp(JSON_Object* data = nullptr);
 
 	uint ImportImage(const char * image);
+
+	uint mainTexture = 0;
 };
 
 #endif 

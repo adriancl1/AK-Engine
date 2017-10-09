@@ -37,6 +37,7 @@ bool ModuleSceneEditor::Start()
 	//App->audio->PlayMusic("audio/walkwithme.ogg");
 	App->camera->Move(vec3(0, 1, 0));
 
+
 	return true;
 }
 bool ModuleSceneEditor::CleanUp(JSON_Object* data)
@@ -46,6 +47,7 @@ bool ModuleSceneEditor::CleanUp(JSON_Object* data)
 
 update_status ModuleSceneEditor::PreUpdate(float dt)
 {
+	App->textures->ImportImage("Assets/Lenna.png");
 	return UPDATE_CONTINUE;
 }
 update_status ModuleSceneEditor::Update(float dt)

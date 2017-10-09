@@ -178,7 +178,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
 	glLineWidth(2.0f);
-	imageLoaded = App->textures->ImportImage("Assets/Lenna.png");
 	
 	GLubyte checkImage[128][128][4];
 	for (int i = 0; i < 128; i++) {
@@ -203,9 +202,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 128, 128,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);*/
 
+
 	glBegin(GL_TRIANGLES);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, imageLoaded);
+	glBindTexture(GL_TEXTURE_2D, App->textures->mainTexture);
 
 	//Face 1 LEFT
 	glTexCoord2f(1.f, 1.f);
@@ -451,6 +451,7 @@ void ModuleRenderer3D::Draw(Mesh* toDraw)
 	glBindBuffer(GL_ARRAY_BUFFER, toDraw->idVertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);	
 
+
 	if (toDraw->idTexCoords > 0)
 	{
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -477,6 +478,8 @@ void ModuleRenderer3D::Draw(Mesh* toDraw)
 
 	glPopMatrix();
 	glUseProgram(0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	if (App->physics->debug)
 	{

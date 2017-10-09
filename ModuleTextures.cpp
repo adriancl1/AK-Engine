@@ -48,7 +48,7 @@ uint ModuleTextures::ImportImage(const char * image)
 
 	ilBindImage(imageID); 			// Bind the image
 
-	success = ilLoadImage("Assets/Lenna.png"); 	// Load the image file
+	success = ilLoadImage(image); 	// Load the image file
 
 												// If we managed to load the image, then we can start to do things with it...
 	if (success)
@@ -107,6 +107,8 @@ uint ModuleTextures::ImportImage(const char * image)
 	ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 
 	LOG("Texture creation successful.");
+
+	mainTexture = textureID;
 
 	return textureID; // Return the GLuint to the texture so you can use it!
 }
