@@ -454,6 +454,7 @@ void ModuleRenderer3D::Draw(Mesh* toDraw)
 
 	if (toDraw->idTexCoords > 0)
 	{
+		glBindTexture(GL_TEXTURE_2D, App->textures->mainTexture);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, toDraw->idTexCoords);
 		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
