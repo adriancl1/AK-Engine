@@ -5,6 +5,7 @@
 
 class ComponentMaterial : public Component
 {
+public:
 	ComponentMaterial() : Component(Component_Material)
 	{}
 

@@ -12,14 +12,17 @@ enum ComponentType
 class Component
 {
 public:
-	Component(ComponentType type, bool startActive = true) : myType(type), active(startActive)
+	Component(ComponentType type, bool startActive = true) : type(type), active(startActive)
 	{}
 
 	virtual void Enable()
 	{
 		active = true;
 	}
-	virtual void Update();
+	virtual void Update()
+	{
+		
+	}
 	virtual void Disable()
 	{
 		active = false;
@@ -27,5 +30,5 @@ public:
 
 	std::string name;
 	bool active;
-	ComponentType myType;
+	ComponentType type;
 };

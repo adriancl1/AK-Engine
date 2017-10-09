@@ -87,7 +87,7 @@
     <ClInclude Include="imgui-1.51\imgui_impl_sdl_gl3.h" />
     <ClInclude Include="imgui-1.51\imgui_internal.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="Material.h" />
+    <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MathGeo\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeo\Geometry\AABB.h" />
@@ -147,9 +147,9 @@
     <ClInclude Include="MathGeo\Math\TransformOps.h" />
     <ClInclude Include="MathGeo\Time\Clock.h" />
     <ClInclude Include="MemLeaks.h" />
-    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ModuleCamera3D.h" />
-    <ClInclude Include="ModuleGeometryImporter.h" />
+    <ClInclude Include="ModuleImporter.h" />
     <ClInclude Include="ModuleImGui.h" />
     <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
@@ -166,11 +166,12 @@
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="ComponentTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="imgui-1.51\imgui.cpp" />
@@ -211,7 +212,7 @@
     <ClCompile Include="MathGeo\Time\Clock.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
-    <ClCompile Include="ModuleGeometryImporter.cpp" />
+    <ClCompile Include="ModuleImporter.cpp" />
     <ClCompile Include="ModuleImGui.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModulePhysics3D.cpp" />

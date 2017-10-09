@@ -1,9 +1,11 @@
 #include "Application.h"
+#include "GameObject.h"
+#include "ModuleSceneEditor.h"
 #include "Glew\include\glew.h"
 #include "MathGeo\Geometry\Triangle.h"
 #include "MathGeo\Math\float4x4.h"
 #include "Brofiler-1.1.2\Brofiler.h"
-#include "ModuleSceneEditor.h"
+
 
 
 ModuleSceneEditor::ModuleSceneEditor(Application* app, bool startEnabled) : Module(app, startEnabled)
@@ -37,6 +39,7 @@ bool ModuleSceneEditor::Start()
 	//App->audio->PlayMusic("audio/walkwithme.ogg");
 	App->camera->Move(vec3(0, 1, 0));
 
+	root = new GameObject();
 
 	return true;
 }
@@ -65,11 +68,8 @@ void ModuleSceneEditor::Draw()
 	{
 		(*it)->Render();
 	}
-
-	for (std::list<Mesh*>::iterator it = sceneMeshes.begin(); it != sceneMeshes.end(); ++it)
-	{
-		App->renderer3D->Draw((*it));
-	}
+	
+	root->Update();
 
 	pPlane p(0, 0, 0, 100);
 	p.color = White;
@@ -227,78 +227,11 @@ void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 
 }
 
-void ModuleSceneEditor::AddMesh(Mesh* newMesh)
+GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 {
-	sceneMeshes.push_back(newMesh);
-}
+	GameObject* ret = App->importer->LoadGameObject(path);
 
-void Mesh::DrawDebug()
-{
-	if (idNormals>0)
-	{
-		for (int i = 0; i < numVertices; i += 3)
-		{
-			pLine n(vertices[i], vertices[i + 1], vertices[i + 2], normals[i] + vertices[i], normals[i + 1] + vertices[i + 1], normals[i + 2] + vertices[i + 2]);
-			n.color = Green;
-			n.Render();
-		}
-		for (int i = 0; i < numVertices; i += 9)
-		{
-			Triangle face(float3(vertices[i], vertices[i + 1], vertices[i + 2]), float3(vertices[i + 3], vertices[i + 4], vertices[i + 5]), float3(vertices[i + 6], vertices[i + 7], vertices[i + 8]));
-			float3 faceCenter = face.Centroid();
-			float3 faceNormal = face.NormalCCW();
-			pLine normal(faceCenter.x, faceCenter.y, faceCenter.z, faceCenter.x + faceNormal.x, faceCenter.y + faceNormal.y, faceCenter.z + faceNormal.z);
-			normal.color = Orange;
-			normal.Render();
-		}
-	}
+	root->AddChild(ret);
 
-	//Draw enclosing box ----
-		float3 corners[8];
-		enclosingBox.GetCornerPoints(corners);
-
-		glPushMatrix();
-
-		glMultMatrixf((GLfloat*)float4x4::identity.Transposed().ptr());
-		glColor3f(Azure.r, Azure.g, Azure.b);
-
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-		glBegin(GL_QUADS);
-
-		glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy, sz);
-		glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy, sz);
-		glVertex3fv((GLfloat*)&corners[7]); //glVertex3f( sx,  sy, sz);
-		glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx,  sy, sz);
-
-		glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
-		glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
-		glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx,  sy, -sz);
-		glVertex3fv((GLfloat*)&corners[6]); //glVertex3f( sx,  sy, -sz);
-
-		glVertex3fv((GLfloat*)&corners[5]); //glVertex3f(sx, -sy,  sz);
-		glVertex3fv((GLfloat*)&corners[4]); //glVertex3f(sx, -sy, -sz);
-		glVertex3fv((GLfloat*)&corners[6]); //glVertex3f(sx,  sy, -sz);
-		glVertex3fv((GLfloat*)&corners[7]); //glVertex3f(sx,  sy,  sz);
-
-		glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
-		glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
-		glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx,  sy,  sz);
-		glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx,  sy, -sz);
-
-		glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx, sy,  sz);
-		glVertex3fv((GLfloat*)&corners[7]); //glVertex3f( sx, sy,  sz);
-		glVertex3fv((GLfloat*)&corners[6]); //glVertex3f( sx, sy, -sz);
-		glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx, sy, -sz);
-
-		glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
-		glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
-		glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy,  sz);
-		glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
-
-		glEnd();
-		glPopMatrix();
-
-		glColor3f(0, 0, 0);
-
+	return ret;
 }

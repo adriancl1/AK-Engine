@@ -1,8 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
+#include "Primitive.h"
+#include "ComponentMesh.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleSceneEditor.h"
-#include "Primitive.h"
 #include "Glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include "Brofiler-1.1.2\Brofiler.h"
@@ -421,7 +422,7 @@ void ModuleRenderer3D::SetTexture2D()
 	}
 }
 
-void ModuleRenderer3D::Draw(Mesh* toDraw)
+void ModuleRenderer3D::Draw(ComponentMesh* toDraw)
 {
 	if (App->sceneEditor->GetWireframe() == true)
 	{

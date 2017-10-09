@@ -5,6 +5,7 @@
 
 class ComponentTransform : public Component
 {
+public:
 	ComponentTransform(float3 pos, float3 scale, Quat rot, ComponentType type = Component_Transform) : Component(Component_Transform)
 	{}
 

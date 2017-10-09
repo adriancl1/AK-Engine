@@ -9,7 +9,6 @@
 class ModuleAudio : public Module
 {
 public:
-
 	ModuleAudio(Application* app, bool start_enabled = true);
 	~ModuleAudio();
 
@@ -29,10 +28,11 @@ public:
 	void ResumeMusic();
 
 private:
+	Mix_Music* music;
 
-	Mix_Music*			music;
-	p2List<Mix_Chunk*>	fx;
 	bool pausedMusic;
+
+	p2List<Mix_Chunk*>	fx;
 };
 
 #endif // __ModuleAudio_H__

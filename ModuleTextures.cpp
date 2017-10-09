@@ -35,7 +35,6 @@ bool ModuleTextures::CleanUp(JSON_Object * data)
 
 uint ModuleTextures::ImportImage(const char * image)
 {
-
 	ILuint imageID;				// Create an image ID as a ULuint
 
 	GLuint textureID;			// Create a texture ID as a GLuint

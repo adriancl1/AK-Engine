@@ -288,7 +288,6 @@ Cube2::Cube2(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, s
 
 void Cube2::InnerRender() const
 {
-
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);

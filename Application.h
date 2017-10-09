@@ -12,7 +12,7 @@
 #include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
 #include "ModuleSceneEditor.h"
-#include "ModuleGeometryImporter.h"
+#include "ModuleImporter.h"
 #include "ModuleTextures.h"
 
 class Application
@@ -26,7 +26,7 @@ public:
 	ModulePhysics3D* physics;
 	ModuleImGui* imGui;
 	ModuleSceneEditor* sceneEditor;
-	ModuleGeometryImporter* geometryImporter;
+	ModuleImporter* importer;
 	ModuleTextures* textures;
 
 private:

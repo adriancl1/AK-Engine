@@ -123,7 +123,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				length = strlen(fileDir);
 				if (strcmp(&fileDir[length - 4], ".fbx") == 0 || strcmp(&fileDir[length - 4], ".FBX") == 0)
 				{
-					App->geometryImporter->LoadMesh(fileDir);
+					App->sceneEditor->CreateNewGameObject(fileDir);
 				}
 				else if (strcmp(&fileDir[length - 4], ".wav") == 0 || strcmp(&fileDir[length - 4], ".WAV") == 0)
 				{

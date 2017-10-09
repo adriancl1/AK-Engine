@@ -27,6 +27,7 @@ public:
 	void SetToWireframe(bool wframe);
 	bool GetWireframe()const;
 
+	//Add Primitive
 	void AddCube(vec3 size, vec3 pos = vec3(0,0,0));
 	void AddCube1(vec3 size, vec3 pos = vec3(0, 0, 0));
 	void AddCube2(vec3 size, vec3 pos = vec3(0, 0, 0));
@@ -35,15 +36,15 @@ public:
 	void AddPlane(float x, float y, float z, float d, vec3 pos = vec3(0, 0, 0));
 	void AddPlaneNoGrid(float x, float y, float z, float d, vec3 pos = vec3(0, 0, 0));
 	void AddCapsule(float radius, float height, vec3 pos = vec3(0, 0, 0));
-	void AddMesh(Mesh* newMesh);
-	GameObject* CreateNewGameObject();
+
+	GameObject* CreateNewGameObject(const char* path);
 
 private:
 	//For now ----
 	std::list<Primitive*> sceneObjects;
 	std::list<Mesh*> sceneMeshes;
-	GameObject* root;	
-	//--------
+
+	GameObject* root;
 
 	bool wframe;
 };

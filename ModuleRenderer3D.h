@@ -8,7 +8,7 @@
 
 #define MAX_LIGHTS 8
 
-class Mesh;
+class ComponentMesh;
 
 class ModuleRenderer3D : public Module
 {
@@ -29,11 +29,10 @@ public:
 	void SetColorMaterial();
 	void SetTexture2D();
 
-	void Draw(Mesh* toDraw);
+	void Draw(ComponentMesh* toDraw);
 	uint imageLoaded;
 
 public:
-
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

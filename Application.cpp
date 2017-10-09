@@ -12,7 +12,7 @@ Application::Application()
 	physics = new ModulePhysics3D(this);
 	imGui = new ModuleImGui(this);
 	sceneEditor = new ModuleSceneEditor(this);
-	geometryImporter = new ModuleGeometryImporter(this);
+	importer = new ModuleImporter(this);
 	textures = new ModuleTextures(this);
 
 	// The order of calls is very important!
@@ -26,7 +26,7 @@ Application::Application()
 	AddModule(audio);
 	AddModule(physics);
 	AddModule(imGui);
-	AddModule(geometryImporter);
+	AddModule(importer);
 	AddModule(sceneEditor);
 	AddModule(textures);
 
