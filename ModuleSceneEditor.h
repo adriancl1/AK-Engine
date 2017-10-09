@@ -26,6 +26,8 @@ public:
 	uint idTexCoords = 0; // id in VRAM
 	float* texCoords = nullptr;
 
+	uint idTexture = 0; //id in VRAM
+
 	AABB enclosingBox;
 
 	void DrawDebug();

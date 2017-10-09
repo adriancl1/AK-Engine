@@ -106,6 +106,20 @@ bool ModuleGeometryImporter::LoadMesh(const char* fullPath)
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->texCoords, GL_STATIC_DRAW);
 			}
 
+			//MATERIAL
+			aiMaterial* material = nullptr;
+			material = scene->mMaterials[newMesh->mMaterialIndex];
+			if (material != nullptr)
+			{
+				uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
+				aiString path;
+				material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+				std::string fullPath = "Assets/";
+				fullPath.append(path.C_Str());
+				m->idTexture = App->textures->ImportImage(fullPath.c_str());
+			}
+
+
 			m->enclosingBox.SetNegativeInfinity();
 			m->enclosingBox.Enclose((float3*)m->vertices, m->numVertices);
 

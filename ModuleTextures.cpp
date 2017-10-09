@@ -97,18 +97,19 @@ uint ModuleTextures::ImportImage(const char * image)
 			ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
 			GL_UNSIGNED_BYTE,		// Image data type
 			ilGetData());			// The actual image data itself
+
+		mainTexture = textureID;
 	}
 	else // If we failed to open the image file in the first place...
 	{
 		error = ilGetError();
 		LOG("Image load failed - IL reports error: %s", iluErrorString(error));
+		return 0;
 	}
 
 	ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 
 	LOG("Texture creation successful.");
-
-	mainTexture = textureID;
 
 	return textureID; // Return the GLuint to the texture so you can use it!
 }
