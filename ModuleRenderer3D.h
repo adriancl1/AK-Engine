@@ -9,6 +9,7 @@
 #define MAX_LIGHTS 8
 
 class ComponentMesh;
+class GameObject;
 
 class ModuleRenderer3D : public Module
 {
@@ -29,7 +30,7 @@ public:
 	void SetColorMaterial();
 	void SetTexture2D();
 
-	void Draw(ComponentMesh* toDraw);
+	void Draw(GameObject* toDraw);
 	uint imageLoaded;
 
 public:

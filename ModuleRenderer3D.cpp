@@ -1,6 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "Primitive.h"
+#include "GameObject.h"
+#include "Component.h"
+#include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleSceneEditor.h"
@@ -422,71 +425,85 @@ void ModuleRenderer3D::SetTexture2D()
 	}
 }
 
-void ModuleRenderer3D::Draw(ComponentMesh* toDraw)
+void ModuleRenderer3D::Draw(GameObject* objectDraw)
 {
-	if (App->sceneEditor->GetWireframe() == true)
+	for (int i = 0; i < objectDraw->components.size(); i++)
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		if (objectDraw->components[i]->type == Component_Mesh)
+		{
+			if (App->sceneEditor->GetWireframe() == true)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+			ComponentMesh* toDraw = dynamic_cast<ComponentMesh*> (objectDraw->components[i]);
+			glPushMatrix();
+
+			//float m[16] = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
+
+			//glMultMatrixf(m);
+
+			if (toDraw->idNormals > 0)
+			{
+				glEnable(GL_LIGHTING);
+				glEnableClientState(GL_NORMAL_ARRAY);
+
+				glBindBuffer(GL_ARRAY_BUFFER, toDraw->idNormals);
+				glNormalPointer(GL_FLOAT, 0, NULL);
+			}
+
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+			glBindBuffer(GL_ARRAY_BUFFER, toDraw->idVertices);
+			glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+
+			if (toDraw->idTexCoords > 0)
+			{
+				ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(objectDraw->FindComponent(Component_Material));
+				if(mat!=nullptr)
+				{
+					glBindTexture(GL_TEXTURE_2D, mat->idTexture);
+				}
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, toDraw->idTexCoords);
+				glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+			}
+
+			if (toDraw->idColors > 0)
+			{
+				glEnableClientState(GL_COLOR_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, toDraw->idColors);
+				glColorPointer(3, GL_FLOAT, 0, NULL);
+			}
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw->idIndices);
+			glDrawElements(GL_TRIANGLES, toDraw->numIndices, GL_UNSIGNED_INT, NULL);
+
+
+			glDisableClientState(GL_COLOR_ARRAY);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			glDisableClientState(GL_NORMAL_ARRAY);
+			glDisableClientState(GL_VERTEX_ARRAY);
+			glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+
+			glPopMatrix();
+			glUseProgram(0);
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			if (App->physics->debug)
+			{
+				toDraw->DrawDebug();
+			}
+
+		}
 	}
-	else
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-	glPushMatrix();
-
-	//float m[16] = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
-
-	//glMultMatrixf(m);
-
-	if (toDraw->idNormals > 0)
-	{
-			glEnable(GL_LIGHTING);
-			glEnableClientState(GL_NORMAL_ARRAY);
-
-			glBindBuffer(GL_ARRAY_BUFFER, toDraw->idNormals);
-			glNormalPointer(GL_FLOAT, 0, NULL);
-	}
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-	glBindBuffer(GL_ARRAY_BUFFER, toDraw->idVertices);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);	
-
-
-	if (toDraw->idTexCoords > 0)
-	{
-		glBindTexture(GL_TEXTURE_2D, toDraw->idTexture);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, toDraw->idTexCoords);
-		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-	}
-
-	if (toDraw->idColors > 0)
-	{
-		glEnableClientState(GL_COLOR_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, toDraw->idColors);
-		glColorPointer(3, GL_FLOAT, 0, NULL);
-	}
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw->idIndices);
-	glDrawElements(GL_TRIANGLES, toDraw->numIndices, GL_UNSIGNED_INT, NULL);
-
-
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
-
-	glPopMatrix();
-	glUseProgram(0);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	if (App->physics->debug)
-	{
-		toDraw->DrawDebug();
-	}
+	
+	
 	
 }
 

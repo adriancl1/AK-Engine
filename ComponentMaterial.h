@@ -10,4 +10,6 @@ public:
 	{}
 
 	uint idTexture;
+	
+
 };

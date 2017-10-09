@@ -1,4 +1,7 @@
 #include "GameObject.h"
+#include "Application.h"
+#include "ModuleRenderer3D.h"
+
 
 GameObject::GameObject(GameObject* parent): parent(parent)
 {
@@ -11,6 +14,8 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
+	App->renderer3D->Draw(this);
+
 	for (int i = 0; i < childs.size(); i++)
 	{
 		childs[i]->Update();

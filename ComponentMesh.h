@@ -34,6 +34,11 @@ public:
 
 	AABB enclosingBox;
 
+	void Update()
+	{
+		//App->renderer3D->Draw(this);
+	}
+
 	void DrawDebug()
 	{
 		if (idNormals>0)
