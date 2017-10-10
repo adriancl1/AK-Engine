@@ -4,12 +4,14 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentTransform.h"
 
 #include "Assimp\include\cimport.h" 
 #include "Assimp\include\scene.h" 
 #include "Assimp\include\postprocess.h" 
 #include "Assimp\include\cfileio.h"
 #include "Glew\include\glew.h"
+#include "MathGeo\Math\Quat.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
@@ -34,16 +36,18 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 {
 	GameObject* newObject = new GameObject();
 	const aiScene* scene = aiImportFile(fullPath, aiProcessPreset_TargetRealtime_MaxQuality);
-
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		LOG("Scene %s loaded succesfully", fullPath);
+
+		//Load transform
+		aiNode* node = scene->mRootNode;
+		newObject->AddComponent(LoadTransform(node));
 
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
 			newObject->AddComponent(LoadMesh(scene->mMeshes[i]));
-
 			aiMaterial* material = nullptr;
 			material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
 
@@ -150,10 +154,26 @@ ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
 		std::string fullPath = "Assets/";
 		fullPath.append(path.C_Str());
 		m->idTexture = App->textures->ImportImage(fullPath.c_str());
+		m->name = path.C_Str();
 
 		return m;
 	}
 	return nullptr;
+}
+
+ComponentTransform* ModuleImporter::LoadTransform(aiNode* node)
+{
+	aiVector3D translation;
+	aiVector3D scale;
+	aiQuaternion rotation;
+
+	node->mTransformation.Decompose(scale, rotation, translation);
+
+	float3 pos(translation.x, translation.y, translation.z);
+	float3 sca(scale.x, scale.y, scale.z);
+	Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
+
+	return new ComponentTransform(pos, sca, rot);
 }
 
 

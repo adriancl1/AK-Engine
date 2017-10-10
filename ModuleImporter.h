@@ -6,11 +6,13 @@
 
 class aiMesh;
 class aiMaterial;
+class aiNode;
 
 class GameObject;
 
 class ComponentMesh;
 class ComponentMaterial;
+class ComponentTransform;
 
 class ModuleImporter : public Module
 {
@@ -26,6 +28,7 @@ public:
 
 	ComponentMesh* LoadMesh(aiMesh* newMesh);
 	ComponentMaterial* LoadMaterial(aiMaterial* newMaterial);
+	ComponentTransform* LoadTransform(aiNode* node);
 };
 
 #endif //__ModuleImporter_H__
