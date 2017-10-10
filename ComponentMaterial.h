@@ -7,13 +7,18 @@ class ComponentMaterial : public Component
 {
 public:
 	ComponentMaterial() : Component(Component_Material)
-	{}
+	{
+	}
 
 	uint idTexture;
 	
 	void OnEditor() override
 	{
-		ImGui::Text("Name: %s", name);
-		ImGui::Text("Texture ID: %i", idTexture);
+		if (ImGui::TreeNodeEx("Material"))
+		{
+			ImGui::Text(name.c_str());
+			ImGui::Text("Texture ID: %i", idTexture);
+			ImGui::TreePop();
+		}
 	}
 };

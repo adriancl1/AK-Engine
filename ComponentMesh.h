@@ -12,7 +12,9 @@ class ComponentMesh : public Component
 {
 public:
 	ComponentMesh() : Component(Component_Mesh)
-	{}
+	{
+		name = "Mesh";
+	}
 
 	~ComponentMesh()
 	{
@@ -140,12 +142,16 @@ public:
 
 	void OnEditor() override
 	{
-		ImGui::Text("Vertices ID: %i", idVertices);
-		ImGui::Text("Num Vertices: %i", numVertices);
-		ImGui::Text("Indexes ID: %i", idIndices);
-		ImGui::Text("Num Indexes: %i", numIndices);
-		ImGui::Text("Normals ID: %i", idNormals);
-		ImGui::Text("Colors ID: %i", idColors);
-		ImGui::Text("Texture Coords: %i", idTexCoords);
+		if (ImGui::TreeNodeEx(name.c_str()))
+		{
+			ImGui::Text("Vertices ID: %i", idVertices);
+			ImGui::Text("Num Vertices: %i", numVertices);
+			ImGui::Text("Indexes ID: %i", idIndices);
+			ImGui::Text("Num Indexes: %i", numIndices);
+			ImGui::Text("Normals ID: %i", idNormals);
+			ImGui::Text("Colors ID: %i", idColors);
+			ImGui::Text("Texture Coords: %i", idTexCoords);
+			ImGui::TreePop();
+		}
 	}
 };

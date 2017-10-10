@@ -35,6 +35,16 @@ bool ModuleImporter::Init(JSON_Object* data)
 GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 {
 	GameObject* newObject = new GameObject();
+
+	uint length = strlen(fullPath);
+
+	std::string namePath = fullPath;
+
+	uint i = namePath.find_last_of("\\");
+	char* testM = new char[length-i];
+	namePath.copy(testM, length - i, i);
+	newObject->name.assign(testM);
+
 	const aiScene* scene = aiImportFile(fullPath, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -67,7 +77,6 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 ComponentMesh* ModuleImporter::LoadMesh(aiMesh* newMesh)
 {
 	ComponentMesh* m = new ComponentMesh;
-
 	//VERTICES
 	m->numVertices = newMesh->mNumVertices;
 	m->vertices = new float[m->numVertices * 3];

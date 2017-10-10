@@ -5,7 +5,7 @@
 
 GameObject::GameObject(GameObject* parent): parent(parent)
 {
-
+	name = "Game Object";
 }
 GameObject::~GameObject()
 {
@@ -53,12 +53,16 @@ Component* GameObject::FindComponent(ComponentType type)
 
 void GameObject::OnEditor()
 {
-	for (int i = 0; i < components.size(); i++)
+	if (ImGui::TreeNodeEx(name.c_str()))
 	{
-		components[i]->OnEditor();
-	}
-	for (int i = 0; i < childs.size(); i++)
-	{
-		childs[i]->OnEditor();
+		for (int i = 0; i < components.size(); i++)
+		{
+			components[i]->OnEditor();
+		}
+		for (int i = 0; i < childs.size(); i++)
+		{
+			childs[i]->OnEditor();
+		}
+		ImGui::TreePop();
 	}
 }

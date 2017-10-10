@@ -40,11 +40,13 @@ bool ModuleSceneEditor::Start()
 	App->camera->Move(vec3(0, 1, 0));
 
 	root = new GameObject();
+	root->name = "Root";
 
 	return true;
 }
 bool ModuleSceneEditor::CleanUp(JSON_Object* data)
 {
+	delete root;
 	return true;
 }
 
@@ -103,7 +105,8 @@ bool ModuleSceneEditor::GetWireframe()const
 
 void ModuleSceneEditor::ShowEditor()
 {
-	root->OnEditor();
+		root->OnEditor();
+	
 }
 
 void ModuleSceneEditor::AddCube(vec3 size, vec3 pos)
