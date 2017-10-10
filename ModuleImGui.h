@@ -22,13 +22,14 @@ public:
 
 private:
 	//ImGui Menu Active Booleans
-	bool testWindowActive = false;
-	bool menuActive = false;
-	bool consoleActive = false;
-	bool mathPlaygroundActive = false;
-	bool configurationActive = false;
-	bool aboutActive = false;
-	bool createGeometryActive = false;
+	bool testWindowActive;
+	bool menuActive;
+	bool consoleActive;
+	bool mathPlaygroundActive;
+	bool configurationActive;
+	bool aboutActive;
+	bool createGeometryActive;
+	bool editorActive;
 
 	bool closeApp = false;
 
@@ -56,6 +57,7 @@ public:
 	IMGUI_API void ShowConfigurationWindow(bool* p_open = NULL);
 	IMGUI_API void ShowAboutWindow(bool* p_open = NULL);
 	IMGUI_API void ShowCreateGeometryWindow(bool* p_open = NULL);
+	IMGUI_API void ShowEditorWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
 
 private:
@@ -69,6 +71,7 @@ private:
 	bool openMathPlaygroundWindow;
 	bool openAboutWindow;
 	bool openCreateGeometryWindow;
+	bool openEditorWindow;
 
 //Math Geometric Shape
 public:

@@ -50,12 +50,23 @@ bool ModuleImGui::Start()
 	glewInit();
 	ImGui_ImplSdlGL3_Init(App->window->GetWindow());
 
+	//ImGui Menu Active Booleans
+	testWindowActive = false;
+	menuActive = false;
+	consoleActive = false;
+	mathPlaygroundActive = false;
+	configurationActive = false;
+	aboutActive = false;
+	createGeometryActive = false;
+	editorActive = false;
+
 	openMenuWindow = false;
 	openConsoleWindow = false;
 	openConfigurationWindow = false;
 	openMathPlaygroundWindow = false;
 	openAboutWindow = false;
 	openCreateGeometryWindow = false;
+	openEditorWindow = false;
 
 	fullscreen = App->window->GetFullscreen();
 	fullDesktop = App->window->GetFullDesktop();
@@ -173,6 +184,10 @@ update_status ModuleImGui::Update(float dt)
 	{
 		ShowConfigurationWindow();
 	}
+	if (editorActive)
+	{
+		ShowEditorWindow();
+	}
 	if (aboutActive)
 	{
 		ShowAboutWindow();
@@ -228,6 +243,10 @@ void ModuleImGui::ShowDebugWindow(bool* p_open)
 		if (ImGui::Checkbox("Show Configuration", &openConfigurationWindow))
 		{
 			configurationActive = !configurationActive;
+		}
+		if (ImGui::Checkbox("Show Editor", &openEditorWindow))
+		{
+			editorActive = !editorActive;
 		}
 		if (ImGui::Checkbox("Show About..", &openAboutWindow))
 		{
@@ -908,6 +927,30 @@ void ModuleImGui::ShowCreateGeometryWindow(bool* p_open)
 			createCapsulePosZ = 0;
 		}
 	}
+
+	ImGui::End();
+}
+
+void ModuleImGui::ShowEditorWindow(bool* p_open)
+{
+	// Demonstrate the various window flags. Typically you would just use the default.
+	ImGuiWindowFlags window_flags = 0;
+
+	if (!ImGui::Begin("Show Editor", p_open, window_flags))
+	{
+		// Early out if the window is collapsed, as an optimization.
+		ImGui::End();
+		return;
+	}
+
+	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
+	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
+
+	if (ImGui::CollapsingHeader("GameObjects Hieriarchy"))
+	{
+		App->sceneEditor->ShowEditor();
+	}
+
 
 	ImGui::End();
 }

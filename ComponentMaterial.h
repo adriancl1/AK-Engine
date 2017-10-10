@@ -11,5 +11,9 @@ public:
 
 	uint idTexture;
 	
-
+	void OnEditor() override
+	{
+		ImGui::Text("Name: %s", name);
+		ImGui::Text("Texture ID: %i", idTexture);
+	}
 };

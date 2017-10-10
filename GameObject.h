@@ -13,6 +13,7 @@ public:
 	void Update();
 	void AddChild(GameObject* child);
 	void AddComponent(Component* component);
+	void OnEditor();
 
 	Component* FindComponent(ComponentType type);
 

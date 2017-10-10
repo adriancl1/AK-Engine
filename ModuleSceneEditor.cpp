@@ -101,6 +101,11 @@ bool ModuleSceneEditor::GetWireframe()const
 	return wframe;
 }
 
+void ModuleSceneEditor::ShowEditor()
+{
+	root->OnEditor();
+}
+
 void ModuleSceneEditor::AddCube(vec3 size, vec3 pos)
 {
 	Cube* cube = new Cube;
@@ -224,7 +229,6 @@ void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 	}
 
 	sceneObjects.push_back(cap);
-
 }
 
 GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)

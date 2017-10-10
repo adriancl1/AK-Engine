@@ -27,6 +27,10 @@ public:
 	{
 		active = false;
 	}
+	virtual void OnEditor()
+	{
+
+	}
 
 	std::string name;
 	bool active;

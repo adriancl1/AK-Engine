@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Component.h"
 #include "Globals.h"
 #include "Primitive.h"
@@ -13,6 +14,34 @@ public:
 	ComponentMesh() : Component(Component_Mesh)
 	{}
 
+	~ComponentMesh()
+	{
+		if (vertices != nullptr)
+		{
+			delete[] vertices;
+			vertices = nullptr;
+		}
+		if (indices != nullptr)
+		{
+			delete[] indices;
+			indices = nullptr;
+		}
+		if (normals != nullptr)
+		{
+			delete[] normals;
+			normals = nullptr;
+		}
+		if (colors != nullptr)
+		{
+			delete[] colors;
+			colors = nullptr;
+		}
+		if (texCoords != nullptr)
+		{
+			delete[] texCoords;
+			texCoords = nullptr;
+		}
+	}
 	uint idVertices = 0; // id in VRAM 
 	uint numVertices = 0;
 	float* vertices = nullptr;
@@ -30,13 +59,11 @@ public:
 	uint idTexCoords = 0; // id in VRAM
 	float* texCoords = nullptr;
 
-	uint idTexture = 0; //id in VRAM
-
 	AABB enclosingBox;
 
 	void Update()
 	{
-		//App->renderer3D->Draw(this);
+
 	}
 
 	void DrawDebug()
@@ -111,32 +138,14 @@ public:
 
 	}
 
-	~ComponentMesh()
+	void OnEditor() override
 	{
-		if (vertices != nullptr)
-		{
-			delete[] vertices;
-			vertices = nullptr;
-		}
-		if (indices != nullptr)
-		{
-			delete[] indices;
-			indices = nullptr;
-		}
-		if (normals != nullptr)
-		{
-			delete[] normals;
-			normals = nullptr;
-		}
-		if (colors != nullptr)
-		{
-			delete[] colors;
-			colors = nullptr;
-		}
-		if (texCoords != nullptr)
-		{
-			delete[] texCoords;
-			texCoords = nullptr;
-		}
+		ImGui::Text("Vertices ID: %i", idVertices);
+		ImGui::Text("Num Vertices: %i", numVertices);
+		ImGui::Text("Indexes ID: %i", idIndices);
+		ImGui::Text("Num Indexes: %i", numIndices);
+		ImGui::Text("Normals ID: %i", idNormals);
+		ImGui::Text("Colors ID: %i", idColors);
+		ImGui::Text("Texture Coords: %i", idTexCoords);
 	}
 };

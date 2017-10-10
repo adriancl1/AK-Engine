@@ -27,6 +27,9 @@ public:
 	void SetToWireframe(bool wframe);
 	bool GetWireframe()const;
 
+	//Show Editor
+	void ShowEditor();
+
 	//Add Primitive
 	void AddCube(vec3 size, vec3 pos = vec3(0,0,0));
 	void AddCube1(vec3 size, vec3 pos = vec3(0, 0, 0));
