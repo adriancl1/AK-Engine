@@ -12,6 +12,7 @@ public:
 
 	void Update();
 	void AddChild(GameObject* child);
+	void DeleteChilds();
 	void AddComponent(Component* component);
 	void OnEditor();
 

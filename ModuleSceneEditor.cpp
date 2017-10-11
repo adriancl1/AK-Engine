@@ -237,7 +237,7 @@ void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 {
 	GameObject* ret = App->importer->LoadGameObject(path);
-
+	root->DeleteChilds();
 	root->AddChild(ret);
 
 	return ret;

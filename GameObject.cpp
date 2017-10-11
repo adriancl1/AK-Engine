@@ -9,7 +9,18 @@ GameObject::GameObject(GameObject* parent): parent(parent)
 }
 GameObject::~GameObject()
 {
-
+	while (!childs.empty())
+	{
+		delete childs.back();
+		childs.pop_back();
+	}
+	childs.clear();
+	while (!components.empty())
+	{
+		delete components.back();
+		components.pop_back();
+	}
+	components.clear();
 }
 
 void GameObject::Update()
@@ -31,6 +42,16 @@ void GameObject::AddChild(GameObject* child)
 {
 	childs.push_back(child);
 	child->parent = this;
+}
+
+void GameObject::DeleteChilds()
+{
+	while (!childs.empty())
+	{
+		delete childs.back();
+		childs.pop_back();
+	}
+	childs.clear();
 }
 
 void GameObject::AddComponent(Component* component)
