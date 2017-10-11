@@ -17,6 +17,9 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 
 
 ## Changelog
+Version 0.3.1
+* New editor window that displays loaded game objects with their transformation, meshes and materials.
+
 Version 0.3
 * Textures drawn on cube with direct mode, indices and meshes.
 
