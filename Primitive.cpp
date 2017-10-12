@@ -297,7 +297,6 @@ void Cube2::InnerRender() const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, App->textures->mainTexture);
 
 	glBindBuffer(GL_ARRAY_BUFFER, myTextCoords);
 	glTexCoordPointer(2, GL_FLOAT, 0, 0);

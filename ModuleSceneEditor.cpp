@@ -52,7 +52,6 @@ bool ModuleSceneEditor::CleanUp(JSON_Object* data)
 
 update_status ModuleSceneEditor::PreUpdate(float dt)
 {
-	App->textures->ImportImage("Assets/Lenna.png");
 	return UPDATE_CONTINUE;
 }
 update_status ModuleSceneEditor::Update(float dt)
