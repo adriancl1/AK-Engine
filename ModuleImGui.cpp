@@ -151,6 +151,7 @@ update_status ModuleImGui::Update(float dt)
 				ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/issues", NULL, NULL, SW_SHOWNORMAL); 
 			}
 
+
 			ImGui::EndMenu();
 		}
 
@@ -700,6 +701,7 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		ImGui::TextColored(ImVec4(0.90f, 0.70f, 0.00f, 1.0f), "MB");
 	}
 
+
 	ImGui::End();
 }
 
@@ -753,6 +755,15 @@ void ModuleImGui::ShowAboutWindow(bool* p_open)
 		{
 			ShellExecuteA(NULL, "open", "https://www.opengl.org/", NULL, NULL, SW_SHOWNORMAL);
 		}
+		if (ImGui::MenuItem("DevIL 1.8.0"))
+		{
+			ShellExecuteA(NULL, "open", "http://openil.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+		}
+		if (ImGui::MenuItem("Assimp 3.0"))
+		{
+			ShellExecuteA(NULL, "open", "http://assimp.sourceforge.net/lib_html/", NULL, NULL, SW_SHOWNORMAL);
+		}
+
 	
 	}
 	if (ImGui::CollapsingHeader("License"))
