@@ -234,6 +234,11 @@ void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 	sceneObjects.push_back(cap);
 }
 
+GameObject* ModuleSceneEditor::GetRoot()
+{
+	return root;
+}
+
 GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 {
 	GameObject* ret = App->importer->LoadGameObject(path);

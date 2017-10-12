@@ -29,6 +29,10 @@ public:
 	ComponentMesh* LoadMesh(aiMesh* newMesh);
 	ComponentMaterial* LoadMaterial(aiMaterial* newMaterial);
 	ComponentTransform* LoadTransform(aiNode* node);
+
+	void LoadNewTexture(const char* fullPath);
+
+	std::string gObjectName;
 };
 
 #endif //__ModuleImporter_H__

@@ -131,7 +131,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 				else if (strcmp(&fileDir[length - 4], ".png") == 0 || strcmp(&fileDir[length - 4], ".PNG") == 0)
 				{
-					App->textures->ImportImage(fileDir);
+					App->importer->LoadNewTexture(fileDir);		
 				}
 				else
 				{

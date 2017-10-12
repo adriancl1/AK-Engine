@@ -74,6 +74,20 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 	}
 }
 
+void ModuleImporter::LoadNewTexture(const char* fullPath)
+{
+	for (int i = 0; i < App->sceneEditor->GetRoot()->childs.size(); i++)
+	{
+		for (int j = 0; j < App->sceneEditor->GetRoot()->childs[i]->components.size(); j++)
+		{
+			if (App->sceneEditor->GetRoot()->childs[i]->components[j]->type == Component_Material)
+			{
+				dynamic_cast<ComponentMaterial*>(App->sceneEditor->GetRoot()->childs[i]->components[j])->OverrideTexture(fullPath);
+			}
+		}	
+	}
+}
+
 ComponentMesh* ModuleImporter::LoadMesh(aiMesh* newMesh)
 {
 	ComponentMesh* m = new ComponentMesh;
@@ -164,6 +178,7 @@ ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
 		fullPath.append(path.C_Str());
 		m->idTexture = App->textures->ImportImage(fullPath.c_str());
 		m->name = path.C_Str();
+		gObjectName = path.C_Str();
 
 		return m;
 	}

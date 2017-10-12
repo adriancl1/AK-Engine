@@ -40,6 +40,8 @@ public:
 	void AddPlaneNoGrid(float x, float y, float z, float d, vec3 pos = vec3(0, 0, 0));
 	void AddCapsule(float radius, float height, vec3 pos = vec3(0, 0, 0));
 
+	GameObject* GetRoot();
+
 	GameObject* CreateNewGameObject(const char* path);
 
 private:

@@ -97,7 +97,6 @@ uint ModuleTextures::ImportImage(const char * image)
 			GL_UNSIGNED_BYTE,		// Image data type
 			ilGetData());			// The actual image data itself
 
-		mainTexture = textureID;
 	}
 	else // If we failed to open the image file in the first place...
 	{

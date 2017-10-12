@@ -21,4 +21,9 @@ public:
 			ImGui::TreePop();
 		}
 	}
+
+	void OverrideTexture(const char* path)
+	{
+		idTexture = App->textures->ImportImage(path);
+	}
 };
