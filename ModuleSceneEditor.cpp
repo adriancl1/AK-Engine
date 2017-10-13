@@ -56,6 +56,10 @@ update_status ModuleSceneEditor::PreUpdate(float dt)
 }
 update_status ModuleSceneEditor::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && root->childs.empty() != true)
+	{
+		App->camera->CenterToGO(root->childs[0]);
+	}
 	return UPDATE_CONTINUE;
 }
 update_status ModuleSceneEditor::PostUpdate(float dt)
@@ -178,6 +182,8 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 	GameObject* ret = App->importer->LoadGameObject(path);
 	root->DeleteChilds();
 	root->AddChild(ret);
+
+	App->camera->CenterToGO(ret);
 
 	return ret;
 }

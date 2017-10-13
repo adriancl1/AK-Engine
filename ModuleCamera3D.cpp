@@ -3,6 +3,8 @@
 #include "Brofiler-1.1.2\Brofiler.h"
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
+#include "GameObject.h"
+#include "ComponentMesh.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -45,27 +47,27 @@ update_status ModuleCamera3D::Update(float dt)
 	float speed = 8.0f * dt;
 	if (!ImGui::GetIO().WantCaptureKeyboard)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT))
 		{
-			speed = 20.0f * dt;
+			if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+			{
+				speed = 20.0f * dt;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+			Position += newPos;
+			Reference += newPos;
 		}
-
-		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
-
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
-
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
-
-		Position += newPos;
-		Reference += newPos;
 
 		// Mouse motion ----------------
 
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && (App->input->GetKey(SDL_SCANCODE_LALT) || App->input->GetKey(SDL_SCANCODE_RALT)))
 		{
 			int dx = -App->input->GetMouseXMotion();
 			int dy = -App->input->GetMouseYMotion();
@@ -146,6 +148,37 @@ void ModuleCamera3D::Move(const vec3 &Movement)
 	Reference += Movement;
 
 	CalculateViewMatrix();
+}
+
+void ModuleCamera3D::ZoomIn()
+{
+	vec3 newPos(0, 0, 0);
+	newPos -= Z;
+
+	Position += newPos;
+	Reference += newPos;
+}
+
+void ModuleCamera3D::ZoomOut()
+{
+	vec3 newPos(0, 0, 0);
+	newPos += Z;
+
+	Position += newPos;
+	Reference += newPos;
+}
+
+void ModuleCamera3D::CenterToGO(GameObject * centerTo)
+{
+	ComponentMesh* mesh = dynamic_cast<ComponentMesh*>(centerTo->FindComponent(Component_Mesh));
+	if (mesh != nullptr)
+	{
+		float3 temp = mesh->GetCenter();
+		float3 size = mesh->enclosingBox.Size() * 0.5f;
+		Position = vec3(temp.x + size.x, temp.y + size.y, temp.z + 5.0f + size.z);
+		Reference = vec3(temp.x + size.x, temp.y + size.y, temp.z + size.z);
+		LookAt(vec3(temp.x, temp.y, temp.z));
+	}
 }
 
 // -----------------------------------------------------------------

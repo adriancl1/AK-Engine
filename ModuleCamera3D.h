@@ -5,6 +5,8 @@
 #include "Globals.h"
 #include "glmath.h"
 
+class GameObject;
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -19,6 +21,9 @@ public:
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);
 	void Move(const vec3 &Movement);
+	void ZoomIn();
+	void ZoomOut();
+	void CenterToGO(GameObject* centerTo);
 
 	float* GetViewMatrix();
 

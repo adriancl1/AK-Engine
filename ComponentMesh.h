@@ -44,6 +44,7 @@ public:
 			texCoords = nullptr;
 		}
 	}
+
 	uint idVertices = 0; // id in VRAM 
 	uint numVertices = 0;
 	float* vertices = nullptr;
@@ -65,7 +66,12 @@ public:
 
 	void Update()
 	{
+	}
 
+	//Returns the center point of the mesh's enclosing box.
+	float3 GetCenter()
+	{
+		return enclosingBox.Centroid();
 	}
 
 	void DrawDebug()
