@@ -22,6 +22,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp(JSON_Object* data = nullptr);
 
+	void OnConfiguration()override;
 	void OnResize(int width, int height);
 
 	void SetDepthTest();
@@ -29,6 +30,8 @@ public:
 	void SetLighting();
 	void SetColorMaterial();
 	void SetTexture2D();
+
+	bool GetWireframe()const;
 
 	void Draw(GameObject* toDraw);
 	uint imageLoaded;
@@ -39,11 +42,13 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
+private:
 	bool depthTest;
 	bool cullFace;
 	bool lighting;
 	bool colorMaterial;
 	bool texture2D;
+	bool wframe;
 };
 
 #endif //__ModuleRenderer_H__

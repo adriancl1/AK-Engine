@@ -34,19 +34,6 @@ private:
 	bool closeApp = false;
 
 	std::vector<std::string> consoleText;
-	std::vector<float> FPSData;
-	std::vector<float> MsData;
-
-	char title[128] = "AK Engine";
-	bool fullscreen;
-	bool fullDesktop;
-	bool borderless;
-	int windowWidth;
-	int windowHeight;
-	int volume;
-	float brightness;
-
-	bool wireframe;
 
 //ImGui
 public:
@@ -59,9 +46,6 @@ public:
 	IMGUI_API void ShowCreateGeometryWindow(bool* p_open = NULL);
 	IMGUI_API void ShowEditorWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
-
-private:
-	void CycleFPSAndMsData(float fps, float ms);
 
 private:
 	//Booleans for ImGui Checkbox buttons

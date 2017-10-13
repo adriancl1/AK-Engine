@@ -18,8 +18,10 @@ public:
 	bool Init(JSON_Object* data = nullptr);
 	bool CleanUp(JSON_Object* data = nullptr);
 
+	void OnConfiguration()override;
+
 	const char* GetTitle()const;
-	void SetTitle(const char* title);
+	void SetTitle(char* title);
 
 	SDL_Window* GetWindow() const;
 	void ResizeWindow(int width, int height);
@@ -40,7 +42,7 @@ private:
 	//The window we'll be rendering to
 	SDL_Window* window;
 
-	std::string title;
+	char* title;
 	int width;
 	int height;
 	float brightness;

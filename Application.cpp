@@ -2,6 +2,8 @@
 #include "parson\parson.h"
 #include "Brofiler-1.1.2\Brofiler.h"
 
+#define MAX_FPS_MS_COUNT 81
+
 Application::Application()
 {
 	window = new ModuleWindow(this);
@@ -14,6 +16,7 @@ Application::Application()
 	sceneEditor = new ModuleSceneEditor(this);
 	importer = new ModuleImporter(this);
 	textures = new ModuleTextures(this);
+	hardware = new ModuleHardware(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -29,6 +32,7 @@ Application::Application()
 	AddModule(importer);
 	AddModule(sceneEditor);
 	AddModule(textures);
+	AddModule(hardware);
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -146,6 +150,29 @@ bool Application::CleanUp()
 	return ret;
 }
 
+void Application::OnConfiguration()
+{
+	CycleFPSAndMsData(GetFPS(), GetMs());
+
+	if (ImGui::CollapsingHeader("Application"))
+	{
+		char frameMStitle[25];
+		sprintf_s(frameMStitle, 25, "Framerate %.1f", FPSData[FPSData.size() - 1]);
+		ImGui::PlotHistogram("##framerate", &FPSData[0], FPSData.size(), 0, frameMStitle, 0.0f, 100.0f, ImVec2(310, 100));
+		sprintf_s(frameMStitle, 25, "Milliseconds %0.1f", MsData[MsData.size() - 1]);
+		ImGui::PlotHistogram("##milliseconds", &MsData[0], MsData.size(), 0, frameMStitle, 0.0f, 40.0f, ImVec2(310, 100));
+	}
+
+	p2List_item<Module*>* item = list_modules.getLast();
+	item = list_modules.getFirst();
+
+	while (item != NULL)
+	{
+		item->data->OnConfiguration();
+		item = item->next;
+	}
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.add(mod);
@@ -159,4 +186,35 @@ float Application::GetFPS()
 float Application::GetMs()
 {
 	return lastMs;
+}
+
+void Application::CycleFPSAndMsData(float fps, float ms)
+{
+	//FPS
+	if (FPSData.size() >= MAX_FPS_MS_COUNT)
+	{
+		for (int i = 0; i < MAX_FPS_MS_COUNT - 2; i++)
+		{
+			FPSData[i] = FPSData[i + 1];
+		}
+		FPSData[MAX_FPS_MS_COUNT - 1] = fps;
+	}
+	else
+	{
+		FPSData.push_back(fps);
+	}
+
+	//MS
+	if (MsData.size() >= MAX_FPS_MS_COUNT)
+	{
+		for (int i = 0; i < MAX_FPS_MS_COUNT - 2; i++)
+		{
+			MsData[i] = MsData[i + 1];
+		}
+		MsData[MAX_FPS_MS_COUNT - 1] = ms;
+	}
+	else
+	{
+		MsData.push_back(ms);
+	}
 }

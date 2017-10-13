@@ -14,6 +14,7 @@
 #include "ModuleSceneEditor.h"
 #include "ModuleImporter.h"
 #include "ModuleTextures.h"
+#include "ModuleHardware.h"
 
 class Application
 {
@@ -28,6 +29,7 @@ public:
 	ModuleSceneEditor* sceneEditor;
 	ModuleImporter* importer;
 	ModuleTextures* textures;
+	ModuleHardware* hardware;
 
 private:
 
@@ -36,6 +38,8 @@ private:
 	float startTime;
 	float lastFPS = 0;
 	float lastMs = 0;
+	std::vector<float> FPSData;
+	std::vector<float> MsData;
 	p2List<Module*> list_modules;
 
 public:
@@ -47,8 +51,11 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	void OnConfiguration();
+
 	float GetFPS();
 	float GetMs();
+	void CycleFPSAndMsData(float fps, float ms);
 
 private:
 

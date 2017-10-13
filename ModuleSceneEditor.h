@@ -24,8 +24,6 @@ public:
 	update_status PostUpdate(float dt);
 
 	void Draw();
-	void SetToWireframe(bool wframe);
-	bool GetWireframe()const;
 
 	//Show Editor
 	void ShowEditor();
@@ -50,8 +48,6 @@ private:
 	std::list<Mesh*> sceneMeshes;
 
 	GameObject* root;
-
-	bool wframe;
 };
 
 #endif

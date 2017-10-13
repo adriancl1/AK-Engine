@@ -32,6 +32,7 @@ ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Modul
 	lighting = true;
 	colorMaterial = true;
 	texture2D = true;
+	wframe = false;
 }
 
 // Destructor
@@ -181,12 +182,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
-	glLineWidth(2.0f);
-
-	uint imageName = 0;
-
-	glLineWidth(1.0f);
-
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
@@ -224,6 +219,34 @@ bool ModuleRenderer3D::CleanUp(JSON_Object* data)
 	return true;
 }
 
+
+void ModuleRenderer3D::OnConfiguration()
+{
+	if (ImGui::CollapsingHeader("Renderer"))
+	{
+		ImGui::Checkbox("Wireframe Mode", &wframe);
+		if (ImGui::Checkbox("Depth Test", &depthTest))
+		{
+			SetDepthTest();
+		}
+		if (ImGui::Checkbox("Cull Face", &cullFace))
+		{
+			SetCullFace();
+		}
+		if (ImGui::Checkbox("Lighting", &lighting))
+		{
+			SetLighting();
+		}
+		if (ImGui::Checkbox("Color Material", &colorMaterial))
+		{
+			SetColorMaterial();
+		}
+		if (ImGui::Checkbox("2D Textures", &texture2D))
+		{
+			SetTexture2D();
+		}
+	}
+}
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
@@ -296,13 +319,18 @@ void ModuleRenderer3D::SetTexture2D()
 	}
 }
 
+bool ModuleRenderer3D::GetWireframe() const
+{
+	return wframe;
+}
+
 void ModuleRenderer3D::Draw(GameObject* objectDraw)
 {
 	for (int i = 0; i < objectDraw->components.size(); i++)
 	{
 		if (objectDraw->components[i]->type == Component_Mesh)
 		{
-			if (App->sceneEditor->GetWireframe() == true)
+			if (wframe == true)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			}
@@ -373,8 +401,5 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 
 		}
 	}
-	
-	
-	
 }
 

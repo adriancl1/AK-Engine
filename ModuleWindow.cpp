@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "parson\parson.h"
 
+#define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -178,13 +179,58 @@ bool ModuleWindow::CleanUp(JSON_Object* data)
 	return true;
 }
 
+void ModuleWindow::OnConfiguration()
+{
+	if (ImGui::CollapsingHeader("Window"))
+	{
+		ImGui::Text("%s", title);
+
+		if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f, "%.2f"))
+		{
+			SetBrightness(brightness);
+		}
+		if (ImGui::SliderInt("Width", &width, 1, 1920))
+		{
+			ResizeWindow(width, height);
+		}
+		if (ImGui::SliderInt("Height", &height, 1, 1080))
+		{
+			ResizeWindow(width, height);
+		}
+
+		ImGui::Text("Refresh Rate:");
+		ImGui::SameLine();
+		SDL_DisplayMode dm;
+		SDL_GetDesktopDisplayMode(0, &dm);
+		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+		{
+			LOG("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+		}
+		ImGui::TextColored(ImVec4(0.90f, 0.70f, 0.00f, 1.0f), "%d", dm.refresh_rate);
+
+		if (ImGui::Checkbox("Fullscreen", &fullscreen))
+		{
+			SetFullscreen(fullscreen);
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Windowed Borderless", &borderless))
+		{
+			SetBorderless(borderless);
+		}
+		if (ImGui::Checkbox("Full Desktop", &fullDesktop))
+		{
+			SetFullDesktop(fullDesktop);
+		}
+	}
+}
+
 const char* ModuleWindow::GetTitle() const
 {
-	return title.c_str();
+	return title;
 }
 
 
-void ModuleWindow::SetTitle(const char* title)
+void ModuleWindow::SetTitle(char* title)
 {
 	this->title = title;
 	SDL_SetWindowTitle(window, title);

@@ -47,6 +47,8 @@ bool ModuleAudio::Init(JSON_Object* data)
 		ret = true;
 	}
 
+	volume = 100;
+
 	pausedMusic = true;
 
 	return ret;
@@ -74,6 +76,27 @@ bool ModuleAudio::CleanUp(JSON_Object* data)
 	Mix_Quit();
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 	return true;
+}
+
+void ModuleAudio::OnConfiguration()
+{
+	if ((ImGui::CollapsingHeader("Audio")))
+	{
+		if (ImGui::Button("Resume music"))
+		{
+			ResumeMusic();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Pause music"))
+		{
+			PauseMusic();
+		}
+		if (ImGui::SliderInt("Master Volume", &volume, 0, 100))
+		{
+			//TODO: Add more sound options
+			Mix_VolumeMusic(volume);
+		}
+	}
 }
 
 // Play a music file

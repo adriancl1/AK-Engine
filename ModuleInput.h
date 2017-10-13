@@ -25,6 +25,8 @@ public:
 	update_status PreUpdate(float dt);
 	bool CleanUp(JSON_Object* data = nullptr);
 
+	void OnConfiguration()override;
+
 	KEY_STATE GetKey(int id) const
 	{
 		return keyboard[id];

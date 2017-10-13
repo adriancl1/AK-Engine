@@ -15,6 +15,8 @@ public:
 	bool Init(JSON_Object* data = nullptr);
 	bool CleanUp(JSON_Object* data = nullptr);
 
+	void OnConfiguration()override;
+
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
@@ -28,6 +30,8 @@ public:
 	void ResumeMusic();
 
 private:
+	int volume;
+
 	Mix_Music* music;
 
 	bool pausedMusic;

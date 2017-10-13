@@ -160,3 +160,11 @@ bool ModuleInput::CleanUp(JSON_Object* data)
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
+
+void ModuleInput::OnConfiguration()
+{
+	if (ImGui::CollapsingHeader("Input"))
+	{
+		ImGui::Text("Mouse X: %i | Mouse Y: %i", GetMouseX(), GetMouseY());
+	}
+}

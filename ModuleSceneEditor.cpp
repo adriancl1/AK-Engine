@@ -77,31 +77,6 @@ void ModuleSceneEditor::Draw()
 	p.Render();
 }
 
-void ModuleSceneEditor::SetToWireframe(bool wframe)
-{
-	this->wframe = wframe;
-
-	if (wframe == true)
-	{
-		for (std::list<Primitive*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it)
-		{
-			(*it)->wire = true;
-		}
-	}
-	else
-	{
-		for (std::list<Primitive*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it)
-		{
-			(*it)->wire = false;
-		}
-	}
-}
-
-bool ModuleSceneEditor::GetWireframe()const
-{
-	return wframe;
-}
-
 void ModuleSceneEditor::ShowEditor()
 {
 		root->OnEditor();
@@ -114,11 +89,6 @@ void ModuleSceneEditor::AddCube(vec3 size, vec3 pos)
 	cube->size.Set(size.x, size.y, size.z);
 	cube->SetPos(pos.x, pos.y, pos.z);
 
-	if (wframe == true)
-	{
-		cube->wire = true;
-	}
-
 	sceneObjects.push_back(cube);
 
 	App->physics->AddBody(*cube);
@@ -130,11 +100,6 @@ void ModuleSceneEditor::AddCube1(vec3 size, vec3 pos)
 	cube->size.Set(size.x, size.y, size.z);
 	cube->SetPos(pos.x, pos.y, pos.z);
 
-	if (wframe == true)
-	{
-		cube->wire = true;
-	}
-
 	sceneObjects.push_back(cube);
 
 	App->physics->AddBody(*cube);
@@ -145,11 +110,6 @@ void ModuleSceneEditor::AddCube2(vec3 size, vec3 pos)
 	Cube2* cube = new Cube2(size.x, size.y, size.z);
 	cube->size.Set(size.x, size.y, size.z);
 	cube->SetPos(pos.x, pos.y, pos.z);
-
-	if (wframe == true)
-	{
-		cube->wire = true;
-	}
 
 	sceneObjects.push_back(cube);
 
@@ -163,11 +123,6 @@ void ModuleSceneEditor::AddCylinder(float radius, float height, vec3 pos)
 	cyl->height = height;
 	cyl->SetPos(pos.x, pos.y, pos.z);
 
-	if (wframe == true)
-	{
-		cyl->wire = true;
-	}
-
 	sceneObjects.push_back(cyl);
 
 	App->physics->AddBody(*cyl);
@@ -177,11 +132,6 @@ void ModuleSceneEditor::AddSphere(float radius, vec3 pos)
 {
 	pSphere* sph = new pSphere(radius, 12, 24);
 	sph->SetPos(pos.x, pos.y, pos.z);
-
-	if (wframe == true)
-	{
-		sph->wire = true;
-	}
 
 	sceneObjects.push_back(sph);
 
@@ -195,11 +145,6 @@ void ModuleSceneEditor::AddPlane(float x, float y, float z, float d, vec3 pos)
 	
 	pl->SetPos(pos.x, pos.y, pos.z);
 
-	if (wframe == true)
-	{
-		pl->wire = true;
-	}
-
 	sceneObjects.push_back(pl);
 }
 
@@ -210,11 +155,6 @@ void ModuleSceneEditor::AddPlaneNoGrid(float x, float y, float z, float d, vec3 
 
 	plN->SetPos(pos.x, pos.y, pos.z);
 
-	if (wframe == true)
-	{
-		plN->wire = false;
-	}
-
 	sceneObjects.push_back(plN);
 }
 
@@ -224,11 +164,6 @@ void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 	cap->radius = radius;
 	cap->height = height;
 	cap->SetPos(pos.x, pos.y, pos.z);
-
-	if (wframe == true)
-	{
-		cap->wire = true;
-	}
 
 	sceneObjects.push_back(cap);
 }

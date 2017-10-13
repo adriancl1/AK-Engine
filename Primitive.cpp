@@ -55,7 +55,7 @@ void Primitive::Render() const
 
 	glColor3f(color.r, color.g, color.b);
 
-	if(wire)
+	if(App->renderer3D->GetWireframe() == true)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -63,6 +63,8 @@ void Primitive::Render() const
 	InnerRender();
 
 	glPopMatrix();
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 // ------------------------------------------------------------
