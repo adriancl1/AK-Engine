@@ -83,8 +83,7 @@ void ModuleSceneEditor::Draw()
 
 void ModuleSceneEditor::ShowEditor()
 {
-		root->OnEditor();
-	
+	root->OnEditor();
 }
 
 void ModuleSceneEditor::AddCube(vec3 size, vec3 pos)

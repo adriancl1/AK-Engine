@@ -74,16 +74,26 @@ Component* GameObject::FindComponent(ComponentType type)
 
 void GameObject::OnEditor()
 {
-	if (ImGui::TreeNodeEx(name.c_str()))
+	if (strcmp(name.c_str(), "Root") == 0)
 	{
-		for (int i = 0; i < components.size(); i++)
-		{
-			components[i]->OnEditor();
-		}
 		for (int i = 0; i < childs.size(); i++)
 		{
 			childs[i]->OnEditor();
 		}
-		ImGui::TreePop();
+	}
+	else
+	{
+		if (ImGui::TreeNodeEx(name.c_str()))
+		{
+			for (int i = 0; i < components.size(); i++)
+			{
+				components[i]->OnEditor();
+			}
+			for (int i = 0; i < childs.size(); i++)
+			{
+				childs[i]->OnEditor();
+			}
+			ImGui::TreePop();
+		}
 	}
 }
