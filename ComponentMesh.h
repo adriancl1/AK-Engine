@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "Globals.h"
 #include "Primitive.h"
+
 #include "Glew\include\glew.h"
 #include "MathGeo\Geometry\Triangle.h"
 #include "MathGeo\Math\float4x4.h"
@@ -18,6 +19,7 @@ public:
 
 	~ComponentMesh()
 	{
+		LOG("Entering ComponentMesh Destructor");
 		if (vertices != nullptr)
 		{
 			delete[] vertices;

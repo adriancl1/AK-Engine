@@ -9,8 +9,6 @@
 
 #include "mmgr\mmgr.h"
 
-
-
 ModuleSceneEditor::ModuleSceneEditor(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
 	name = "Scene editor";

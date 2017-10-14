@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 
+#include "mmgr\mmgr.h"
 
 GameObject::GameObject(GameObject* parent): parent(parent)
 {
@@ -9,6 +10,7 @@ GameObject::GameObject(GameObject* parent): parent(parent)
 }
 GameObject::~GameObject()
 {
+	LOG("Entering GameObject Destructor");
 	while (!childs.empty())
 	{
 		delete childs.back();

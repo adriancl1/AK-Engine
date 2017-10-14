@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
-#include "Brofiler-1.1.2\Brofiler.h"
 #include "ModuleInput.h"
+
+#include "Brofiler-1.1.2\Brofiler.h"
 
 #define MAX_KEYS 300
 
