@@ -30,6 +30,7 @@ static void ShowHelpMarker(const char* desc)
 
 ModuleImGui::ModuleImGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "imgui";
 }
 
 ModuleImGui::~ModuleImGui()

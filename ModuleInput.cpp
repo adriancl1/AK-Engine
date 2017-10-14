@@ -4,6 +4,8 @@
 
 #include "Brofiler-1.1.2\Brofiler.h"
 
+#include "mmgr\mmgr.h"
+
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, start_enabled)

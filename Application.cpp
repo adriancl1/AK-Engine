@@ -2,6 +2,8 @@
 #include "parson\parson.h"
 #include "Brofiler-1.1.2\Brofiler.h"
 
+#include "mmgr\mmgr.h"
+
 #define MAX_FPS_MS_COUNT 81
 
 Application::Application()
@@ -11,7 +13,6 @@ Application::Application()
 	audio = new ModuleAudio(this, true);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
-	physics = new ModulePhysics3D(this);
 	imGui = new ModuleImGui(this);
 	sceneEditor = new ModuleSceneEditor(this);
 	importer = new ModuleImporter(this);
@@ -27,7 +28,6 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	AddModule(physics);
 	AddModule(imGui);
 	AddModule(importer);
 	AddModule(sceneEditor);
@@ -40,43 +40,50 @@ Application::Application()
 
 Application::~Application()
 {
-	p2List_item<Module*>* item = list_modules.getLast();
-
-	while(item != NULL)
+	std::list<Module*>::iterator item = listModules.end();
+	item--;
+	while (item != listModules.begin())
 	{
-		delete item->data;
-		item = item->prev;
+		RELEASE(item._Ptr->_Myval);
+		item--;
 	}
+	if (item == listModules.begin())
+	{
+		RELEASE(item._Ptr->_Myval);
+	}
+
+	listModules.clear();
 }
 
 bool Application::Init()
 {
 	bool ret = true;
+	debug = false;
 
 	BROFILER_CATEGORY("Aplication Init", Profiler::Color::AliceBlue);
 
 	// Call Init() in all modules
-	p2List_item<Module*>* item = list_modules.getFirst();
+	std::list<Module*>::iterator item = listModules.begin();
 
 	JSON_Value * configValue = json_parse_file("config.json");
 	JSON_Object * configObject = json_value_get_object(configValue);
 
-	while(item != NULL && ret == true)
+	while(item != listModules.end() && ret == true)
 	{
-		ret = item->data->Init(json_object_dotget_object(configObject, item->data->name.c_str()));
-		item = item->next;
+		ret = item._Ptr->_Myval->Init(json_object_dotget_object(configObject, item._Ptr->_Myval->name.c_str()));
+		item++;
 	}
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
-	item = list_modules.getFirst();
+	item = listModules.begin();
 
-	while(item != NULL && ret == true)
+	while(item != listModules.end() && ret == true)
 	{
-		BROFILER_CATEGORY("%s Init", item->data->name.c_str(), Brofiler::Color::AliceBlue);
+		BROFILER_CATEGORY("%s Init", item._Ptr->_Myval->name.c_str(), Brofiler::Color::AliceBlue);
 
-		ret = item->data->Start();
-		item = item->next;
+		ret = item._Ptr->_Myval->Start();
+		item++;
 	}
 	
 	ms_timer.Start();
@@ -104,46 +111,58 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
-	p2List_item<Module*>* item = list_modules.getFirst();
+	std::list<Module*>::iterator item = listModules.begin();
 	
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while(item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->PreUpdate(dt);
-		item = item->next;
+		ret = item._Ptr->_Myval->PreUpdate(dt);
+		item++;
 	}
 
-	item = list_modules.getFirst();
+	item = listModules.begin();
 
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while(item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->Update(dt);
-		item = item->next;
+		ret = item._Ptr->_Myval->Update(dt);
+		item++;
 	}
 
-	item = list_modules.getFirst();
+	item = listModules.begin();
 
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while(item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->PostUpdate(dt);
-		item = item->next;
+		ret = item._Ptr->_Myval->PostUpdate(dt);
+		item++;
 	}
 
 	FinishUpdate();
+
+	if (input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		debug = !debug;
+	}
+
 	return ret;
 }
 
 bool Application::CleanUp()
 {
 	bool ret = true;
-	p2List_item<Module*>* item = list_modules.getLast();
+	std::list<Module*>::iterator item = listModules.end();
+
+	item--;
 
 	JSON_Value* configValue = json_parse_file("config.json");
 	JSON_Object* objectData = json_value_get_object(configValue);
 
-	while (item != NULL && ret == true)
+	while (item != listModules.begin() && ret == true)
 	{
-		ret = item->data->CleanUp(objectData);
-		item = item->prev;
+		ret = item._Ptr->_Myval->CleanUp(objectData);
+		item--;
+	}
+	if (item == listModules.begin() && ret == true)
+	{
+		ret = item._Ptr->_Myval->CleanUp(objectData);
 	}
 	json_serialize_to_file(configValue, "config.json");
 
@@ -163,19 +182,18 @@ void Application::OnConfiguration()
 		ImGui::PlotHistogram("##milliseconds", &MsData[0], MsData.size(), 0, frameMStitle, 0.0f, 40.0f, ImVec2(310, 100));
 	}
 
-	p2List_item<Module*>* item = list_modules.getLast();
-	item = list_modules.getFirst();
+	std::list<Module*>::iterator item = listModules.begin();
 
-	while (item != NULL)
+	while (item != listModules.end())
 	{
-		item->data->OnConfiguration();
-		item = item->next;
+		item._Ptr->_Myval->OnConfiguration();
+		item++;
 	}
 }
 
 void Application::AddModule(Module* mod)
 {
-	list_modules.add(mod);
+	listModules.push_back(mod);
 }
 
 float Application::GetFPS()
@@ -217,4 +235,9 @@ void Application::CycleFPSAndMsData(float fps, float ms)
 	{
 		MsData.push_back(ms);
 	}
+}
+
+bool Application::GetDebug() const
+{
+	return debug;
 }

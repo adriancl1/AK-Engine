@@ -7,15 +7,17 @@
 #include "ComponentMesh.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleSceneEditor.h"
+
 #include "Glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include "Brofiler-1.1.2\Brofiler.h"
 #include "Devil\include\ilut.h"
 #include "Devil\include\il.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 
 #include "mmgr\mmgr.h"
+
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -23,7 +25,6 @@
 #pragma comment (lib, "Devil/libx86/DevIL.lib" ) /* Loading Devil lib */
 #pragma comment (lib, "Devil/libx86/ILU.lib" ) /* Loading ILU lib */
 #pragma comment (lib, "Devil/libx86/ILUT.lib" ) /* Loading ILUT lib */
-
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -395,7 +396,7 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 
 			glBindTexture(GL_TEXTURE_2D, 0);
 
-			if (App->physics->debug)
+			if (App->GetDebug())
 			{
 				toDraw->DrawDebug();
 			}
