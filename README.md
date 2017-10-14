@@ -17,6 +17,14 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 
 
 ## Changelog
+Version P1 1.0.0
+* New camera controls.
+* Removed primitive creation window.
+* Now previous objects inside the scene will get deleted whenever you drag& drop a new one.
+* Removed numerous ImGui windows which no longer served a purpose.
+* New editor window.
+* Multiple bug fixes.
+
 Version 0.3.1
 * New editor window that displays loaded game objects with their transformation, meshes and materials.
 
