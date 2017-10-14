@@ -37,6 +37,9 @@
     <Filter Include="Sources\GameObjects\Components">
       <UniqueIdentifier>{7a0f2009-23ba-4775-b159-9140fbbeef90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\3rd Party">
+      <UniqueIdentifier>{571b3bac-b12d-40e1-846c-4688ffff3a7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -315,6 +318,12 @@
     <ClInclude Include="ModuleHardware.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Sources\3rd Party</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>Sources\3rd Party</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -484,6 +493,9 @@
     </ClCompile>
     <ClCompile Include="ModuleHardware.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Sources\3rd Party</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
