@@ -11,6 +11,8 @@ public:
 	~ModuleHardware();
 
 	void OnConfiguration()override;
+
+	bool CleanUp(JSON_Object* data = nullptr);
 };
 
 #endif

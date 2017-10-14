@@ -1,7 +1,7 @@
 #include "ModuleHardware.h"
 #include "Application.h"
-#include "Glew\include\glew.h"
 
+#include "Glew\include\glew.h"
 
 #pragma comment( lib, "Glew/libx86/glew32.lib" )
 
@@ -127,4 +127,9 @@ void ModuleHardware::OnConfiguration()
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0.90f, 0.70f, 0.00f, 1.0f), "MB");
 	}
+}
+
+bool ModuleHardware::CleanUp(JSON_Object* data)
+{
+	return true;
 }

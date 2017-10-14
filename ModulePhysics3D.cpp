@@ -5,6 +5,8 @@
 #include "PhysBody3D.h"
 #include "Primitive.h"
 
+#include "mmgr\mmgr.h"
+
 #ifdef _DEBUG
 	#pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
 	#pragma comment (lib, "Bullet/libx86/BulletCollision_debug.lib")

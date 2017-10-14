@@ -1,8 +1,11 @@
 #include "Globals.h"
 #include "Application.h"
-#include "Brofiler-1.1.2\Brofiler.h"
 #include "ModuleAudio.h"
 #include "ModuleImGui.h"
+
+#include "Brofiler-1.1.2\Brofiler.h"
+
+#include "mmgr\mmgr.h"
 
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 

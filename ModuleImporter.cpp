@@ -13,6 +13,8 @@
 #include "Glew\include\glew.h"
 #include "MathGeo\Math\Quat.h"
 
+#include "mmgr/mmgr.h"
+
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 ModuleImporter::ModuleImporter(Application* app, bool start_enabled) : Module(app, start_enabled)

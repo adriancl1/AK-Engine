@@ -1,8 +1,11 @@
 #include "Globals.h"
 #include "Application.h"
-#include "Brofiler-1.1.2\Brofiler.h"
 #include "ModuleWindow.h"
+
+#include "Brofiler-1.1.2\Brofiler.h"
 #include "parson\parson.h"
+
+#include "mmgr\mmgr.h"
 
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 

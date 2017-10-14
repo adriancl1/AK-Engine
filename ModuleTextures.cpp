@@ -1,9 +1,13 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+
 #include "Devil\include\il.h"
 #include "Devil\include\ilu.h"
 #include "Devil\include\ilut.h"
+
+#include "mmgr\mmgr.h"
+
 #pragma comment (lib, "Devil/libx86/DevIL.lib" ) /* Loading Devil lib */
 #pragma comment (lib, "Devil/libx86/ILU.lib" ) /* Loading ILU lib */
 #pragma comment (lib, "Devil/libx86/ILUT.lib" ) 
@@ -30,7 +34,7 @@ bool ModuleTextures::Init(JSON_Object * data)
 
 bool ModuleTextures::CleanUp(JSON_Object * data)
 {
-	return false;
+	return true;
 }
 
 uint ModuleTextures::ImportImage(const char * image)
