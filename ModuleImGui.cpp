@@ -50,16 +50,67 @@ bool ModuleImGui::Start()
 	ImGui_ImplSdlGL3_Init(App->window->GetWindow());
 
 	//ImGui Menu Active Booleans
-	menuActive = false;
-	consoleActive = false;
-	configurationActive = false;
-	aboutActive = false;
-	editorActive = true;
+	UIBottom = true;
+	UIRight = true;
 
-	openConsoleWindow = false;
-	openConfigurationWindow = false;
-	openAboutWindow = false;
-	openEditorWindow = false;
+	//IMGUI STYLE START
+	ImGuiStyle& UIstyle = ImGui::GetStyle();
+
+	UIstyle.WindowPadding = ImVec2(10, 15);
+	UIstyle.WindowRounding = 2.0f;
+	UIstyle.FramePadding = ImVec2(5, 5);
+	UIstyle.FrameRounding = 2.0f;
+	UIstyle.ItemSpacing = ImVec2(4, 4);
+	UIstyle.ItemInnerSpacing = ImVec2(4, 4);
+	UIstyle.IndentSpacing = 25.0f;
+	UIstyle.ScrollbarSize = 15.0f;
+	UIstyle.ScrollbarRounding = 2.0f;
+	UIstyle.GrabMinSize = 5.0f;
+	UIstyle.GrabRounding = 2.0f;
+
+	UIstyle.Colors[ImGuiCol_Text] = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
+	UIstyle.Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	UIstyle.Colors[ImGuiCol_WindowBg] = ImVec4(0.8f, 0.8f, 0.8f, 1.00f);
+	UIstyle.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.7f, 0.7f, 0.7f, 0.80f);
+	UIstyle.Colors[ImGuiCol_PopupBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	UIstyle.Colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
+	UIstyle.Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
+	UIstyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.4f, 0.5f, 0.6f, 1.00f);
+	UIstyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.5f, 0.6f, 0.7f, 0.80f);
+	UIstyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.7f, 0.8f, 0.9f, 0.40f);
+	UIstyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
+	UIstyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.47f, 0.47, 0.47f, 0.75f);
+	UIstyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
+	UIstyle.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.8f, 0.8f, 0.8f, 1.00f);
+	UIstyle.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	UIstyle.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+	UIstyle.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.5f, 0.6f, 0.7f, 0.80f);
+	UIstyle.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.7f, 0.8f, 0.9f, 0.40f);
+	UIstyle.Colors[ImGuiCol_ComboBg] = ImVec4(0.19f, 0.18f, 0.21f, 1.00f);
+	UIstyle.Colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	UIstyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+	UIstyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.7f, 0.8f, 0.9f, 0.40f);
+	UIstyle.Colors[ImGuiCol_Button] = ImVec4(0.4f, 0.5f, 0.6f, 1.00f);
+	UIstyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.5f, 0.6f, 0.7f, 0.80f);
+	UIstyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.7f, 0.8f, 0.9f, 0.40f);
+	UIstyle.Colors[ImGuiCol_Header] = ImVec4(0.4f, 0.5f, 0.6f, 1.00f);
+	UIstyle.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.5f, 0.6f, 0.7f, 0.80f);
+	UIstyle.Colors[ImGuiCol_HeaderActive] = ImVec4(0.7f, 0.8f, 0.9f, 0.40f);
+	UIstyle.Colors[ImGuiCol_Column] = ImVec4(0.4f, 0.5f, 0.6f, 1.00f);
+	UIstyle.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.5f, 0.6f, 0.7f, 0.80f);
+	UIstyle.Colors[ImGuiCol_ColumnActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	UIstyle.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+	UIstyle.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.5f, 0.6f, 0.7f, 0.80f);
+	UIstyle.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.7f, 0.8f, 0.9f, 0.40f);
+	UIstyle.Colors[ImGuiCol_CloseButton] = ImVec4(0.4f, 0.5f, 0.6f, 1.00f);
+	UIstyle.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.5f, 0.6f, 0.7f, 0.80f);
+	UIstyle.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.40f, 0.39f, 0.38f, 1.00f);
+	UIstyle.Colors[ImGuiCol_PlotLines] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
+	UIstyle.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+	UIstyle.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
+	UIstyle.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+	UIstyle.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
+	UIstyle.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 
 	ImGuiIO& io{ ImGui::GetIO() };
 
@@ -80,21 +131,13 @@ update_status ModuleImGui::Update(float dt)
 
 	TopMenu();
 
-	if (consoleActive)
+	if (UIBottom)
 	{
-		ShowConsoleWindow();
+		ShowBottomUI();
 	}
-	if (configurationActive)
+	if (UIRight)
 	{
-		ShowConfigurationWindow();
-	}
-	if (editorActive)
-	{
-		ShowEditorWindow();
-	}
-	if (aboutActive)
-	{
-		ShowAboutWindow();
+		ShowRightUI();
 	}
 
 	if (closeApp)
@@ -133,22 +176,14 @@ void ModuleImGui::TopMenu()
 
 		if (ImGui::BeginMenu("View"))
 		{
-			if (ImGui::MenuItem("Console"))
+			if (ImGui::MenuItem("Bottom UI"))
 			{
-				openConsoleWindow = !openConsoleWindow;
-				consoleActive = !consoleActive;
+				UIBottom = !UIBottom;
 			}
-			if (ImGui::MenuItem("Configuration"))
+			if (ImGui::MenuItem("Right UI"))
 			{
-				openConfigurationWindow = !openConfigurationWindow;
-				configurationActive = !configurationActive;
+				UIRight = !UIRight;
 			}
-			if (ImGui::MenuItem("About"))
-			{
-				openAboutWindow = !openAboutWindow;
-				aboutActive = !aboutActive;
-			}
-
 			ImGui::EndMenu();
 		}
 
@@ -174,163 +209,106 @@ void ModuleImGui::TopMenu()
 	}
 }
 
-void ModuleImGui::ShowConsoleWindow(bool* p_open)
+void ModuleImGui::ShowBottomUI(bool* p_open)
 {
-	// Demonstrate the various window flags. Typically you would just use the default.
-	ImGuiWindowFlags window_flags = 0;
+	
+}
 
-	if (!ImGui::Begin("Console", p_open, window_flags))
+void ModuleImGui::ShowRightUI(bool* p_open)
+{
+	ImGui::Begin("RightUI", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+	ImGui::BeginDockspace();
+
+	if (ImGui::BeginDock("Editor", false, false, false)) 
 	{
-		// Early out if the window is collapsed, as an optimization.
-		ImGui::End();
-		return;
+		App->sceneEditor->ShowEditor();
 	}
 
-	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
-	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
+	ImGui::EndDock();
 
-	//ImGui::Text("%s", consoleText);
-
-	if (ImGui::Button("Clear"))
+	if (ImGui::BeginDock("Configuration", false, false, false))
 	{
-		consoleText.clear();
+		App->OnConfiguration();
 	}
 
-	for (int i = consoleText.size() - 1; i >= 0; i--)
+	ImGui::EndDock();
+
+	ImGui::Begin("InferiorUI", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+	if (ImGui::BeginDock("Console", false, false, true))
 	{
-		ImGui::Text("%s", consoleText[i].c_str());
+		for (int i = consoleText.size() - 1; i >= 0; i--)
+		{
+			ImGui::Text("%s", consoleText[i].c_str());
+		}
+		if (ImGui::Button("Clear"))
+		{
+			consoleText.clear();
+		}
 	}
 
+	ImGui::EndDock();
+
+	if (ImGui::BeginDock("About", false, false, false))
+	{
+		ImGui::Text("Name: AK Engine.");
+		ImGui::Text("3D Engine made with C++ and OpenGL for an assignment in a Game Design & Development degree.");
+		ImGui::Text("Authors: Marc Fabian, Adrian Castillo and Marc Lopez.");
+
+		if (ImGui::CollapsingHeader("Libraries used"))
+		{
+			if (ImGui::MenuItem("SDL 2.0.4"))
+			{
+				ShellExecuteA(NULL, "open", "https://www.libsdl.org/index.php", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("MathGeoLib 1.3"))
+			{
+				ShellExecuteA(NULL, "open", "http://clb.demon.fi/MathGeoLib/nightly/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("ImGui 1.52 WIP"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Bullet 2.84"))
+			{
+				ShellExecuteA(NULL, "open", "http://bulletphysics.org/wordpress/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Brofiler 1.1.2"))
+			{
+				ShellExecuteA(NULL, "open", "http://brofiler.com/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Glew 2.0.0"))
+			{
+				ShellExecuteA(NULL, "open", "http://glew.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("OpenGl 3.1"))
+			{
+				ShellExecuteA(NULL, "open", "https://www.opengl.org/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("DevIL 1.8.0"))
+			{
+				ShellExecuteA(NULL, "open", "http://openil.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Assimp 3.0"))
+			{
+				ShellExecuteA(NULL, "open", "http://assimp.sourceforge.net/lib_html/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("License Apache 2.0"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/blob/master/LICENSE", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+	}
+	ImGui::EndDock();
+
+	ImGui::EndDockspace();
+
+	ImGui::End();
 	ImGui::End();
 }
 
 void ModuleImGui::AddLogToWindow(std::string toAdd)
 {
 	consoleText.push_back(toAdd);
-}
-
-void ModuleImGui::ShowConfigurationWindow(bool* p_open)
-{
-	if (!ImGui::Begin("Configuration", p_open))
-	{
-		// Early out if the window is collapsed, as an optimization.
-		ImGui::End();
-		return;
-	}
-
-	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
-	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
-
-	ImGui::Text("Options");
-
-	App->OnConfiguration();
-
-	ImGui::End();
-}
-
-void ModuleImGui::ShowAboutWindow(bool* p_open)
-{
-	// Demonstrate the various window flags. Typically you would just use the default.
-	ImGuiWindowFlags window_flags = 0;
-
-	if (!ImGui::Begin("About", p_open, window_flags))
-	{
-		// Early out if the window is collapsed, as an optimization.
-		ImGui::End();
-		return;
-	}
-
-	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
-	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
-
-										
-	ImGui::Text("Name: AK Engine.");
-	ImGui::Text("3D Engine made with C++ and OpenGL for an assignment in a Game Design & Development degree.");
-	ImGui::Text("Authors: Marc Fabian, Adrian Castillo and Marc Lopez.");
-	
-	if (ImGui::CollapsingHeader("Libraries used"))
-	{
-		if (ImGui::MenuItem("SDL 2.0.4"))
-		{
-			ShellExecuteA(NULL, "open", "https://www.libsdl.org/index.php", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::MenuItem("MathGeoLib 1.3"))
-		{
-			ShellExecuteA(NULL, "open", "http://clb.demon.fi/MathGeoLib/nightly/", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::MenuItem("ImGui 1.52 WIP"))
-		{
-			ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::MenuItem("Bullet 2.84"))
-		{
-			ShellExecuteA(NULL, "open", "http://bulletphysics.org/wordpress/", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::MenuItem("Brofiler 1.1.2"))
-		{
-			ShellExecuteA(NULL, "open", "http://brofiler.com/", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::MenuItem("Glew 2.0.0"))
-		{
-			ShellExecuteA(NULL, "open", "http://glew.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::MenuItem("OpenGl 3.1"))
-		{
-			ShellExecuteA(NULL, "open", "https://www.opengl.org/", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::MenuItem("DevIL 1.8.0"))
-		{
-			ShellExecuteA(NULL, "open", "http://openil.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::MenuItem("Assimp 3.0"))
-		{
-			ShellExecuteA(NULL, "open", "http://assimp.sourceforge.net/lib_html/", NULL, NULL, SW_SHOWNORMAL);
-		}
-
-	
-	}
-	if (ImGui::CollapsingHeader("License"))
-	{
-		if (ImGui::MenuItem("License Apache 2.0"))
-		{
-			ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/blob/master/LICENSE", NULL, NULL, SW_SHOWNORMAL);
-		}
-	}
-
-
-	ImGui::End();
-}
-
-void ModuleImGui::ShowEditorWindow(bool* p_open)
-{
-	ImVec2 display_size = ImGui::GetIO().DisplaySize;
-	ImGui::SetNextWindowSize(display_size);
-	ImGui::SetNextWindowPos(ImVec2(0, 0));
-
-	ImGui::Begin("Editor", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
-
-	ImGui::Separator();
-
-	ImGui::BeginDockspace();
-
-	if (ImGui::BeginDock("Show Editor", false, false, false, ImGuiWindowFlags_HorizontalScrollbar)) 
-	{
-		ImGui::Text("TEST");
-		//App->sceneEditor->ShowEditor();
-	}
-
-	ImGui::EndDock();
-
-	if (ImGui::BeginDock("Show Editor 2", false, false, false, ImGuiWindowFlags_HorizontalScrollbar))
-	{
-		ImGui::Text("TEST");
-		//App->sceneEditor->ShowEditor();
-	}
-
-	ImGui::EndDock();
-
-	ImGui::EndDockspace();
-	ImGui::End();
 }

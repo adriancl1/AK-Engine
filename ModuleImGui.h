@@ -25,10 +25,10 @@ public:
 private:
 	//ImGui Menu Active Booleans
 	bool menuActive;
-	bool consoleActive;
+	bool UIBottom;
 	bool configurationActive;
 	bool aboutActive;
-	bool editorActive;
+	bool UIRight;
 
 	bool closeApp = false;
 
@@ -37,20 +37,10 @@ private:
 //ImGui
 public:
 	IMGUI_API void TopMenu();
-	IMGUI_API void ShowConsoleWindow(bool* p_open = NULL);
-	IMGUI_API void ShowConfigurationWindow(bool* p_open = NULL);
-	IMGUI_API void ShowAboutWindow(bool* p_open = NULL);
-	IMGUI_API void ShowEditorWindow(bool* p_open = NULL);
+	IMGUI_API void ShowBottomUI(bool* p_open = NULL);
+	IMGUI_API void ShowRightUI(bool* p_open = NULL);
 
 	void AddLogToWindow(std::string toAdd);
-
-private:
-	//Booleans for ImGui Checkbox buttons
-	bool openConsoleWindow;
-	bool openConfigurationWindow;
-	bool openAboutWindow;
-	bool openEditorWindow;
-
 };
 
 #endif // __ModuleImGui_H__
