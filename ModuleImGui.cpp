@@ -49,11 +49,10 @@ bool ModuleImGui::Start()
 	ImGui_ImplSdlGL3_Init(App->window->GetWindow());
 
 	//ImGui Menu Active Booleans
-	menuActive = false;
 	consoleActive = false;
 	configurationActive = false;
 	aboutActive = false;
-	editorActive = true;
+	editorActive = false;
 
 	openConsoleWindow = false;
 	openConfigurationWindow = false;
@@ -130,6 +129,11 @@ void ModuleImGui::TopMenu()
 
 		if (ImGui::BeginMenu("View"))
 		{
+			if (ImGui::MenuItem("Editor"))
+			{
+				openEditorWindow = !openEditorWindow;
+				editorActive = !editorActive;
+			}
 			if (ImGui::MenuItem("Console"))
 			{
 				openConsoleWindow = !openConsoleWindow;
@@ -173,20 +177,12 @@ void ModuleImGui::TopMenu()
 
 void ModuleImGui::ShowConsoleWindow(bool* p_open)
 {
-	// Demonstrate the various window flags. Typically you would just use the default.
-	ImGuiWindowFlags window_flags = 0;
-
-	if (!ImGui::Begin("Console", p_open, window_flags))
+	if (!ImGui::Begin("Console", p_open))
 	{
 		// Early out if the window is collapsed, as an optimization.
 		ImGui::End();
 		return;
 	}
-
-	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
-	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
-
-	//ImGui::Text("%s", consoleText);
 
 	if (ImGui::Button("Clear"))
 	{
@@ -215,9 +211,6 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 		return;
 	}
 
-	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
-	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
-
 	ImGui::Text("Options");
 
 	App->OnConfiguration();
@@ -227,19 +220,12 @@ void ModuleImGui::ShowConfigurationWindow(bool* p_open)
 
 void ModuleImGui::ShowAboutWindow(bool* p_open)
 {
-	// Demonstrate the various window flags. Typically you would just use the default.
-	ImGuiWindowFlags window_flags = 0;
-
-	if (!ImGui::Begin("About", p_open, window_flags))
+	if (!ImGui::Begin("About", p_open))
 	{
 		// Early out if the window is collapsed, as an optimization.
 		ImGui::End();
 		return;
 	}
-
-	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
-	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
-
 										
 	ImGui::Text("Name: AK Engine.");
 	ImGui::Text("3D Engine made with C++ and OpenGL for an assignment in a Game Design & Development degree.");
@@ -283,8 +269,6 @@ void ModuleImGui::ShowAboutWindow(bool* p_open)
 		{
 			ShellExecuteA(NULL, "open", "http://assimp.sourceforge.net/lib_html/", NULL, NULL, SW_SHOWNORMAL);
 		}
-
-	
 	}
 	if (ImGui::CollapsingHeader("License"))
 	{
@@ -294,21 +278,12 @@ void ModuleImGui::ShowAboutWindow(bool* p_open)
 		}
 	}
 
-
 	ImGui::End();
 }
 
 void ModuleImGui::ShowEditorWindow(bool* p_open)
 {
-	// Demonstrate the various window flags. Typically you would just use the default.
-	ImGuiWindowFlags window_flags = 0;
-
-	int windowSizeX, windowSizeY;
-	App->window->GetWindowSize(windowSizeX, windowSizeY);
-
-	ImGui::SetNextWindowSize(ImVec2(windowSizeX, windowSizeY));
-
-	if (!ImGui::Begin("Editor", p_open, window_flags))
+	if (!ImGui::Begin("Editor", p_open))
 	{
 		// Early out if the window is collapsed, as an optimization.
 		ImGui::End();

@@ -61,7 +61,7 @@ void GameObject::AddComponent(Component* component)
 	components.push_back(component);
 }
 
-Component* GameObject::FindComponent(ComponentType type)
+Component* GameObject::FindComponent(ComponentType type) const
 {
 	for (int i = 0; i < components.size(); i++)
 	{

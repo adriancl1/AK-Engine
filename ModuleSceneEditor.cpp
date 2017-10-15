@@ -73,7 +73,7 @@ void ModuleSceneEditor::ShowEditor()
 }
 
 
-GameObject* ModuleSceneEditor::GetRoot()
+GameObject* ModuleSceneEditor::GetRoot() const
 {
 	return root;
 }

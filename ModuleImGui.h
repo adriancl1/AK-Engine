@@ -22,7 +22,6 @@ public:
 
 private:
 	//ImGui Menu Active Booleans
-	bool menuActive;
 	bool consoleActive;
 	bool configurationActive;
 	bool aboutActive;
@@ -30,16 +29,18 @@ private:
 
 	bool closeApp = false;
 
+	//Used to print Logs into the console window
 	std::vector<std::string> consoleText;
 
-//ImGui
 public:
+	//ImGui Windows
 	IMGUI_API void TopMenu();
 	IMGUI_API void ShowConsoleWindow(bool* p_open = NULL);
 	IMGUI_API void ShowConfigurationWindow(bool* p_open = NULL);
 	IMGUI_API void ShowAboutWindow(bool* p_open = NULL);
 	IMGUI_API void ShowEditorWindow(bool* p_open = NULL);
 
+	//Console Logs
 	void AddLogToWindow(std::string toAdd);
 
 private:

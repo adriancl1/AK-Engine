@@ -344,10 +344,6 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 			ComponentMesh* toDraw = dynamic_cast<ComponentMesh*> (objectDraw->components[i]);
 			glPushMatrix();
 
-			//float m[16] = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1 };
-
-			//glMultMatrixf(m);
-
 			if (toDraw->idNormals > 0)
 			{
 				glEnable(GL_LIGHTING);
@@ -401,7 +397,6 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 			{
 				toDraw->DrawDebug();
 			}
-
 		}
 	}
 }

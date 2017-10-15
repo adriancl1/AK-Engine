@@ -28,7 +28,7 @@ public:
 	//Show Editor
 	void ShowEditor();
 
-	GameObject* GetRoot();
+	GameObject* GetRoot() const;
 
 	GameObject* CreateNewGameObject(const char* path);
 
