@@ -5,6 +5,7 @@
 
 #include "Brofiler-1.1.2\Brofiler.h"
 #include "imgui-1.51\imgui.h"
+#include "imgui-1.51\imgui_dock.h"
 #include "imgui-1.51\imgui_impl_sdl_gl3.h"
 #include "Glew\include\glew.h"
 
@@ -59,6 +60,8 @@ bool ModuleImGui::Start()
 	openConfigurationWindow = false;
 	openAboutWindow = false;
 	openEditorWindow = false;
+
+	ImGuiIO& io{ ImGui::GetIO() };
 
 	return ret;
 }
@@ -300,25 +303,34 @@ void ModuleImGui::ShowAboutWindow(bool* p_open)
 
 void ModuleImGui::ShowEditorWindow(bool* p_open)
 {
-	// Demonstrate the various window flags. Typically you would just use the default.
-	ImGuiWindowFlags window_flags = 0;
+	ImVec2 display_size = ImGui::GetIO().DisplaySize;
+	ImGui::SetNextWindowSize(display_size);
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
 
-	int windowSizeX, windowSizeY;
-	App->window->GetWindowSize(windowSizeX, windowSizeY);
+	ImGui::Begin("Editor", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
 
-	ImGui::SetNextWindowSize(ImVec2(windowSizeX, windowSizeY));
+	ImGui::Separator();
 
-	if (!ImGui::Begin("Editor", p_open, window_flags))
+	ImGui::BeginDockspace();
+
+	if (ImGui::BeginDock("Show Editor", false, false, false, ImGuiWindowFlags_HorizontalScrollbar)) 
 	{
-		// Early out if the window is collapsed, as an optimization.
-		ImGui::End();
-		return;
+		ImGui::Text("TEST");
+		//App->sceneEditor->ShowEditor();
 	}
 
-	if (ImGui::CollapsingHeader("GameObjects Hieriarchy"))
+	ImGui::EndDock();
+
+	if (ImGui::BeginDock("Show Editor 2", false, false, false, ImGuiWindowFlags_HorizontalScrollbar))
 	{
-		App->sceneEditor->ShowEditor();
+		ImGui::Text("TEST");
+		//App->sceneEditor->ShowEditor();
 	}
 
+	ImGui::EndDock();
+
+	ImGui::EndDockspace();
 	ImGui::End();
 }

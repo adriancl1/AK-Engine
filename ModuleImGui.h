@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
+
 class ModuleImGui : public Module
 {
 public:
