@@ -211,7 +211,79 @@ void ModuleImGui::TopMenu()
 
 void ModuleImGui::ShowBottomUI(bool* p_open)
 {
+	/*ImGui::Begin("InferiorUI", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus);
+
+	ImGui::BeginDockspace();
+
+	if (ImGui::BeginDock("Console", false, false, true))
+	{
+		for (int i = consoleText.size() - 1; i >= 0; i--)
+		{
+			ImGui::Text("%s", consoleText[i].c_str());
+		}
+		if (ImGui::Button("Clear"))
+		{
+			consoleText.clear();
+		}
+	}
+
+	ImGui::EndDock();
+
+	if (ImGui::BeginDock("About", false, false, false))
+	{
+		ImGui::Text("Name: AK Engine.");
+		ImGui::Text("3D Engine made with C++ and OpenGL for an assignment in a Game Design & Development degree.");
+		ImGui::Text("Authors: Marc Fabian, Adrian Castillo and Marc Lopez.");
+
+		if (ImGui::CollapsingHeader("Libraries used"))
+		{
+			if (ImGui::MenuItem("SDL 2.0.4"))
+			{
+				ShellExecuteA(NULL, "open", "https://www.libsdl.org/index.php", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("MathGeoLib 1.3"))
+			{
+				ShellExecuteA(NULL, "open", "http://clb.demon.fi/MathGeoLib/nightly/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("ImGui 1.52 WIP"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/ocornut/imgui", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Bullet 2.84"))
+			{
+				ShellExecuteA(NULL, "open", "http://bulletphysics.org/wordpress/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Brofiler 1.1.2"))
+			{
+				ShellExecuteA(NULL, "open", "http://brofiler.com/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Glew 2.0.0"))
+			{
+				ShellExecuteA(NULL, "open", "http://glew.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("OpenGl 3.1"))
+			{
+				ShellExecuteA(NULL, "open", "https://www.opengl.org/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("DevIL 1.8.0"))
+			{
+				ShellExecuteA(NULL, "open", "http://openil.sourceforge.net/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Assimp 3.0"))
+			{
+				ShellExecuteA(NULL, "open", "http://assimp.sourceforge.net/lib_html/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("License Apache 2.0"))
+			{
+				ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/blob/master/LICENSE", NULL, NULL, SW_SHOWNORMAL);
+			}
+		}
+	}
+	ImGui::EndDock();
 	
+	ImGui::EndDockspace();
+
+	ImGui::End();*/
 }
 
 void ModuleImGui::ShowRightUI(bool* p_open)
@@ -234,7 +306,6 @@ void ModuleImGui::ShowRightUI(bool* p_open)
 
 	ImGui::EndDock();
 
-	ImGui::Begin("InferiorUI", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
 	if (ImGui::BeginDock("Console", false, false, true))
 	{
@@ -304,7 +375,6 @@ void ModuleImGui::ShowRightUI(bool* p_open)
 
 	ImGui::EndDockspace();
 
-	ImGui::End();
 	ImGui::End();
 }
 
