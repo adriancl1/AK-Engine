@@ -80,15 +80,18 @@ public:
 	{
 		if (idNormals>0)
 		{
-			for (int i = 0; i < numVertices; i += 3)
+			for (int i = 0; i < numVertices; i+=3)
 			{
-				pLine n(vertices[i], vertices[i + 1], vertices[i + 2], normals[i] + vertices[i], normals[i + 1] + vertices[i + 1], normals[i + 2] + vertices[i + 2]);
-				n.color = Green;
-				n.Render();
+				for (int j = 0; j < 9; j+=3)
+				{
+					pLine n(vertices[i], vertices[i + 1], vertices[i + 2], normals[i + j] + vertices[i], normals[i + 1 + j] + vertices[i + 1], normals[i + 2 + j] + vertices[i + 2]);
+					n.color = Green;
+					n.Render();
+				}
 			}
-			for (int i = 0; i < numVertices; i += 9)
+			for (int i = 0; i < numIndices; i += 3)
 			{
-				Triangle face(float3(vertices[i], vertices[i + 1], vertices[i + 2]), float3(vertices[i + 3], vertices[i + 4], vertices[i + 5]), float3(vertices[i + 6], vertices[i + 7], vertices[i + 8]));
+				Triangle face(float3(vertices[indices[i] * 3], vertices[indices[i] * 3 + 1], vertices[indices[i] * 3 + 2]), float3(vertices[indices[i + 1] * 3], vertices[indices[i + 1] * 3 + 1], vertices[indices[i + 1] * 3 + 2]), float3(vertices[indices[i + 2] * 3], vertices[indices[i + 2] * 3 + 1], vertices[indices[i + 2] * 3 + 2]));
 				float3 faceCenter = face.Centroid();
 				float3 faceNormal = face.NormalCCW();
 				pLine normal(faceCenter.x, faceCenter.y, faceCenter.z, faceCenter.x + faceNormal.x, faceCenter.y + faceNormal.y, faceCenter.z + faceNormal.z);
@@ -144,7 +147,7 @@ public:
 		glEnd();
 		glPopMatrix();
 
-		glColor3f(0, 0, 0);
+		glColor3f(1, 1, 1);
 
 	}
 

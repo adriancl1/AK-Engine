@@ -335,6 +335,7 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 			if (wframe == true)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				glColor3f(0, 1, 1);
 			}
 			else
 			{
@@ -365,7 +366,7 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 			if (toDraw->idTexCoords > 0)
 			{
 				ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(objectDraw->FindComponent(Component_Material));
-				if(mat!=nullptr)
+				if(mat!=nullptr && wframe == false)
 				{
 					glBindTexture(GL_TEXTURE_2D, mat->idTexture);
 				}
