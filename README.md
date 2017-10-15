@@ -8,15 +8,17 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 - To Collapse - Uncollapse windows use LMB.
 - To click red buttons use LMB.
 - To interact with check boxes use LMB.
-- To add or remove any kind of integer value use LMB on the respective button (press + if you want to add +1 or - if you want to add -1 to the corresponding integer).
-- To rotate the camera use right click.
-- To move the camera use: A/D (left/right), W/S (forwards/backwards), R/F (up/down). To move faster hold down L-Shift.
+- To rotate the camera use alt + left click.
+- To move the camera use: right click + A/D (left/right), W/S (forwards/backwards). To move faster hold down L-Shift.
 - Drag and drop a .fbx file to import it into the scene.
 - Drag and drop a .wav file to play it.
-- Press F1 to activate debug features.
-
+- Draf abd drop a .png file to use it as a texture for all the meshes currently on screen.
+- Press F1 to activate debug features. Face normals will be drawn orange, vertex normals green.
 
 ## Changelog
+Version P1 1.0.3
+* Bug fixes.
+
 Version P1 1.0.0
 * New camera controls.
 * Removed primitive creation window.
