@@ -5,13 +5,15 @@
 AK Engine purpose is to be used as an experimentation and learning tool as well as a project for Game Design & Development degree that we are currently coursing.
 
 ## Controls
+- Press ESC or go to "File" on the top menu and then click on "Quit".
 - To Collapse - Uncollapse windows use LMB.
-- To click red buttons use LMB.
+- To click buttons use LMB.
 - To interact with check boxes use LMB.
+- To open editor, configuration and other windows click on "View" on the top menu.
 - To rotate the camera use alt + left click.
 - To move the camera use: right click + A/D (left/right), W/S (forwards/backwards). To move faster hold down L-Shift.
 - Drag and drop a .fbx file to import it into the scene.
-- Drag and drop a .wav file to play it.
+- Drag and drop a .ogg file to play it.
 - Draf abd drop a .png file to use it as a texture for all the meshes currently on screen.
 - Press F1 to activate debug features. Face normals will be drawn orange, vertex normals green.
 
