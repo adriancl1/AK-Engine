@@ -135,7 +135,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					App->sceneEditor->CreateNewGameObject(fileDir);
 				}
-				else if (strcmp(&fileDir[length - 4], ".wav") == 0 || strcmp(&fileDir[length - 4], ".WAV") == 0)
+				else if (strcmp(&fileDir[length - 4], ".ogg") == 0 || strcmp(&fileDir[length - 4], ".OGG") == 0)
 				{
 					App->audio->PlayMusic(fileDir);
 				}
