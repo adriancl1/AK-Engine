@@ -59,15 +59,8 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 		aiNode* node = scene->mRootNode;
 		newObject->AddComponent(LoadTransform(node));
 
-		// Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (int i = 0; i < scene->mNumMeshes; i++)
-		{
-			newObject->AddComponent(LoadMesh(scene->mMeshes[i]));
-			aiMaterial* material = nullptr;
-			material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
-
-			newObject->AddComponent(LoadMaterial(material));
-		}
+		LOG("Loading meshes");
+		LoadMesh(node, scene, newObject);
 
 		aiReleaseImport(scene);
 		return newObject;
@@ -93,82 +86,100 @@ void ModuleImporter::LoadNewTexture(const char* fullPath)
 	}
 }
 
-ComponentMesh* ModuleImporter::LoadMesh(aiMesh* newMesh)
+ComponentMesh* ModuleImporter::LoadMesh(aiNode* node, const aiScene* scene, GameObject* addTo)
 {
-	ComponentMesh* m = new ComponentMesh;
-
-	if (newMesh != nullptr)
+	for (int i = 0; i < node->mNumMeshes; i++)
 	{
-		//VERTICES
-		m->numVertices = newMesh->mNumVertices;
-		m->vertices = new float[m->numVertices * 3];
-		memcpy(m->vertices, newMesh->mVertices, sizeof(float)* m->numVertices * 3);
-		LOG("New mesh with %d vertices", m->numVertices);
-
-		glGenBuffers(1, (GLuint*)&m->idVertices);
-		glBindBuffer(GL_ARRAY_BUFFER, m->idVertices);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->vertices, GL_STATIC_DRAW);
-
-		//INDICES
-		if (newMesh->HasFaces())
-		{
-			m->numIndices = newMesh->mNumFaces * 3;
-			m->indices = new uint[m->numIndices];
-			for (uint i = 0; i < newMesh->mNumFaces; ++i)
+		ComponentMesh* m = new ComponentMesh;
+		aiMesh* newMesh = scene->mMeshes[node->mMeshes[i]];
+			if (newMesh != nullptr)
 			{
-				if (newMesh->mFaces[i].mNumIndices != 3)
+				//VERTICES
+				m->numVertices = newMesh->mNumVertices;
+
+				m->vertices = new float[m->numVertices * 3];
+
+				memcpy(m->vertices, newMesh->mVertices, sizeof(float)* m->numVertices * 3);
+				LOG("New mesh with %d vertices", m->numVertices);
+
+				glGenBuffers(1, (GLuint*)&m->idVertices);
+				glBindBuffer(GL_ARRAY_BUFFER, m->idVertices);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->vertices, GL_STATIC_DRAW);
+
+				//INDICES
+				if (newMesh->HasFaces())
 				{
-					LOG("WARNING, geometry face with != 3 indices!");
+					m->numIndices = newMesh->mNumFaces * 3;
+					m->indices = new uint[m->numIndices];
+					for (uint i = 0; i < newMesh->mNumFaces; ++i)
+					{
+						if (newMesh->mFaces[i].mNumIndices != 3)
+						{
+							LOG("WARNING, geometry face with != 3 indices!");
+						}
+						else
+						{
+							memcpy(&m->indices[i * 3], newMesh->mFaces[i].mIndices, 3 * sizeof(uint));
+						}
+					}
+
+					glGenBuffers(1, (GLuint*)&m->idIndices);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->idIndices);
+					glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m->numIndices, m->indices, GL_STATIC_DRAW);
 				}
-				else
+
+				//NORMALS
+				if (newMesh->HasNormals())
 				{
-					memcpy(&m->indices[i * 3], newMesh->mFaces[i].mIndices, 3 * sizeof(uint));
+					m->normals = new float[m->numVertices * 3];
+					memcpy(m->normals, newMesh->mNormals, sizeof(float) * m->numVertices * 3);
+
+					glGenBuffers(1, (GLuint*) &(m->idNormals));
+					glBindBuffer(GL_ARRAY_BUFFER, m->idNormals);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->normals, GL_STATIC_DRAW);
 				}
+
+				//COLORS
+				if (newMesh->HasVertexColors(0))
+				{
+					m->colors = new float[m->numVertices * 3];
+					memcpy(m->colors, newMesh->mColors, sizeof(float) * m->numVertices * 3);
+
+					glGenBuffers(1, (GLuint*) &(m->idColors));
+					glBindBuffer(GL_ARRAY_BUFFER, m->idColors);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->colors, GL_STATIC_DRAW);
+				}
+
+				//TEXTURE COORDS
+				if (newMesh->HasTextureCoords(0))
+				{
+					m->texCoords = new float[m->numVertices * 3];
+					memcpy(m->texCoords, newMesh->mTextureCoords[0], sizeof(float) * m->numVertices * 3);
+
+					glGenBuffers(1, (GLuint*) &(m->idTexCoords));
+					glBindBuffer(GL_ARRAY_BUFFER, m->idTexCoords);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->texCoords, GL_STATIC_DRAW);
+
+					aiMaterial* material = nullptr;
+					material = scene->mMaterials[newMesh->mMaterialIndex];
+
+					addTo->AddComponent(LoadMaterial(material));
+				}
+
+				m->name = node->mName.C_Str();
+
+				m->enclosingBox.SetNegativeInfinity();
+				m->enclosingBox.Enclose((float3*)m->vertices, m->numVertices);
+
+				addTo->AddComponent(m);
 			}
+	}
 
-			glGenBuffers(1, (GLuint*)&m->idIndices);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->idIndices);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m->numIndices, m->indices, GL_STATIC_DRAW);
-		}
+	for (uint i = 0; i < node->mNumChildren; i++)
 
-		//NORMALS
-		if (newMesh->HasNormals())
-		{
-			m->normals = new float[m->numVertices * 3];
-			memcpy(m->normals, newMesh->mNormals, sizeof(float) * m->numVertices * 3);
+	{
+		LoadMesh(node->mChildren[i], scene, addTo);
 
-			glGenBuffers(1, (GLuint*) &(m->idNormals));
-			glBindBuffer(GL_ARRAY_BUFFER, m->idNormals);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->normals, GL_STATIC_DRAW);
-		}
-
-		//COLORS
-		if (newMesh->HasVertexColors(0))
-		{
-			m->colors = new float[m->numVertices * 3];
-			memcpy(m->colors, newMesh->mColors, sizeof(float) * m->numVertices * 3);
-
-			glGenBuffers(1, (GLuint*) &(m->idColors));
-			glBindBuffer(GL_ARRAY_BUFFER, m->idColors);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->colors, GL_STATIC_DRAW);
-		}
-
-		//TEXTURE COORDS
-		if (newMesh->HasTextureCoords(0))
-		{
-			m->texCoords = new float[m->numVertices * 3];
-			memcpy(m->texCoords, newMesh->mTextureCoords[0], sizeof(float) * m->numVertices * 3);
-
-			glGenBuffers(1, (GLuint*) &(m->idTexCoords));
-			glBindBuffer(GL_ARRAY_BUFFER, m->idTexCoords);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->texCoords, GL_STATIC_DRAW);
-		}
-
-
-		m->enclosingBox.SetNegativeInfinity();
-		m->enclosingBox.Enclose((float3*)m->vertices, m->numVertices);
-
-		return m;
 	}
 	return nullptr;
 }

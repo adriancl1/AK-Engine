@@ -7,6 +7,7 @@
 class aiMesh;
 class aiMaterial;
 class aiNode;
+class aiScene;
 
 class GameObject;
 
@@ -26,7 +27,7 @@ public:
 
 	GameObject* LoadGameObject(const char* fullPath);
 
-	ComponentMesh* LoadMesh(aiMesh* newMesh);
+	ComponentMesh* LoadMesh(aiNode* node, const aiScene* scene, GameObject* addTo);
 	ComponentMaterial* LoadMaterial(aiMaterial* newMaterial);
 	ComponentTransform* LoadTransform(aiNode* node);
 

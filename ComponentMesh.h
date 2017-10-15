@@ -80,14 +80,17 @@ public:
 	{
 		if (idNormals>0)
 		{
-			for (int i = 0; i < numVertices; i+=3)
+			for (int i = 0; i < numVertices * 3; i+=3)
 			{
-				for (int j = 0; j < 9; j+=3)
-				{
-					pLine n(vertices[i], vertices[i + 1], vertices[i + 2], normals[i + j] + vertices[i], normals[i + 1 + j] + vertices[i + 1], normals[i + 2 + j] + vertices[i + 2]);
-					n.color = Green;
-					n.Render();
-				}
+				/*glColor3f(0.f, 1.0f, 0.f);
+				glBegin(GL_LINES);
+				glVertex3f(vertices[i], vertices[i + 1], vertices[i + 2]);
+				glVertex3f(vertices[i] + normals[i], vertices[i + 1] + normals[i + 1], vertices[i + 2] + normals[i + 2]);
+				glEnd();
+				glColor3f(1.0f, 1.0f, 1.0f);*/
+				pLine vNormal(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i] + normals[i], vertices[i + 1] + normals[i + 1], vertices[i + 2] + normals[i + 2]);
+				vNormal.color = Green;
+				vNormal.Render();
 			}
 			for (int i = 0; i < numIndices; i += 3)
 			{
