@@ -15,6 +15,9 @@ public:
 	Component(ComponentType type, bool startActive = true) : type(type), active(startActive)
 	{}
 
+	virtual ~Component()
+	{}
+
 	virtual void Enable()
 	{
 		active = true;

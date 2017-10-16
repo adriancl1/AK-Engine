@@ -10,6 +10,9 @@ public:
 	{
 	}
 
+	~ComponentMaterial()
+	{}
+
 	uint idTexture;
 	
 	void OnEditor() override

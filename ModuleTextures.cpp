@@ -30,7 +30,7 @@ bool ModuleTextures::Init(JSON_Object * data)
 
 bool ModuleTextures::CleanUp(JSON_Object * data)
 {
-	return false;
+	return true;
 }
 
 uint ModuleTextures::ImportImage(const char * image)

@@ -17,6 +17,11 @@ ModuleHardware::~ModuleHardware()
 {
 }
 
+bool ModuleHardware::CleanUp(JSON_Object * data)
+{
+	return true;
+}
+
 void ModuleHardware::OnConfiguration()
 {
 	if (ImGui::CollapsingHeader("Hardware"))

@@ -45,6 +45,9 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 	namePath.copy(testM, length - i, i);
 	newObject->name.assign(testM);
 
+	delete[] testM;
+	testM = nullptr;
+
 	const aiScene* scene = aiImportFile(fullPath, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{

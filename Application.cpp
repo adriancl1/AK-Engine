@@ -40,13 +40,19 @@ Application::Application()
 
 Application::~Application()
 {
-	p2List_item<Module*>* item = list_modules.getLast();
-
-	while(item != NULL)
+	std::list<Module*>::iterator item = listModules.end();
+	item--;
+	while (item != listModules.begin())
 	{
-		delete item->data;
-		item = item->prev;
+		RELEASE(item._Ptr->_Myval);
+		item--;
 	}
+	if (item == listModules.begin())
+	{
+		RELEASE(item._Ptr->_Myval);
+	}
+
+	listModules.clear();
 }
 
 bool Application::Init()
@@ -56,27 +62,27 @@ bool Application::Init()
 	BROFILER_CATEGORY("Aplication Init", Profiler::Color::AliceBlue);
 
 	// Call Init() in all modules
-	p2List_item<Module*>* item = list_modules.getFirst();
+	std::list<Module*>::iterator item = listModules.begin();
 
 	JSON_Value * configValue = json_parse_file("config.json");
 	JSON_Object * configObject = json_value_get_object(configValue);
 
-	while(item != NULL && ret == true)
+	while (item != listModules.end() && ret == true)
 	{
-		ret = item->data->Init(json_object_dotget_object(configObject, item->data->name.c_str()));
-		item = item->next;
+		ret = item._Ptr->_Myval->Init(json_object_dotget_object(configObject, item._Ptr->_Myval->name.c_str()));
+		item++;
 	}
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
-	item = list_modules.getFirst();
+	item = listModules.begin();
 
-	while(item != NULL && ret == true)
+	while (item != listModules.end() && ret == true)
 	{
-		BROFILER_CATEGORY("%s Init", item->data->name.c_str(), Brofiler::Color::AliceBlue);
+		BROFILER_CATEGORY("%s Init", item._Ptr->_Myval->name.c_str(), Brofiler::Color::AliceBlue);
 
-		ret = item->data->Start();
-		item = item->next;
+		ret = item._Ptr->_Myval->Start();
+		item++;
 	}
 	
 	ms_timer.Start();
@@ -104,28 +110,28 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
-	p2List_item<Module*>* item = list_modules.getFirst();
-	
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	std::list<Module*>::iterator item = listModules.begin();
+
+	while (item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->PreUpdate(dt);
-		item = item->next;
+		ret = item._Ptr->_Myval->PreUpdate(dt);
+		item++;
 	}
 
-	item = list_modules.getFirst();
+	item = listModules.begin();
 
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while (item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->Update(dt);
-		item = item->next;
+		ret = item._Ptr->_Myval->Update(dt);
+		item++;
 	}
 
-	item = list_modules.getFirst();
+	item = listModules.begin();
 
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while (item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item->data->PostUpdate(dt);
-		item = item->next;
+		ret = item._Ptr->_Myval->PostUpdate(dt);
+		item++;
 	}
 
 	FinishUpdate();
@@ -135,15 +141,21 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
-	p2List_item<Module*>* item = list_modules.getLast();
+	std::list<Module*>::iterator item = listModules.end();
+
+	item--;
 
 	JSON_Value* configValue = json_parse_file("config.json");
 	JSON_Object* objectData = json_value_get_object(configValue);
 
-	while (item != NULL && ret == true)
+	while (item != listModules.begin() && ret == true)
 	{
-		ret = item->data->CleanUp(objectData);
-		item = item->prev;
+		ret = item._Ptr->_Myval->CleanUp(objectData);
+		item--;
+	}
+	if (item == listModules.begin() && ret == true)
+	{
+		ret = item._Ptr->_Myval->CleanUp(objectData);
 	}
 	json_serialize_to_file(configValue, "config.json");
 
@@ -163,19 +175,18 @@ void Application::OnConfiguration()
 		ImGui::PlotHistogram("##milliseconds", &MsData[0], MsData.size(), 0, frameMStitle, 0.0f, 40.0f, ImVec2(310, 100));
 	}
 
-	p2List_item<Module*>* item = list_modules.getLast();
-	item = list_modules.getFirst();
+	std::list<Module*>::iterator item = listModules.begin();
 
-	while (item != NULL)
+	while (item != listModules.end())
 	{
-		item->data->OnConfiguration();
-		item = item->next;
+		item._Ptr->_Myval->OnConfiguration();
+		item++;
 	}
 }
 
 void Application::AddModule(Module* mod)
 {
-	list_modules.add(mod);
+	listModules.push_back(mod);
 }
 
 float Application::GetFPS()
