@@ -16,7 +16,7 @@ public:
 	void AddComponent(Component* component);
 	void OnEditor();
 
-	Component* FindComponent(ComponentType type);
+	Component* FindComponent(ComponentType type) const;
 
 	GameObject* parent;
 

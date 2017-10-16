@@ -180,10 +180,16 @@ GameObject* ModuleSceneEditor::GetRoot()
 GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 {
 	GameObject* ret = App->importer->LoadGameObject(path);
-	root->DeleteChilds();
-	root->AddChild(ret);
-
-	App->camera->CenterToGO(ret);
+	if (ret != nullptr)
+	{
+		root->DeleteChilds();
+		root->AddChild(ret);
+		App->camera->CenterToGO(ret);
+	}
+	else
+	{
+		LOG("Couldn't load .fbx file!");
+	}
 
 	return ret;
 }
