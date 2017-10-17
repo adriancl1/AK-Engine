@@ -6,12 +6,13 @@
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 
+#include "Glew\include\glew.h"
+#include "MathGeo\Math\Quat.h"
+
 #include "Assimp\include\cimport.h" 
 #include "Assimp\include\scene.h" 
 #include "Assimp\include\postprocess.h" 
 #include "Assimp\include\cfileio.h"
-#include "Glew\include\glew.h"
-#include "MathGeo\Math\Quat.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
@@ -110,7 +111,7 @@ ComponentMesh* ModuleImporter::LoadMesh(aiNode* node, const aiScene* scene, Game
 		{
 			//VERTICES
 			m->numVertices = newMesh->mNumVertices;
-
+			
 			m->vertices = new float[m->numVertices * 3];
 
 			memcpy(m->vertices, newMesh->mVertices, sizeof(float)* m->numVertices * 3);
@@ -244,3 +245,40 @@ bool ModuleImporter::CleanUp(JSON_Object* data)
 	return true;
 }
 
+void ModuleImporter::Load(ComponentMesh* mesh, char* buffer) //Component Mesh o?...
+{
+	char* cursor = buffer;
+
+	// amount of indices / vertices / colors / normals / texture_coords
+	uint ranges[5];
+	uint bytes = sizeof(ranges);
+	memcpy(ranges, cursor, bytes);
+
+	mesh->numIndices = ranges[0];
+	mesh->numVertices = ranges[1];
+
+	// Load indices
+	cursor += bytes;
+	bytes = sizeof(uint) * mesh->numIndices;
+	mesh->indices = new uint[mesh->numIndices];
+	memcpy(mesh->indices, cursor, bytes);
+}
+
+void ModuleImporter::Save(ComponentMesh* mesh)
+{
+	ComponentMesh* m = new ComponentMesh;
+	m = mesh;
+
+	uint ranges[2] = { m->numIndices, m->numVertices };
+	uint size = sizeof(ranges) + sizeof(uint) * m->numIndices + sizeof(float) * m->numVertices * 3;
+
+	char* data = new char[size]; // Allocate
+	char* cursor = data;
+
+	uint bytes = sizeof(ranges); // First store ranges
+	memcpy(cursor, ranges, bytes);
+
+	cursor += bytes; // Store indices
+	bytes = sizeof(uint) * m->numIndices;
+	memcpy(cursor, m->indices, bytes);
+}

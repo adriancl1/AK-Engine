@@ -22,7 +22,6 @@ public:
 	~ModuleImporter();
 
 	bool Init(JSON_Object* data = nullptr);
-
 	bool CleanUp(JSON_Object* data = nullptr);
 
 	GameObject* LoadGameObject(const char* fullPath);
@@ -32,6 +31,9 @@ public:
 	ComponentTransform* LoadTransform(aiNode* node);
 
 	void LoadNewTexture(const char* fullPath);
+
+	void Load(ComponentMesh* mesh, char* buffer);
+	void Save(ComponentMesh* mesh);
 };
 
 #endif //__ModuleImporter_H__
