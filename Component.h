@@ -2,39 +2,33 @@
 
 #include <string>
 
+class GameObject;
+
 enum ComponentType
 {
 	Component_Transform,
 	Component_Mesh,
-	Component_Material
+	Component_Material,
+	Component_Camera
 };
 
 class Component
 {
 public:
-	Component(ComponentType type, bool startActive = true) : type(type), active(startActive)
-	{}
+	Component(ComponentType type, bool startActive = true);
+	virtual ~Component();
 
-	virtual ~Component()
-	{}
+	virtual void Enable();
+	virtual void Update();
+	virtual void Disable();
+	virtual void OnEditor();
 
-	virtual void Enable()
-	{
-		active = true;
-	}
-	virtual void Update()
-	{
-		
-	}
-	virtual void Disable()
-	{
-		active = false;
-	}
-	virtual void OnEditor()
-	{
+	void SetName(const char* name);
+	void SetGameObject(GameObject* GO);
+	ComponentType GetType() const;
 
-	}
-
+protected:
+	GameObject* myGO = nullptr;
 	std::string name;
 	bool active;
 	ComponentType type;

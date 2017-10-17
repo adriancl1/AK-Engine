@@ -1,8 +1,9 @@
 #pragma once
+#include "Component.h"
+#include "MathGeo\Math\float3.h"
 
 #include <string>
 #include <vector>
-#include "Component.h"
 
 class GameObject
 {
@@ -14,13 +15,16 @@ public:
 	void AddChild(GameObject* child);
 	void DeleteChilds();
 	void AddComponent(Component* component);
+	void SetName(const char* name);
 	void OnEditor();
+
+	void Move(float3 newPos);
 
 	Component* FindComponent(ComponentType type) const;
 
-	GameObject* parent;
-
-	std::string name;
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;
+protected:
+	GameObject* parent;
+	std::string name;
 };

@@ -1,7 +1,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-
+#include "ComponentMesh.h"
 
 GameObject::GameObject(GameObject* parent): parent(parent)
 {
@@ -57,13 +57,19 @@ void GameObject::DeleteChilds()
 void GameObject::AddComponent(Component* component)
 {
 	components.push_back(component);
+	component->SetGameObject(this);
+}
+
+void GameObject::SetName(const char * name)
+{
+	this->name.assign(name);
 }
 
 Component* GameObject::FindComponent(ComponentType type) const
 {
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (components[i]->type == type)
+		if (components[i]->GetType() == type)
 		{
 			return components[i];
 		}
@@ -94,6 +100,17 @@ void GameObject::OnEditor()
 				childs[i]->OnEditor();
 			}
 			ImGui::TreePop();
+		}
+	}
+}
+
+void GameObject::Move(float3 newPos)
+{
+	for (int i = 0; i < components.size(); i++)
+	{
+		if (components[i]->GetType() == Component_Mesh)
+		{
+			dynamic_cast<ComponentMesh*>(components[i])->Move(newPos);
 		}
 	}
 }

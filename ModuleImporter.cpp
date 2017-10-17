@@ -43,7 +43,7 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 	uint i = namePath.find_last_of("\\");
 	char* testM = new char[length-i];
 	namePath.copy(testM, length - i, i);
-	newObject->name.assign(testM);
+	newObject->SetName(testM);
 
 	delete[] testM;
 	testM = nullptr;
@@ -80,7 +80,7 @@ void ModuleImporter::LoadNewTexture(const char* fullPath)
 		count = 0;
 		for (int j = 0; j < App->sceneEditor->GetRoot()->childs[i]->components.size(); j++)
 		{
-			if (App->sceneEditor->GetRoot()->childs[i]->components[j]->type == Component_Material)
+			if (App->sceneEditor->GetRoot()->childs[i]->components[j]->GetType() == Component_Material)
 			{
 				dynamic_cast<ComponentMaterial*>(App->sceneEditor->GetRoot()->childs[i]->components[j])->OverrideTexture(fullPath);
 				count++;
@@ -92,7 +92,7 @@ void ModuleImporter::LoadNewTexture(const char* fullPath)
 		{
 			ComponentMaterial* newMat = new ComponentMaterial();
 			newMat->idTexture = App->textures->ImportImage(fullPath);
-			newMat->name = fullPath;
+			newMat->SetName(fullPath);
 			App->sceneEditor->GetRoot()->childs[i]->AddComponent(newMat);
 		}
 	}
@@ -182,7 +182,7 @@ ComponentMesh* ModuleImporter::LoadMesh(aiNode* node, const aiScene* scene, Game
 
 			}
 
-			m->name = node->mName.C_Str();
+			m->SetName(node->mName.C_Str());
 
 			m->enclosingBox.SetNegativeInfinity();
 
@@ -216,7 +216,7 @@ ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
 		std::string fullPath = "Assets/";
 		fullPath.append(path.C_Str());
 		m->idTexture = App->textures->ImportImage(fullPath.c_str());
-		m->name = path.C_Str();
+		m->SetName(path.C_Str());
 
 		return m;
 	}

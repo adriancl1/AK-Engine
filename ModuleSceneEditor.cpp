@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "GameObject.h"
+#include "ComponentCamera.h"
 #include "ModuleSceneEditor.h"
 #include "Glew\include\glew.h"
 #include "MathGeo\Geometry\Triangle.h"
@@ -40,7 +41,11 @@ bool ModuleSceneEditor::Start()
 	App->camera->Move(vec3(0, 1, 0));
 
 	root = new GameObject();
-	root->name = "Root";
+	root->SetName("Root");
+
+	ComponentCamera* camera = new ComponentCamera();
+
+	root->AddComponent(camera);
 
 	return true;
 }

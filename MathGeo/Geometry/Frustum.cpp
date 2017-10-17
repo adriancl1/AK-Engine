@@ -344,6 +344,35 @@ bool Frustum::Contains(const Polyhedron &polyhedron) const
 	return true;
 }
 
+bool Frustum::ContainsAaBox(const AABB & refBox) const
+{
+	float3 vCorner[8];
+	int iTotalIn = 0;
+	refBox.GetCornerPoints(vCorner); // get the corners of the box into the vCorner array
+								 // test all 8 corners against the 6 sides
+								 // if all points are behind 1 specific plane, we are out
+								 // if we are in with all points, then we are fully in
+	for (int p = 0; p < 6; ++p) 
+	{
+		int iInCount = 8;
+		int iPtIn = 1;
+		for (int i = 0; i < 8; ++i) {
+			// test this point against the planes
+			if (GetPlane(p).IsInPositiveDirection(vCorner[i]) == false) {
+				iPtIn = 0;
+				--iInCount;
+			}
+			// were all the points outside of plane p?
+			if (iInCount == 0)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 float3 Frustum::ClosestPoint(const float3 &point) const
 {
 	return ToPolyhedron().ClosestPointConvex(point);
