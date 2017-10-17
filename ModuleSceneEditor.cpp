@@ -1,7 +1,9 @@
 #include "Application.h"
 #include "GameObject.h"
+#include "ComponentMesh.h"
 #include "ComponentCamera.h"
 #include "ModuleSceneEditor.h"
+
 #include "Glew\include\glew.h"
 #include "MathGeo\Geometry\Triangle.h"
 #include "MathGeo\Math\float4x4.h"
@@ -65,6 +67,20 @@ update_status ModuleSceneEditor::Update(float dt)
 	{
 		App->camera->CenterToGO(root->childs[0]);
 	}
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		ComponentMesh* m = new ComponentMesh();
+		App->importer->Load(m, "hola.T");
+		root->AddComponent(m);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	{
+		if (root->childs.size() != 0)
+		{
+			App->importer->Save((ComponentMesh*)root->childs[0]->FindComponent(Component_Mesh), "hola.T");
+		}
+	}
+
 	return UPDATE_CONTINUE;
 }
 update_status ModuleSceneEditor::PostUpdate(float dt)

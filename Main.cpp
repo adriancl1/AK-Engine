@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
-#include "MemLeaks.h"
 #include "Brofiler-1.1.2\Brofiler.h"
 
 #include "SDL/include/SDL.h"
@@ -22,8 +21,6 @@ Application* App = nullptr;
 int main(int argc, char ** argv)
 {
 	LOG("Starting game '%s'...", TITLE);
-
-	//ReportMemoryLeaks();
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;

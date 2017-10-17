@@ -32,8 +32,8 @@ public:
 
 	void LoadNewTexture(const char* fullPath);
 
-	void Load(ComponentMesh* mesh, char* buffer);
-	void Save(ComponentMesh* mesh);
+	void Load(ComponentMesh* mesh, const char* inputFile);
+	void Save(ComponentMesh* mesh, const char* outputFile);
 };
 
 #endif //__ModuleImporter_H__

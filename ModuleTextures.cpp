@@ -4,9 +4,14 @@
 #include "Devil\include\il.h"
 #include "Devil\include\ilu.h"
 #include "Devil\include\ilut.h"
+
+#include <stdio.h>
+
 #pragma comment (lib, "Devil/libx86/DevIL.lib" ) /* Loading Devil lib */
 #pragma comment (lib, "Devil/libx86/ILU.lib" ) /* Loading ILU lib */
 #pragma comment (lib, "Devil/libx86/ILUT.lib" ) 
+
+
 
 
 ModuleTextures::ModuleTextures(Application * app, bool start_enabled) : Module(app,start_enabled)
@@ -111,7 +116,7 @@ uint ModuleTextures::ImportImage(const char * image)
 
 	return textureID; // Return the GLuint to the texture so you can use it!
 }
-bool ModuleTextures::Import(const char* file, const char* path, std::string& output_file)
+bool ModuleTextures::Import(std::string& output_file)
 {
 	bool ret;
 
@@ -125,10 +130,15 @@ bool ModuleTextures::Import(const char* file, const char* path, std::string& out
 	{
 		data = new ILubyte[size]; // allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
-
+		{
 			//TODO -> Find a proper save function
-			ret = ilSaveL(IL_DDS, data, size);
-		RELEASE_ARRAY(data);
+			FILE* pFile;
+			pFile = fopen(output_file.c_str(), "wb");
+
+			fwrite(data, sizeof(char), sizeof(data), pFile);
+			fclose(pFile);
+			RELEASE_ARRAY(data);
+		}
 	}
 	else
 		return false;

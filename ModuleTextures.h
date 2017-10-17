@@ -13,7 +13,7 @@ public:
 
 	bool Init(JSON_Object* data = nullptr);
 	bool CleanUp(JSON_Object* data = nullptr);
-	bool Import(const char* file, const char* path, std::string& output_file);
+	bool Import(std::string& output_file);
 
 	uint ImportImage(const char * image);
 };
