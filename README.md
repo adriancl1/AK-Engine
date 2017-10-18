@@ -17,6 +17,11 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 
 
 ## Changelog
+Version 0.3.5
+* Now you can change the transformation of meshes/GameObjects.
+* New camera component, with settings for position and FOV.
+* Partially implemented camera culling (still buggy).
+
 Version 0.3.1
 * New editor window that displays loaded game objects with their transformation, meshes and materials.
 
