@@ -39,5 +39,5 @@ public:
 
 	void OnEditor()override;
 
-	void Move(float3 newPos);
+	void Move(float3 newPos, float3 lastPos);
 };

@@ -18,7 +18,7 @@ public:
 	void SetName(const char* name);
 	void OnEditor();
 
-	void Move(float3 newPos);
+	void Move(float3 newPos, float3 lastPos);
 
 	Component* FindComponent(ComponentType type) const;
 

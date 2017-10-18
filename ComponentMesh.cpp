@@ -134,29 +134,26 @@ void ComponentMesh::OnEditor()
 	}
 }
 
-void ComponentMesh::Move(float3 newPos)
+void ComponentMesh::Move(float3 newPos, float3 lastPos)
 {
-	float* newVertices = new float[numVertices * 3];
-	memcpy(newVertices,vertices, sizeof(float)* numVertices * 3);
+	float3 diff = newPos - lastPos;
+
 	for (int i = 0; i <= numVertices * 3; i+=3)
 	{
-		newVertices[i] += newPos.x;
+		vertices[i] += diff.x;
 	}
 	for (int i = 1; i <= numVertices * 3; i += 3)
 	{
-		newVertices[i] += newPos.y;
+		vertices[i] += diff.y;
 	}
 	for (int i = 2; i <= numVertices * 3; i += 3)
 	{
-		newVertices[i] += newPos.z;
+		vertices[i] += diff.z;
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, idVertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, newVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, vertices, GL_STATIC_DRAW);
 
 	enclosingBox.SetNegativeInfinity();
-	enclosingBox.Enclose((float3*)newVertices, numVertices);
-
-	delete[] newVertices;
-	newVertices = nullptr;
+	enclosingBox.Enclose((float3*)vertices, numVertices);
 }

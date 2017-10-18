@@ -3,7 +3,7 @@
 
 #include "imgui-1.51\imgui.h"
 
-ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, ComponentType type) : Component(Component_Transform), position(pos), scale(scale), rotation(rot)
+ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, ComponentType type) : Component(Component_Transform), position(pos), newPosition(pos), scale(scale), rotation(rot)
 {
 	name = "Transform";
 	needToMove = false;
@@ -16,8 +16,9 @@ void ComponentTransform::Update()
 {
 	if (needToMove && myGO != nullptr)
 	{
-		myGO->Move(position);
+		myGO->Move(newPosition, position);
 		needToMove = false;
+		position = newPosition;
 	}
 }
 
@@ -26,15 +27,15 @@ void ComponentTransform::OnEditor()
 	if (ImGui::TreeNodeEx(name.c_str()))
 	{
 		ImGui::Text("Position:");
-		if (ImGui::SliderFloat("X", &position.x, -500, 500))
+		if (ImGui::SliderFloat("X", &newPosition.x, -500, 500))
 		{
 			needToMove = true;
 		}
-		if (ImGui::SliderFloat("Y", &position.y, -500, 500))
+		if (ImGui::SliderFloat("Y", &newPosition.y, -500, 500))
 		{
 			needToMove = true;
 		}
-		if (ImGui::SliderFloat("Z", &position.z, -500, 500))
+		if (ImGui::SliderFloat("Z", &newPosition.z, -500, 500))
 		{
 			needToMove = true;
 		}

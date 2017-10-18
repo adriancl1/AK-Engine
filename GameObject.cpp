@@ -94,13 +94,13 @@ void GameObject::OnEditor()
 		}
 }
 
-void GameObject::Move(float3 newPos)
+void GameObject::Move(float3 newPos, float3 lastPos)
 {
 	for (int i = 0; i < components.size(); i++)
 	{
 		if (components[i]->GetType() == Component_Mesh)
 		{
-			dynamic_cast<ComponentMesh*>(components[i])->Move(newPos);
+			dynamic_cast<ComponentMesh*>(components[i])->Move(newPos, lastPos);
 		}
 	}
 }

@@ -16,6 +16,7 @@ public:
 
 private:
 	float3 position;
+	float3 newPosition;
 	float3 scale;
 	Quat rotation;
 
