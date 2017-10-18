@@ -39,6 +39,7 @@ public:
 	void AddCapsule(float radius, float height, vec3 pos = vec3(0, 0, 0));
 
 	GameObject* GetRoot();
+	void SetSelected(GameObject* selected);
 
 	GameObject* CreateNewGameObject(const char* path);
 
@@ -48,6 +49,7 @@ private:
 	std::list<Mesh*> sceneMeshes;
 
 	GameObject* root;
+	GameObject* selected = nullptr;
 };
 
 #endif

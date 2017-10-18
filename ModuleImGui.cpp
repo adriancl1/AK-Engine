@@ -54,7 +54,7 @@ bool ModuleImGui::Start()
 	configurationActive = false;
 	aboutActive = false;
 	createGeometryActive = false;
-	editorActive = false;
+	editorActive = true;
 
 	openMenuWindow = false;
 	openConsoleWindow = false;
@@ -62,7 +62,7 @@ bool ModuleImGui::Start()
 	openMathPlaygroundWindow = false;
 	openAboutWindow = false;
 	openCreateGeometryWindow = false;
-	openEditorWindow = false;
+	openEditorWindow = true;
 
 	return ret;
 }
@@ -145,7 +145,7 @@ update_status ModuleImGui::Update(float dt)
 	}
 
 	//-----
-	ShowDebugWindow();
+	//ShowDebugWindow();
 
 	if (menuActive)
 	{

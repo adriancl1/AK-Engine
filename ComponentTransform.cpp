@@ -20,9 +20,9 @@ void ComponentTransform::Update()
 {
 	if (needToUpdate)
 	{
-		UpdateTrans();
-		needToUpdate = false;
 		position = newPosition;
+		UpdateTrans();
+		needToUpdate = false;		
 	}
 }
 
@@ -44,25 +44,25 @@ void ComponentTransform::OnEditor()
 		{
 			needToUpdate = true;
 		}
-		if (ImGui::SliderFloat("Y", &newPosition.y, -500, 500))
+		if (ImGui::SliderFloat("Y", &newPosition.y, -10, 10))
 		{
 			needToUpdate = true;
 		}
-		if (ImGui::SliderFloat("Z", &newPosition.z, -500, 500))
+		if (ImGui::SliderFloat("Z", &newPosition.z, -10, 10))
 		{
 			needToUpdate = true;
 		}
 
 		ImGui::Text("Scale:");
-		if (ImGui::SliderFloat("X##1", &scale.x, -500, 500))
+		if (ImGui::SliderFloat("X##1", &scale.x, -10, 10))
 		{
 			needToUpdate = true;
 		}
-		if (ImGui::SliderFloat("Y##1", &scale.y, -500, 500))
+		if (ImGui::SliderFloat("Y##1", &scale.y, -10, 10))
 		{
 			needToUpdate = true;
 		}
-		if (ImGui::SliderFloat("Z##1", &scale.z, -500, 500))
+		if (ImGui::SliderFloat("Z##1", &scale.z, -10, 10))
 		{
 			needToUpdate = true;
 		}
@@ -78,6 +78,14 @@ void ComponentTransform::OnEditor()
 		}
 		if (ImGui::SliderFloat("Z##2", &rotationEuler.z, -360, 360))
 		{
+			needToUpdate = true;
+		}
+
+		if (ImGui::Button("Reset"))
+		{
+			newPosition = float3::zero;
+			scale = float3::one;
+			rotationEuler = float3::zero;
 			needToUpdate = true;
 		}
 

@@ -344,8 +344,9 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 			ComponentMesh* toDraw = dynamic_cast<ComponentMesh*> (objectDraw->components[i]);
 			if (camera != nullptr)
 			{
-				AABB recalculatedBox;
-				if (camera->Contains(toDraw->enclosingBox))
+				AABB recalculatedBox = toDraw->enclosingBox;
+				recalculatedBox.TransformAsAABB(tmpTrans->GetTransMatrix());
+				if (camera->Contains(recalculatedBox))
 				{
 					DrawMesh(toDraw);
 				}

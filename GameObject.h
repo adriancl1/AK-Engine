@@ -17,6 +17,7 @@ public:
 	void AddComponent(Component* component);
 	void SetName(const char* name);
 	void OnEditor();
+	void ShowProperties();
 
 	Component* FindComponent(ComponentType type) const;
 

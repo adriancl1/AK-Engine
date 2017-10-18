@@ -82,9 +82,9 @@ void GameObject::OnEditor()
 {
 		if (ImGui::TreeNodeEx(name.c_str()))
 		{
-			for (int i = 0; i < components.size(); i++)
+			if (ImGui::IsItemHoveredRect() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
-				components[i]->OnEditor();
+				App->sceneEditor->SetSelected(this);
 			}
 			for (int i = 0; i < childs.size(); i++)
 			{
@@ -92,4 +92,15 @@ void GameObject::OnEditor()
 			}
 			ImGui::TreePop();
 		}
+}
+
+void GameObject::ShowProperties()
+{
+	ImGui::Begin("Properties");
+	ImGui::PushItemWidth(-140);
+	for (int i = 0; i < components.size(); i++)
+	{
+		components[i]->OnEditor();
+	}
+	ImGui::End();
 }

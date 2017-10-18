@@ -105,6 +105,11 @@ void ModuleSceneEditor::Draw()
 void ModuleSceneEditor::ShowEditor()
 {
 		root->OnEditor();
+
+		if (selected != nullptr)
+		{
+			selected->ShowProperties();
+		}
 	
 }
 
@@ -196,6 +201,18 @@ void ModuleSceneEditor::AddCapsule(float radius, float height, vec3 pos)
 GameObject* ModuleSceneEditor::GetRoot()
 {
 	return root;
+}
+
+void ModuleSceneEditor::SetSelected(GameObject * selected)
+{
+	if (this->selected != selected)
+	{
+		this->selected = selected;
+	}
+	else
+	{
+		selected = nullptr;
+	}
 }
 
 GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)

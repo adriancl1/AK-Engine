@@ -73,9 +73,6 @@ void ComponentMesh::DrawDebug() const
 	float3 corners[8];
 	enclosingBox.GetCornerPoints(corners);
 
-	glPushMatrix();
-
-	glMultMatrixf((GLfloat*)float4x4::identity.Transposed().ptr());
 	glColor3f(Azure.r, Azure.g, Azure.b);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -114,7 +111,6 @@ void ComponentMesh::DrawDebug() const
 	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
 
 	glEnd();
-	glPopMatrix();
 
 	glColor3f(1, 1, 1);
 }

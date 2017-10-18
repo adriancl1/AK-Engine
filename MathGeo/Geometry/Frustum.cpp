@@ -358,7 +358,7 @@ bool Frustum::ContainsAaBox(const AABB & refBox) const
 		int iPtIn = 1;
 		for (int i = 0; i < 8; ++i) {
 			// test this point against the planes
-			if (GetPlane(p).IsInPositiveDirection(vCorner[i]) == false) {
+			if (GetPlane(p).IsOnPositiveSide(vCorner[i]) == true) {
 				iPtIn = 0;
 				--iInCount;
 			}
