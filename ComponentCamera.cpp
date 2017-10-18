@@ -1,5 +1,7 @@
+#include "Globals.h"
 #include "ComponentCamera.h"
 
+#include "imgui-1.51\imgui.h"
 #include "Glew\include\glew.h"
 #include "MathGeo\Math\MathAll.h"
 
@@ -7,14 +9,16 @@ ComponentCamera::ComponentCamera(float3 pos, float3 front, float3 up, float near
 {
 	name = "Camera";
 	this->aspectRatio = aspectRatio;
+	this->aspectRatio = (float)16 / 9;
 	frustum.type = type;
 	frustum.pos = pos;
 	frustum.front = front;
 	frustum.up = up;
 	frustum.nearPlaneDistance = nearPlaneDistance;
 	frustum.farPlaneDistance = farPlaneDistance;
-	frustum.verticalFov = verticalFov;
-	frustum.horizontalFov = 2 * Atan(Tan(verticalFov / 2) * (aspectRatio));
+	FOV = verticalFov;
+	frustum.verticalFov = DEGTORAD * FOV;
+	frustum.horizontalFov = 2.f * atanf((tanf(frustum.verticalFov * 0.5f)) * (aspectRatio));
 	frustum.ProjectionMatrix();
 }
 
@@ -31,10 +35,36 @@ void ComponentCamera::SetPos(float3 newPos)
 	frustum.pos = newPos;
 }
 
+void ComponentCamera::OnEditor()
+{
+	if (ImGui::TreeNodeEx(name.c_str()))
+	{
+		ImGui::Text("Position:");
+		ImGui::SliderFloat("X", &frustum.pos.x, -500, 500);
+		ImGui::SliderFloat("Y", &frustum.pos.y, -500, 500);
+		ImGui::SliderFloat("Z", &frustum.pos.y, -500, 500);
+		ImGui::TreePop();
+
+		ImGui::Text("FOV:");
+		if(ImGui::SliderFloat("VFOV", &FOV, 1, 115))
+		{
+			SetFOV();
+		}
+	}
+}
+
+//Sets the horizontal FOV according to current vertical
+void ComponentCamera::SetFOV()
+{
+	frustum.verticalFov = DEGTORAD * FOV;
+	frustum.horizontalFov = 2.f * atanf((tanf(frustum.verticalFov * 0.5f)) * (aspectRatio));
+}
+
+//Sets vertical FOV to value and horizontal according to aspect ratio
 void ComponentCamera::SetVerticalFOV(float value)
 {
 	frustum.verticalFov = value;
-	frustum.horizontalFov = 2 * Atan(Tan(value / 2) * (aspectRatio));
+	frustum.horizontalFov = 2 * Atan(Tan(value * 0.5f) * (aspectRatio));
 }
 
 void ComponentCamera::DrawDebug()

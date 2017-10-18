@@ -43,7 +43,7 @@ bool ModuleSceneEditor::Start()
 	App->camera->Move(vec3(0, 1, 0));
 
 	root = new GameObject();
-	root->SetName("Root");
+	root->SetName("Scene");
 
 	ComponentCamera* camera = new ComponentCamera();
 

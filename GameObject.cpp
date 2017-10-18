@@ -80,15 +80,6 @@ Component* GameObject::FindComponent(ComponentType type) const
 
 void GameObject::OnEditor()
 {
-	if (strcmp(name.c_str(), "Root") == 0)
-	{
-		for (int i = 0; i < childs.size(); i++)
-		{
-			childs[i]->OnEditor();
-		}
-	}
-	else
-	{
 		if (ImGui::TreeNodeEx(name.c_str()))
 		{
 			for (int i = 0; i < components.size(); i++)
@@ -101,7 +92,6 @@ void GameObject::OnEditor()
 			}
 			ImGui::TreePop();
 		}
-	}
 }
 
 void GameObject::Move(float3 newPos)
