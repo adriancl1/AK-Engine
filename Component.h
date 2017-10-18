@@ -25,6 +25,7 @@ public:
 
 	void SetName(const char* name);
 	void SetGameObject(GameObject* GO);
+	GameObject* GetGameObject()const;
 	ComponentType GetType() const;
 
 protected:

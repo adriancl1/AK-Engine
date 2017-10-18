@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "MathGeo\Math\float3.h"
 #include "MathGeo\Math\Quat.h"
+#include "MathGeo\Math\float4x4.h"
 
 class ComponentTransform : public Component
 {
@@ -11,14 +12,20 @@ public:
 	~ComponentTransform();
 
 	void Update();
+	void UpdateTrans();
 
 	void OnEditor() override;
+
+	float4x4 GetTransMatrix() const;
 
 private:
 	float3 position;
 	float3 newPosition;
 	float3 scale;
+	float3 rotationEuler;
 	Quat rotation;
 
-	bool needToMove;
+	float4x4 transformMatrix;
+
+	bool needToUpdate;
 };

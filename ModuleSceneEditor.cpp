@@ -69,15 +69,15 @@ update_status ModuleSceneEditor::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
-		ComponentMesh* m = new ComponentMesh();
-		App->importer->Load(m, "hola.T");
-		root->AddComponent(m);
+		//ComponentMesh* m = new ComponentMesh();
+		//App->importer->Load(m, "hola.T");
+		//root->AddComponent(m);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 	{
 		if (root->childs.size() != 0)
 		{
-			App->importer->Save((ComponentMesh*)root->childs[0]->FindComponent(Component_Mesh), "hola.T");
+			//App->importer->Save((ComponentMesh*)root->childs[0]->FindComponent(Component_Mesh), "hola.T");
 		}
 	}
 

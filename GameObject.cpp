@@ -93,14 +93,3 @@ void GameObject::OnEditor()
 			ImGui::TreePop();
 		}
 }
-
-void GameObject::Move(float3 newPos, float3 lastPos)
-{
-	for (int i = 0; i < components.size(); i++)
-	{
-		if (components[i]->GetType() == Component_Mesh)
-		{
-			dynamic_cast<ComponentMesh*>(components[i])->Move(newPos, lastPos);
-		}
-	}
-}

@@ -34,6 +34,7 @@ public:
 	bool GetWireframe()const;
 
 	void Draw(GameObject* toDraw);
+	void DrawMesh(ComponentMesh* toDraw);
 	uint imageLoaded;
 
 public:

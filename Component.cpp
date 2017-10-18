@@ -33,6 +33,11 @@ void Component::SetGameObject(GameObject * GO)
 	myGO = GO;
 }
 
+GameObject * Component::GetGameObject() const
+{
+	return myGO;
+}
+
 ComponentType Component::GetType() const
 {
 	return type;

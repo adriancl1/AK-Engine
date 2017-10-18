@@ -38,6 +38,4 @@ public:
 	void DrawDebug() const;
 
 	void OnEditor()override;
-
-	void Move(float3 newPos, float3 lastPos);
 };
