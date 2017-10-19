@@ -42,7 +42,7 @@ void ComponentCamera::OnEditor()
 		ImGui::Text("Position:");
 		ImGui::SliderFloat("X", &frustum.pos.x, -500, 500);
 		ImGui::SliderFloat("Y", &frustum.pos.y, -500, 500);
-		ImGui::SliderFloat("Z", &frustum.pos.y, -500, 500);
+		ImGui::SliderFloat("Z", &frustum.pos.z, -500, 500);
 		ImGui::TreePop();
 
 		ImGui::Text("FOV:");

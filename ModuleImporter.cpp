@@ -58,11 +58,12 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 
 		//Load transform
 		aiNode* node = scene->mRootNode;
+		newObject->SetName(node->mName.C_Str());
 		newObject->AddComponent(LoadTransform(node));
 
 		LOG("Loading meshes");
 
-		LoadMesh(node, scene, newObject);
+		LoadNodes(node, scene, newObject);
 
 		aiReleaseImport(scene);
 
@@ -102,15 +103,20 @@ void ModuleImporter::LoadNewTexture(const char* fullPath)
 	LOG("Set %s as new texture for current meshes.");
 }
 
-ComponentMesh* ModuleImporter::LoadMesh(aiNode* node, const aiScene* scene, GameObject* addTo)
+void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* addTo)
 {
 	for (int i = 0; i < node->mNumMeshes; i++)
 	{
-		ComponentMesh* m = new ComponentMesh;
 		aiMesh* newMesh = scene->mMeshes[node->mMeshes[i]];
-
 		if (newMesh != nullptr)
 		{
+			GameObject* newObject = new GameObject();
+			newObject->SetName(node->mName.C_Str());
+
+			newObject->AddComponent(LoadTransform(node));
+
+
+			ComponentMesh* m = new ComponentMesh();
 			//VERTICES
 			m->numVertices = newMesh->mNumVertices;
 			
@@ -181,26 +187,26 @@ ComponentMesh* ModuleImporter::LoadMesh(aiNode* node, const aiScene* scene, Game
 
 				aiMaterial* material = nullptr;
 				material = scene->mMaterials[newMesh->mMaterialIndex];
-				addTo->AddComponent(LoadMaterial(material));
+				newObject->AddComponent(LoadMaterial(material));
 
 			}
 
-			m->SetName(node->mName.C_Str());
+			m->SetName("Mesh");
 
 			m->enclosingBox.SetNegativeInfinity();
 
 			m->enclosingBox.Enclose((float3*)m->vertices, m->numVertices);
 
-			addTo->AddComponent(m);
+			newObject->AddComponent(m);
+
+			addTo->AddChild(newObject);
 		}
 	}
 
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
-		LoadMesh(node->mChildren[i], scene, addTo);
+		LoadNodes(node->mChildren[i], scene, addTo);
 	}
-
-	return nullptr;
 }
 
 ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
@@ -238,7 +244,9 @@ ComponentTransform* ModuleImporter::LoadTransform(aiNode* node)
 	float3 sca(scale.x, scale.y, scale.z);
 	Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
 
-	return new ComponentTransform(pos, sca, rot);
+	ComponentTransform* trans = new ComponentTransform(pos, sca, rot);
+
+	return trans;
 }
 
 

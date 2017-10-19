@@ -80,7 +80,16 @@ Component* GameObject::FindComponent(ComponentType type) const
 
 void GameObject::OnEditor()
 {
-		if (ImGui::TreeNodeEx(name.c_str()))
+	ImGuiTreeNodeFlags flags = 0;
+	if (childs.empty())
+	{
+		flags |= ImGuiTreeNodeFlags_Bullet;
+	}
+	if (selected == true)
+	{
+		flags |= ImGuiTreeNodeFlags_Selected;
+	}
+		if (ImGui::TreeNodeEx(this, flags, this->name.c_str()))
 		{
 			if (ImGui::IsItemHoveredRect() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{

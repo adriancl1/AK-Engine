@@ -23,6 +23,8 @@ public:
 
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;
+
+	bool selected = false;
 protected:
 	GameObject* parent;
 	std::string name;

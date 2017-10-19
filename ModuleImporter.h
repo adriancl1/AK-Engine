@@ -26,7 +26,7 @@ public:
 
 	GameObject* LoadGameObject(const char* fullPath);
 
-	ComponentMesh* LoadMesh(aiNode* node, const aiScene* scene, GameObject* addTo);
+	void LoadNodes(aiNode* root, const aiScene* scene, GameObject* addTo);
 	ComponentMaterial* LoadMaterial(aiMaterial* newMaterial);
 	ComponentTransform* LoadTransform(aiNode* node);
 
