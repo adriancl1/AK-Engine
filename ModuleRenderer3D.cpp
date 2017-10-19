@@ -342,7 +342,7 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 		if (objectDraw->components[i]->GetType() == Component_Mesh)
 		{
 			ComponentMesh* toDraw = dynamic_cast<ComponentMesh*> (objectDraw->components[i]);
-			if (camera != nullptr)
+			if (camera != nullptr && camera->GetFrustumCulling() == true)
 			{
 				AABB recalculatedBox = toDraw->enclosingBox;
 				recalculatedBox.TransformAsAABB(tmpTrans->GetTransMatrix());

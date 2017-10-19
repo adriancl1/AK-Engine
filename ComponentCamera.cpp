@@ -19,7 +19,10 @@ ComponentCamera::ComponentCamera(float3 pos, float3 front, float3 up, float near
 	FOV = verticalFov;
 	frustum.verticalFov = DEGTORAD * FOV;
 	frustum.horizontalFov = 2.f * atanf((tanf(frustum.verticalFov * 0.5f)) * (aspectRatio));
+
 	frustum.ProjectionMatrix();
+
+	frustumCulling = true;
 }
 
 ComponentCamera::~ComponentCamera()
@@ -50,6 +53,7 @@ void ComponentCamera::OnEditor()
 		{
 			SetFOV();
 		}
+		ImGui::Checkbox("Use Culling", &frustumCulling);
 	}
 }
 
@@ -114,4 +118,9 @@ void ComponentCamera::DrawDebug()
 bool ComponentCamera::Contains(const AABB & aabb) const
 {
 	return frustum.ContainsAaBox(aabb);
+}
+
+bool ComponentCamera::GetFrustumCulling() const
+{
+	return frustumCulling;
 }

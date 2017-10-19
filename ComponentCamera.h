@@ -20,9 +20,11 @@ public:
 	void DrawDebug();
 
 	bool Contains(const AABB &aabb) const;
+	bool GetFrustumCulling() const;
 
 private:
 	float FOV;
 	float aspectRatio;
 	Frustum frustum;
+	bool frustumCulling;
 };
