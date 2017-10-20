@@ -14,6 +14,9 @@ public:
 	void Update();
 	void UpdateTrans();
 
+	void UpdateTransFromParent(GameObject* parent);
+	void SetLocalTrans(GameObject* parent);
+
 	void OnEditor() override;
 
 	float4x4 GetTransMatrix() const;
@@ -25,7 +28,8 @@ private:
 	float3 rotationEuler;
 	Quat rotation;
 
-	float4x4 transformMatrix;
+	float4x4 globalTransformMatrix;
+	float4x4 localTransformMatrix;
 
 	bool needToUpdate;
 };

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ComponentMesh.h"
+#include "ComponentTransform.h"
 
 GameObject::GameObject(GameObject* parent): parent(parent)
 {
@@ -65,6 +66,27 @@ void GameObject::SetName(const char * name)
 	this->name.assign(name);
 }
 
+void GameObject::SetLocalTransform()
+{
+	ComponentTransform* myTrans = (ComponentTransform*)FindComponent(Component_Transform);
+	if (myTrans != nullptr)
+	{
+		myTrans->SetLocalTrans(GetParent());
+	}
+}
+
+void GameObject::UpdateChildsTransform()
+{
+	for (int i = 0; i < childs.size(); i++)
+	{
+		ComponentTransform* tmp = (ComponentTransform*)childs[i]->FindComponent(Component_Transform);
+		if (tmp != nullptr)
+		{
+			tmp->UpdateTransFromParent(this);
+		}
+	}
+}
+
 Component* GameObject::FindComponent(ComponentType type) const
 {
 	for (int i = 0; i < components.size(); i++)
@@ -76,6 +98,11 @@ Component* GameObject::FindComponent(ComponentType type) const
 	}
 
 	return nullptr;
+}
+
+GameObject * GameObject::GetParent() const
+{
+	return parent;
 }
 
 void GameObject::OnEditor()

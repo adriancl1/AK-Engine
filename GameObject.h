@@ -16,10 +16,13 @@ public:
 	void DeleteChilds();
 	void AddComponent(Component* component);
 	void SetName(const char* name);
+	void SetLocalTransform();
+	void UpdateChildsTransform();
 	void OnEditor();
 	void ShowProperties();
 
 	Component* FindComponent(ComponentType type) const;
+	GameObject* GetParent() const;
 
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;

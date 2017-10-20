@@ -207,7 +207,10 @@ void ModuleSceneEditor::SetSelected(GameObject * selected)
 {
 	if (this->selected != selected)
 	{
-		this->selected = false;
+		if (this->selected != nullptr)
+		{
+			this->selected->selected = false;
+		}
 		selected->selected = true;
 		this->selected = selected;
 	}

@@ -8,9 +8,12 @@ ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, Compo
 	name = "Transform";
 	needToUpdate = false;
 	rotationEuler = rot.ToEulerXYZ();
-	transformMatrix = float4x4::FromQuat(rot);
-	transformMatrix = float4x4::Scale(scale, float3(0, 0, 0)) * transformMatrix;
-	transformMatrix.float4x4::SetTranslatePart(pos.x, pos.y, pos.z);
+	rotation = rot;
+	globalTransformMatrix = float4x4::FromQuat(rot);
+	globalTransformMatrix = float4x4::Scale(scale, float3(0, 0, 0)) * globalTransformMatrix;
+	globalTransformMatrix.float4x4::SetTranslatePart(pos.x, pos.y, pos.z);
+
+	localTransformMatrix = globalTransformMatrix;
 }
 
 ComponentTransform::~ComponentTransform()
@@ -29,10 +32,53 @@ void ComponentTransform::Update()
 void ComponentTransform::UpdateTrans()
 {
 	rotation = Quat::FromEulerXYZ(rotationEuler.x, rotationEuler.y, rotationEuler.z);
-	transformMatrix = float4x4::FromQuat(rotation);
-	transformMatrix = float4x4::Scale(scale, float3(0,0,0)) * transformMatrix;
-	transformMatrix.float4x4::SetTranslatePart(position.x, position.y, position.z);
+	globalTransformMatrix = float4x4::FromQuat(rotation);
+	globalTransformMatrix = float4x4::Scale(scale, float3(0,0,0)) * globalTransformMatrix;
+	globalTransformMatrix.float4x4::SetTranslatePart(position.x, position.y, position.z);
+
+	SetLocalTrans(myGO->GetParent());
+	myGO->UpdateChildsTransform();
+
 	needToUpdate = false;
+}
+
+void ComponentTransform::UpdateTransFromParent(GameObject * parent)
+{
+	ComponentTransform* parentTrans = (ComponentTransform*)parent->FindComponent(Component_Transform);
+	if (parentTrans != nullptr)
+	{
+		globalTransformMatrix = parentTrans->localTransformMatrix * globalTransformMatrix;
+		float4x4 temp;
+		globalTransformMatrix.Decompose(newPosition, temp, scale);
+		rotationEuler = temp.ToEulerXYZ();
+		UpdateTrans();
+	}
+}
+
+void ComponentTransform::SetLocalTrans(GameObject* parent)
+{
+	if (parent != nullptr)
+	{
+		ComponentTransform* parentTrans = (ComponentTransform*)parent->FindComponent(Component_Transform);
+		if (parentTrans != nullptr)
+		{
+			float3 localPos = position - parentTrans->position;
+			Quat localRot = rotation * parentTrans->rotation.Conjugated();
+			float3 localScale = scale.Mul(parentTrans->scale.Recip());
+
+			localTransformMatrix = float4x4::FromQuat(localRot);
+			globalTransformMatrix = float4x4::Scale(localScale, float3(0, 0, 0)) * globalTransformMatrix;
+			globalTransformMatrix.float4x4::SetTranslatePart(localPos.x, localPos.y, localPos.z);
+		}
+		else
+		{
+			localTransformMatrix = globalTransformMatrix;
+		}
+	}
+	else
+	{
+		localTransformMatrix = globalTransformMatrix;
+	}
 }
 
 void ComponentTransform::OnEditor()
@@ -95,5 +141,5 @@ void ComponentTransform::OnEditor()
 
 float4x4 ComponentTransform::GetTransMatrix() const
 {
-	return transformMatrix;
+	return globalTransformMatrix;
 }

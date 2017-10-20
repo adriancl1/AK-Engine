@@ -200,6 +200,8 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 			newObject->AddComponent(m);
 
 			addTo->AddChild(newObject);
+
+			newObject->SetLocalTransform();
 		}
 	}
 
