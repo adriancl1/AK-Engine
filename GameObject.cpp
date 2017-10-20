@@ -4,7 +4,7 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 
-GameObject::GameObject(GameObject* parent): parent(parent)
+GameObject::GameObject(GameObject* parent, bool isStatic): parent(parent), isStatic(isStatic)
 {
 	name = "Game Object";
 }
@@ -26,6 +26,7 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
+
 	App->renderer3D->Draw(this);
 
 	for (int i = 0; i < childs.size(); i++)

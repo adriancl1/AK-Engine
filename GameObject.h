@@ -8,7 +8,7 @@
 class GameObject
 {
 public:
-	GameObject(GameObject* parent = nullptr);
+	GameObject(GameObject* parent = nullptr, bool isStatic = true);
 	~GameObject();
 
 	void Update();
@@ -28,6 +28,7 @@ public:
 	std::vector<GameObject*> childs;
 
 	bool selected = false;
+	bool isStatic;
 protected:
 	GameObject* parent;
 	std::string name;
