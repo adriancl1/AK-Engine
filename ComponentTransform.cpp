@@ -87,110 +87,82 @@ void ComponentTransform::OnEditor()
 	{
 		
 		static bool staticCheckbox;
-		if (!myGO->isStatic)
-		{
-			ImGui::Text("Position:");
-			if (ImGui::SliderFloat("X", &newPosition.x, -500, 500))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Y", &newPosition.y, -10, 10))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Z", &newPosition.z, -10, 10))
-			{
-				needToUpdate = true;
-			}
 
-			ImGui::Text("Scale:");
-			if (ImGui::SliderFloat("X##1", &scale.x, -10, 10))
+			if (myGO->isStatic)
 			{
-				needToUpdate = true;
+				ImGui::Text("Position:");
+				ImGui::Text("X: %.2f",position.x);
+				ImGui::SameLine;
+				ImGui::Text("Y: %.2f", position.y);
+				ImGui::SameLine;
+				ImGui::Text("Z: %.2f", position.z);
+				ImGui::Text("Scale", position.x);
+				ImGui::Text("X: %.2f", scale.x);
+				ImGui::SameLine;
+				ImGui::Text("Y: %.2f", scale.y);
+				ImGui::SameLine;
+				ImGui::Text("Z: %.2f", scale.z);
+				ImGui::Text("Rotation", position.x);
+				ImGui::Text("X: %.2f", rotationEuler.x);
+				ImGui::SameLine;
+				ImGui::Text("Y: %.2f", rotationEuler.y);
+				ImGui::SameLine;
+				ImGui::Text("Z: %.2f", rotationEuler.z);
 			}
-			if (ImGui::SliderFloat("Y##1", &scale.y, -10, 10))
+			else
 			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Z##1", &scale.z, -10, 10))
-			{
-				needToUpdate = true;
-			}
+				ImGui::Text("Position:");
+				if (ImGui::SliderFloat("X", &newPosition.x, -500, 500))
+				{
+					needToUpdate = true;
+				}
+				if (ImGui::SliderFloat("Y", &newPosition.y, -10, 10))
+				{
+					needToUpdate = true;
+				}
+				if (ImGui::SliderFloat("Z", &newPosition.z, -10, 10))
+				{
+					needToUpdate = true;
+				}
 
-			ImGui::Text("Rotation:");
-			if (ImGui::SliderFloat("X##2", &rotationEuler.x, -360, 360))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Y##2", &rotationEuler.y, -360, 360))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Z##2", &rotationEuler.z, -360, 360))
-			{
-				needToUpdate = true;
-			}
+				ImGui::Text("Scale:");
+				if (ImGui::SliderFloat("X##1", &scale.x, -10, 10))
+				{
+					needToUpdate = true;
+				}
+				if (ImGui::SliderFloat("Y##1", &scale.y, -10, 10))
+				{
+					needToUpdate = true;
+				}
+				if (ImGui::SliderFloat("Z##1", &scale.z, -10, 10))
+				{
+					needToUpdate = true;
+				}
 
-			if (ImGui::Button("Reset"))
-			{
-				newPosition = float3::zero;
-				scale = float3::one;
-				rotationEuler = float3::zero;
-				needToUpdate = true;
-			}
-		}
-		else
-		{
-			ImGui::Text("Position:");
-			if (ImGui::SliderFloat("X", &newPosition.x, -500, 500))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Y", &newPosition.y, -10, 10))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Z", &newPosition.z, -10, 10))
-			{
-				needToUpdate = true;
-			}
+				ImGui::Text("Rotation:");
+				if (ImGui::SliderFloat("X##2", &rotationEuler.x, -360, 360))
+				{
+					needToUpdate = true;
+				}
+				if (ImGui::SliderFloat("Y##2", &rotationEuler.y, -360, 360))
+				{
+					needToUpdate = true;
+				}
+				if (ImGui::SliderFloat("Z##2", &rotationEuler.z, -360, 360))
+				{
+					needToUpdate = true;
+				}
 
-			ImGui::Text("Scale:");
-			if (ImGui::SliderFloat("X##1", &scale.x, -10, 10))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Y##1", &scale.y, -10, 10))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Z##1", &scale.z, -10, 10))
-			{
-				needToUpdate = true;
-			}
 
-			ImGui::Text("Rotation:");
-			if (ImGui::SliderFloat("X##2", &rotationEuler.x, -360, 360))
-			{
-				needToUpdate = true;
+				if (ImGui::Button("Reset"))
+				{
+					newPosition = float3::zero;
+					scale = float3::one;
+					rotationEuler = float3::zero;
+					needToUpdate = true;
+				}
 			}
-			if (ImGui::SliderFloat("Y##2", &rotationEuler.y, -360, 360))
-			{
-				needToUpdate = true;
-			}
-			if (ImGui::SliderFloat("Z##2", &rotationEuler.z, -360, 360))
-			{
-				needToUpdate = true;
-			}
-
-			if (ImGui::Button("Reset"))
-			{
-				newPosition = float3::zero;
-				scale = float3::one;
-				rotationEuler = float3::zero;
-				needToUpdate = true;
-			}
-		}
+		
 
 
 		ImGui::Checkbox("Static:", &myGO->isStatic);
