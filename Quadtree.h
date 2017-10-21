@@ -13,29 +13,28 @@ public:
 	void Insert(GameObject* toInsert);
 	void Remove(GameObject* toRemove);
 	void CreateChilds();
-	//void RedistributeChilds();
+	void RedistributeChilds();
+	template<typename TYPE>
+	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE & primitive) const;
 
 public:
 	AABB box;
 	std::list<GameObject*> objects;
 	QuadtreeNode* parent;
 	QuadtreeNode* childs[4];
-
 };
 
 class Quadtree
 {
 public: 
-	Quadtree();
+	Quadtree(const AABB& box);
 	virtual ~Quadtree();
 	
-	/*void Insert(GameObject* toInsert);
+	void Insert(GameObject* toInsert);
 	void Remove(GameObject* toRemove);
 	void Clear();
-	void Intersect(std::vector<GameObject*>&, Primitive);*/
 
 public:
 	QuadtreeNode* root = nullptr;
-	std::list<Quadtree*> intersects;
 };
 
