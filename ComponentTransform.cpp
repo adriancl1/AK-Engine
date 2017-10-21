@@ -85,9 +85,6 @@ void ComponentTransform::OnEditor()
 {
 	if (ImGui::TreeNodeEx(name.c_str()))
 	{
-		
-		static bool staticCheckbox;
-
 			if (myGO->isStatic)
 			{
 				ImGui::Text("Position:");
@@ -153,7 +150,6 @@ void ComponentTransform::OnEditor()
 					needToUpdate = true;
 				}
 
-
 				if (ImGui::Button("Reset"))
 				{
 					newPosition = float3::zero;
@@ -162,8 +158,6 @@ void ComponentTransform::OnEditor()
 					needToUpdate = true;
 				}
 			}
-		
-
 
 		ImGui::Checkbox("Static:", &myGO->isStatic);
 
