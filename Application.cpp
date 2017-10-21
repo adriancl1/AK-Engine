@@ -17,6 +17,7 @@ Application::Application()
 	importer = new ModuleImporter(this);
 	textures = new ModuleTextures(this);
 	hardware = new ModuleHardware(this);
+	fileSystem = new ModuleFileSystem(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -33,6 +34,7 @@ Application::Application()
 	AddModule(sceneEditor);
 	AddModule(textures);
 	AddModule(hardware);
+	AddModule(fileSystem);
 
 	// Renderer last!
 	AddModule(renderer3D);

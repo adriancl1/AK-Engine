@@ -52,6 +52,9 @@ bool ModuleSceneEditor::Start()
 
 	tree = new Quadtree(AABB(float3(-100, -5, -100), float3(100, 5, 100))); 
 
+	App->fileSystem->CreateNewDirectory("Library");
+	App->fileSystem->CreateNewDirectory("Library/Mesh");
+
 	return true;
 }
 bool ModuleSceneEditor::CleanUp(JSON_Object* data)

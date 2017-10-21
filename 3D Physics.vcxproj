@@ -150,6 +150,7 @@
     <ClInclude Include="MemLeaks.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ModuleCamera3D.h" />
+    <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleHardware.h" />
     <ClInclude Include="ModuleImporter.h" />
     <ClInclude Include="ModuleImGui.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="MathGeo\Time\Clock.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
+    <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleHardware.cpp" />
     <ClCompile Include="ModuleImporter.cpp" />
     <ClCompile Include="ModuleImGui.cpp" />

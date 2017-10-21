@@ -14,6 +14,7 @@
 #include "ModuleImporter.h"
 #include "ModuleTextures.h"
 #include "ModuleHardware.h"
+#include "ModuleFileSystem.h"
 
 #include <stdlib.h>
 
@@ -31,6 +32,7 @@ public:
 	ModuleImporter* importer;
 	ModuleTextures* textures;
 	ModuleHardware* hardware;
+	ModuleFileSystem* fileSystem;
 
 private:
 
