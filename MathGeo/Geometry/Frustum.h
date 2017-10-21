@@ -22,6 +22,8 @@
 #include "../Math/float3.h"
 #include "Ray.h"
 
+#include "../../Color.h"
+
 #ifdef MATH_TINYXML_INTEROP
 #include "Config/tinyxml/tinyxml.h"
 #endif
@@ -392,6 +394,8 @@ public:
 		@todo Add Frustum::Distance(Line/Ray/LineSegment/Plane/Triangle/Polygon/Circle/Disc/AABB/OBB/Capsule/Frustum/Polyhedron).
 		@see Contains(), Intersects(), ClosestPoint(). */
 	float Distance(const float3 &point) const;
+
+	void DrawDebug(Color color = Yellow) const;
 
 	/// Tests whether this Frustum and the given object intersect.	
 	/** Both objects are treated as "solid", meaning that if one of the objects is fully contained inside

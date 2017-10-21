@@ -3,6 +3,7 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 #include "ModuleSceneEditor.h"
+#include "Quadtree.h"
 
 #include "Glew\include\glew.h"
 #include "MathGeo\Geometry\Triangle.h"
@@ -48,6 +49,8 @@ bool ModuleSceneEditor::Start()
 	ComponentCamera* camera = new ComponentCamera();
 
 	root->AddComponent(camera);
+
+	tree = new Quadtree(AABB(float3(-100, -5, -100), float3(100, 5, 100))); 
 
 	return true;
 }
@@ -96,6 +99,11 @@ void ModuleSceneEditor::Draw()
 	}
 	
 	root->Update();
+
+	if (App->physics->debug)
+	{
+		tree->DrawDebug(Cyan); 
+	}
 
 	pPlane p(0, 0, 0, 100);
 	p.color = White;
@@ -203,6 +211,11 @@ GameObject* ModuleSceneEditor::GetRoot()
 	return root;
 }
 
+Quadtree * ModuleSceneEditor::GetQuadtree()
+{
+	return tree;
+}
+
 void ModuleSceneEditor::SetSelected(GameObject * selected)
 {
 	if (this->selected != selected)
@@ -226,7 +239,7 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 	GameObject* ret = App->importer->LoadGameObject(path);
 	if (ret != nullptr)
 	{
-		root->DeleteChilds();
+		//root->DeleteChilds();
 		root->AddChild(ret);
 		App->camera->CenterToGO(ret);
 	}

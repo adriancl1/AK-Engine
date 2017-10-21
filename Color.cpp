@@ -12,3 +12,4 @@ Color Azure = Color(0.7f, 1.0f, 1.0f);
 Color Orange = Color(1.3f, 0.5f, 0.3f);
 Color Gray = Color(0.7f, 0.7f, 0.7f);
 Color Yellow = Color(1.0f, 0.85f, 0.0f);
+Color Cyan = Color(0.0f, 0.8f, 0.9f);

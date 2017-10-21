@@ -21,6 +21,8 @@
 #include "../Math/float3.h"
 #include "../Math/SSEMath.h"
 
+#include "../../Color.h"
+
 #ifdef MATH_OGRE_INTEROP
 #include <OgreAxisAlignedBox.h>
 #endif
@@ -386,6 +388,8 @@ public:
 	bool Contains(const Polygon &polygon) const;
 	bool Contains(const Frustum &frustum) const;
 	bool Contains(const Polyhedron &polyhedron) const;
+
+	void DrawDebug(Color color) const;
 
 	/// Tests whether this AABB and the given object intersect.
 	/** Both objects are treated as "solid", meaning that if one of the objects is fully contained inside

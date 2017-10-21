@@ -6,10 +6,15 @@
 #include "MathGeo\Geometry\AABB.h"
 
 #define MAX_OBJECTS 4
+#define MIN_SIZE 1
 
 QuadtreeNode::QuadtreeNode(const AABB& box): box(box)
 {
-
+	parent = nullptr;
+	for (int i = 0; i < 4; i++)
+	{
+		childs[i] = nullptr;
+	}
 }
 
 QuadtreeNode::~QuadtreeNode()
@@ -35,13 +40,16 @@ bool QuadtreeNode::IsLeaf() const
 
 void QuadtreeNode::Insert(GameObject* toInsert)
 {
-	if (objects.size() < MAX_OBJECTS)
+	if (objects.size() < MAX_OBJECTS || box.Size().x <= MIN_SIZE)
 	{
 		objects.push_back(toInsert);
 	}
 	else
 	{
-		CreateChilds();
+		if (IsLeaf() == true)
+		{
+			CreateChilds();
+		}
 		RedistributeChilds();
 	}
 }
@@ -106,17 +114,35 @@ void QuadtreeNode::CreateChilds()
 
 void QuadtreeNode::RedistributeChilds()
 {
-	for (std::list<GameObject*>::iterator it = objects.begin(); it != objects.end(); it++)
+	for (std::list<GameObject*>::iterator it = objects.begin(); it != objects.end();)
 	{
 		for (int i = 0; i < 4; i++)
 		{
 			ComponentMesh* tmp = (ComponentMesh*)(*it)->FindComponent(Component_Mesh);
-			if (childs[i]->box.Contains(tmp->enclosingBox))
-			{
-				childs[i]->Insert((*it));
+				if (tmp != nullptr)
+				{
+				if (childs[i]->box.Intersects(tmp->enclosingBox))
+				{
+					childs[i]->Insert((*it));
+				}
 			}
 		}
-		this->Remove((*it));
+		it = objects.erase(it);
+	}
+}
+
+void QuadtreeNode::DrawDebug(Color color) const
+{
+	if (IsLeaf() == true)
+	{
+		box.DrawDebug(color);
+	}
+	else
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			childs[i]->DrawDebug(color);
+		}
 	}
 }
 
@@ -128,8 +154,13 @@ void QuadtreeNode::CollectIntersections(std::vector<GameObject*>& objects, const
 		for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
 		{
 			ComponentMesh* tmp = (ComponentMesh*)(*it)->FindComponent(Component_Mesh);
-			if (primitive.Intersects(tmp->enclosingBox))
-				objects.push_back(*it);
+			if (tmp != nullptr)
+			{
+				if (primitive.Intersects(tmp->enclosingBox))
+				{
+					objects.push_back(*it);
+				}
+			}
 		}
 		for (int i = 0; i < 4; ++i)
 			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, primitive);
@@ -168,4 +199,9 @@ void Quadtree::Clear()
 {
 	delete root;
 	root = nullptr;
+}
+
+void Quadtree::DrawDebug(Color color) const
+{
+	root->DrawDebug(color);
 }

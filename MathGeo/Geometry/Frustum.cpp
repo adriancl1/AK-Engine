@@ -35,6 +35,8 @@
 #include "../Math/Quat.h"
 #include "../Algorithm/Random/LCG.h"
 
+#include "../../Glew/include/glew.h"
+
 #ifdef MATH_ENABLE_STL_SUPPORT
 #include <iostream>
 #endif
@@ -382,6 +384,50 @@ float Frustum::Distance(const float3 &point) const
 {
 	float3 pt = ClosestPoint(point);
 	return pt.Distance(point);
+}
+
+void Frustum::DrawDebug(Color color) const
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	float3 vertices[8];
+	GetCornerPoints(vertices);
+
+	glColor3f(color.r, color.g, color.b);
+
+	glBegin(GL_QUADS);
+
+	glVertex3fv((GLfloat*)&vertices[1]); //glVertex3f(-sx, -sy, sz);
+	glVertex3fv((GLfloat*)&vertices[5]); //glVertex3f( sx, -sy, sz);
+	glVertex3fv((GLfloat*)&vertices[7]); //glVertex3f( sx,  sy, sz);
+	glVertex3fv((GLfloat*)&vertices[3]); //glVertex3f(-sx,  sy, sz);
+
+	glVertex3fv((GLfloat*)&vertices[4]); //glVertex3f( sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[2]); //glVertex3f(-sx,  sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[6]); //glVertex3f( sx,  sy, -sz);
+
+	glVertex3fv((GLfloat*)&vertices[5]); //glVertex3f(sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&vertices[4]); //glVertex3f(sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[6]); //glVertex3f(sx,  sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[7]); //glVertex3f(sx,  sy,  sz);
+
+	glVertex3fv((GLfloat*)&vertices[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[1]); //glVertex3f(-sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&vertices[3]); //glVertex3f(-sx,  sy,  sz);
+	glVertex3fv((GLfloat*)&vertices[2]); //glVertex3f(-sx,  sy, -sz);
+
+	glVertex3fv((GLfloat*)&vertices[3]); //glVertex3f(-sx, sy,  sz);
+	glVertex3fv((GLfloat*)&vertices[7]); //glVertex3f( sx, sy,  sz);
+	glVertex3fv((GLfloat*)&vertices[6]); //glVertex3f( sx, sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[2]); //glVertex3f(-sx, sy, -sz);
+
+	glVertex3fv((GLfloat*)&vertices[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[4]); //glVertex3f( sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&vertices[5]); //glVertex3f( sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&vertices[1]); //glVertex3f(-sx, -sy,  sz);
+
+	glEnd();
 }
 
 bool Frustum::IsFinite() const

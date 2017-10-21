@@ -5,6 +5,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
+#include "Quadtree.h"
 
 #include "Glew\include\glew.h"
 #include "MathGeo\Math\Quat.h"
@@ -202,6 +203,8 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 			addTo->AddChild(newObject);
 
 			newObject->SetLocalTransform();
+
+			App->sceneEditor->GetQuadtree()->Insert(newObject);
 		}
 	}
 

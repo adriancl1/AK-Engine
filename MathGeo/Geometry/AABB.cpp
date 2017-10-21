@@ -40,6 +40,8 @@
 #include "Triangle.h"
 #include "Capsule.h"
 
+#include "../../Glew/include/glew.h"
+
 #ifdef MATH_GRAPHICSENGINE_INTEROP
 #include "VertexBuffer.h"
 #endif
@@ -566,6 +568,48 @@ bool AABB::Contains(const Frustum &frustum) const
 bool AABB::Contains(const Polyhedron &polyhedron) const
 {
 	return Contains(polyhedron.MinimalEnclosingAABB());
+}
+
+void AABB::DrawDebug(Color color) const
+{
+	float3 corners[8];
+	GetCornerPoints(corners);
+
+	glColor3f(color.r, color.g, color.b);
+
+	glBegin(GL_QUADS);
+
+	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy, sz);
+	glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy, sz);
+	glVertex3fv((GLfloat*)&corners[7]); //glVertex3f( sx,  sy, sz);
+	glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx,  sy, sz);
+
+	glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx,  sy, -sz);
+	glVertex3fv((GLfloat*)&corners[6]); //glVertex3f( sx,  sy, -sz);
+
+	glVertex3fv((GLfloat*)&corners[5]); //glVertex3f(sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&corners[4]); //glVertex3f(sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[6]); //glVertex3f(sx,  sy, -sz);
+	glVertex3fv((GLfloat*)&corners[7]); //glVertex3f(sx,  sy,  sz);
+
+	glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx,  sy,  sz);
+	glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx,  sy, -sz);
+
+	glVertex3fv((GLfloat*)&corners[3]); //glVertex3f(-sx, sy,  sz);
+	glVertex3fv((GLfloat*)&corners[7]); //glVertex3f( sx, sy,  sz);
+	glVertex3fv((GLfloat*)&corners[6]); //glVertex3f( sx, sy, -sz);
+	glVertex3fv((GLfloat*)&corners[2]); //glVertex3f(-sx, sy, -sz);
+
+	glVertex3fv((GLfloat*)&corners[0]); //glVertex3f(-sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[4]); //glVertex3f( sx, -sy, -sz);
+	glVertex3fv((GLfloat*)&corners[5]); //glVertex3f( sx, -sy,  sz);
+	glVertex3fv((GLfloat*)&corners[1]); //glVertex3f(-sx, -sy,  sz);
+
+	glEnd();
 }
 
 bool AABB::IntersectLineAABB(const float3 &linePos, const float3 &lineDir, float &tNear, float &tFar) const

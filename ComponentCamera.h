@@ -17,7 +17,7 @@ public:
 	void SetFOV();
 	void SetVerticalFOV(float value);
 
-	void DrawDebug();
+	void DrawDebug() const;
 
 	bool Contains(const AABB &aabb) const;
 	bool GetFrustumCulling() const;

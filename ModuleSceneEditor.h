@@ -8,6 +8,7 @@
 
 class GameObject;
 class Mesh;
+class Quadtree;
 
 class ModuleSceneEditor : public Module
 {
@@ -39,6 +40,7 @@ public:
 	void AddCapsule(float radius, float height, vec3 pos = vec3(0, 0, 0));
 
 	GameObject* GetRoot();
+	Quadtree* GetQuadtree();
 	void SetSelected(GameObject* selected);
 
 	GameObject* CreateNewGameObject(const char* path);
@@ -50,6 +52,7 @@ private:
 
 	GameObject* root;
 	GameObject* selected = nullptr;
+	Quadtree* tree = nullptr;
 };
 
 #endif

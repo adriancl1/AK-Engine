@@ -16,6 +16,7 @@ public:
 	void RedistributeChilds();
 	template<typename TYPE>
 	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE & primitive) const;
+	void DrawDebug(Color color) const;
 
 public:
 	AABB box;
@@ -33,6 +34,8 @@ public:
 	void Insert(GameObject* toInsert);
 	void Remove(GameObject* toRemove);
 	void Clear();
+
+	void DrawDebug(Color color) const;
 
 public:
 	QuadtreeNode* root = nullptr;
