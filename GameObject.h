@@ -16,6 +16,7 @@ public:
 	void DeleteChilds();
 	void AddComponent(Component* component);
 	void SetName(const char* name);
+	const char* GetName() const;
 	void SetLocalTransform();
 	void UpdateChildsTransform();
 	void OnEditor();

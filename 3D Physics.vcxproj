@@ -149,6 +149,8 @@
     <ClInclude Include="MathGeo\Time\Clock.h" />
     <ClInclude Include="MemLeaks.h" />
     <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="mmgr\mmgr.h" />
+    <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleHardware.h" />
@@ -216,6 +218,7 @@
     <ClCompile Include="MathGeo\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeo\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeo\Time\Clock.cpp" />
+    <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />

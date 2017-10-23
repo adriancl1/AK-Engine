@@ -24,6 +24,7 @@ public:
 	virtual void OnEditor();
 
 	void SetName(const char* name);
+	const char* GetName()const;
 	void SetGameObject(GameObject* GO);
 	GameObject* GetGameObject()const;
 	ComponentType GetType() const;

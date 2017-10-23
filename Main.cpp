@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "Brofiler-1.1.2\Brofiler.h"
 
+#include "mmgr\mmgr.h"
+
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
@@ -87,6 +89,6 @@ int main(int argc, char ** argv)
 
 	delete App;
 	App = nullptr;
-	LOG("Exiting game '%s'...\n", TITLE);
+	LOG("Exiting engine with %d memory leaks ...\n", m_getMemoryStatistics().totalAllocUnitCount);
 	return main_return;
 }

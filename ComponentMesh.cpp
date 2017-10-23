@@ -58,14 +58,18 @@ void ComponentMesh::DrawDebug() const
 			vNormal.color = Green;
 			vNormal.Render();
 		}
-		for (int i = 0; i < numIndices; i += 3)
+		if (numVertices % 3 == 0)
 		{
-			Triangle face(float3(vertices[indices[i] * 3], vertices[indices[i] * 3 + 1], vertices[indices[i] * 3 + 2]), float3(vertices[indices[i + 1] * 3], vertices[indices[i + 1] * 3 + 1], vertices[indices[i + 1] * 3 + 2]), float3(vertices[indices[i + 2] * 3], vertices[indices[i + 2] * 3 + 1], vertices[indices[i + 2] * 3 + 2]));
-			float3 faceCenter = face.Centroid();
-			float3 faceNormal = face.NormalCCW();
-			pLine normal(faceCenter.x, faceCenter.y, faceCenter.z, faceCenter.x + faceNormal.x, faceCenter.y + faceNormal.y, faceCenter.z + faceNormal.z);
-			normal.color = Orange;
-			normal.Render();
+			for (int i = 0; i < numIndices; i += 3)
+			{
+
+				Triangle face(float3(vertices[indices[i] * 3], vertices[indices[i] * 3 + 1], vertices[indices[i] * 3 + 2]), float3(vertices[indices[i + 1] * 3], vertices[indices[i + 1] * 3 + 1], vertices[indices[i + 1] * 3 + 2]), float3(vertices[indices[i + 2] * 3], vertices[indices[i + 2] * 3 + 1], vertices[indices[i + 2] * 3 + 2]));
+				float3 faceCenter = face.Centroid();
+				float3 faceNormal = face.NormalCCW();
+				pLine normal(faceCenter.x, faceCenter.y, faceCenter.z, faceCenter.x + faceNormal.x, faceCenter.y + faceNormal.y, faceCenter.z + faceNormal.z);
+				normal.color = Orange;
+				normal.Render();
+			}
 		}
 	}
 

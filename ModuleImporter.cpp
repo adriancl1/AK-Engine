@@ -204,6 +204,8 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 
 			newObject->SetLocalTransform();
 
+			//Save(*m, newObject->GetName());
+
 			App->sceneEditor->GetQuadtree()->Insert(newObject);
 		}
 	}
@@ -262,16 +264,10 @@ bool ModuleImporter::CleanUp(JSON_Object* data)
 
 void ModuleImporter::Load(ComponentMesh* mesh, const char* inputFile)
 {
-	FILE* pfile;
-	pfile = fopen(inputFile, "rb");
-	fseek(pfile, 0L, SEEK_END);
-	long lSize = ftell(pfile);
-	rewind(pfile);
-	/* allocate memory for entire content */
-	char* buffer = (char*)calloc(1, lSize + 1);
-	fread(buffer, lSize, 1, pfile);
-	
-	char* cursor = buffer;
+	char* cursor;
+	int size;
+
+	App->fileSystem->LoadFile(inputFile, cursor, size);
 
 	// amount of indices / vertices / colors / normals / texture_coords
 	uint ranges[2];
@@ -302,25 +298,25 @@ void ModuleImporter::Load(ComponentMesh* mesh, const char* inputFile)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->vertices, GL_STATIC_DRAW);
 }
 
-void ModuleImporter::Save(ComponentMesh* mesh, const char* outputFile)
+void ModuleImporter::Save(const ComponentMesh& mesh, const char* outputFile)
 {
-	uint ranges[2] = { mesh->numIndices, mesh->numVertices };
-	uint size = sizeof(ranges) + sizeof(uint) * mesh->numIndices + sizeof(float) * mesh->numVertices * 3;
+	uint ranges[2] = { mesh.numIndices, mesh.numVertices };
+	float size = sizeof(ranges);
+	size += sizeof(uint) * mesh.numIndices;
+	size += sizeof(float) * mesh.numVertices * 3;
 
-	char* cursor = new char [size];
+	char* data = new char[size];
+	char* cursor = data;
 
 	uint bytes = sizeof(ranges); // First store ranges
 	memcpy(cursor, ranges, bytes);
-
-	cursor += bytes; // Store indices
-	bytes = sizeof(uint) * mesh->numIndices;
-	memcpy(cursor, mesh->indices, bytes);	cursor += bytes; // Store vertices
-	bytes = sizeof(float) * mesh->numVertices * 3;
-	memcpy(cursor, mesh->vertices, bytes);	FILE* pFile;
-	pFile = fopen(outputFile, "wb");
-	if (pFile != NULL)
-	{
-		fwrite(cursor, sizeof(char), sizeof(cursor), pFile);
-		fclose(pFile);
-	}	RELEASE_ARRAY(cursor);
+	cursor += bytes;
+	
+	// Store indices
+	bytes = sizeof(uint) * mesh.numIndices;
+	memcpy(cursor, mesh.indices, mesh.numIndices * sizeof(uint));	cursor += bytes;
+	
+	// Store vertices
+	bytes = sizeof(float) * mesh.numVertices * 3;
+	memcpy(cursor, mesh.vertices, mesh.numVertices * 3 * sizeof(float));	App->fileSystem->SaveFile(outputFile, data, size, fileMesh);	RELEASE_ARRAY(cursor);
 }

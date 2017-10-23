@@ -67,6 +67,11 @@ void GameObject::SetName(const char * name)
 	this->name.assign(name);
 }
 
+const char * GameObject::GetName() const
+{
+	return name.c_str();
+}
+
 void GameObject::SetLocalTransform()
 {
 	ComponentTransform* myTrans = (ComponentTransform*)FindComponent(Component_Transform);

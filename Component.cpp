@@ -28,6 +28,11 @@ void Component::SetName(const char* name)
 	this->name.assign(name);
 }
 
+const char* Component::GetName() const
+{
+	return name.c_str();
+}
+
 void Component::SetGameObject(GameObject * GO)
 {
 	myGO = GO;
