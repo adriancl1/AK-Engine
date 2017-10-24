@@ -31,7 +31,7 @@ ModuleSceneEditor::~ModuleSceneEditor()
 	}
 }
 
-bool ModuleSceneEditor::Init(JSON_Object* data)
+bool ModuleSceneEditor::Init(Configuration data)
 {
 	BROFILER_CATEGORY("Module SceneEditor Start", Profiler::Color::AliceBlue);
 
@@ -57,7 +57,7 @@ bool ModuleSceneEditor::Start()
 
 	return true;
 }
-bool ModuleSceneEditor::CleanUp(JSON_Object* data)
+bool ModuleSceneEditor::CleanUp(Configuration data)
 {
 	delete root;
 	return true;

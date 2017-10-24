@@ -4,6 +4,9 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 
+#define PROPERTIES_WIDTH 300
+#define PROPERTIES_HEIGHT 500
+
 GameObject::GameObject(GameObject* parent, bool isStatic): parent(parent), isStatic(isStatic)
 {
 	name = "Game Object";
@@ -138,7 +141,15 @@ void GameObject::OnEditor()
 
 void GameObject::ShowProperties()
 {
-	ImGui::Begin("Properties");
+	int w, h;
+	App->window->GetWindowSize(w, h);
+	ImGui::SetNextWindowSize(ImVec2(PROPERTIES_WIDTH, PROPERTIES_HEIGHT));
+	ImGui::SetNextWindowPos(ImVec2(w - PROPERTIES_WIDTH, 0));
+
+	std::string temp = name;
+	temp += " properties";
+	ImGui::Begin(temp.c_str());
+	
 	ImGui::PushItemWidth(-140);
 	for (int i = 0; i < components.size(); i++)
 	{

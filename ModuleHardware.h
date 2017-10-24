@@ -10,7 +10,7 @@ public:
 	ModuleHardware(Application* app, bool start_enabled = true);
 	~ModuleHardware();
 
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool CleanUp(Configuration data);
 
 	void OnConfiguration()override;
 };

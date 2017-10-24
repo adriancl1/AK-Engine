@@ -14,7 +14,7 @@ public:
 	~ModuleCamera3D();
 
 	bool Start();
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool CleanUp(Configuration data);
 
 	update_status Update(float dt);
 

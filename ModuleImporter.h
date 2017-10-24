@@ -21,8 +21,8 @@ public:
 	ModuleImporter(Application* app, bool start_enabled = true);
 	~ModuleImporter();
 
-	bool Init(JSON_Object* data = nullptr);
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool Init(Configuration data);
+	bool CleanUp(Configuration data);
 
 	GameObject* LoadGameObject(const char* fullPath);
 

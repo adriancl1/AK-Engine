@@ -21,12 +21,12 @@ public:
 	ModulePhysics3D(Application* app, bool start_enabled = true);
 	~ModulePhysics3D();
 
-	bool Init(JSON_Object* data = nullptr);
+	bool Init(Configuration data);
 	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool CleanUp(Configuration data);
 
 	PhysBody3D* AddBody(const pSphere& sphere, float mass = 1.0f);
 	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);

@@ -15,8 +15,8 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
-	bool Init(JSON_Object* data = nullptr);
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool Init(Configuration data);
+	bool CleanUp(Configuration data);
 
 	void OnConfiguration()override;
 

@@ -16,9 +16,9 @@ public:
 	ModuleSceneEditor(Application* app, bool startEnabled = true);
 	~ModuleSceneEditor();
 
-	bool Init(JSON_Object* data = nullptr);
+	bool Init(Configuration data);
 	bool Start();
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool CleanUp(Configuration data);
 
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);

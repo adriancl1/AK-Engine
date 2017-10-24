@@ -19,7 +19,7 @@ ModuleWindow::~ModuleWindow()
 }
 
 // Called before render is available
-bool ModuleWindow::Init(JSON_Object* data)
+bool ModuleWindow::Init(Configuration data)
 {
 	BROFILER_CATEGORY("Module Window Init", Profiler::Color::AliceBlue);
 
@@ -33,7 +33,7 @@ bool ModuleWindow::Init(JSON_Object* data)
 	}
 	else
 	{
-		if (data == nullptr)
+		if (App->UseDefaultValues())
 		{
 			LOG("Wndow config couldn't load, using default values!");
 			//Create window
@@ -91,12 +91,12 @@ bool ModuleWindow::Init(JSON_Object* data)
 		{
 			LOG("Window config loaded succesfully.")
 
-			width = json_object_dotget_number(data, "width");
-			height= json_object_dotget_number(data, "height");
-			brightness = json_object_dotget_number(data, "brightness");
-			fullscreen = json_object_dotget_boolean(data, "fullscreen");
-			fullDesktop = json_object_dotget_boolean(data, "fullDesktop");
-			borderless = json_object_dotget_boolean(data, "borderless");
+			width = data.GetInt("width");
+			height= data.GetInt("height");
+			brightness = data.GetFloat("brightness");
+			fullscreen = data.GetBool("fullscreen");
+			fullDesktop = data.GetBool("fullDesktop");
+			borderless = data.GetBool("borderless");
 			
 			width = width * SCREEN_SIZE;
 			height = height * SCREEN_SIZE;
@@ -155,18 +155,18 @@ SDL_Window * ModuleWindow::GetWindow() const
 }
 
 // Called before quitting
-bool ModuleWindow::CleanUp(JSON_Object* data)
+bool ModuleWindow::CleanUp(Configuration data)
 {
-	LOG("Destroying SDL window and quitting all SDL systems");
-	
-	JSON_Object* windowData = json_object_dotget_object(data, name.c_str());
+	bool ret = true;
 
-	json_object_dotset_number(windowData, "width", width);
-	json_object_dotset_number(windowData, "height", height);
-	json_object_dotset_boolean(windowData, "fullscreen", fullscreen);
-	json_object_dotset_boolean(windowData, "fullDesktop", fullDesktop);
-	json_object_dotset_boolean(windowData, "borderless", borderless);
-	json_object_dotset_number(windowData, "brightness", brightness);
+	LOG("Destroying SDL window and quitting all SDL systems");
+
+	ret = data.SetInt("width", width);
+	ret = data.SetInt("height", height);
+	ret = data.SetBool("fullscreen", fullscreen);
+	ret = data.SetBool("fullDesktop", fullDesktop);
+	ret = data.SetBool("borderless", borderless);
+	ret = data.SetFloat("brightness", brightness);
 
 	//Destroy window
 	if(window != NULL)
@@ -176,7 +176,7 @@ bool ModuleWindow::CleanUp(JSON_Object* data)
 
 	//Quit SDL subsystems
 	SDL_Quit();
-	return true;
+	return ret;
 }
 
 void ModuleWindow::OnConfiguration()

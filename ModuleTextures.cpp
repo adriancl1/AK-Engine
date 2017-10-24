@@ -23,7 +23,7 @@ ModuleTextures::~ModuleTextures()
 {
 }
 
-bool ModuleTextures::Init(JSON_Object * data)
+bool ModuleTextures::Init(Configuration data)
 {
 	ilutRenderer(ILUT_OPENGL);
 	ilInit();
@@ -33,7 +33,7 @@ bool ModuleTextures::Init(JSON_Object * data)
 	return true;
 }
 
-bool ModuleTextures::CleanUp(JSON_Object * data)
+bool ModuleTextures::CleanUp(Configuration data)
 {
 	return true;
 }

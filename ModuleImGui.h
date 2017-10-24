@@ -16,7 +16,7 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	update_status PreUpdate(float dt);
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool CleanUp(Configuration data);
 
 	void Draw() const;
 

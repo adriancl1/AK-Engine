@@ -17,10 +17,10 @@ public:
 	ModuleRenderer3D(Application* app, bool start_enabled = true);
 	~ModuleRenderer3D();
 
-	bool Init(JSON_Object* data = nullptr);
+	bool Init(Configuration data);
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool CleanUp(Configuration data);
 
 	void OnConfiguration()override;
 	void OnResize(int width, int height);

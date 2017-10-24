@@ -39,7 +39,7 @@ ModulePhysics3D::~ModulePhysics3D()
 }
 
 // Render not available yet----------------------------------
-bool ModulePhysics3D::Init(JSON_Object* data)
+bool ModulePhysics3D::Init(Configuration data)
 {
 	BROFILER_CATEGORY("Module Physics 3D Init", Profiler::Color::AliceBlue);
 
@@ -141,7 +141,7 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 }
 
 // Called before quitting
-bool ModulePhysics3D::CleanUp(JSON_Object* data)
+bool ModulePhysics3D::CleanUp(Configuration data)
 {
 	LOG("Destroying 3D Physics simulation");
 

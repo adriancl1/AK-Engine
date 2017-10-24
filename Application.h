@@ -43,6 +43,7 @@ private:
 	float lastMs = 0;
 	std::vector<float> FPSData;
 	std::vector<float> MsData;
+	bool defaultValues = true;
 	std::list<Module*> listModules;
 
 public:
@@ -56,6 +57,7 @@ public:
 
 	void OnConfiguration();
 
+	bool UseDefaultValues()const;
 	float GetFPS();
 	float GetMs();
 	void CycleFPSAndMsData(float fps, float ms);

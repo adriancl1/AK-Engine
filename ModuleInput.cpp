@@ -21,7 +21,7 @@ ModuleInput::~ModuleInput()
 }
 
 // Called before render is available
-bool ModuleInput::Init(JSON_Object* data)
+bool ModuleInput::Init(Configuration data)
 {
 	BROFILER_CATEGORY("Module Input Init", Profiler::Color::AliceBlue);
 
@@ -161,7 +161,7 @@ update_status ModuleInput::PreUpdate(float dt)
 }
 
 // Called before quitting
-bool ModuleInput::CleanUp(JSON_Object* data)
+bool ModuleInput::CleanUp(Configuration data)
 {
 	LOG("Quitting SDL input event subsystem.");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);

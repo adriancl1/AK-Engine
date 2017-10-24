@@ -1,8 +1,8 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
+#include "Configuration.h"
 #include <string>
-#include "parson\parson.h"
 
 class Application;
 struct PhysBody3D;
@@ -22,7 +22,7 @@ public:
 	virtual ~Module()
 	{}
 
-	virtual bool Init(JSON_Object* data = nullptr) 
+	virtual bool Init(Configuration data) 
 	{
 		return true; 
 	}
@@ -47,7 +47,7 @@ public:
 		return UPDATE_CONTINUE;
 	}
 
-	virtual bool CleanUp(JSON_Object* data = nullptr)
+	virtual bool CleanUp(Configuration data)
 	{ 
 		return true; 
 	}

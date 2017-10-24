@@ -14,8 +14,8 @@ public:
 	ModuleAudio(Application* app, bool start_enabled = true);
 	~ModuleAudio();
 
-	bool Init(JSON_Object* data = nullptr);
-	bool CleanUp(JSON_Object* data = nullptr);
+	bool Init(Configuration data);
+	bool CleanUp(Configuration data);
 
 	void OnConfiguration()override;
 

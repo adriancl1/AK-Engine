@@ -17,7 +17,7 @@ ModuleHardware::~ModuleHardware()
 {
 }
 
-bool ModuleHardware::CleanUp(JSON_Object * data)
+bool ModuleHardware::CleanUp(Configuration data)
 {
 	return true;
 }

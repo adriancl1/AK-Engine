@@ -33,7 +33,7 @@ bool ModuleCamera3D::Start()
 }
 
 // -----------------------------------------------------------------
-bool ModuleCamera3D::CleanUp(JSON_Object* data)
+bool ModuleCamera3D::CleanUp(Configuration data)
 {
 	LOG("Cleaning camera");
 

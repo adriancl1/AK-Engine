@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Configuration.h"
 #include "parson\parson.h"
 #include "Brofiler-1.1.2\Brofiler.h"
 
@@ -66,12 +67,17 @@ bool Application::Init()
 	// Call Init() in all modules
 	std::list<Module*>::iterator item = listModules.begin();
 
-	JSON_Value * configValue = json_parse_file("config.json");
-	JSON_Object * configObject = json_value_get_object(configValue);
+	Configuration config("config.json");
+	if (config.IsValueValid() == true)
+	{
+		defaultValues = false;
+	}
+	/*JSON_Value * configValue = json_parse_file("config.json");
+	JSON_Object * configObject = json_value_get_object(configValue);*/
 
 	while (item != listModules.end() && ret == true)
 	{
-		ret = item._Ptr->_Myval->Init(json_object_dotget_object(configObject, item._Ptr->_Myval->name.c_str()));
+		ret = item._Ptr->_Myval->Init(config.GetSection((*item)->name.c_str()));
 		item++;
 	}
 
@@ -81,7 +87,7 @@ bool Application::Init()
 
 	while (item != listModules.end() && ret == true)
 	{
-		BROFILER_CATEGORY("%s Init", item._Ptr->_Myval->name.c_str(), Brofiler::Color::AliceBlue);
+		BROFILER_CATEGORY("%s Init", (*item)->name.c_str(), Brofiler::Color::AliceBlue);
 
 		ret = item._Ptr->_Myval->Start();
 		item++;
@@ -147,19 +153,20 @@ bool Application::CleanUp()
 
 	item--;
 
-	JSON_Value* configValue = json_parse_file("config.json");
-	JSON_Object* objectData = json_value_get_object(configValue);
+	Configuration config("config.json");
+	/*JSON_Value* configValue = json_parse_file("config.json");
+	JSON_Object* objectData = json_value_get_object(configValue);*/
 
 	while (item != listModules.begin() && ret == true)
 	{
-		ret = item._Ptr->_Myval->CleanUp(objectData);
+		ret = item._Ptr->_Myval->CleanUp(config.GetSection((*item)->name.c_str()));
 		item--;
 	}
 	if (item == listModules.begin() && ret == true)
 	{
-		ret = item._Ptr->_Myval->CleanUp(objectData);
+		ret = item._Ptr->_Myval->CleanUp(config.GetSection((*item)->name.c_str()));
 	}
-	json_serialize_to_file(configValue, "config.json");
+	config.SerializeToFile("config.json");
 
 	return ret;
 }
@@ -189,6 +196,11 @@ void Application::OnConfiguration()
 void Application::AddModule(Module* mod)
 {
 	listModules.push_back(mod);
+}
+
+bool Application::UseDefaultValues() const
+{
+	return defaultValues;
 }
 
 float Application::GetFPS()

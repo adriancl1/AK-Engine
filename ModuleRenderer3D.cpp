@@ -42,21 +42,21 @@ ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
 // Called before render is available
-bool ModuleRenderer3D::Init(JSON_Object* data)
+bool ModuleRenderer3D::Init(Configuration data)
 {
 	BROFILER_CATEGORY("Module Render Init", Profiler::Color::AliceBlue);
 
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
 
-	if (data != nullptr)
+	if (!App->UseDefaultValues())
 	{
-		depthTest = json_object_dotget_boolean(data, "depthTest");
-		cullFace = json_object_dotget_boolean(data, "cullFace");
-		lighting = json_object_dotget_boolean(data, "lighting");
-		depthTest = json_object_dotget_boolean(data, "depthTest");
-		colorMaterial = json_object_dotget_boolean(data, "colorMaterial");
-		texture2D = json_object_dotget_boolean(data, "texture2D");
+		depthTest = data.GetBool("depthTest");
+		cullFace = data.GetBool("cullFace");
+		lighting = data.GetBool("lighting");
+		depthTest = data.GetBool("depthTest");
+		colorMaterial = data.GetBool("colorMaterial");
+		texture2D = data.GetBool("texture2D");
 	}
 	
 	//Set Attributes
@@ -204,21 +204,20 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 }
 
 // Called before quitting
-bool ModuleRenderer3D::CleanUp(JSON_Object* data)
+bool ModuleRenderer3D::CleanUp(Configuration data)
 {
+	bool ret = true;
 	LOG("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
 
-	JSON_Object* rendererData = json_object_dotget_object(data, name.c_str());
+	ret = data.SetBool("depthTest", depthTest);
+	ret = data.SetBool("cullFace", cullFace);
+	ret = data.SetBool("lighting", lighting);
+	ret = data.SetBool("colorMaterial", colorMaterial);
+	ret = data.SetBool("texture2D", texture2D);
 
-	json_object_dotset_boolean(rendererData, "depthTest", depthTest);
-	json_object_dotset_boolean(rendererData, "cullFace", cullFace);
-	json_object_dotset_boolean(rendererData, "lighting", lighting);
-	json_object_dotset_boolean(rendererData, "colorMaterial", colorMaterial);
-	json_object_dotset_boolean(rendererData, "texture2D", texture2D);
-
-	return true;
+	return ret;
 }
 
 

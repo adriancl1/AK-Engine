@@ -28,7 +28,7 @@ ModuleImporter::~ModuleImporter()
 {
 }
 
-bool ModuleImporter::Init(JSON_Object* data)
+bool ModuleImporter::Init(Configuration data)
 {
 	struct aiLogStream stream; 
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr); 
@@ -257,7 +257,7 @@ ComponentTransform* ModuleImporter::LoadTransform(aiNode* node)
 }
 
 
-bool ModuleImporter::CleanUp(JSON_Object* data)
+bool ModuleImporter::CleanUp(Configuration data)
 {
 	return true;
 }

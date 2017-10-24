@@ -16,7 +16,7 @@ ModuleAudio::~ModuleAudio()
 {}
 
 // Called before render is available
-bool ModuleAudio::Init(JSON_Object* data)
+bool ModuleAudio::Init(Configuration data)
 {
 	BROFILER_CATEGORY("Module Audio Init", Profiler::Color::AliceBlue);
 
@@ -55,7 +55,7 @@ bool ModuleAudio::Init(JSON_Object* data)
 }
 
 // Called before quitting
-bool ModuleAudio::CleanUp(JSON_Object* data)
+bool ModuleAudio::CleanUp(Configuration data)
 {
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem.");
 
