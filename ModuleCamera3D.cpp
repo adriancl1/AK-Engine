@@ -4,7 +4,10 @@
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
 #include "GameObject.h"
+#include "Component.h"
 #include "ComponentMesh.h"
+#include "ComponentCamera.h"
+
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -183,10 +186,22 @@ void ModuleCamera3D::CenterToGO(GameObject * centerTo)
 	}
 }
 
+void ModuleCamera3D::SetMainCamera(ComponentCamera * camera)
+{
+	mainCamera = camera;
+}
+
 // -----------------------------------------------------------------
 float* ModuleCamera3D::GetViewMatrix()
 {
-	return &ViewMatrix;
+	if (mainCamera != nullptr && mainCamera->IsActive())
+	{
+		return mainCamera->GetViewMatrix();
+	}
+	else
+	{
+		return &ViewMatrix;
+	}
 }
 
 // -----------------------------------------------------------------

@@ -18,6 +18,7 @@ public:
 	void SetLocalTrans(GameObject* parent);
 
 	void OnEditor() override;
+	void OnSave(Configuration data) const override;
 
 	float4x4 GetTransMatrix() const;
 

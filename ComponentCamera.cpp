@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "ComponentCamera.h"
+#include "Configuration.h"
 
 #include "imgui-1.51\imgui.h"
 #include "Glew\include\glew.h"
@@ -23,6 +24,8 @@ ComponentCamera::ComponentCamera(float3 pos, float3 front, float3 up, float near
 	frustum.ProjectionMatrix();
 
 	frustumCulling = true;
+
+	active = false;
 }
 
 ComponentCamera::~ComponentCamera()
@@ -43,16 +46,21 @@ void ComponentCamera::OnEditor()
 	if (ImGui::TreeNodeEx(name.c_str()))
 	{
 		ImGui::Text("Position:");
-		ImGui::SliderFloat("X", &frustum.pos.x, -500, 500);
-		ImGui::SliderFloat("Y", &frustum.pos.y, -500, 500);
-		ImGui::SliderFloat("Z", &frustum.pos.z, -500, 500);
+		ImGui::DragFloat("X", &frustum.pos.x, -0.5f, 0.5f);
+		ImGui::DragFloat("Y", &frustum.pos.y, -0.5f, 0.5f);
+		ImGui::DragFloat("Z", &frustum.pos.z, -0.5f, 0.5f);
+
+		ImGui::DragFloat3("Frustum up", frustum.up.ptr(), -0.5f, 0.5f);
+		ImGui::DragFloat3("Frustum front", frustum.front.ptr(), -0.5f, 0.5f);
+
 		ImGui::TreePop();
 
 		ImGui::Text("FOV:");
-		if(ImGui::SliderFloat("VFOV", &FOV, 1, 115))
+		if(ImGui::DragFloat3("VFOV", &FOV, 1, 115))
 		{
 			SetFOV();
 		}
+		ImGui::Checkbox("Active", &active);
 		ImGui::Checkbox("Use Culling", &frustumCulling);
 	}
 }
@@ -84,4 +92,18 @@ bool ComponentCamera::Contains(const AABB & aabb) const
 bool ComponentCamera::GetFrustumCulling() const
 {
 	return frustumCulling;
+}
+
+float* ComponentCamera::GetViewMatrix()
+{
+	return frustum.ViewProjMatrix().ptr();
+}
+
+void ComponentCamera::OnSave(Configuration data) const
+{
+	data.SetInt("Type", type);
+	data.SetFloat("Frustum Far", frustum.farPlaneDistance);
+	data.SetFloat("Frustum Near", frustum.nearPlaneDistance);
+	data.SetFloat("Frustum HFOV", frustum.horizontalFov);
+	data.SetFloat("Frustum VFOV", frustum.verticalFov);
 }

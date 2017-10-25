@@ -1,5 +1,6 @@
 #include "ComponentTransform.h"
 #include "GameObject.h"
+#include "Configuration.h"
 
 #include "imgui-1.51\imgui.h"
 
@@ -163,6 +164,14 @@ void ComponentTransform::OnEditor()
 
 		ImGui::TreePop();
 	}
+}
+
+void ComponentTransform::OnSave(Configuration data) const
+{
+	data.SetInt("Type", type);
+	data.AddArrayFloat("Position", &position.x, 3);
+	data.AddArrayFloat("Rotation", &rotation.x, 4);
+	data.AddArrayFloat("Scale", &scale.x, 3);
 }
 
 float4x4 ComponentTransform::GetTransMatrix() const

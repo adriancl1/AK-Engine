@@ -48,6 +48,8 @@ bool ModuleSceneEditor::Start()
 
 	ComponentCamera* camera = new ComponentCamera();
 
+	App->camera->SetMainCamera(camera);
+
 	root->AddComponent(camera);
 
 	tree = new Quadtree(AABB(float3(-100, -5, -100), float3(100, 5, 100))); 

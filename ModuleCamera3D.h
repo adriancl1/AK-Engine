@@ -6,6 +6,7 @@
 #include "glmath.h"
 
 class GameObject;
+class ComponentCamera;
 
 class ModuleCamera3D : public Module
 {
@@ -24,6 +25,7 @@ public:
 	void ZoomIn();
 	void ZoomOut();
 	void CenterToGO(GameObject* centerTo);
+	void SetMainCamera(ComponentCamera* camera);
 
 	float* GetViewMatrix();
 
@@ -35,6 +37,7 @@ public:
 
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;
+	ComponentCamera* mainCamera = nullptr;
 };
 
 #endif //__ModuleCamera3D_H__

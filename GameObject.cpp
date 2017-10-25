@@ -157,3 +157,9 @@ void GameObject::ShowProperties()
 	}
 	ImGui::End();
 }
+
+void GameObject::OnSerialize(Configuration data)
+{
+	//Configuration conf("scene.json");
+	//conf = data.AddSection()
+}

@@ -3,6 +3,7 @@
 #include <string>
 
 class GameObject;
+class Configuration;
 
 enum ComponentType
 {
@@ -23,6 +24,10 @@ public:
 	virtual void Disable();
 	virtual void OnEditor();
 
+	virtual void OnSave(Configuration data)const;
+	virtual void OnLoad(Configuration data);
+
+	bool IsActive()const;
 	void SetName(const char* name);
 	const char* GetName()const;
 	void SetGameObject(GameObject* GO);
@@ -32,6 +37,6 @@ public:
 protected:
 	GameObject* myGO = nullptr;
 	std::string name;
-	bool active;
+	bool active = true;
 	ComponentType type;
 };

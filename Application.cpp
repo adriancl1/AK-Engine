@@ -47,12 +47,12 @@ Application::~Application()
 	item--;
 	while (item != listModules.begin())
 	{
-		RELEASE(item._Ptr->_Myval);
+		RELEASE((*item));
 		item--;
 	}
 	if (item == listModules.begin())
 	{
-		RELEASE(item._Ptr->_Myval);
+		RELEASE((*item));
 	}
 
 	listModules.clear();
@@ -77,7 +77,7 @@ bool Application::Init()
 
 	while (item != listModules.end() && ret == true)
 	{
-		ret = item._Ptr->_Myval->Init(config.GetSection((*item)->name.c_str()));
+		ret = (*item)->Init(config.GetSection((*item)->name.c_str()));
 		item++;
 	}
 
@@ -89,7 +89,7 @@ bool Application::Init()
 	{
 		BROFILER_CATEGORY("%s Init", (*item)->name.c_str(), Brofiler::Color::AliceBlue);
 
-		ret = item._Ptr->_Myval->Start();
+		ret = (*item)->Start();
 		item++;
 	}
 	
@@ -122,7 +122,7 @@ update_status Application::Update()
 
 	while (item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item._Ptr->_Myval->PreUpdate(dt);
+		ret = (*item)->PreUpdate(dt);
 		item++;
 	}
 
@@ -130,7 +130,7 @@ update_status Application::Update()
 
 	while (item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item._Ptr->_Myval->Update(dt);
+		ret = (*item)->Update(dt);
 		item++;
 	}
 
@@ -138,7 +138,7 @@ update_status Application::Update()
 
 	while (item != listModules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = item._Ptr->_Myval->PostUpdate(dt);
+		ret = (*item)->PostUpdate(dt);
 		item++;
 	}
 
@@ -159,12 +159,12 @@ bool Application::CleanUp()
 
 	while (item != listModules.begin() && ret == true)
 	{
-		ret = item._Ptr->_Myval->CleanUp(config.GetSection((*item)->name.c_str()));
+		ret = (*item)->CleanUp(config.GetSection((*item)->name.c_str()));
 		item--;
 	}
 	if (item == listModules.begin() && ret == true)
 	{
-		ret = item._Ptr->_Myval->CleanUp(config.GetSection((*item)->name.c_str()));
+		ret = (*item)->CleanUp(config.GetSection((*item)->name.c_str()));
 	}
 	config.SerializeToFile("config.json");
 
@@ -188,7 +188,7 @@ void Application::OnConfiguration()
 
 	while (item != listModules.end())
 	{
-		item._Ptr->_Myval->OnConfiguration();
+		(*item)->OnConfiguration();
 		item++;
 	}
 }

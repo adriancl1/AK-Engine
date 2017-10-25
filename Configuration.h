@@ -2,6 +2,8 @@
 
 #include "parson\parson.h"
 
+struct Color;
+
 class Configuration
 {
 public:
@@ -10,6 +12,7 @@ public:
 	~Configuration();
 
 	Configuration GetSection(const char* name) const;
+	Configuration AddSection(const char* name);
 	bool IsValueValid()const;
 
 	bool GetBool(const char* fieldName)const;
@@ -21,10 +24,13 @@ public:
 	bool SetInt(const char* fieldName, int value);
 	bool SetFloat(const char* fieldName, float value);
 	bool SetString(const char* fieldName, const char* value);
+	bool SetColor(const char* fieldName, Color value);
+	bool AddArrayFloat(const char* fieldName, const float* value, int size);
 
 	bool SerializeToFile(const char* fileName);
 	
 private:
 	JSON_Value* valueRoot = nullptr;
 	JSON_Object* objectRoot = nullptr;
+	JSON_Array* arrayConfig = nullptr;
 };

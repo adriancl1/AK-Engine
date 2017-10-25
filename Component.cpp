@@ -1,4 +1,5 @@
 #include "Component.h"
+#include "Configuration.h"
 #include "GameObject.h"
 
 Component::Component(ComponentType type, bool startActive) : type(type), active(startActive)
@@ -22,6 +23,19 @@ void Component::Disable()
 
 void Component::OnEditor()
 {}
+
+void Component::OnSave(Configuration data) const
+{
+}
+
+void Component::OnLoad(Configuration data)
+{
+}
+
+bool Component::IsActive() const
+{
+	return active;
+}
 
 void Component::SetName(const char* name)
 {

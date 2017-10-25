@@ -6,7 +6,7 @@
 class ComponentCamera : public Component
 {
 public:
-	ComponentCamera(float3 pos = { 0, 0, 0 }, float3 front = { 0, 0, 1 }, float3 up = { 0, 1, 0 }, float nearPlaneDistance = 0.5f, float farPlaneDistance = 100, float verticalFov = 15, float aspectRatio = (float)16 / 9, FrustumType type = PerspectiveFrustum);
+	ComponentCamera(float3 pos = { 0, 0, 0 }, float3 front = { 0, 0, 1 }, float3 up = { 0, 0.5f, 0 }, float nearPlaneDistance = 0.5f, float farPlaneDistance = 100, float verticalFov = 15, float aspectRatio = (float)16 / 9, FrustumType type = PerspectiveFrustum);
 
 	~ComponentCamera();
 
@@ -21,6 +21,10 @@ public:
 
 	bool Contains(const AABB &aabb) const;
 	bool GetFrustumCulling() const;
+
+	float* GetViewMatrix();
+
+	void OnSave(Configuration data) const override;
 
 private:
 	float FOV;

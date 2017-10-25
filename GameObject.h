@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+class Configuration;
+
 class GameObject
 {
 public:
@@ -21,6 +23,8 @@ public:
 	void UpdateChildsTransform();
 	void OnEditor();
 	void ShowProperties();
+
+	void OnSerialize(Configuration data);
 
 	Component* FindComponent(ComponentType type) const;
 	GameObject* GetParent() const;
