@@ -166,7 +166,7 @@ void ComponentTransform::OnEditor()
 	}
 }
 
-void ComponentTransform::OnSave(Configuration data) const
+void ComponentTransform::OnSave(Configuration& data) const
 {
 	data.SetInt("Type", type);
 	data.AddArrayFloat("Position", &position.x, 3);

@@ -24,7 +24,7 @@ public:
 	virtual void Disable();
 	virtual void OnEditor();
 
-	virtual void OnSave(Configuration data)const;
+	virtual void OnSave(Configuration& data)const;
 	virtual void OnLoad(Configuration data);
 
 	bool IsActive()const;

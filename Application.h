@@ -16,6 +16,8 @@
 #include "ModuleHardware.h"
 #include "ModuleFileSystem.h"
 
+#include "MathGeo\Algorithm\Random\LCG.h"
+
 #include <stdlib.h>
 
 class Application
@@ -33,6 +35,8 @@ public:
 	ModuleTextures* textures;
 	ModuleHardware* hardware;
 	ModuleFileSystem* fileSystem;
+
+	math::LCG* randomGenerator = nullptr;
 
 private:
 

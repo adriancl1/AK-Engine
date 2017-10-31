@@ -7,6 +7,7 @@ struct Color;
 class Configuration
 {
 public:
+	Configuration();
 	Configuration(const char* string);
 	Configuration(JSON_Object* section);
 	~Configuration();
@@ -26,8 +27,11 @@ public:
 	bool SetString(const char* fieldName, const char* value);
 	bool SetColor(const char* fieldName, Color value);
 	bool AddArrayFloat(const char* fieldName, const float* value, int size);
+	bool AddArray(const char* name);
+	bool AddArrayEntry(const Configuration& toAdd);
 
 	bool SerializeToFile(const char* fileName);
+	size_t SaveFile(char** buffer, const char* comment) const;
 	
 private:
 	JSON_Value* valueRoot = nullptr;

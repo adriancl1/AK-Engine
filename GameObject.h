@@ -19,12 +19,13 @@ public:
 	void AddComponent(Component* component);
 	void SetName(const char* name);
 	const char* GetName() const;
+	int GetUID()const;
 	void SetLocalTransform();
 	void UpdateChildsTransform();
 	void OnEditor();
 	void ShowProperties();
 
-	void OnSerialize(Configuration data);
+	void OnSerialize(Configuration& dataToSave);
 
 	Component* FindComponent(ComponentType type) const;
 	GameObject* GetParent() const;
@@ -35,6 +36,7 @@ public:
 	bool selected = false;
 	bool isStatic;
 protected:
+	int uid;
 	GameObject* parent;
 	std::string name;
 };

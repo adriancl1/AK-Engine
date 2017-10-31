@@ -54,9 +54,6 @@ bool ModuleSceneEditor::Start()
 
 	tree = new Quadtree(AABB(float3(-100, -5, -100), float3(100, 5, 100))); 
 
-	App->fileSystem->CreateNewDirectory("Library");
-	App->fileSystem->CreateNewDirectory("Library/Mesh");
-
 	return true;
 }
 bool ModuleSceneEditor::CleanUp(Configuration data)
@@ -83,6 +80,7 @@ update_status ModuleSceneEditor::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 	{
+		SaveScene("test");
 		if (root->childs.size() != 0)
 		{
 			//App->importer->Save((ComponentMesh*)root->childs[0]->FindComponent(Component_Mesh), "hola.T");
@@ -254,4 +252,17 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 	}
 
 	return ret;
+}
+
+void ModuleSceneEditor::SaveScene(const char* fileTitle) const
+{
+	Configuration save;
+	save.AddArray("Scene Game Objects");
+
+	root->OnSerialize(save);
+
+	char* buffer = nullptr;
+	uint fileSize = save.SaveFile(&buffer, "Scene save");
+	App->fileSystem->SaveFile(fileTitle, buffer, fileSize, FileType::fileScene);
+	RELEASE_ARRAY(buffer);
 }

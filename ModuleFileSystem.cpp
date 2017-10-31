@@ -6,6 +6,8 @@
 #define MESH_EXTENSION ".don"
 #define MATERIAL_DIRECTORY "Library/Material"
 #define MATERIAL_EXTENSION ".dds" 
+#define SCENE_DIRECTORY "Library/Scenes"
+#define SCENE_EXTENSION ".akS"
 
 ModuleFileSystem::ModuleFileSystem(Application * app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -14,6 +16,16 @@ ModuleFileSystem::ModuleFileSystem(Application * app, bool startEnabled) : Modul
 
 ModuleFileSystem::~ModuleFileSystem()
 {
+}
+
+bool ModuleFileSystem::Init(Configuration data)
+{
+	CreateNewDirectory("Library");
+	CreateNewDirectory(MESH_DIRECTORY);
+	CreateNewDirectory(MATERIAL_DIRECTORY);
+	CreateNewDirectory(SCENE_DIRECTORY);
+
+	return true;
 }
 
 bool ModuleFileSystem::CreateNewDirectory(const char * name)
@@ -46,6 +58,13 @@ void ModuleFileSystem::SaveFile(const char * name, char * buffer, int bufferSize
 		path += "/";
 		path += name;
 		path += MATERIAL_EXTENSION;
+	}
+	else if (type == fileScene)
+	{
+		path += SCENE_DIRECTORY;
+		path += "/";
+		path += name;
+		path += SCENE_EXTENSION;
 	}
 
 	std::ofstream file(path.c_str(), std::ofstream::out | std::ofstream::binary);

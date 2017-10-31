@@ -45,6 +45,8 @@ public:
 
 	GameObject* CreateNewGameObject(const char* path);
 
+	void SaveScene(const char* fileTitle)const;
+
 private:
 	//For now ----
 	std::list<Primitive*> sceneObjects;

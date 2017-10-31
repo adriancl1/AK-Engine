@@ -24,7 +24,7 @@ public:
 
 	float* GetViewMatrix();
 
-	void OnSave(Configuration data) const override;
+	void OnSave(Configuration& data) const override;
 
 private:
 	float FOV;

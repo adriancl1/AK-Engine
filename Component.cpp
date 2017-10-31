@@ -24,7 +24,7 @@ void Component::Disable()
 void Component::OnEditor()
 {}
 
-void Component::OnSave(Configuration data) const
+void Component::OnSave(Configuration& data) const
 {
 }
 

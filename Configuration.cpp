@@ -1,6 +1,12 @@
 #include "Configuration.h"
 #include "Color.h"
 
+Configuration::Configuration()
+{
+	valueRoot = json_value_init_object();
+	objectRoot = json_value_get_object(valueRoot);
+}
+
 Configuration::Configuration(const char* string)
 {
 	valueRoot = json_parse_file(string);
@@ -152,6 +158,36 @@ bool Configuration::AddArrayFloat(const char * fieldName, const float * value, i
 	return false;
 }
 
+bool Configuration::AddArray(const char * name)
+{
+	bool ret = false;
+
+	JSON_Value* tmpArray = json_value_init_array();
+	arrayConfig = json_value_get_array(tmpArray);
+
+	if (json_object_set_value(objectRoot, name, tmpArray) == JSONSuccess)
+	{
+		ret = true;
+	}
+	
+	return ret;
+}
+
+bool Configuration::AddArrayEntry(const Configuration & toAdd)
+{
+	bool ret = false;
+
+	if (arrayConfig != nullptr)
+	{
+		if (json_array_append_value(arrayConfig, json_value_deep_copy(toAdd.valueRoot)) == JSONSuccess)
+		{
+			ret = true;
+		}
+	}
+
+	return ret;
+}
+
 bool Configuration::SerializeToFile(const char * fileName)
 {
 	bool ret = false;
@@ -163,4 +199,12 @@ bool Configuration::SerializeToFile(const char * fileName)
 		}
 	}
 	return ret;
+}
+
+size_t Configuration::SaveFile(char ** buffer, const char * comment) const
+{
+	size_t written = json_serialization_size(valueRoot);
+	*buffer = new char[written];
+	json_serialize_to_buffer(valueRoot, *buffer, written);
+	return written;
 }

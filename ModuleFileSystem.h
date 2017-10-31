@@ -7,7 +7,8 @@
 enum FileType
 {
 	fileMesh,
-	fileMaterial
+	fileMaterial,
+	fileScene
 };
 
 class ModuleFileSystem : public Module
@@ -15,6 +16,8 @@ class ModuleFileSystem : public Module
 public:
 	ModuleFileSystem(Application* app, bool startEnabled = true);
 	~ModuleFileSystem();
+
+	bool Init(Configuration data);
 
 	bool CreateNewDirectory(const char* name);
 	void SaveFile(const char* name, char* buffer, int bufferSize, FileType type);

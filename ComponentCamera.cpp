@@ -99,7 +99,7 @@ float* ComponentCamera::GetViewMatrix()
 	return frustum.ViewProjMatrix().ptr();
 }
 
-void ComponentCamera::OnSave(Configuration data) const
+void ComponentCamera::OnSave(Configuration& data) const
 {
 	data.SetInt("Type", type);
 	data.SetFloat("Frustum Far", frustum.farPlaneDistance);

@@ -10,6 +10,7 @@
 GameObject::GameObject(GameObject* parent, bool isStatic): parent(parent), isStatic(isStatic)
 {
 	name = "Game Object";
+	uid = App->randomGenerator->Int();
 }
 GameObject::~GameObject()
 {
@@ -73,6 +74,11 @@ void GameObject::SetName(const char * name)
 const char * GameObject::GetName() const
 {
 	return name.c_str();
+}
+
+int GameObject::GetUID() const
+{
+	return uid;
 }
 
 void GameObject::SetLocalTransform()
@@ -158,8 +164,31 @@ void GameObject::ShowProperties()
 	ImGui::End();
 }
 
-void GameObject::OnSerialize(Configuration data)
+void GameObject::OnSerialize(Configuration& dataToSave)
 {
+	Configuration myConf;
+
+	myConf.SetString("Name", name.c_str());
+	myConf.SetInt("UID", uid);
+	myConf.SetInt("Parent UID", parent ? parent->GetUID() : 0);
+
+	myConf.AddArray("Components");
+
+	for (int i = 0; i < components.size(); i++)
+	{
+		Configuration compConfig;
+		compConfig.SetInt("Type", components[i]->GetType());
+		components[i]->OnSave(compConfig);
+		myConf.AddArrayEntry(compConfig);
+	}
+
+	dataToSave.AddArrayEntry(myConf);
+
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->OnSerialize(dataToSave);
+	}
+	
 	//Configuration conf("scene.json");
 	//conf = data.AddSection()
 }

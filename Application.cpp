@@ -7,6 +7,8 @@
 
 Application::Application()
 {
+	randomGenerator = new math::LCG();
+
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
@@ -56,6 +58,8 @@ Application::~Application()
 	}
 
 	listModules.clear();
+
+	RELEASE(randomGenerator);
 }
 
 bool Application::Init()
