@@ -55,6 +55,7 @@ void GameObject::DeleteChilds()
 	while (!childs.empty())
 	{
 		delete childs.back();
+		childs.back() = nullptr;
 		childs.pop_back();
 	}
 	childs.clear();
@@ -120,17 +121,36 @@ GameObject * GameObject::GetParent() const
 	return parent;
 }
 
+GameObject* GameObject::FindByUID(int toFind)
+{
+	if (toFind == uid)
+	{
+		return this;
+	}
+
+	GameObject* ret = nullptr;
+	for (int i = 0; i < childs.size() && ret == nullptr; i++)
+	{
+		ret = childs[i]->FindByUID(toFind);
+	}
+
+	return ret;
+
+}
+
 void GameObject::OnEditor()
 {
-	ImGuiTreeNodeFlags flags = 0;
-	if (childs.empty())
+	if (strcmp(name.c_str(), "Root") != 0)
 	{
-		flags |= ImGuiTreeNodeFlags_Bullet;
-	}
-	if (selected == true)
-	{
-		flags |= ImGuiTreeNodeFlags_Selected;
-	}
+		ImGuiTreeNodeFlags flags = 0;
+		if (childs.empty())
+		{
+			flags |= ImGuiTreeNodeFlags_Bullet;
+		}
+		if (selected == true)
+		{
+			flags |= ImGuiTreeNodeFlags_Selected;
+		}
 		if (ImGui::TreeNodeEx(this, flags, this->name.c_str()))
 		{
 			if (ImGui::IsItemHoveredRect() && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
@@ -143,6 +163,14 @@ void GameObject::OnEditor()
 			}
 			ImGui::TreePop();
 		}
+	}
+	else
+	{
+		for (int i = 0; i < childs.size(); i++)
+		{
+			childs[i]->OnEditor();
+		}
+	}
 }
 
 void GameObject::ShowProperties()
@@ -164,31 +192,50 @@ void GameObject::ShowProperties()
 	ImGui::End();
 }
 
-void GameObject::OnSerialize(Configuration& dataToSave)
+void GameObject::OnSerialize(Configuration& dataToSave) const
 {
-	Configuration myConf;
-
-	myConf.SetString("Name", name.c_str());
-	myConf.SetInt("UID", uid);
-	myConf.SetInt("Parent UID", parent ? parent->GetUID() : 0);
-
-	myConf.AddArray("Components");
-
-	for (int i = 0; i < components.size(); i++)
+	if (strcmp(name.c_str(), "Root") != 0)
 	{
-		Configuration compConfig;
-		compConfig.SetInt("Type", components[i]->GetType());
-		components[i]->OnSave(compConfig);
-		myConf.AddArrayEntry(compConfig);
-	}
+		Configuration myConf;
 
-	dataToSave.AddArrayEntry(myConf);
+		myConf.SetString("Name", name.c_str());
+		myConf.SetInt("UID", uid);
+		myConf.SetInt("Parent UID", parent != App->sceneEditor->GetRoot() ? parent->GetUID() : 0);
+
+		myConf.AddArray("Components");
+
+		for (int i = 0; i < components.size(); i++)
+		{
+			Configuration compConfig;
+			compConfig.SetInt("Type", components[i]->GetType());
+			components[i]->OnSave(compConfig);
+			myConf.AddArrayEntry(compConfig);
+		}
+		dataToSave.AddArrayEntry(myConf);
+	}
 
 	for (int i = 0; i < childs.size(); i++)
 	{
 		childs[i]->OnSerialize(dataToSave);
 	}
-	
-	//Configuration conf("scene.json");
-	//conf = data.AddSection()
+}
+
+
+void GameObject::OnDeserialize(Configuration& dataToLoad)
+{
+	SetName(dataToLoad.GetString("Name"));
+	uid = dataToLoad.GetInt("UID");
+	int parentUID = dataToLoad.GetInt("Parent UID");
+	if (parentUID == 0)
+	{
+		App->sceneEditor->GetRoot()->AddChild(this);
+	}
+	else
+	{
+		GameObject* parent = App->sceneEditor->GetRoot()->FindByUID(parentUID);
+		if (parent != nullptr)
+		{
+			parent->AddChild(this);
+		}
+	}
 }

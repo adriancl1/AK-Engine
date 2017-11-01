@@ -20,6 +20,8 @@ public:
 	int GetInt(const char* fieldName)const;
 	float GetFloat(const char* fieldName)const;
 	const char* GetString(const char* fieldName)const;
+	int GetArraySize(const char* fieldName)const;
+	Configuration GetArray(const char* fieldName, int count)const;
 
 	bool SetBool(const char* fieldName, bool value);
 	bool SetInt(const char* fieldName, int value);

@@ -39,7 +39,7 @@ Configuration Configuration::AddSection(const char * name)
 
 bool Configuration::IsValueValid() const
 {
-	if (valueRoot != nullptr && objectRoot != nullptr)
+	if (valueRoot != nullptr && valueRoot != NULL && objectRoot != nullptr)
 	{
 		return true;
 	}
@@ -80,6 +80,30 @@ const char * Configuration::GetString(const char * fieldName) const
 		return json_object_dotget_string(objectRoot, fieldName);
 	}
 	return nullptr;
+}
+
+int Configuration::GetArraySize(const char * fieldName) const
+{
+	JSON_Array* array = json_object_get_array(objectRoot, fieldName);
+	if (array != nullptr)
+	{
+		return json_array_get_count(array);
+	}
+	
+	return -1;
+}
+
+Configuration Configuration::GetArray(const char * fieldName, int count) const
+{
+	JSON_Array* tmpArray = json_object_get_array(objectRoot, fieldName);
+	if (tmpArray != nullptr)
+	{
+		return Configuration(json_array_get_object(tmpArray, count));
+	}
+	else
+	{
+		return Configuration((JSON_Object*) nullptr);
+	}	
 }
 
 bool Configuration::SetBool(const char * fieldName, bool value)

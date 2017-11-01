@@ -35,6 +35,8 @@ bool ModuleSceneEditor::Init(Configuration data)
 {
 	BROFILER_CATEGORY("Module SceneEditor Start", Profiler::Color::AliceBlue);
 
+	saveLoadTimer.Start();
+
 	return true;
 }
 
@@ -44,13 +46,16 @@ bool ModuleSceneEditor::Start()
 	App->camera->Move(vec3(0, 1, 0));
 
 	root = new GameObject();
-	root->SetName("Scene");
+	root->SetName("Root");
+	GameObject* scene = new GameObject();
+	root->AddChild(scene);
+	scene->SetName("Scene");
 
 	ComponentCamera* camera = new ComponentCamera();
 
 	App->camera->SetMainCamera(camera);
 
-	root->AddComponent(camera);
+	scene->AddComponent(camera);
 
 	tree = new Quadtree(AABB(float3(-100, -5, -100), float3(100, 5, 100))); 
 
@@ -74,23 +79,33 @@ update_status ModuleSceneEditor::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
-		//ComponentMesh* m = new ComponentMesh();
-		//App->importer->Load(m, "hola.T");
-		//root->AddComponent(m);
+		wantToLoad = true;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 	{
-		SaveScene("test");
-		if (root->childs.size() != 0)
-		{
-			//App->importer->Save((ComponentMesh*)root->childs[0]->FindComponent(Component_Mesh), "hola.T");
-		}
+		wantToSave = true;
 	}
 
 	return UPDATE_CONTINUE;
 }
 update_status ModuleSceneEditor::PostUpdate(float dt)
 {
+	if (wantToLoad == true)
+	{
+		LOG("Loading scene.");
+		saveLoadTimer.Start();
+		LoadScene("Library/Scenes/test.akS");
+		wantToLoad = false;
+	}
+	else if (wantToSave == true)
+	{
+		LOG("Saving scene.");
+		saveLoadTimer.Start();
+		SaveScene("test");
+		LOG("Save completed in %i ms", saveLoadTimer.Read());
+		saveLoadTimer.Stop();
+		wantToSave = false;
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -265,4 +280,28 @@ void ModuleSceneEditor::SaveScene(const char* fileTitle) const
 	uint fileSize = save.SaveFile(&buffer, "Scene save");
 	App->fileSystem->SaveFile(fileTitle, buffer, fileSize, FileType::fileScene);
 	RELEASE_ARRAY(buffer);
+}
+
+void ModuleSceneEditor::LoadScene(const char * fileTitle)
+{
+	Configuration load(fileTitle);
+
+	if (load.IsValueValid() == true)
+	{
+		root->DeleteChilds();
+		selected = nullptr;
+		App->camera->SetMainCamera(nullptr);
+		for (int i = 0; i < load.GetArraySize("Scene Game Objects"); i++)
+		{
+			GameObject* test = new GameObject();
+			Configuration testC = load.GetArray("Scene Game Objects", i);
+			test->OnDeserialize(testC);
+		}
+		LOG("Load completed in %i ms", saveLoadTimer.Read());
+		saveLoadTimer.Stop();
+	}
+	else
+	{
+		LOG("Scene file not valid.");
+	}
 }

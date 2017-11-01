@@ -25,10 +25,12 @@ public:
 	void OnEditor();
 	void ShowProperties();
 
-	void OnSerialize(Configuration& dataToSave);
+	void OnSerialize(Configuration& dataToSave)const;
+	void OnDeserialize(Configuration& dataToLoad);
 
 	Component* FindComponent(ComponentType type) const;
 	GameObject* GetParent() const;
+	GameObject* FindByUID(int toFind);
 
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;

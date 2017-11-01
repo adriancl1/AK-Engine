@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Primitive.h"
+#include "Timer.h"
 #include "MathGeo\Geometry\AABB.h"
 #include <list>
 
@@ -46,6 +47,7 @@ public:
 	GameObject* CreateNewGameObject(const char* path);
 
 	void SaveScene(const char* fileTitle)const;
+	void LoadScene(const char* fileTitle);
 
 private:
 	//For now ----
@@ -55,6 +57,11 @@ private:
 	GameObject* root;
 	GameObject* selected = nullptr;
 	Quadtree* tree = nullptr;
+
+	bool wantToSave = false;
+	bool wantToLoad = false;
+
+	Timer saveLoadTimer;
 };
 
 #endif
