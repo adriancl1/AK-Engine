@@ -49,7 +49,6 @@ bool ModulePhysics3D::Init(Configuration data)
 	return ret;
 }
 
-
 // ---------------------------------------------------------
 bool ModulePhysics3D::Start()
 {
@@ -73,9 +72,14 @@ bool ModulePhysics3D::Start()
 	return true;
 }
 
-// ---------------------------------------------------------
+// --------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
+	if (App->timeManager->IsGamePaused() == true)
+	{
+		return UPDATE_CONTINUE;
+	}
+
 	world->stepSimulation(dt, 15);
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();

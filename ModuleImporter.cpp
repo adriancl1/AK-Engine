@@ -314,9 +314,14 @@ void ModuleImporter::Save(const ComponentMesh& mesh, const char* outputFile)
 	
 	// Store indices
 	bytes = sizeof(uint) * mesh.numIndices;
-	memcpy(cursor, mesh.indices, mesh.numIndices * sizeof(uint));	cursor += bytes;
+	memcpy(cursor, mesh.indices, mesh.numIndices * sizeof(uint));
+	cursor += bytes;
 	
 	// Store vertices
 	bytes = sizeof(float) * mesh.numVertices * 3;
-	memcpy(cursor, mesh.vertices, mesh.numVertices * 3 * sizeof(float));	App->fileSystem->SaveFile(outputFile, data, size, fileMesh);	RELEASE_ARRAY(cursor);
+	memcpy(cursor, mesh.vertices, mesh.numVertices * 3 * sizeof(float));
+
+	App->fileSystem->SaveFile(outputFile, data, size, fileMesh);
+
+	RELEASE_ARRAY(cursor);
 }

@@ -12,7 +12,7 @@ public:
 
 	bool CleanUp(Configuration data);
 
-	void OnConfiguration()override;
+	void OnConfiguration() override;
 };
 
 #endif

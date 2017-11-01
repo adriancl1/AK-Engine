@@ -15,6 +15,7 @@
 #include "ModuleTextures.h"
 #include "ModuleHardware.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTimeManager.h"
 
 #include "MathGeo\Algorithm\Random\LCG.h"
 
@@ -35,13 +36,13 @@ public:
 	ModuleTextures* textures;
 	ModuleHardware* hardware;
 	ModuleFileSystem* fileSystem;
+	ModuleTimeManager* timeManager;
 
 	math::LCG* randomGenerator = nullptr;
 
 private:
-
-	Timer	ms_timer;
-	float	dt;
+	Timer ms_timer;
+	float dt;
 	float startTime;
 	float lastFPS = 0;
 	float lastMs = 0;
@@ -51,7 +52,6 @@ private:
 	std::list<Module*> listModules;
 
 public:
-
 	Application();
 	~Application();
 
@@ -67,7 +67,6 @@ public:
 	void CycleFPSAndMsData(float fps, float ms);
 
 private:
-
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();

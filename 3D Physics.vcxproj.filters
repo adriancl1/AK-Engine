@@ -327,6 +327,9 @@
     <ClInclude Include="Configuration.h">
       <Filter>Sources\Tools\parson</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTimeManager.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -523,6 +526,9 @@
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
       <Filter>Sources\Tools\parson</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTimeManager.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

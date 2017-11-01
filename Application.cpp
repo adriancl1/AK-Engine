@@ -9,6 +9,7 @@ Application::Application()
 {
 	randomGenerator = new math::LCG();
 
+	timeManager = new ModuleTimeManager(this);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
@@ -27,6 +28,7 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 	// Main Modules
+	AddModule(timeManager);
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
@@ -98,6 +100,11 @@ bool Application::Init()
 	}
 	
 	ms_timer.Start();
+
+	//Time Manager
+	timeManager->StartTime();
+	timeManager->StartRealTime();
+
 	return ret;
 }
 
@@ -114,6 +121,9 @@ void Application::FinishUpdate()
 	dt = (float)ms_timer.Read() / 1000.0f - startTime;
 	lastFPS = 1.0f / dt;
 	lastMs = (float) ms_timer.Read();
+
+	//Time Manager
+	timeManager->SetFrameCount(1);
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

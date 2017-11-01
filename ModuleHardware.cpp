@@ -1,7 +1,6 @@
-#include "ModuleHardware.h"
 #include "Application.h"
+#include "ModuleHardware.h"
 #include "Glew\include\glew.h"
-
 
 #pragma comment( lib, "Glew/libx86/glew32.lib" )
 
