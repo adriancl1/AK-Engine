@@ -28,7 +28,7 @@ void Component::OnSave(Configuration& data) const
 {
 }
 
-void Component::OnLoad(Configuration data)
+void Component::OnLoad(Configuration& data)
 {
 }
 

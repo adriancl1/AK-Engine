@@ -19,6 +19,7 @@ public:
 
 	void OnEditor() override;
 	void OnSave(Configuration& data) const override;
+	void OnLoad(Configuration& data) override;
 
 	float4x4 GetTransMatrix() const;
 

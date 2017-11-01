@@ -56,7 +56,7 @@ void ComponentCamera::OnEditor()
 		ImGui::TreePop();
 
 		ImGui::Text("FOV:");
-		if(ImGui::DragFloat3("VFOV", &FOV, 1, 115))
+		if(ImGui::DragFloat("VFOV", &FOV, 1, 115))
 		{
 			SetFOV();
 		}
@@ -102,8 +102,38 @@ float* ComponentCamera::GetViewMatrix()
 void ComponentCamera::OnSave(Configuration& data) const
 {
 	data.SetInt("Type", type);
+	data.SetBool("Active", active);
+	data.SetBool("Culling", frustumCulling);
+	data.SetFloat("Aspect Ratio", aspectRatio);
+	data.SetFloat("FOV", FOV);
 	data.SetFloat("Frustum Far", frustum.farPlaneDistance);
 	data.SetFloat("Frustum Near", frustum.nearPlaneDistance);
 	data.SetFloat("Frustum HFOV", frustum.horizontalFov);
 	data.SetFloat("Frustum VFOV", frustum.verticalFov);
+	data.AddArrayFloat("Position", frustum.pos.ptr(), 3);
+	data.AddArrayFloat("Frustum Up", frustum.up.ptr(), 3);
+	data.AddArrayFloat("Frustum Front", frustum.front.ptr(), 3);
+}
+
+void ComponentCamera::OnLoad(Configuration & data)
+{
+	active = data.GetBool("Active");
+	frustumCulling = data.GetBool("Culling");
+	aspectRatio = data.GetFloat("Aspect Ratio");
+	FOV = data.GetFloat("FOV");
+	frustum.farPlaneDistance = data.GetFloat("Frustum Far");
+	frustum.nearPlaneDistance = data.GetFloat("Frustum Near");
+	frustum.horizontalFov = data.GetFloat("Frustum HFOV");
+	frustum.verticalFov = data.GetFloat("Frustum VFOV");
+	frustum.pos.x = data.GetFloat("Position", 0);
+	frustum.pos.y = data.GetFloat("Position", 1);
+	frustum.pos.z = data.GetFloat("Position", 2);
+	frustum.up.x = data.GetFloat("Frustum Up", 0);
+	frustum.up.y = data.GetFloat("Frustum Up", 1);
+	frustum.up.z = data.GetFloat("Frustum Up", 2);
+	frustum.front.x = data.GetFloat("Frustum Front", 0);
+	frustum.front.x = data.GetFloat("Frustum Front", 0);
+	frustum.front.x = data.GetFloat("Frustum Front", 0);
+
+	frustum.ProjectionMatrix();
 }

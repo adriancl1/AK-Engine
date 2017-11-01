@@ -25,7 +25,7 @@ public:
 	virtual void OnEditor();
 
 	virtual void OnSave(Configuration& data)const;
-	virtual void OnLoad(Configuration data);
+	virtual void OnLoad(Configuration& data);
 
 	bool IsActive()const;
 	void SetName(const char* name);

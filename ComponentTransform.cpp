@@ -174,6 +174,10 @@ void ComponentTransform::OnSave(Configuration& data) const
 	data.AddArrayFloat("Scale", &scale.x, 3);
 }
 
+void ComponentTransform::OnLoad(Configuration & data)
+{
+}
+
 float4x4 ComponentTransform::GetTransMatrix() const
 {
 	return globalTransformMatrix;

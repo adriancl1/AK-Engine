@@ -37,6 +37,20 @@ Configuration Configuration::AddSection(const char * name)
 	return GetSection(name);
 }
 
+JSON_Value * Configuration::GetValue(const char * field, int count) const
+{
+	if (count == -1)
+		return json_object_get_value(objectRoot, field);
+
+	JSON_Array* array = json_object_get_array(objectRoot, field);
+	if (array != nullptr)
+	{
+		return json_array_get_value(array, count);
+	}
+
+	return nullptr;
+}
+
 bool Configuration::IsValueValid() const
 {
 	if (valueRoot != nullptr && valueRoot != NULL && objectRoot != nullptr)
@@ -64,12 +78,15 @@ int Configuration::GetInt(const char * fieldName) const
 	return 0;
 }
 
-float Configuration::GetFloat(const char * fieldName) const
+float Configuration::GetFloat(const char * fieldName, int count) const
 {
-	if (objectRoot != nullptr)
+	JSON_Value* value = GetValue(fieldName, count);
+
+	if (value && json_value_get_type(value) == JSONNumber)
 	{
-		return (float)json_object_dotget_number(objectRoot, fieldName);
+		return (float)json_value_get_number(value);
 	}
+
 	return 0.0f;
 }
 

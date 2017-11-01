@@ -3,6 +3,7 @@
 #include "ModuleRenderer3D.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 #define PROPERTIES_WIDTH 300
 #define PROPERTIES_HEIGHT 500
@@ -236,6 +237,29 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 		if (parent != nullptr)
 		{
 			parent->AddChild(this);
+		}
+	}
+
+	int componentSize = dataToLoad.GetArraySize("Components");
+
+	for (int i = 0; i < componentSize; i++)
+	{
+		Configuration componentConfig(dataToLoad.GetArray("Components", i));
+		ComponentType cType = (ComponentType)componentConfig.GetInt("Type");
+		switch (cType)
+		{
+		case Component_Camera:
+		{
+			ComponentCamera* compCamera = new ComponentCamera();
+			compCamera->OnLoad(componentConfig);
+			AddComponent(compCamera);
+			break;
+		}
+		default:
+		{
+			LOG("Error in component %i of %s, unknown type", &i, name.c_str());
+			break;
+		}
 		}
 	}
 }
