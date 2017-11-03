@@ -16,6 +16,7 @@ public:
 	void OnEditor() override;
 	void SetFOV();
 	void SetVerticalFOV(float value);
+	void UpdateCamera(float3 pos, float3 front, float3 up);
 
 	void DrawDebug() const;
 

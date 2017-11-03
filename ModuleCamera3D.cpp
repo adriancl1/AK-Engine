@@ -21,6 +21,8 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 	Position = vec3(0.0f, 0.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
+
+	editorCamera = new ComponentCamera();
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -109,7 +111,11 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 
 	// Recalculate matrix -------------
-	CalculateViewMatrix();
+	if (UsingSceneCamera() == false)
+	{
+		editorCamera->UpdateCamera(float3(Position.x, Position.y, Position.z), -float3(Z.x, Z.y, Z.z), float3(Y.x, Y.y, Y.z));
+	}		
+	//CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;
 }
@@ -205,7 +211,7 @@ const float* ModuleCamera3D::GetViewMatrix() const
 	}
 	else
 	{
-		return &ViewMatrix;
+		return editorCamera->GetViewMatrix();
 	}
 }
 

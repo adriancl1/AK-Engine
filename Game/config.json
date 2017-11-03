@@ -1,1 +1,1 @@
-{"audio":{},"input":{},"physics":{},"renderer":{"depthTest":true,"cullFace":true,"lighting":true,"colorMaterial":true,"texture2D":true},"window":{"width":1580,"height":1024,"fullscreen":false,"fullDesktop":false,"borderless":false,"brightness":1},"scene editor":{"wireframe":false}}
+{"audio":{},"input":{},"physics":{},"renderer":{"depthTest":true,"cullFace":false,"lighting":true,"colorMaterial":true,"texture2D":true},"window":{"width":1580,"height":1024,"fullscreen":false,"fullDesktop":false,"borderless":false,"brightness":1},"scene editor":{"wireframe":false}}

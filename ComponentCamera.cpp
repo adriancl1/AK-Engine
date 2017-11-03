@@ -79,6 +79,13 @@ void ComponentCamera::SetVerticalFOV(float value)
 	frustum.horizontalFov = 2 * Atan(Tan(value * 0.5f) * (aspectRatio));
 }
 
+void ComponentCamera::UpdateCamera(float3 pos, float3 front, float3 up)
+{
+	frustum.pos = pos;
+	frustum.front = front;
+	frustum.up = up;
+}
+
 void ComponentCamera::DrawDebug() const
 {
 	frustum.DrawDebug(Yellow);

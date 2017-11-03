@@ -39,6 +39,7 @@ public:
 
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;
+	ComponentCamera* editorCamera = nullptr;
 	ComponentCamera* mainCamera = nullptr;
 };
 
