@@ -48,6 +48,7 @@ public:
 
 	GameObject* CreateNewGameObject(const char* path);
 
+	void WantToLoadScene(const char* fileTitle);
 	void SaveScene(const char* fileTitle)const;
 	void LoadScene(const char* fileTitle);
 
@@ -62,6 +63,7 @@ private:
 
 	bool wantToSave = false;
 	bool wantToLoad = false;
+	std::string loadPath;
 
 	Timer saveLoadTimer;
 };

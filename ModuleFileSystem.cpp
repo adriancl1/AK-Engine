@@ -6,7 +6,7 @@
 #define MESH_EXTENSION ".don"
 #define MATERIAL_DIRECTORY "Library/Material"
 #define MATERIAL_EXTENSION ".dds" 
-#define SCENE_DIRECTORY "Library/Scenes"
+#define SCENE_DIRECTORY "Assets/Scenes"
 #define SCENE_EXTENSION ".akS"
 
 ModuleFileSystem::ModuleFileSystem(Application * app, bool startEnabled) : Module(app, startEnabled)

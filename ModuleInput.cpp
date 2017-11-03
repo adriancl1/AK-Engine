@@ -140,6 +140,10 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					App->importer->LoadNewTexture(fileDir);		
 				}
+				else if (strcmp(&fileDir[length - 4], ".akS") == 0)
+				{
+					App->sceneEditor->WantToLoadScene(fileDir);
+				}
 				else
 				{
 					LOG("Unknown file format!");

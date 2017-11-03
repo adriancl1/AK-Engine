@@ -95,8 +95,9 @@ update_status ModuleSceneEditor::PostUpdate(float dt)
 	{
 		LOG("Loading scene.");
 		saveLoadTimer.Start();
-		LoadScene("Library/Scenes/test.akS");
+		LoadScene(loadPath.c_str());
 		wantToLoad = false;
+		loadPath.clear();
 	}
 	else if (wantToSave == true)
 	{
@@ -273,6 +274,12 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 	}
 
 	return ret;
+}
+
+void ModuleSceneEditor::WantToLoadScene(const char * fileTitle)
+{
+	wantToLoad = true;
+	loadPath = fileTitle;
 }
 
 void ModuleSceneEditor::SaveScene(const char* fileTitle) const
