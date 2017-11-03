@@ -191,8 +191,13 @@ void ModuleCamera3D::SetMainCamera(ComponentCamera * camera)
 	mainCamera = camera;
 }
 
+bool ModuleCamera3D::UsingSceneCamera() const
+{
+	return mainCamera != nullptr && mainCamera->IsActive();
+}
+
 // -----------------------------------------------------------------
-float* ModuleCamera3D::GetViewMatrix()
+const float* ModuleCamera3D::GetViewMatrix() const
 {
 	if (mainCamera != nullptr && mainCamera->IsActive())
 	{

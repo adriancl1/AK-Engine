@@ -27,7 +27,9 @@ public:
 	void CenterToGO(GameObject* centerTo);
 	void SetMainCamera(ComponentCamera* camera);
 
-	float* GetViewMatrix();
+	bool UsingSceneCamera()const;
+
+	const float* GetViewMatrix() const;
 
 private:
 	void CalculateViewMatrix();

@@ -94,9 +94,9 @@ bool ComponentCamera::GetFrustumCulling() const
 	return frustumCulling;
 }
 
-float* ComponentCamera::GetViewMatrix()
+const float* ComponentCamera::GetViewMatrix() const
 {
-	return frustum.ViewProjMatrix().ptr();
+	return frustum.ViewProjMatrix().Transposed().ptr();
 }
 
 void ComponentCamera::OnSave(Configuration& data) const

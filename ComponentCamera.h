@@ -22,7 +22,7 @@ public:
 	bool Contains(const AABB &aabb) const;
 	bool GetFrustumCulling() const;
 
-	float* GetViewMatrix();
+	const float* GetViewMatrix() const;
 
 	void OnSave(Configuration& data) const override;
 	void OnLoad(Configuration& data) override;
