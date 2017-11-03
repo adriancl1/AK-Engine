@@ -72,19 +72,58 @@ void ModuleFileSystem::SaveFile(const char * name, char * buffer, int bufferSize
 	file.close();
 }
 
-bool ModuleFileSystem::LoadFile(const char * name, char * buffer, int& size)
+bool ModuleFileSystem::LoadFile(const char * name, char ** buffer, int& size, FileType type)
 {
-	std::ifstream file(name, std::ifstream::in | std::ifstream::binary);
-	size = file.gcount();
-	
-	if (file.read(buffer, size))
+	bool ret = false;
+
+	std::string path;
+	if (type == fileMesh)
 	{
-		LOG("Couldn't read %s.", name);
-		return false;
+		path = MESH_DIRECTORY;
+		path += "/";
+		path += name;
+		path += MESH_EXTENSION;
 	}
-	else
+	else if (type == fileMaterial)
 	{
-		LOG("File %s read succesfully.", name);
-		return true;
+		path = MATERIAL_DIRECTORY;
+		path += "/";
+		path += name;
+		path += MATERIAL_EXTENSION;
 	}
+	else if (type == fileScene)
+	{
+		path += SCENE_DIRECTORY;
+		path += "/";
+		path += name;
+		path += SCENE_EXTENSION;
+	}
+
+	std::ifstream file(path, std::ifstream::binary);
+
+	if (file.good())
+	{
+		if (file.is_open())
+		{
+			file.seekg(0, file.end);
+			std::streamsize length = file.tellg();
+			file.seekg(0, file.beg);
+
+			*buffer = new char[length];
+
+			file.read(*buffer, length);
+
+			if (file)
+			{
+				LOG("File %s loaded succesfully", name);
+				ret = true;
+			}
+			else
+			{
+				LOG("Couldn't load %s", name);
+			}
+			file.close();
+		}
+	}
+	return ret;
 }

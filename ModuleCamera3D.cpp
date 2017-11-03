@@ -118,7 +118,7 @@ update_status ModuleCamera3D::Update(float dt)
 		editorCamera->UpdateCamera(float3(Position.x, Position.y, Position.z), -float3(Z.x, Z.y, Z.z), float3(Y.x, Y.y, Y.z));
 		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			LineSegment picking = editorCamera->GetFrustum().UnProjectLineSegment(App->input->GetnormalizedMouseX(), App->input->GetNormalizedMouseY());
+			LineSegment picking = editorCamera->GetFrustum().UnProjectLineSegment(App->input->GetNormalizedMouseX(), App->input->GetNormalizedMouseY());
 			App->sceneEditor->SelectGameObject(picking);
 		}
 	}		

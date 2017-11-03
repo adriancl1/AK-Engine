@@ -23,7 +23,7 @@ ComponentCamera::ComponentCamera(float3 pos, float3 front, float3 up, float near
 
 	frustum.ProjectionMatrix();
 
-	frustumCulling = true;
+	frustumCulling = false;
 
 	active = false;
 }

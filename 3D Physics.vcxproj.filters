@@ -40,6 +40,9 @@
     <Filter Include="Sources\Tools\mmgr">
       <UniqueIdentifier>{c71f58c9-a25b-45ce-adea-21f54ded3a55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\Importers">
+      <UniqueIdentifier>{7b95db5f-4bd8-4a8c-9ee4-9126146c119f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -330,6 +333,12 @@
     <ClInclude Include="ModuleTimeManager.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Importer.h">
+      <Filter>Sources\Tools\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshImporter.h">
+      <Filter>Sources\Tools\Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -529,6 +538,12 @@
     </ClCompile>
     <ClCompile Include="ModuleTimeManager.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Importer.cpp">
+      <Filter>Sources\Tools\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshImporter.cpp">
+      <Filter>Sources\Tools\Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

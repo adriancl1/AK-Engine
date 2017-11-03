@@ -11,6 +11,8 @@ class aiScene;
 
 class GameObject;
 
+class MeshImporter;
+
 class ComponentMesh;
 class ComponentMaterial;
 class ComponentTransform;
@@ -31,9 +33,10 @@ public:
 	ComponentTransform* LoadTransform(aiNode* node);
 
 	void LoadNewTexture(const char* fullPath);
+	void LoadOwnFormat(const char* path, ComponentMesh* mesh) const;
 
-	void Load(ComponentMesh* mesh, const char* inputFile);
-	void Save(const ComponentMesh& mesh, const char* outputFile);
+private:
+	MeshImporter* meshImporter = nullptr;
 };
 
 #endif //__ModuleImporter_H__

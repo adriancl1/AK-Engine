@@ -255,6 +255,13 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 			AddComponent(compCamera);
 			break;
 		}
+		case Component_Mesh:
+		{
+			ComponentMesh* compMesh = new ComponentMesh();
+			compMesh->OnLoad(componentConfig);
+			AddComponent(compMesh);
+			break;
+		}
 		default:
 		{
 			LOG("Error in component %i of %s, unknown type", &i, name.c_str());

@@ -21,7 +21,7 @@ public:
 
 	bool CreateNewDirectory(const char* name);
 	void SaveFile(const char* name, char* buffer, int bufferSize, FileType type);
-	bool LoadFile(const char* name, char* buffer, int& size);
+	bool LoadFile(const char* name, char** buffer, int& size, FileType type);
 };
 
 #endif

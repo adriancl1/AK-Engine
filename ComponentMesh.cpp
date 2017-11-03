@@ -1,5 +1,9 @@
 #include "ComponentMesh.h"
+#include "GameObject.h"
 #include "Primitive.h"
+#include "Configuration.h"
+#include "Application.h"
+#include "ModuleImporter.h"
 
 #include "imgui-1.51\imgui.h"
 #include "Glew\include\glew.h"
@@ -132,4 +136,15 @@ void ComponentMesh::OnEditor()
 		ImGui::Text("Texture Coords: %i", idTexCoords);
 		ImGui::TreePop();
 	}
+}
+
+void ComponentMesh::OnSave(Configuration & data) const
+{
+	std::string myName = myGO->GetName();
+	data.SetString("MeshFile", myName.c_str());
+}
+
+void ComponentMesh::OnLoad(Configuration & data)
+{
+	App->importer->LoadOwnFormat(data.GetString("MeshFile"), this);
 }

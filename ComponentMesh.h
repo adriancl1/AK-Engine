@@ -38,4 +38,7 @@ public:
 	void DrawDebug() const;
 
 	void OnEditor()override;
+
+	void OnSave(Configuration& data) const override;
+	void OnLoad(Configuration& data) override;
 };
