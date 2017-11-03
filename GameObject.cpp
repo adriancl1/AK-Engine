@@ -262,6 +262,13 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 			AddComponent(compMesh);
 			break;
 		}
+		case Component_Transform:
+		{
+			ComponentTransform* compTrans = new ComponentTransform();
+			AddComponent(compTrans);
+			compTrans->OnLoad(componentConfig);			
+			break;
+		}
 		default:
 		{
 			LOG("Error in component %i of %s, unknown type", &i, name.c_str());

@@ -24,7 +24,6 @@ void ComponentTransform::Update()
 {
 	if (needToUpdate && myGO->isStatic == false)
 	{
-		position = newPosition;
 		UpdateTrans();
 		needToUpdate = false;		
 	}
@@ -53,7 +52,9 @@ void ComponentTransform::UpdateTransFromParent(GameObject * parent)
 		globalTransformMatrix.Decompose(newPosition, temp, scale);
 		rotationEuler = temp.ToEulerXYZ();
 		UpdateTrans();
+		
 	}
+	myGO->UpdateChildsTransform();
 }
 
 void ComponentTransform::SetLocalTrans(GameObject* parent)
@@ -110,15 +111,15 @@ void ComponentTransform::OnEditor()
 			else
 			{
 				ImGui::Text("Position:");
-				if (ImGui::SliderFloat("X", &newPosition.x, -500, 500))
+				if (ImGui::SliderFloat("X", &position.x, -500, 500))
 				{
 					needToUpdate = true;
 				}
-				if (ImGui::SliderFloat("Y", &newPosition.y, -10, 10))
+				if (ImGui::SliderFloat("Y", &position.y, -10, 10))
 				{
 					needToUpdate = true;
 				}
-				if (ImGui::SliderFloat("Z", &newPosition.z, -10, 10))
+				if (ImGui::SliderFloat("Z", &position.z, -10, 10))
 				{
 					needToUpdate = true;
 				}
@@ -153,7 +154,7 @@ void ComponentTransform::OnEditor()
 
 				if (ImGui::Button("Reset"))
 				{
-					newPosition = float3::zero;
+					position = float3::zero;
 					scale = float3::one;
 					rotationEuler = float3::zero;
 					needToUpdate = true;
@@ -176,6 +177,24 @@ void ComponentTransform::OnSave(Configuration& data) const
 
 void ComponentTransform::OnLoad(Configuration & data)
 {
+	needToUpdate = false;
+	position.x = data.GetFloat("Position", 0);
+	position.y = data.GetFloat("Position", 1);
+	position.z = data.GetFloat("Position", 2);
+	rotation.x = data.GetFloat("Rotation", 0);
+	rotation.y = data.GetFloat("Rotation", 1);
+	rotation.z = data.GetFloat("Rotation", 2);
+	rotation.w = data.GetFloat("Rotation", 3);
+	rotationEuler = rotation.ToEulerXYZ();
+	scale.x = data.GetFloat("Scale", 0);
+	scale.y = data.GetFloat("Scale", 1);
+	scale.z = data.GetFloat("Scale", 2);
+	
+	globalTransformMatrix = float4x4::FromQuat(rotation);
+	globalTransformMatrix = float4x4::Scale(scale, float3(0, 0, 0)) * globalTransformMatrix;
+	globalTransformMatrix.float4x4::SetTranslatePart(position.x, position.y, position.z);
+
+	localTransformMatrix = globalTransformMatrix;
 }
 
 float4x4 ComponentTransform::GetTransMatrix() const

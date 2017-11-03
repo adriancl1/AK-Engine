@@ -306,11 +306,12 @@ void ModuleSceneEditor::LoadScene(const char * fileTitle)
 		App->camera->SetMainCamera(nullptr);
 		for (int i = 0; i < load.GetArraySize("Scene Game Objects"); i++)
 		{
-			GameObject* test = new GameObject();
+			GameObject* tmp = new GameObject();
 			Configuration testC = load.GetArray("Scene Game Objects", i);
-			test->OnDeserialize(testC);
+			tmp->OnDeserialize(testC);
 		}
 		LOG("Load completed in %i ms", saveLoadTimer.Read());
+		root->UpdateChildsTransform();
 		saveLoadTimer.Stop();
 	}
 	else

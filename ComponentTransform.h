@@ -8,7 +8,7 @@
 class ComponentTransform : public Component
 {
 public:
-	ComponentTransform(float3 pos, float3 scale, Quat rot, ComponentType type = Component_Transform);
+	ComponentTransform(float3 pos = { 0,0,0 }, float3 scale = { 1,1,1 }, Quat rot = { 0, 0, 0, 1 }, ComponentType type = Component_Transform);
 	~ComponentTransform();
 
 	void Update();

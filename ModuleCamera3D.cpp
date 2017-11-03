@@ -122,7 +122,7 @@ update_status ModuleCamera3D::Update(float dt)
 			App->sceneEditor->SelectGameObject(picking);
 		}
 	}		
-	//CalculateViewMatrix();
+	CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;
 }
@@ -218,7 +218,8 @@ const float* ModuleCamera3D::GetViewMatrix() const
 	}
 	else
 	{
-		return editorCamera->GetViewMatrix();
+		return &ViewMatrix;
+		//return editorCamera->GetViewMatrix();
 	}
 }
 
