@@ -52,6 +52,10 @@ public:
 		return mouse_z;
 	}
 
+	float GetNormalizedMouseX()const;
+
+	float GetNormalizedMouseY()const;
+
 	int GetMouseXMotion() const
 	{
 		return mouse_x_motion;

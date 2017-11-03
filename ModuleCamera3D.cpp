@@ -8,6 +8,8 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 
+#include "MathGeo\Geometry\LineSegment.h"
+
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -114,6 +116,11 @@ update_status ModuleCamera3D::Update(float dt)
 	if (UsingSceneCamera() == false)
 	{
 		editorCamera->UpdateCamera(float3(Position.x, Position.y, Position.z), -float3(Z.x, Z.y, Z.z), float3(Y.x, Y.y, Y.z));
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+		{
+			LineSegment picking = editorCamera->GetFrustum().UnProjectLineSegment(App->input->GetnormalizedMouseX(), App->input->GetNormalizedMouseY());
+			App->sceneEditor->SelectGameObject(picking);
+		}
 	}		
 	//CalculateViewMatrix();
 

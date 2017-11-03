@@ -22,6 +22,7 @@ public:
 
 	bool Contains(const AABB &aabb) const;
 	bool GetFrustumCulling() const;
+	Frustum GetFrustum()const;
 
 	const float* GetViewMatrix() const;
 

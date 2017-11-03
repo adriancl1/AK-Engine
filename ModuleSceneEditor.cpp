@@ -8,6 +8,7 @@
 #include "Glew\include\glew.h"
 #include "MathGeo\Geometry\Triangle.h"
 #include "MathGeo\Math\float4x4.h"
+#include "MathGeo\Geometry\LineSegment.h"
 #include "Brofiler-1.1.2\Brofiler.h"
 
 
@@ -126,6 +127,11 @@ void ModuleSceneEditor::Draw()
 	pPlane p(0, 0, 0, 100);
 	p.color = White;
 	p.Render();
+}
+
+void ModuleSceneEditor::SelectGameObject(LineSegment& picking)
+{
+
 }
 
 void ModuleSceneEditor::ShowEditor()

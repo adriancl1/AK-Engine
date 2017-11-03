@@ -175,3 +175,17 @@ void ModuleInput::OnConfiguration()
 		ImGui::Text("Mouse X: %i | Mouse Y: %i", GetMouseX(), GetMouseY());
 	}
 }
+
+float ModuleInput::GetNormalizedMouseX() const
+{
+	int w, h;
+	App->window->GetWindowSize(w, h);
+	return (float)(w / mouse_x);
+}
+
+float ModuleInput::GetNormalizedMouseY() const
+{
+	int w, h;
+	App->window->GetWindowSize(w, h);
+	return (float)(h / mouse_y);
+}

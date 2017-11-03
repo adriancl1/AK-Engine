@@ -204,7 +204,7 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 
 			newObject->SetLocalTransform();
 
-			//Save(*m, newObject->GetName());
+			Save(*m, newObject->GetName());
 
 			App->sceneEditor->GetQuadtree()->Insert(newObject);
 		}
@@ -308,7 +308,8 @@ void ModuleImporter::Save(const ComponentMesh& mesh, const char* outputFile)
 	char* data = new char[size];
 	char* cursor = data;
 
-	uint bytes = sizeof(ranges); // First store ranges
+	uint bytes = 0;
+	bytes = sizeof(ranges); // First store ranges
 	memcpy(cursor, ranges, bytes);
 	cursor += bytes;
 	
@@ -323,5 +324,5 @@ void ModuleImporter::Save(const ComponentMesh& mesh, const char* outputFile)
 
 	App->fileSystem->SaveFile(outputFile, data, size, fileMesh);
 
-	RELEASE_ARRAY(cursor);
+	RELEASE_ARRAY(data);
 }

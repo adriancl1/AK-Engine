@@ -27,6 +27,8 @@ public:
 
 	void Draw();
 
+	void SelectGameObject(LineSegment& picking);
+
 	//Show Editor
 	void ShowEditor();
 

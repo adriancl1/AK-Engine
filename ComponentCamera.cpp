@@ -101,6 +101,11 @@ bool ComponentCamera::GetFrustumCulling() const
 	return frustumCulling;
 }
 
+Frustum ComponentCamera::GetFrustum() const
+{
+	return frustum;
+}
+
 const float* ComponentCamera::GetViewMatrix() const
 {
 	return frustum.ViewProjMatrix().Transposed().ptr();
