@@ -193,6 +193,34 @@ void GameObject::ShowProperties()
 	ImGui::End();
 }
 
+void GameObject::CollectIntersectionsAABB(std::vector<GameObject*>& intersections, LineSegment & line)
+{
+	ComponentMesh* cMesh = (ComponentMesh*)FindComponent(Component_Mesh);
+
+	if (cMesh != nullptr)
+	{
+		if (cMesh->IntersectsAABB(line) == true)
+		{
+			intersections.push_back(this);
+		}
+	}
+
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->CollectIntersectionsAABB(intersections, line);
+	}
+}
+
+void GameObject::CollectTriIntersections(LineSegment & line, float & distance, float3 & hitPoint)
+{
+	ComponentMesh* cMesh = (ComponentMesh*)FindComponent(Component_Mesh);
+
+	if (cMesh != nullptr)
+	{
+		cMesh->TriIntersection(line, distance, hitPoint);
+	}
+}
+
 void GameObject::OnSerialize(Configuration& dataToSave) const
 {
 	if (strcmp(name.c_str(), "Root") != 0)

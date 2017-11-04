@@ -5,10 +5,12 @@
 #include "Application.h"
 #include "ModuleImporter.h"
 
-#include "imgui-1.51\imgui.h"
-#include "Glew\include\glew.h"
-#include "MathGeo\Geometry\Triangle.h"
-#include "MathGeo\Math\float4x4.h"
+#include "imgui-1.51/imgui.h"
+#include "Glew/include/glew.h"
+#include "MathGeo/Geometry/Triangle.h"
+#include "MathGeo/Math/float4x4.h"
+#include "MathGeo/Geometry/LineSegment.h"
+
 ComponentMesh::ComponentMesh() : Component(Component_Mesh)
 {
 	name = "Mesh";
@@ -136,6 +138,24 @@ void ComponentMesh::OnEditor()
 		ImGui::Text("Texture Coords: %i", idTexCoords);
 		ImGui::TreePop();
 	}
+}
+
+bool ComponentMesh::IntersectsAABB(LineSegment & line) const
+{
+	return line.Intersects(enclosingBox);
+}
+
+void ComponentMesh::TriIntersection(LineSegment & line, float& distance, float3 & hitPoint)
+{
+	/*float minDistance = distance;
+	if (numVertices % 3 == 0)
+	{
+		for (int i = 0; i < numIndices; i += 3)
+		{
+			Triangle face(float3(vertices[indices[i] * 3], vertices[indices[i] * 3 + 1], vertices[indices[i] * 3 + 2]), float3(vertices[indices[i + 1] * 3], vertices[indices[i + 1] * 3 + 1], vertices[indices[i + 1] * 3 + 2]), float3(vertices[indices[i + 2] * 3], vertices[indices[i + 2] * 3 + 1], vertices[indices[i + 2] * 3 + 2]));
+			line.Intersects(face, distance, hitPoint);
+		}
+	}*/
 }
 
 void ComponentMesh::OnSave(Configuration & data) const

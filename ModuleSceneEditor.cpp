@@ -132,7 +132,26 @@ void ModuleSceneEditor::Draw()
 
 void ModuleSceneEditor::SelectGameObject(LineSegment& picking)
 {
+	std::vector<GameObject*> aabbIntersections;
 
+	root->CollectIntersectionsAABB(aabbIntersections, picking);
+
+	if (!aabbIntersections.empty())
+	{
+		GameObject* closest = nullptr;
+		float prevDistance = 30000;
+		for (int i = 0; i < aabbIntersections.size(); i++)
+		{
+			float distance = 35000;
+			float3 hitPoint;
+			aabbIntersections[i]->CollectTriIntersections(picking, distance, hitPoint);
+			if (distance < prevDistance)
+			{
+				prevDistance = distance;
+				closest = aabbIntersections[i];
+			}
+		}
+	}
 }
 
 void ModuleSceneEditor::ShowEditor()

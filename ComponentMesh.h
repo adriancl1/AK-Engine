@@ -38,6 +38,8 @@ public:
 	void DrawDebug() const;
 
 	void OnEditor()override;
+	bool IntersectsAABB(LineSegment& line) const;
+	void TriIntersection(LineSegment& line, float& distance, float3& hitPoint);
 
 	void OnSave(Configuration& data) const override;
 	void OnLoad(Configuration& data) override;

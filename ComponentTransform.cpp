@@ -1,6 +1,7 @@
 #include "ComponentTransform.h"
 #include "GameObject.h"
 #include "Configuration.h"
+#include "Globals.h"
 
 #include "imgui-1.51\imgui.h"
 
@@ -31,6 +32,9 @@ void ComponentTransform::Update()
 
 void ComponentTransform::UpdateTrans()
 {
+	rotationEuler.x *= DEGTORAD;
+	rotationEuler.y *= DEGTORAD;
+	rotationEuler.z *= DEGTORAD;
 	rotation = Quat::FromEulerXYZ(rotationEuler.x, rotationEuler.y, rotationEuler.z);
 	globalTransformMatrix = float4x4::FromQuat(rotation);
 	globalTransformMatrix = float4x4::Scale(scale, float3(0,0,0)) * globalTransformMatrix;
@@ -38,6 +42,10 @@ void ComponentTransform::UpdateTrans()
 
 	SetLocalTrans(myGO->GetParent());
 	myGO->UpdateChildsTransform();
+
+	rotationEuler.x *= RADTODEG;
+	rotationEuler.y *= RADTODEG;
+	rotationEuler.z *= RADTODEG;
 
 	needToUpdate = false;
 }

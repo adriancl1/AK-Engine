@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "MathGeo/Geometry/LineSegment.h"
 
 class GameObject;
 class ComponentCamera;
@@ -36,6 +37,7 @@ private:
 
 public:
 	vec3 X, Y, Z, Position, Reference;
+	LineSegment lastPick;
 
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;

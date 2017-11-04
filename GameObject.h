@@ -25,6 +25,9 @@ public:
 	void OnEditor();
 	void ShowProperties();
 
+	void CollectIntersectionsAABB(std::vector<GameObject*>& intersections, LineSegment& line);
+	void CollectTriIntersections(LineSegment& line, float& distance, float3& hitPoint);
+
 	void OnSerialize(Configuration& dataToSave)const;
 	void OnDeserialize(Configuration& dataToLoad);
 
@@ -32,11 +35,11 @@ public:
 	GameObject* GetParent() const;
 	GameObject* FindByUID(int toFind);
 
-	std::vector<Component*> components;
-	std::vector<GameObject*> childs;
-
 	bool selected = false;
 	bool isStatic;
+	std::vector<Component*> components;
+	std::vector<GameObject*> childs;	
+
 protected:
 	int uid;
 	GameObject* parent;

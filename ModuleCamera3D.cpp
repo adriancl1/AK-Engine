@@ -8,8 +8,6 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 
-#include "MathGeo\Geometry\LineSegment.h"
-
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -56,73 +54,80 @@ update_status ModuleCamera3D::Update(float dt)
 	float speed = 8.0f * dt;
 	if (!ImGui::GetIO().WantCaptureKeyboard)
 	{
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT))
+		if (UsingSceneCamera() == false)
 		{
-			if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+			if (App->input->GetMouseButton(SDL_BUTTON_RIGHT))
 			{
-				speed = 20.0f * dt;
-			}
-
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
-
-
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
-
-			Position += newPos;
-			Reference += newPos;
-		}
-
-		// Mouse motion ----------------
-
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && (App->input->GetKey(SDL_SCANCODE_LALT) || App->input->GetKey(SDL_SCANCODE_RALT)))
-		{
-			int dx = -App->input->GetMouseXMotion();
-			int dy = -App->input->GetMouseYMotion();
-
-			float Sensitivity = 0.25f;
-
-			Position -= Reference;
-
-			if (dx != 0)
-			{
-				float DeltaX = (float)dx * Sensitivity;
-
-				X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-			}
-
-			if (dy != 0)
-			{
-				float DeltaY = (float)dy * Sensitivity;
-
-				Y = rotate(Y, DeltaY, X);
-				Z = rotate(Z, DeltaY, X);
-
-				if (Y.y < 0.0f)
+				if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 				{
-					Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-					Y = cross(Z, X);
+					speed = 20.0f * dt;
 				}
+
+				if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
+				if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+
+
+				if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+				if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+				Position += newPos;
+				Reference += newPos;
 			}
 
-			Position = Reference + Z * length(Position);
+			// Mouse motion ----------------
+
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && (App->input->GetKey(SDL_SCANCODE_LALT) || App->input->GetKey(SDL_SCANCODE_RALT)))
+			{
+				int dx = -App->input->GetMouseXMotion();
+				int dy = -App->input->GetMouseYMotion();
+
+				float Sensitivity = 0.25f;
+
+				Position -= Reference;
+
+				if (dx != 0)
+				{
+					float DeltaX = (float)dx * Sensitivity;
+
+					X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+					Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+					Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				}
+
+				if (dy != 0)
+				{
+					float DeltaY = (float)dy * Sensitivity;
+
+					Y = rotate(Y, DeltaY, X);
+					Z = rotate(Z, DeltaY, X);
+
+					if (Y.y < 0.0f)
+					{
+						Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+						Y = cross(Z, X);
+					}
+				}
+
+				Position = Reference + Z * length(Position);
+			}
+			else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE || App->input->GetKey(SDL_SCANCODE_RALT) == KEY_IDLE))
+			{
+				LineSegment picking = editorCamera->GetFrustum().UnProjectLineSegment(App->input->GetNormalizedMouseX(), App->input->GetNormalizedMouseY());
+				lastPick = picking;
+
+				App->sceneEditor->SelectGameObject(picking);
+			}
+			editorCamera->UpdateCamera(float3(Position.x, Position.y, Position.z), -float3(Z.x, Z.y, Z.z), float3(Y.x, Y.y, Y.z));
+			CalculateViewMatrix();
 		}
 	}
 
 	// Recalculate matrix -------------
-	if (UsingSceneCamera() == false)
-	{
-		editorCamera->UpdateCamera(float3(Position.x, Position.y, Position.z), -float3(Z.x, Z.y, Z.z), float3(Y.x, Y.y, Y.z));
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			LineSegment picking = editorCamera->GetFrustum().UnProjectLineSegment(App->input->GetNormalizedMouseX(), App->input->GetNormalizedMouseY());
-			App->sceneEditor->SelectGameObject(picking);
-		}
-	}		
-	CalculateViewMatrix();
+	
+
+	pLine a(lastPick.a.x, lastPick.a.y, lastPick.a.z, lastPick.b.x, lastPick.b.y, lastPick.b.z);
+	a.color = Red;
+	a.Render();
 
 	return UPDATE_CONTINUE;
 }
@@ -218,8 +223,8 @@ const float* ModuleCamera3D::GetViewMatrix() const
 	}
 	else
 	{
-		return &ViewMatrix;
-		//return editorCamera->GetViewMatrix();
+		//return &ViewMatrix;
+		return editorCamera->GetViewMatrix();
 	}
 }
 
