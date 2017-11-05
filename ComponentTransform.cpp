@@ -91,6 +91,16 @@ void ComponentTransform::SetLocalTrans(GameObject* parent)
 	}
 }
 
+float4x4 ComponentTransform::GetGlobalTransform() const
+{
+	return globalTransformMatrix;
+}
+
+float4x4 ComponentTransform::GetLocalTransform() const
+{
+	return localTransformMatrix;
+}
+
 void ComponentTransform::OnEditor()
 {
 	if (ImGui::TreeNodeEx(name.c_str()))
