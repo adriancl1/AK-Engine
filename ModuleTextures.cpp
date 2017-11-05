@@ -116,30 +116,40 @@ uint ModuleTextures::ImportImage(const char * image)
 
 	return textureID; // Return the GLuint to the texture so you can use it!
 }
-bool ModuleTextures::Import(std::string& output_file)
+
+bool ModuleTextures::Import(const char* fileDir, std::string& output_file)
 {
-	bool ret;
+	bool ret = false;
 
-	ILuint size;
-	ILubyte *data;
+	ILuint TextureName;
+	ilGenImages(1, &TextureName);
+	ilBindImage(TextureName);
 
-	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
-	size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer
-
-	if (size > 0)
+	ILboolean success = ilLoadImage(fileDir);
+	if (success == IL_TRUE)
 	{
-		data = new ILubyte[size]; // allocate data buffer
-		if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
-		{
-			//TODO -> Find a proper save function
-			FILE* pFile;
-			pFile = fopen(output_file.c_str(), "wb");
+		ilEnable(IL_FILE_OVERWRITE);
 
-			fwrite(data, sizeof(char), sizeof(data), pFile);
-			fclose(pFile);
-			RELEASE_ARRAY(data);
+		ILuint size;
+		ILubyte *data;
+
+		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+		size = ilSaveL(IL_DDS, NULL, 0);
+
+		if (size > 0)
+		{
+			data = new ILubyte[size];
+			if (ilSaveL(IL_DDS, data, size) > 0)
+			{
+				App->fileSystem->SaveFile(output_file.c_str(), (char*)data, size, fileMaterial);
+				RELEASE_ARRAY(data);
+				ret = true;
+			}
+			ilDeleteImages(1, &TextureName);
 		}
+		else
+			LOG("Cannot load texture from buffer of size %u", size);
+		ret = false;
 	}
-	else
-		return false;
+	return ret;
 }

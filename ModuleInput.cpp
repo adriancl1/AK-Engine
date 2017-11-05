@@ -138,6 +138,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 				else if (strcmp(&fileDir[length - 4], ".png") == 0 || strcmp(&fileDir[length - 4], ".PNG") == 0)
 				{
+					App->textures->Import(fileDir, std::string("test"));
 					App->importer->LoadNewTexture(fileDir);		
 				}
 				else if (strcmp(&fileDir[length - 4], ".akS") == 0)

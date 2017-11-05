@@ -16,7 +16,7 @@ MeshImporter::~MeshImporter()
 void MeshImporter::Load(const char * inputFile, ComponentMesh* mesh)
 {
 	char* buffer;
-	int size;
+	uint size;
 
 	if (App->fileSystem->LoadFile(inputFile, &buffer, size, fileMesh) == true)
 	{

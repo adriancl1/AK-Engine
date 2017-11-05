@@ -72,7 +72,7 @@ void ModuleFileSystem::SaveFile(const char * name, char * buffer, int bufferSize
 	file.close();
 }
 
-bool ModuleFileSystem::LoadFile(const char * name, char ** buffer, int& size, FileType type)
+bool ModuleFileSystem::LoadFile(const char * name, char ** buffer, uint& size, FileType type)
 {
 	bool ret = false;
 
@@ -92,6 +92,13 @@ bool ModuleFileSystem::LoadFile(const char * name, char ** buffer, int& size, Fi
 		path += MATERIAL_EXTENSION;
 	}
 	else if (type == fileScene)
+	{
+		path += SCENE_DIRECTORY;
+		path += "/";
+		path += name;
+		path += SCENE_EXTENSION;
+	}
+	else if (type == fileTexture)
 	{
 		path += SCENE_DIRECTORY;
 		path += "/";
