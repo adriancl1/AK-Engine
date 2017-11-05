@@ -428,6 +428,8 @@ void Frustum::DrawDebug(Color color) const
 	glVertex3fv((GLfloat*)&vertices[1]); //glVertex3f(-sx, -sy,  sz);
 
 	glEnd();
+
+	glColor3f(White.r, White.g, White.b);
 }
 
 bool Frustum::IsFinite() const

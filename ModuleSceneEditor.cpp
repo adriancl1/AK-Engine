@@ -151,6 +151,15 @@ void ModuleSceneEditor::SelectGameObject(LineSegment& picking)
 				closest = aabbIntersections[i];
 			}
 		}
+
+		if (closest != nullptr)
+		{
+			SetSelected(closest);
+		}
+		else
+		{
+			SetSelected(nullptr);
+		}
 	}
 }
 
@@ -268,13 +277,19 @@ void ModuleSceneEditor::SetSelected(GameObject * selected)
 		{
 			this->selected->selected = false;
 		}
-		selected->selected = true;
+		if (selected != nullptr)
+		{
+			selected->selected = true;
+		}
 		this->selected = selected;
 	}
 	else
 	{
-		this->selected->selected = false;
-		this->selected = nullptr;
+		if (this->selected != nullptr)
+		{
+			this->selected->selected = false;
+			this->selected = nullptr;
+		}
 	}
 }
 
