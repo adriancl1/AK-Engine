@@ -185,12 +185,12 @@ float ModuleInput::GetNormalizedMouseX() const
 {
 	int w, h;
 	App->window->GetWindowSize(w, h);
-	return (float)(mouse_x / w);
+	return (float)(mouse_x / (float)w);
 }
 
 float ModuleInput::GetNormalizedMouseY() const
 {
 	int w, h;
 	App->window->GetWindowSize(w, h);
-	return (float)(mouse_y / h);
+	return (float)(mouse_y / (float)h);
 }
