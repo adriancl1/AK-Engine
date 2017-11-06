@@ -143,7 +143,11 @@ void ComponentMesh::OnEditor()
 
 bool ComponentMesh::IntersectsAABB(LineSegment & line) const
 {
-	return line.Intersects(enclosingBox);
+	LineSegment globalLine(line);
+	ComponentTransform* myGOTransform = (ComponentTransform*)myGO->FindComponent(Component_Transform);
+
+	globalLine.Transform(myGOTransform->GetGlobalTransform().Inverted());
+	return globalLine.Intersects(enclosingBox);
 }
 
 bool ComponentMesh::TriIntersection(LineSegment & line, float& distance, float3 &hitPoint)
@@ -153,16 +157,15 @@ bool ComponentMesh::TriIntersection(LineSegment & line, float& distance, float3 
 	float minDistance = distance;
 	float prevDistance = distance;
 
-	LineSegment localLine = line;
+	LineSegment localLine(line);
 
 	ComponentTransform* myGOTransform = (ComponentTransform*)myGO->FindComponent(Component_Transform);
 
-	localLine.Transform(myGOTransform->GetLocalTransform().Inverted().Transposed());
+	localLine.Transform(myGOTransform->GetGlobalTransform().Inverted());
 
 	for (int i = 0; i < numIndices; i += 3)
 	{
 		Triangle face(float3(vertices[indices[i] * 3], vertices[indices[i] * 3 + 1], vertices[indices[i] * 3 + 2]), float3(vertices[indices[i + 1] * 3], vertices[indices[i + 1] * 3 + 1], vertices[indices[i + 1] * 3 + 2]), float3(vertices[indices[i + 2] * 3], vertices[indices[i + 2] * 3 + 1], vertices[indices[i + 2] * 3 + 2]));
-
 		if (localLine.Intersects(face, &minDistance, &hitPoint))
 		{
 			if (minDistance < prevDistance)

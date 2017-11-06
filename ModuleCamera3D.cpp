@@ -51,7 +51,7 @@ update_status ModuleCamera3D::Update(float dt)
 	BROFILER_CATEGORY("Module Camera Update", Profiler::Color::AliceBlue);
 
 	vec3 newPos(0,0,0);
-	float speed = 8.0f * dt;
+	float speed = 15.0f * dt;
 	if (!ImGui::GetIO().WantCaptureKeyboard)
 	{
 		if (UsingSceneCamera() == false)
