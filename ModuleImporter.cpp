@@ -226,7 +226,6 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 }
 
 ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
-
 {
 	ComponentMaterial* m = new ComponentMaterial;
 	//MATERIAL
@@ -239,8 +238,21 @@ ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
 		newMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 
 		std::string fullPath = "Assets/";
+		std::string fullPathDDS = "Library/Material";
+		std::string fileName = path.C_Str();
+		uint i = fileName.find_first_of(".");
+		std::string fileNameDDS = fileName.substr(0, i);
+		fileName = fileNameDDS;
+
 		fullPath.append(path.C_Str());
-		m->idTexture = App->textures->ImportImage(fullPath.c_str());
+
+		App->textures->Import(fullPath.c_str(), fileName);
+		fullPathDDS += "/"; 
+		fileName.append(".dds");
+		fullPathDDS.append(fileName.c_str());
+
+		m->idTexture = App->textures->ImportImage(fullPathDDS.c_str());
+
 		m->SetName(path.C_Str());
 
 		return m;
