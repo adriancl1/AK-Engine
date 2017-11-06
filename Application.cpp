@@ -102,7 +102,6 @@ bool Application::Init()
 	ms_timer.Start();
 
 	//Time Manager
-	timeManager->StartTime();
 	timeManager->StartRealTime();
 
 	return ret;

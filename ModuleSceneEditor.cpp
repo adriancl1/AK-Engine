@@ -103,7 +103,7 @@ update_status ModuleSceneEditor::PostUpdate(float dt)
 	{
 		LOG("Saving scene.");
 		saveLoadTimer.Start();
-		SaveScene("test");
+		SaveScene("TestScene");
 		LOG("Save completed in %i ms", saveLoadTimer.Read());
 		saveLoadTimer.Stop();
 		wantToSave = false;
@@ -165,15 +165,15 @@ void ModuleSceneEditor::SelectGameObject(LineSegment& picking)
 
 void ModuleSceneEditor::ShowEditor()
 {
-		root->OnEditor();
+	root->OnEditor();
 
-		if (selected != nullptr)
-		{
-			selected->ShowProperties();
-		}
-	
+	if (selected != nullptr)
+	{
+		selected->ShowProperties();
+	}
 }
 
+//TODO: Remove this
 void ModuleSceneEditor::AddCube(vec3 size, vec3 pos)
 {
 	Cube* cube = new Cube;
@@ -326,7 +326,9 @@ void ModuleSceneEditor::SaveScene(const char* fileTitle) const
 	char* buffer = nullptr;
 	uint fileSize = save.SaveFile(&buffer, "Scene save");
 	App->fileSystem->SaveFile(fileTitle, buffer, fileSize, FileType::fileScene);
+
 	RELEASE_ARRAY(buffer);
+
 }
 
 void ModuleSceneEditor::LoadScene(const char * fileTitle)

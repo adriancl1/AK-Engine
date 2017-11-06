@@ -179,7 +179,7 @@ void GameObject::ShowProperties()
 	int w, h;
 	App->window->GetWindowSize(w, h);
 	ImGui::SetNextWindowSize(ImVec2(PROPERTIES_WIDTH, PROPERTIES_HEIGHT));
-	ImGui::SetNextWindowPos(ImVec2(w - PROPERTIES_WIDTH, 0));
+	ImGui::SetNextWindowPos(ImVec2(w - PROPERTIES_WIDTH - 5, 25));
 
 	std::string temp = name;
 	temp += " properties";

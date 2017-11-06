@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleTimeManager.h"
+#include "ModuleSceneEditor.h"
 
 #include <stdio.h>
 
@@ -17,6 +18,9 @@ ModuleTimeManager::ModuleTimeManager(Application * app, bool start_enabled) : Mo
 
 	playOneFrame = false;
 	isGamePaused = false;
+	isInGame = false;
+
+	time.Stop();
 }
 
 ModuleTimeManager::~ModuleTimeManager()
@@ -25,6 +29,7 @@ ModuleTimeManager::~ModuleTimeManager()
 
 bool ModuleTimeManager::Init(Configuration data)
 {
+
 	return true;
 }
 
@@ -40,7 +45,59 @@ update_status ModuleTimeManager::PreUpdate(float dt)
 
 update_status ModuleTimeManager::PostUpdate(float dt)
 {
+	if (!ImGui::Begin("Time Manager"))
+	{
+		ImGui::End();
+	}
+	if (ImGui::CollapsingHeader("Time Status"))
+	{
+		if (ImGui::Button("Play"))
+		{
+			PlayGame(!isInGame);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Pause"))
+		{
+			PauseGame(!isGamePaused);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Play One Frame"))
+		{
+			PlayOneFrame();
+		}
+
+		ImGui::Text("Total Frames: %i", GetFrameCount());
+		ImGui::Text("Game Time Clock: %.2f", GetTime());
+		ImGui::Text("Real Time Clock: %.2f", GetRealTime());
+
+		if (isInGame == true)
+		{
+			ImGui::Text("Playing!");
+		}
+		if (isInGame == false)
+		{
+			ImGui::Text("Not Playing!");
+		}
+	}
+	ImGui::End();
+
 	return UPDATE_CONTINUE;
+}
+
+void ModuleTimeManager::PlayGame(bool play)
+{
+	isInGame = play;
+
+	if (play == true)
+	{
+		time.Start();
+		App->sceneEditor->SaveScene("MainScene");
+	}
+	if (play == false)
+	{
+		time.Stop();
+		App->sceneEditor->LoadScene("Assets/Scenes/MainScene.akS");
+	}
 }
 
 void ModuleTimeManager::PauseGame(bool pause)
@@ -123,29 +180,4 @@ float ModuleTimeManager::GetRealTime()
 float ModuleTimeManager::GetRealDeltaTime() const
 {
 	return rTimeDeltaTime;
-}
-
-void ModuleTimeManager::OnConfiguration()
-{
-	if (ImGui::CollapsingHeader("Time Status"))
-	{
-		if (ImGui::Button("Play"))
-		{
-			PauseGame(false);
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Pause"))
-		{
-			PauseGame(true);
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Play One Frame"))
-		{
-			PlayOneFrame();
-		}
-
-		ImGui::Text("Total Frames: %i", GetFrameCount());
-		ImGui::Text("Game Time Clock: %.2f", GetTime());
-		ImGui::Text("Real Time Clock: %.2f", GetRealTime());
-	}
 }

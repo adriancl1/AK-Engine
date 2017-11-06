@@ -17,6 +17,7 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 
+	void PlayGame(bool play);
 	void PauseGame(bool pause);
 	void PlayOneFrame();
 	bool IsGamePaused();
@@ -35,7 +36,6 @@ public:
 	float GetRealTime(); //Real Time since Startup //Real Time Clock
 	float GetRealDeltaTime() const; //Last frame time expressed in seconds //Real Time Clock
 
-	void OnConfiguration() override;
 private:
 	uint frameCount;
 
@@ -47,5 +47,6 @@ private:
 
 	bool playOneFrame;
 	bool isGamePaused;
+	bool isInGame;
 };
 
