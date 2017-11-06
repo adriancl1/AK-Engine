@@ -17,6 +17,12 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 
 
 ## Changelog
+Version 0.4.0 Beta
+* Added Mouse Picking.
+* Added Time Manager.
+* Added Scene Save&Load.
+* Bug Fixes.
+
 Version 0.3.7
 * Added Quadtree.
 * Added Frustum Culling.
