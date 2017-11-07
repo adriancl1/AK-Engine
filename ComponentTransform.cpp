@@ -31,6 +31,10 @@ void ComponentTransform::Update()
 		UpdateTrans();
 		needToUpdate = false;		
 	}
+	if (myGO->selected == true)
+	{
+		ShowGizmo(*App->camera->GetEditorCamera());
+	}
 }
 
 void ComponentTransform::UpdateTrans()
@@ -185,7 +189,6 @@ void ComponentTransform::OnEditor()
 					rotationEuler = float3::zero;
 					needToUpdate = true;
 				}
-				ShowGizmo(*App->camera->GetEditorCamera());
 			}
 
 		ImGui::Checkbox("Static:", &myGO->isStatic);
@@ -227,21 +230,36 @@ void ComponentTransform::OnLoad(Configuration & data)
 void ComponentTransform::ShowGizmo(ComponentCamera & camera)
 {
 	ImGuizmo::Enable(true);
-	float4x4 viewMatrix = camera.GetFrustum().ViewMatrix();
+
+	static ImGuizmo::OPERATION currentOperation(ImGuizmo::TRANSLATE);
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	{
+		currentOperation = ImGuizmo::TRANSLATE;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		currentOperation = ImGuizmo::ROTATE;
+
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		currentOperation = ImGuizmo::SCALE;
+	}
+
+	float* projMatrixg = camera.GetFrustum().ViewProjMatrix().Transposed().ptr();
+	float* transMatrix = globalTransformMatrix.Transposed().ptr();
+
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-	//ImGuizmo::DrawCube(viewMatrix.Transposed().ptr(), camera.GetFrustum().ViewProjMatrix().Transposed().ptr(), globalTransformMatrix.Transposed().ptr());
-	ImGuizmo::Manipulate(viewMatrix.Transposed().ptr(), camera.GetFrustum().ViewProjMatrix().Transposed().ptr(), ImGuizmo::SCALE, ImGuizmo::WORLD, globalTransformMatrix.ptr());
+
+	ImGuizmo::Manipulate(float4x4::identity.ptr(), projMatrixg, currentOperation, ImGuizmo::WORLD, transMatrix);
 	if (ImGuizmo::IsUsing())
 	{
-		globalTransformMatrix.Decompose(position, rotation, scale);
-		rotationEuler = rotation.ToEulerXYZ();
-		rotationEuler.x *= RADTODEG;
-		rotationEuler.y *= RADTODEG;
-		rotationEuler.z *= RADTODEG;
+		ImGuizmo::DecomposeMatrixToComponents(transMatrix, (float*)position.ptr(), (float*)rotationEuler.ptr(), (float*)scale.ptr());
+		globalTransformMatrix.Transpose();
+		ImGuizmo::RecomposeMatrixFromComponents((float*)position.ptr(), (float*)rotationEuler.ptr(), (float*)scale.ptr(), globalTransformMatrix.ptr());
+		globalTransformMatrix.Transpose();
 	}
-	
-	//ImGuizmo::Enable(false);
 }
 
 float4x4 ComponentTransform::GetTransMatrix() const
