@@ -23,3 +23,15 @@ void ComponentMaterial::OverrideTexture(const char* path)
 {
 	idTexture = App->textures->ImportImage(path);
 }
+
+void ComponentMaterial::OnSave(Configuration & data) const
+{
+	data.SetString("Texture Path", texName.c_str());
+}
+
+void ComponentMaterial::OnLoad(Configuration & data)
+{
+	texName = data.GetString("Texture Path");
+	idTexture = App->textures->ImportImage(texName.c_str());
+
+}

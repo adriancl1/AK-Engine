@@ -4,6 +4,7 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "ComponentMaterial.h"
 
 #define PROPERTIES_WIDTH 300
 #define PROPERTIES_HEIGHT 500
@@ -295,6 +296,13 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 			ComponentTransform* compTrans = new ComponentTransform();
 			AddComponent(compTrans);
 			compTrans->OnLoad(componentConfig);			
+			break;
+		}
+		case Component_Material:
+		{
+			ComponentMaterial* compMat = new ComponentMaterial();
+			compMat->OnLoad(componentConfig);
+			AddComponent(compMat);
 			break;
 		}
 		default:

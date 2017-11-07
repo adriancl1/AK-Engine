@@ -255,6 +255,8 @@ ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
 
 		m->SetName(path.C_Str());
 
+		m->texName = fullPathDDS;
+
 		return m;
 	}
 	return nullptr;

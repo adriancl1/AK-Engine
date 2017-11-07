@@ -22,7 +22,7 @@ void MeshImporter::Load(const char * inputFile, ComponentMesh* mesh)
 	{
 		char* cursor = buffer;
 		// amount of indices / vertices / colors / normals / texture_coords
-		uint ranges[2];
+		uint ranges[4];
 		uint bytes = sizeof(ranges);
 		memcpy(ranges, cursor, bytes);
 
@@ -48,15 +48,44 @@ void MeshImporter::Load(const char * inputFile, ComponentMesh* mesh)
 		glGenBuffers(1, (GLuint*)&mesh->idVertices);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->idVertices);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->vertices, GL_STATIC_DRAW);
+
+		// Load Normals
+		cursor += bytes;
+		bytes = sizeof(float) * mesh->numVertices * 3;
+		mesh->normals = new float[mesh->numVertices * 3];
+		memcpy(mesh->normals, cursor, bytes);
+
+		glGenBuffers(1, (GLuint*) &(mesh->idNormals));
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->idNormals);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->normals, GL_STATIC_DRAW);
+
+		// Load TexCoords
+		cursor += bytes;
+		bytes = sizeof(float) * mesh->numVertices * 3;
+		mesh->texCoords = new float[mesh->numVertices * 3];
+		memcpy(mesh->texCoords, cursor, bytes);
+
+		glGenBuffers(1, (GLuint*) &(mesh->idTexCoords));
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->idTexCoords);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->texCoords, GL_STATIC_DRAW);
 	}
 }
 
 bool MeshImporter::Save(const ComponentMesh & mesh, const char * outputFile)
 {
-	uint ranges[2] = { mesh.numIndices, mesh.numVertices };
+	uint ranges[4] = { mesh.numIndices, mesh.numVertices, mesh.numVertices, mesh.numVertices };
 	float size = sizeof(ranges);
-	size += sizeof(uint) * mesh.numIndices;
-	size += sizeof(float) * mesh.numVertices * 3;
+	size += sizeof(uint) * mesh.numIndices; //Indices
+	size += sizeof(float) * mesh.numVertices * 3; //Vertices
+
+	if (mesh.normals != nullptr)
+	{
+		size += sizeof(float) * mesh.numVertices * 3; //Normals
+	}
+	if (mesh.texCoords != nullptr)
+	{
+		size += sizeof(float) * mesh.numVertices * 3; //TexCoords
+	}
 
 	char* data = new char[size];
 	char* cursor = data;
@@ -74,6 +103,20 @@ bool MeshImporter::Save(const ComponentMesh & mesh, const char * outputFile)
 	// Store vertices
 	bytes = sizeof(float) * mesh.numVertices * 3;
 	memcpy(cursor, mesh.vertices, mesh.numVertices * 3 * sizeof(float));
+	cursor += bytes;
+
+	if (mesh.normals != nullptr)
+	{
+		bytes = sizeof(float) * mesh.numVertices * 3;
+		memcpy(cursor, mesh.normals, mesh.numVertices * 3 * sizeof(float));
+		cursor += bytes;
+	}
+	if (mesh.texCoords != nullptr)
+	{
+		bytes = sizeof(float) * mesh.numVertices * 3;
+		memcpy(cursor, mesh.texCoords, mesh.numVertices * 3 * sizeof(float));
+		cursor += bytes;
+	}
 
 	App->fileSystem->SaveFile(outputFile, data, size, fileMesh);
 

@@ -13,4 +13,9 @@ public:
 	void OnEditor() override;
 
 	void OverrideTexture(const char* path);
+
+	std::string texName;
+
+	void OnSave(Configuration& data) const override;
+	void OnLoad(Configuration& data) override;
 };
