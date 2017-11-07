@@ -104,6 +104,11 @@ float4x4 ComponentTransform::GetLocalTransform() const
 	return localTransformMatrix;
 }
 
+float3 ComponentTransform::GetPosition() const
+{
+	return position;
+}
+
 void ComponentTransform::OnEditor()
 {
 	if (ImGui::TreeNodeEx(name.c_str()))

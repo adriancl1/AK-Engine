@@ -342,11 +342,11 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 		glMultMatrixf(tmpTrans->GetTransMatrix().Transposed().ptr());
 	}
 
-	for (int i = 0; i < objectDraw->components.size(); i++)
+	for (int i = 0; i < objectDraw->GetComponents().size(); i++)
 	{
-		if (objectDraw->components[i]->GetType() == Component_Mesh)
+		if (objectDraw->GetComponents()[i]->GetType() == Component_Mesh)
 		{
-			ComponentMesh* toDraw = dynamic_cast<ComponentMesh*> (objectDraw->components[i]);
+			ComponentMesh* toDraw = dynamic_cast<ComponentMesh*> (objectDraw->GetComponents()[i]);
 			if (camera != nullptr && camera->GetFrustumCulling() == true)
 			{
 				AABB recalculatedBox = toDraw->enclosingBox;

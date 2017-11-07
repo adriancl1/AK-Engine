@@ -21,6 +21,7 @@ public:
 
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
+	float3 GetPosition() const;
 
 	void OnEditor() override;
 	void OnSave(Configuration& data) const override;

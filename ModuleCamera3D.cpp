@@ -60,7 +60,7 @@ update_status ModuleCamera3D::Update(float dt)
 			{
 				if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 				{
-					speed = 20.0f * dt;
+					speed = 200.0f * dt;
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;

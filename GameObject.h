@@ -18,8 +18,10 @@ public:
 	void DeleteChilds();
 	void AddComponent(Component* component);
 	void SetName(const char* name);
+
 	const char* GetName() const;
 	int GetUID()const;
+
 	void SetLocalTransform();
 	void UpdateChildsTransform();
 	void OnEditor();
@@ -35,13 +37,18 @@ public:
 	GameObject* GetParent() const;
 	GameObject* FindByUID(int toFind);
 
+	std::vector<GameObject*> GetChilds() const;
+	std::vector<Component*> GetComponents() const;
+
 	bool selected = false;
 	bool isStatic;
-	std::vector<Component*> components;
-	std::vector<GameObject*> childs;	
 
 protected:
 	int uid;
+
 	GameObject* parent;
+
 	std::string name;
+	std::vector<Component*> components;
+	std::vector<GameObject*> childs;
 };

@@ -2,6 +2,7 @@
 #include "Quadtree.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentTransform.h"
 #include "MathGeo\MathGeoLib.h"
 #include "MathGeo\Geometry\AABB.h"
 
@@ -180,8 +181,18 @@ Quadtree::~Quadtree()
 void Quadtree::Insert(GameObject* toInsert)
 {
 	ComponentMesh* tmp = (ComponentMesh*)toInsert->FindComponent(Component_Mesh);
-	if (root != nullptr && root->box.Contains(tmp->enclosingBox))
+	ComponentTransform* tmpTransform = (ComponentTransform*)toInsert->FindComponent(Component_Transform);
+
+	AABB tmpBox = tmp->enclosingBox;
+	tmpBox.TransformAsAABB(tmpTransform->GetGlobalTransform());
+
+	if (root != nullptr && root->box.Contains(tmpBox))
 	{
+		root->Insert(toInsert);
+	}
+	else if (root != nullptr && !root->box.Contains(tmpBox))
+	{
+		root->box.Enclose(tmpBox);
 		root->Insert(toInsert);
 	}
 }

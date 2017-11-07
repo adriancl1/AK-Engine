@@ -58,7 +58,7 @@ bool ModuleSceneEditor::Start()
 
 	scene->AddComponent(camera);
 
-	tree = new Quadtree(AABB(float3(-100, -5, -100), float3(100, 5, 100))); 
+	tree = new Quadtree(AABB(float3(0, 0, 0), float3(0, 0, 0))); 
 
 	return true;
 }
@@ -74,9 +74,9 @@ update_status ModuleSceneEditor::PreUpdate(float dt)
 }
 update_status ModuleSceneEditor::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && root->childs.empty() != true)
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && root->GetChilds().empty() != true)
 	{
-		App->camera->CenterToGO(root->childs[0]);
+		App->camera->CenterToGO(root->GetChilds()[0]);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{

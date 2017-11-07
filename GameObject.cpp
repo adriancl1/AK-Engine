@@ -313,3 +313,13 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 		}
 	}
 }
+
+std::vector<GameObject*> GameObject::GetChilds() const
+{
+	return childs;
+}
+
+std::vector<Component*> GameObject::GetComponents() const
+{
+	return components;
+}

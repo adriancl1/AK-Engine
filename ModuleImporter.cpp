@@ -84,14 +84,14 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 void ModuleImporter::LoadNewTexture(const char* fullPath)
 {
 	int count = 0;
-	for (int i = 0; i < App->sceneEditor->GetRoot()->childs.size(); i++)
+	for (int i = 0; i < App->sceneEditor->GetRoot()->GetChilds().size(); i++)
 	{
 		count = 0;
-		for (int j = 0; j < App->sceneEditor->GetRoot()->childs[i]->components.size(); j++)
+		for (int j = 0; j < App->sceneEditor->GetRoot()->GetChilds()[i]->GetComponents().size(); j++)
 		{
-			if (App->sceneEditor->GetRoot()->childs[i]->components[j]->GetType() == Component_Material)
+			if (App->sceneEditor->GetRoot()->GetChilds()[i]->GetComponents()[j]->GetType() == Component_Material)
 			{
-				dynamic_cast<ComponentMaterial*>(App->sceneEditor->GetRoot()->childs[i]->components[j])->OverrideTexture(fullPath);
+				dynamic_cast<ComponentMaterial*>(App->sceneEditor->GetRoot()->GetChilds()[i]->GetComponents()[j])->OverrideTexture(fullPath);
 				count++;
 			}
 		}
@@ -102,7 +102,7 @@ void ModuleImporter::LoadNewTexture(const char* fullPath)
 			ComponentMaterial* newMat = new ComponentMaterial();
 			newMat->idTexture = App->textures->ImportImage(fullPath);
 			newMat->SetName(fullPath);
-			App->sceneEditor->GetRoot()->childs[i]->AddComponent(newMat);
+			App->sceneEditor->GetRoot()->GetChilds()[i]->AddComponent(newMat);
 		}
 	}
 	LOG("Set %s as new texture for current meshes.");
