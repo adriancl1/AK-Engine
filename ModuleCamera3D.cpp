@@ -209,19 +209,9 @@ void ModuleCamera3D::SetMainCamera(ComponentCamera * camera)
 	mainCamera = camera;
 }
 
-void ModuleCamera3D::RecalcAspectRatio(int width, int height)
-{
-	editorCamera->SetAspectRatio(width, height);
-}
-
 bool ModuleCamera3D::UsingSceneCamera() const
 {
 	return mainCamera != nullptr && mainCamera->IsActive();
-}
-
-ComponentCamera * ModuleCamera3D::GetEditorCamera() const
-{
-	return editorCamera;
 }
 
 // -----------------------------------------------------------------

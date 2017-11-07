@@ -65,12 +65,6 @@ void ComponentCamera::OnEditor()
 	}
 }
 
-void ComponentCamera::SetAspectRatio(float width, float height)
-{
-	aspectRatio = (float)width / height;
-	SetFOV();
-}
-
 //Sets the horizontal FOV according to current vertical
 void ComponentCamera::SetFOV()
 {
@@ -150,8 +144,8 @@ void ComponentCamera::OnLoad(Configuration & data)
 	frustum.up.y = data.GetFloat("Frustum Up", 1);
 	frustum.up.z = data.GetFloat("Frustum Up", 2);
 	frustum.front.x = data.GetFloat("Frustum Front", 0);
-	frustum.front.y = data.GetFloat("Frustum Front", 1);
-	frustum.front.z = data.GetFloat("Frustum Front", 2);
+	frustum.front.x = data.GetFloat("Frustum Front", 0);
+	frustum.front.x = data.GetFloat("Frustum Front", 0);
 
 	frustum.ProjectionMatrix();
 }

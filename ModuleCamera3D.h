@@ -27,10 +27,8 @@ public:
 	void ZoomOut();
 	void CenterToGO(GameObject* centerTo);
 	void SetMainCamera(ComponentCamera* camera);
-	void RecalcAspectRatio(int width, int height);
 
 	bool UsingSceneCamera()const;
-	ComponentCamera* GetEditorCamera()const;
 
 	const float* GetViewMatrix() const;
 
