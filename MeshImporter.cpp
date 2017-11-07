@@ -68,6 +68,10 @@ void MeshImporter::Load(const char * inputFile, ComponentMesh* mesh)
 		glGenBuffers(1, (GLuint*) &(mesh->idTexCoords));
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->idTexCoords);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->texCoords, GL_STATIC_DRAW);
+
+		mesh->enclosingBox.SetNegativeInfinity();
+
+		mesh->enclosingBox.Enclose((float3*)mesh->vertices, mesh->numVertices);
 	}
 }
 
