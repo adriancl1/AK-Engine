@@ -43,6 +43,9 @@
     <Filter Include="Sources\Tools\Importers">
       <UniqueIdentifier>{7b95db5f-4bd8-4a8c-9ee4-9126146c119f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\ImGuizmo">
+      <UniqueIdentifier>{f1963338-e9f4-41f1-8360-a4788b95bd32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -339,6 +342,9 @@
     <ClInclude Include="MeshImporter.h">
       <Filter>Sources\Tools\Importers</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGuizmo.h">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -544,6 +550,9 @@
     </ClCompile>
     <ClCompile Include="MeshImporter.cpp">
       <Filter>Sources\Tools\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

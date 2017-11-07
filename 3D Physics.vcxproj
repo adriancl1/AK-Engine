@@ -88,6 +88,7 @@
     <ClInclude Include="imgui-1.51\imgui.h" />
     <ClInclude Include="imgui-1.51\imgui_impl_sdl_gl3.h" />
     <ClInclude Include="imgui-1.51\imgui_internal.h" />
+    <ClInclude Include="ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ComponentMaterial.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="imgui-1.51\imgui_demo.cpp" />
     <ClCompile Include="imgui-1.51\imgui_draw.cpp" />
     <ClCompile Include="imgui-1.51\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Main.cpp" />

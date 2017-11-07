@@ -14,6 +14,7 @@ public:
 
 	void SetPos(float3 newPos);
 	void OnEditor() override;
+	void SetAspectRatio(float width, float height);
 	void SetFOV();
 	void SetVerticalFOV(float value);
 	void UpdateCamera(float3 pos, float3 front, float3 up);

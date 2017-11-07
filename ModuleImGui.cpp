@@ -1,11 +1,12 @@
 #include "Globals.h"
 #include "Application.h"
-#include "Brofiler-1.1.2\Brofiler.h"
+#include "Brofiler-1.1.2/Brofiler.h"
 #include "Math.h"
 #include "ModuleImGui.h"
-#include "imgui-1.51\imgui.h"
-#include "imgui-1.51\imgui_impl_sdl_gl3.h"
-#include "Glew\include\glew.h"
+#include "imgui-1.51/imgui.h"
+#include "imgui-1.51/imgui_impl_sdl_gl3.h"
+#include "ImGuizmo/ImGuizmo.h"
+#include "Glew/include/glew.h"
 
 
 #pragma comment( lib, "Glew/libx86/glew32.lib" )
@@ -71,6 +72,7 @@ bool ModuleImGui::Start()
 update_status ModuleImGui::PreUpdate(float dt)
 {
 	ImGui_ImplSdlGL3_NewFrame(App->window->GetWindow());
+	ImGuizmo::BeginFrame();
 	return(UPDATE_CONTINUE);
 }
 

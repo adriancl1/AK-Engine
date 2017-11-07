@@ -1,9 +1,12 @@
 #include "ComponentTransform.h"
+#include "Application.h"
 #include "GameObject.h"
 #include "Configuration.h"
 #include "Globals.h"
+#include "ComponentCamera.h"
 
 #include "imgui-1.51\imgui.h"
+#include "ImGuizmo\ImGuizmo.h"
 
 ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, ComponentType type) : Component(Component_Transform), position(pos), newPosition(pos), scale(scale), rotation(rot)
 {
@@ -177,6 +180,7 @@ void ComponentTransform::OnEditor()
 					rotationEuler = float3::zero;
 					needToUpdate = true;
 				}
+				ShowGizmo(*App->camera->GetEditorCamera());
 			}
 
 		ImGui::Checkbox("Static:", &myGO->isStatic);
@@ -213,6 +217,26 @@ void ComponentTransform::OnLoad(Configuration & data)
 	globalTransformMatrix.float4x4::SetTranslatePart(position.x, position.y, position.z);
 
 	localTransformMatrix = globalTransformMatrix;
+}
+
+void ComponentTransform::ShowGizmo(ComponentCamera & camera)
+{
+	ImGuizmo::Enable(true);
+	float4x4 viewMatrix = camera.GetFrustum().ViewMatrix();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	//ImGuizmo::DrawCube(viewMatrix.Transposed().ptr(), camera.GetFrustum().ViewProjMatrix().Transposed().ptr(), globalTransformMatrix.Transposed().ptr());
+	ImGuizmo::Manipulate(viewMatrix.Transposed().ptr(), camera.GetFrustum().ViewProjMatrix().Transposed().ptr(), ImGuizmo::SCALE, ImGuizmo::WORLD, globalTransformMatrix.ptr());
+	if (ImGuizmo::IsUsing())
+	{
+		globalTransformMatrix.Decompose(position, rotation, scale);
+		rotationEuler = rotation.ToEulerXYZ();
+		rotationEuler.x *= RADTODEG;
+		rotationEuler.y *= RADTODEG;
+		rotationEuler.z *= RADTODEG;
+	}
+	
+	//ImGuizmo::Enable(false);
 }
 
 float4x4 ComponentTransform::GetTransMatrix() const
