@@ -1,4 +1,4 @@
-//#include "Application.h"
+#include "Application.h"
 #include "ComponentTransform.h"
 #include "GameObject.h"
 #include "Configuration.h"
