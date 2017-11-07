@@ -1,9 +1,11 @@
+//#include "Application.h"
 #include "ComponentTransform.h"
 #include "GameObject.h"
 #include "Configuration.h"
 #include "Globals.h"
-
+#include "ImGuizmo\ImGuizmo.h"
 #include "imgui-1.51\imgui.h"
+
 
 ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, ComponentType type) : Component(Component_Transform), position(pos), newPosition(pos), scale(scale), rotation(rot)
 {
@@ -46,6 +48,8 @@ void ComponentTransform::UpdateTrans()
 	rotationEuler.x *= RADTODEG;
 	rotationEuler.y *= RADTODEG;
 	rotationEuler.z *= RADTODEG;
+	
+
 
 	needToUpdate = false;
 }
@@ -218,4 +222,34 @@ void ComponentTransform::OnLoad(Configuration & data)
 float4x4 ComponentTransform::GetTransMatrix() const
 {
 	return globalTransformMatrix;
+}
+
+void ComponentTransform::ShowGuizmos()
+{
+	ImGuizmo::Enable(true);
+
+	static ImGuizmo::OPERATION currentOperation(ImGuizmo::TRANSLATE);
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	{
+		currentOperation = ImGuizmo::TRANSLATE;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		currentOperation = ImGuizmo::ROTATE;
+
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		currentOperation = ImGuizmo::SCALE;
+	}
+
+	ImGuiIO& io = ImGui::GetIO(); //?¿?¿?¿
+
+	float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+	ImGuizmo::DecomposeMatrixToComponents(globalTransformMatrix.ptr(), matrixTranslation, matrixRotation, matrixScale);
+	ImGui::InputFloat3("Tr", matrixTranslation, 3);
+	ImGui::InputFloat3("Rt", matrixRotation, 3);
+	ImGui::InputFloat3("Sc", matrixScale, 3);
+	ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, globalTransformMatrix.ptr());
+
 }

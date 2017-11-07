@@ -6,7 +6,7 @@
 #include "imgui-1.51\imgui.h"
 #include "imgui-1.51\imgui_impl_sdl_gl3.h"
 #include "Glew\include\glew.h"
-
+#include "ImGuizmo/ImGuizmo.h"
 
 #pragma comment( lib, "Glew/libx86/glew32.lib" )
 
@@ -64,6 +64,8 @@ bool ModuleImGui::Start()
 	openCreateGeometryWindow = false;
 	openEditorWindow = true;
 
+	ImGuizmo::Enable(true);
+
 	return ret;
 }
 
@@ -71,6 +73,8 @@ bool ModuleImGui::Start()
 update_status ModuleImGui::PreUpdate(float dt)
 {
 	ImGui_ImplSdlGL3_NewFrame(App->window->GetWindow());
+	ImGuizmo::BeginFrame();
+
 	return(UPDATE_CONTINUE);
 }
 

@@ -5,6 +5,7 @@
 #include "MathGeo\Math\Quat.h"
 #include "MathGeo\Math\float4x4.h"
 
+
 class ComponentTransform : public Component
 {
 public:
@@ -27,6 +28,8 @@ public:
 	float4x4 GetTransMatrix() const;
 
 private:
+
+	void ShowGuizmos();
 	float3 position;
 	float3 newPosition;
 	float3 scale;
