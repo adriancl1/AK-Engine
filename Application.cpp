@@ -22,6 +22,7 @@ Application::Application()
 	textures = new ModuleTextures(this);
 	hardware = new ModuleHardware(this);
 	fileSystem = new ModuleFileSystem(this);
+	resources = new ModuleResources(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -40,6 +41,7 @@ Application::Application()
 	AddModule(textures);
 	AddModule(hardware);
 	AddModule(fileSystem);
+	AddModule(resources);
 
 	// Renderer last!
 	AddModule(renderer3D);

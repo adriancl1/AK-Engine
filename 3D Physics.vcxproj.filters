@@ -46,6 +46,9 @@
     <Filter Include="Sources\Tools\ImGuizmo">
       <UniqueIdentifier>{f1963338-e9f4-41f1-8360-a4788b95bd32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\GameObjects\Resources">
+      <UniqueIdentifier>{c6186d9a-837c-40f7-a9f6-f6450cd7a16f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -345,6 +348,15 @@
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
       <Filter>Sources\Tools\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Sources\GameObjects\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceTexture.h">
+      <Filter>Sources\GameObjects\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleResources.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -553,6 +565,15 @@
     </ClCompile>
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
       <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Sources\GameObjects\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceTexture.cpp">
+      <Filter>Sources\GameObjects\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResources.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

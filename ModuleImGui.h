@@ -46,6 +46,7 @@ public:
 	IMGUI_API void ShowCreateGeometryWindow(bool* p_open = NULL);
 	IMGUI_API void ShowEditorWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
+	void ProcessEvent(SDL_Event* event);
 
 private:
 	//Booleans for ImGui Checkbox buttons

@@ -16,6 +16,7 @@
 #include "ModuleHardware.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTimeManager.h"
+#include "ModuleResources.h"
 
 #include "MathGeo\Algorithm\Random\LCG.h"
 
@@ -37,6 +38,7 @@ public:
 	ModuleHardware* hardware;
 	ModuleFileSystem* fileSystem;
 	ModuleTimeManager* timeManager;
+	ModuleResources* resources;
 
 	math::LCG* randomGenerator = nullptr;
 

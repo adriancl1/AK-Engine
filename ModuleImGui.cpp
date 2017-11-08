@@ -321,6 +321,14 @@ void ModuleImGui::AddLogToWindow(std::string toAdd)
 	consoleText.push_back(toAdd);
 }
 
+void ModuleImGui::ProcessEvent(SDL_Event * event)
+{
+	if (event != nullptr)
+	{
+		ImGui_ImplSdlGL3_ProcessEvent(event);
+	}
+}
+
 void ModuleImGui::ShowMathWindow(bool* p_open)
 {
 	// Demonstrate the various window flags. Typically you would just use the default.
