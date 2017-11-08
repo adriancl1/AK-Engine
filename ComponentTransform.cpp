@@ -6,6 +6,7 @@
 #include "ImGuizmo\ImGuizmo.h"
 #include "imgui-1.51\imgui.h"
 
+enum OPERATION;
 
 ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, ComponentType type) : Component(Component_Transform), position(pos), newPosition(pos), scale(scale), rotation(rot)
 {
@@ -251,5 +252,10 @@ void ComponentTransform::ShowGuizmos()
 	ImGui::InputFloat3("Rt", matrixRotation, 3);
 	ImGui::InputFloat3("Sc", matrixScale, 3);
 	ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, globalTransformMatrix.ptr());
+
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	ImGuizmo::Manipulate(float4x4::identity.ptr(), (const float*) App->camera->GetEditorCamera(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, globalTransformMatrix.ptr(), NULL);
 
 }

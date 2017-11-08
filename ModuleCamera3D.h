@@ -38,6 +38,7 @@ private:
 public:
 	vec3 X, Y, Z, Position, Reference;
 	LineSegment lastPick;
+	const ComponentCamera* GetEditorCamera()const;
 
 private:
 	mat4x4 ViewMatrix, ViewMatrixInverse;
