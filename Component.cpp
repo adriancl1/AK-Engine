@@ -57,6 +57,10 @@ GameObject * Component::GetGameObject() const
 	return myGO;
 }
 
+void Component::AddResource(int UID)
+{
+}
+
 ComponentType Component::GetType() const
 {
 	return type;

@@ -117,6 +117,12 @@ uint ModuleTextures::ImportImage(const char * image)
 	return textureID; // Return the GLuint to the texture so you can use it!
 }
 
+void ModuleTextures::DeleteImage(uint id)
+{
+	glDeleteTextures(1, &id);
+	LOG("Deleting texture with %i ID from GPU", id);
+}
+
 bool ModuleTextures::Import(const char* fileDir, std::string& output_file)
 {
 	bool ret = false;
@@ -148,8 +154,10 @@ bool ModuleTextures::Import(const char* fileDir, std::string& output_file)
 			ilDeleteImages(1, &TextureName);
 		}
 		else
+		{
 			LOG("Cannot load texture from buffer of size %u", size);
-		ret = false;
+			ret = false;
+		}
 	}
 	return ret;
 }

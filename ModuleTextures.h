@@ -16,6 +16,7 @@ public:
 	bool Import(const char* fileDir, std::string& output_file);
 
 	uint ImportImage(const char * image);
+	void DeleteImage(uint id);
 };
 
 #endif 

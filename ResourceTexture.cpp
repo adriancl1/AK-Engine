@@ -20,6 +20,13 @@ bool ResourceTexture::LoadInMemory()
 	return true;
 }
 
+bool ResourceTexture::UnloadFromMemory()
+{
+	App->textures->DeleteImage(textureID);
+	textureID = 0;
+	return true;
+}
+
 void ResourceTexture::Save(Configuration & config) const
 {
 }

@@ -398,7 +398,7 @@ void ModuleRenderer3D::DrawMesh(ComponentMesh * toDraw)
 			ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(toDraw->GetGameObject()->FindComponent(Component_Material));
 			if (mat != nullptr && wframe == false)
 			{
-				glBindTexture(GL_TEXTURE_2D, mat->idTexture);
+				glBindTexture(GL_TEXTURE_2D, mat->GetTextureID());
 			}
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, toDraw->idTexCoords);

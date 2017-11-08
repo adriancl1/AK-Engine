@@ -24,32 +24,45 @@ int ModuleResources::Find(const char * fileName)
 	return 0;
 }
 
-int ModuleResources::ImportFile(const char * fileName)
+int ModuleResources::ImportFile(const char * fileName, ResourceType type)
 {
 	//Check that the file isn't already loaded
-	if (Find(fileName) == 0)
-	{
-		int length = strlen(fileName);
-		bool imported;
-		int UID = App->randomGenerator->Int();
-		std::string exportedFile = std::to_string(UID);
-		ResourceType type = Resource_Unknown;
+	int UID = Find(fileName);
 
-		if (strcmp(&fileName[length - 4], ".png") == 0 || strcmp(&fileName[length - 4], ".PNG") == 0)
+	if (UID == 0)
+	{
+		bool imported;
+		UID = App->randomGenerator->Int();
+		std::string exportedFile = std::to_string(UID);
+
+		switch(type)
+		{
+		case Resource_Texture:
 		{
 			imported = App->textures->Import(fileName, exportedFile);
-			type = Resource_Texture;
+			break;
+		}
+		case Resource_Unknown:
+		{
+			LOG("Trying to import a resource with unknown format!");
+			return -1;
+		}
 		}
 
 		if (imported == true)
 		{
 			Resource* newResource = CreateNewResource(type, UID);
 			newResource->file = fileName;
-			newResource->exportedFile = exportedFile;
+			newResource->exportedFile = "Library/Material/";
+			newResource->exportedFile += exportedFile;
+			newResource->exportedFile += ".dds";
 			return UID;
 		}
 	}
-	return 0;
+	else
+	{
+		return UID;
+	}
 }
 
 Resource * ModuleResources::Get(int UID)

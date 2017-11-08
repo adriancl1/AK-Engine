@@ -12,7 +12,7 @@ public:
 	ModuleResources(Application* app, bool startEnabled = true);
 	~ModuleResources();
 	int Find(const char* fileName);
-	int ImportFile(const char* fileName);
+	int ImportFile(const char* fileName, ResourceType type = Resource_Unknown);
 	Resource* Get(int UID);
 	Resource* CreateNewResource(ResourceType type, int UID);
 

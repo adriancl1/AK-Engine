@@ -44,6 +44,20 @@ void GameObject::Update()
 	{
 		components[i]->Update();
 	}
+
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end();)
+	{
+		if ((*it)->wantsToDie)
+		{
+			delete(*it);
+			(*it) = nullptr;
+			it = components.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
 }
 
 void GameObject::AddChild(GameObject* child)

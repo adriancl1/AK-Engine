@@ -24,12 +24,14 @@ public:
 	const char* GetFile()const;
 	const char* GetExportedFile()const;
 	bool IsLoadedToMemory()const;
-	void LoadToMemory();
+	void LoadToComponent();
+	void UnloadFromComponent();
 	uint GetReferenceCount()const;
 
 	virtual void Save(Configuration& config) const;
 	virtual void Load(Configuration& config);
 	virtual bool LoadInMemory() = 0;
+	virtual bool UnloadFromMemory() = 0;
 
 protected:
 	int UID = 0;

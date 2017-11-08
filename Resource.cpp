@@ -33,7 +33,7 @@ bool Resource::IsLoadedToMemory() const
 	return references > 0;
 }
 
-void Resource::LoadToMemory()
+void Resource::LoadToComponent()
 {
 	if (references == 0)
 	{
@@ -43,6 +43,15 @@ void Resource::LoadToMemory()
 		}
 	}
 	references++;
+}
+
+void Resource::UnloadFromComponent()
+{
+	references--;
+	if (references == 0)
+	{
+		UnloadFromMemory();
+	}
 }
 
 uint Resource::GetReferenceCount() const

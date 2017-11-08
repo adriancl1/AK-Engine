@@ -1,6 +1,7 @@
 #include "ModuleImporter.h"
 #include "Application.h"
 #include "ModuleSceneEditor.h"
+#include "ModuleResources.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
@@ -83,7 +84,7 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 
 void ModuleImporter::LoadNewTexture(const char* fullPath)
 {
-	int count = 0;
+	/*int count = 0;
 	for (int i = 0; i < App->sceneEditor->GetRoot()->GetChilds().size(); i++)
 	{
 		count = 0;
@@ -105,7 +106,7 @@ void ModuleImporter::LoadNewTexture(const char* fullPath)
 			App->sceneEditor->GetRoot()->GetChilds()[i]->AddComponent(newMat);
 		}
 	}
-	LOG("Set %s as new texture for current meshes.");
+	LOG("Set %s as new texture for current meshes.");*/
 }
 
 void ModuleImporter::LoadOwnFormat(const char * path, ComponentMesh* mesh) const
@@ -238,24 +239,12 @@ ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
 		newMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 
 		std::string fullPath = "Assets/";
-		std::string fullPathDDS = "Library/Material";
-		std::string fileName = path.C_Str();
-		uint i = fileName.find_first_of(".");
-		std::string fileNameDDS = fileName.substr(0, i);
-		fileName = fileNameDDS;
-
 		fullPath.append(path.C_Str());
 
-		App->textures->Import(fullPath.c_str(), fileName);
-		fullPathDDS += "/"; 
-		fileName.append(".dds");
-		fullPathDDS.append(fileName.c_str());
-
-		m->idTexture = App->textures->ImportImage(fullPathDDS.c_str());
+		int texUID = App->resources->ImportFile(fullPath.c_str(), Resource_Texture);
+		m->AddResource(texUID);
 
 		m->SetName(path.C_Str());
-
-		m->texName = fullPathDDS;
 
 		return m;
 	}

@@ -32,7 +32,10 @@ public:
 	const char* GetName()const;
 	void SetGameObject(GameObject* GO);
 	GameObject* GetGameObject()const;
+	virtual void AddResource(int UID);
 	ComponentType GetType() const;
+
+	bool wantsToDie = false;
 
 protected:
 	GameObject* myGO = nullptr;
