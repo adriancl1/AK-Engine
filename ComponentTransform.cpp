@@ -256,6 +256,6 @@ void ComponentTransform::ShowGuizmos()
 
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-	ImGuizmo::Manipulate(float4x4::identity.ptr(), (const float*) App->camera->GetEditorCamera(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, globalTransformMatrix.ptr(), NULL);
+	ImGuizmo::Manipulate(float4x4::identity.ptr(), (const float*) App->camera->GetEditorCamera(), currentOperation, ImGuizmo::WORLD, globalTransformMatrix.ptr(), NULL);
 
 }
