@@ -114,7 +114,8 @@ void GameObject::UpdateChildsTransform()
 		ComponentTransform* tmp = (ComponentTransform*)childs[i]->FindComponent(Component_Transform);
 		if (tmp != nullptr)
 		{
-			tmp->UpdateTransFromParent(this);
+			tmp->needToUpdate = true;
+			childs[i]->UpdateChildsTransform();
 		}
 	}
 }

@@ -116,17 +116,17 @@ void ModuleImporter::LoadOwnFormat(const char * path, ComponentMesh* mesh) const
 
 void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* addTo)
 {
+	GameObject* newObject = new GameObject();
+	addTo->AddChild(newObject);
+	newObject->SetName(node->mName.C_Str());
+
+	newObject->AddComponent(LoadTransform(node));
+
 	for (int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* newMesh = scene->mMeshes[node->mMeshes[i]];
 		if (newMesh != nullptr)
 		{
-			GameObject* newObject = new GameObject();
-			newObject->SetName(node->mName.C_Str());
-
-			newObject->AddComponent(LoadTransform(node));
-
-
 			ComponentMesh* m = new ComponentMesh();
 			//VERTICES
 			m->numVertices = newMesh->mNumVertices;
@@ -210,10 +210,6 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 
 			newObject->AddComponent(m);
 
-			addTo->AddChild(newObject);
-
-			newObject->SetLocalTransform();
-
 			meshImporter->Save(*m, newObject->GetName());
 
 			App->sceneEditor->GetQuadtree()->Insert(newObject);
@@ -222,7 +218,7 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 
 	for (uint i = 0; i < node->mNumChildren; i++)
 	{
-		LoadNodes(node->mChildren[i], scene, addTo);
+		LoadNodes(node->mChildren[i], scene, newObject);
 	}
 }
 
@@ -242,8 +238,10 @@ ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
 		fullPath.append(path.C_Str());
 
 		int texUID = App->resources->ImportFile(fullPath.c_str(), Resource_Texture);
-		m->AddResource(texUID);
-
+		if (texUID != -1)
+		{
+			m->AddResource(texUID);
+		}
 		m->SetName(path.C_Str());
 
 		return m;

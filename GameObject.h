@@ -10,7 +10,7 @@ class Configuration;
 class GameObject
 {
 public:
-	GameObject(GameObject* parent = nullptr, bool isStatic = true);
+	GameObject(GameObject* parent = nullptr, bool isStatic = false);
 	~GameObject();
 
 	void Update();

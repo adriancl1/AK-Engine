@@ -13,12 +13,11 @@ ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, Compo
 	name = "Transform";
 	needToUpdate = false;
 	rotationEuler = rot.ToEulerXYZ();
+	rotationEuler *= RADTODEG;
 	rotation = rot;
 	globalTransformMatrix = float4x4::FromQuat(rot);
 	globalTransformMatrix = float4x4::Scale(scale, float3(0, 0, 0)) * globalTransformMatrix;
 	globalTransformMatrix.float4x4::SetTranslatePart(pos.x, pos.y, pos.z);
-
-	localTransformMatrix = globalTransformMatrix;
 }
 
 ComponentTransform::~ComponentTransform()
@@ -48,13 +47,25 @@ void ComponentTransform::UpdateTrans()
 	globalTransformMatrix.float4x4::SetTranslatePart(position.x, position.y, position.z);
 
 	SetLocalTrans(myGO->GetParent());
-	myGO->UpdateChildsTransform();
 
 	rotationEuler.x *= RADTODEG;
 	rotationEuler.y *= RADTODEG;
 	rotationEuler.z *= RADTODEG;
 
+	if (myGO != nullptr)
+	{
+		ComponentTransform* parentTrans = (ComponentTransform*)myGO->FindComponent(Component_Transform);
+		if (parentTrans != nullptr)
+		{
+			globalTransformMatrix = parentTrans->GetGlobalTransform() * globalTransformMatrix;
+			//globalTransformMatrix.Decompose(position, rotation, scale);
+			//rotationEuler = rotation.ToEulerXYZ();
+			//rotationEuler *= RADTODEG;
+		}
+	}
+
 	needToUpdate = false;
+	myGO->UpdateChildsTransform();
 }
 
 void ComponentTransform::UpdateTransFromParent(GameObject * parent)
@@ -64,12 +75,10 @@ void ComponentTransform::UpdateTransFromParent(GameObject * parent)
 	{
 		globalTransformMatrix = parentTrans->localTransformMatrix * globalTransformMatrix;
 		float4x4 temp;
-		globalTransformMatrix.Decompose(newPosition, temp, scale);
+		globalTransformMatrix.Decompose(position, temp, scale);
 		rotationEuler = temp.ToEulerXYZ();
-		UpdateTrans();
-		
+		UpdateTrans();		
 	}
-	myGO->UpdateChildsTransform();
 }
 
 void ComponentTransform::SetLocalTrans(GameObject* parent)
@@ -84,8 +93,8 @@ void ComponentTransform::SetLocalTrans(GameObject* parent)
 			float3 localScale = scale.Mul(parentTrans->scale.Recip());
 
 			localTransformMatrix = float4x4::FromQuat(localRot);
-			globalTransformMatrix = float4x4::Scale(localScale, float3(0, 0, 0)) * globalTransformMatrix;
-			globalTransformMatrix.float4x4::SetTranslatePart(localPos.x, localPos.y, localPos.z);
+			localTransformMatrix = float4x4::Scale(localScale, float3(0, 0, 0)) * globalTransformMatrix;
+			localTransformMatrix.float4x4::SetTranslatePart(localPos.x, localPos.y, localPos.z);
 		}
 		else
 		{

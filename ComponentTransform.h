@@ -31,6 +31,8 @@ public:
 
 	float4x4 GetTransMatrix() const;
 
+	bool needToUpdate;
+
 private:
 	float3 position;
 	float3 newPosition;
@@ -40,6 +42,4 @@ private:
 
 	float4x4 globalTransformMatrix;
 	float4x4 localTransformMatrix;
-
-	bool needToUpdate;
 };

@@ -300,6 +300,7 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 	{
 		//root->DeleteChilds();
 		root->AddChild(ret);
+		ret->UpdateChildsTransform();
 		App->camera->CenterToGO(ret);
 	}
 	else

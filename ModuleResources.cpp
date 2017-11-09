@@ -58,6 +58,10 @@ int ModuleResources::ImportFile(const char * fileName, ResourceType type)
 			newResource->exportedFile += ".dds";
 			return UID;
 		}
+		else
+		{
+			return -1;
+		}
 	}
 	else
 	{
