@@ -33,6 +33,7 @@ void ComponentTransform::Update()
 	if (myGO->selected == true)
 	{
 		ShowGizmo(*App->camera->GetEditorCamera());
+		myGO->UpdateChildsTransform();
 	}
 }
 
@@ -46,21 +47,16 @@ void ComponentTransform::UpdateTrans()
 	globalTransformMatrix = float4x4::Scale(scale, float3(0,0,0)) * globalTransformMatrix;
 	globalTransformMatrix.float4x4::SetTranslatePart(position.x, position.y, position.z);
 
-	SetLocalTrans(myGO->GetParent());
-
 	rotationEuler.x *= RADTODEG;
 	rotationEuler.y *= RADTODEG;
 	rotationEuler.z *= RADTODEG;
 
 	if (myGO != nullptr)
 	{
-		ComponentTransform* parentTrans = (ComponentTransform*)myGO->FindComponent(Component_Transform);
+		ComponentTransform* parentTrans = (ComponentTransform*)myGO->GetParent()->FindComponent(Component_Transform);
 		if (parentTrans != nullptr)
 		{
 			globalTransformMatrix = parentTrans->GetGlobalTransform() * globalTransformMatrix;
-			//globalTransformMatrix.Decompose(position, rotation, scale);
-			//rotationEuler = rotation.ToEulerXYZ();
-			//rotationEuler *= RADTODEG;
 		}
 	}
 
@@ -150,43 +146,17 @@ void ComponentTransform::OnEditor()
 			else
 			{
 				ImGui::Text("Position:");
-				if (ImGui::SliderFloat("X", &position.x, -500, 500))
+				if (ImGui::DragFloat3("X", &position.x, 0.5f))
 				{
 					needToUpdate = true;
 				}
-				if (ImGui::SliderFloat("Y", &position.y, -10, 10))
-				{
-					needToUpdate = true;
-				}
-				if (ImGui::SliderFloat("Z", &position.z, -10, 10))
-				{
-					needToUpdate = true;
-				}
-
 				ImGui::Text("Scale:");
-				if (ImGui::SliderFloat("X##1", &scale.x, -10, 10))
+				if (ImGui::DragFloat3("X##1", &scale.x, 0.5f, 1.0f))
 				{
 					needToUpdate = true;
 				}
-				if (ImGui::SliderFloat("Y##1", &scale.y, -10, 10))
-				{
-					needToUpdate = true;
-				}
-				if (ImGui::SliderFloat("Z##1", &scale.z, -10, 10))
-				{
-					needToUpdate = true;
-				}
-
 				ImGui::Text("Rotation:");
-				if (ImGui::SliderFloat("X##2", &rotationEuler.x, -360, 360))
-				{
-					needToUpdate = true;
-				}
-				if (ImGui::SliderFloat("Y##2", &rotationEuler.y, -360, 360))
-				{
-					needToUpdate = true;
-				}
-				if (ImGui::SliderFloat("Z##2", &rotationEuler.z, -360, 360))
+				if (ImGui::DragFloat3("X##2", &rotationEuler.x, 0.5f, -180, 180))
 				{
 					needToUpdate = true;
 				}
@@ -199,7 +169,6 @@ void ComponentTransform::OnEditor()
 					needToUpdate = true;
 				}
 			}
-
 		ImGui::Checkbox("Static:", &myGO->isStatic);
 
 		ImGui::TreePop();

@@ -234,15 +234,28 @@ ComponentMaterial* ModuleImporter::LoadMaterial(aiMaterial* newMaterial)
 
 		newMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 
+		uint length = path.length;
+
+		std::string tmpPath = path.C_Str();
+
+		uint i = tmpPath.find_last_of("\\");
+		length = length - i - 1;
+		char* fileName = new char[length + 1];
+		tmpPath.copy(fileName, length, i + 1);
+		fileName[length] = '\0';
+
 		std::string fullPath = "Assets/";
-		fullPath.append(path.C_Str());
+		fullPath.append(fileName);
 
 		int texUID = App->resources->ImportFile(fullPath.c_str(), Resource_Texture);
 		if (texUID != -1)
 		{
 			m->AddResource(texUID);
 		}
-		m->SetName(path.C_Str());
+		m->SetName(fileName);
+
+		delete[] fileName;
+		fileName = nullptr;
 
 		return m;
 	}
