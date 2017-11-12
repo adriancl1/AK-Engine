@@ -1,9 +1,10 @@
 #include "ComponentMesh.h"
+#include "Application.h"
 #include "ComponentTransform.h"
+#include "ResourceMesh.h"
 #include "GameObject.h"
 #include "Primitive.h"
 #include "Configuration.h"
-#include "Application.h"
 #include "ModuleImporter.h"
 
 #include "imgui-1.51/imgui.h"
@@ -19,30 +20,9 @@ ComponentMesh::ComponentMesh() : Component(Component_Mesh)
 
 ComponentMesh::~ComponentMesh()
 {
-	if (vertices != nullptr)
+	if (mesh != nullptr)
 	{
-		delete[] vertices;
-		vertices = nullptr;
-	}
-	if (indices != nullptr)
-	{
-		delete[] indices;
-		indices = nullptr;
-	}
-	if (normals != nullptr)
-	{
-		delete[] normals;
-		normals = nullptr;
-	}
-	if (colors != nullptr)
-	{
-		delete[] colors;
-		colors = nullptr;
-	}
-	if (texCoords != nullptr)
-	{
-		delete[] texCoords;
-		texCoords = nullptr;
+		mesh->UnloadFromComponent();
 	}
 }
 
@@ -52,25 +32,25 @@ void ComponentMesh::Update()
 
 float3 ComponentMesh::GetCenter() const
 {
-	return enclosingBox.Centroid();
+	return 	mesh->enclosingBox.Centroid();
 }
 
 void ComponentMesh::DrawDebug() const
 {
-	if (idNormals > 0)
+	if (mesh->idNormals > 0)
 	{
-		for (int i = 0; i < numVertices * 3; i += 3)
+		for (int i = 0; i < mesh->numVertices * 3; i += 3)
 		{
-			pLine vNormal(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i] + normals[i], vertices[i + 1] + normals[i + 1], vertices[i + 2] + normals[i + 2]);
+			pLine vNormal(mesh->vertices[i], mesh->vertices[i + 1], mesh->vertices[i + 2], mesh->vertices[i] + mesh->normals[i], mesh->vertices[i + 1] + mesh->normals[i + 1], mesh->vertices[i + 2] + mesh->normals[i + 2]);
 			vNormal.color = Green;
 			vNormal.Render();
 		}
-		if (numVertices % 3 == 0)
+		if (mesh->numVertices % 3 == 0)
 		{
-			for (int i = 0; i < numIndices; i += 3)
+			for (int i = 0; i < 	mesh->numIndices; i += 3)
 			{
 
-				Triangle face(float3(vertices[indices[i] * 3], vertices[indices[i] * 3 + 1], vertices[indices[i] * 3 + 2]), float3(vertices[indices[i + 1] * 3], vertices[indices[i + 1] * 3 + 1], vertices[indices[i + 1] * 3 + 2]), float3(vertices[indices[i + 2] * 3], vertices[indices[i + 2] * 3 + 1], vertices[indices[i + 2] * 3 + 2]));
+				Triangle face(float3(mesh->vertices[mesh->indices[i] * 3], mesh->vertices[mesh->indices[i] * 3 + 1], mesh->vertices[mesh->indices[i] * 3 + 2]), float3(mesh->vertices[mesh->indices[i + 1] * 3], mesh->vertices[mesh->indices[i + 1] * 3 + 1], mesh->vertices[mesh->indices[i + 1] * 3 + 2]), float3(mesh->vertices[mesh->indices[i + 2] * 3], mesh->vertices[mesh->indices[i + 2] * 3 + 1], mesh->vertices[mesh->indices[i + 2] * 3 + 2]));
 				float3 faceCenter = face.Centroid();
 				float3 faceNormal = face.NormalCCW();
 				pLine normal(faceCenter.x, faceCenter.y, faceCenter.z, faceCenter.x + faceNormal.x, faceCenter.y + faceNormal.y, faceCenter.z + faceNormal.z);
@@ -82,7 +62,7 @@ void ComponentMesh::DrawDebug() const
 
 	//Draw enclosing box ----
 	float3 corners[8];
-	enclosingBox.GetCornerPoints(corners);
+	mesh->enclosingBox.GetCornerPoints(corners);
 
 	glColor3f(Azure.r, Azure.g, Azure.b);
 
@@ -130,13 +110,13 @@ void ComponentMesh::OnEditor()
 {
 	if (ImGui::TreeNodeEx(name.c_str()))
 	{
-		ImGui::Text("Vertices ID: %i", idVertices);
-		ImGui::Text("Num Vertices: %i", numVertices);
-		ImGui::Text("Indexes ID: %i", idIndices);
-		ImGui::Text("Num Indexes: %i", numIndices);
-		ImGui::Text("Normals ID: %i", idNormals);
-		ImGui::Text("Colors ID: %i", idColors);
-		ImGui::Text("Texture Coords: %i", idTexCoords);
+		ImGui::Text("Vertices ID: %i", mesh->idVertices);
+		ImGui::Text("Num Vertices: %i", mesh->numVertices);
+		ImGui::Text("Indexes ID: %i", mesh->idIndices);
+		ImGui::Text("Num Indexes: %i", mesh->numIndices);
+		ImGui::Text("Normals ID: %i", mesh->idNormals);
+		ImGui::Text("Colors ID: %i", mesh->idColors);
+		ImGui::Text("Texture Coords: %i", mesh->idTexCoords);
 		ImGui::TreePop();
 	}
 }
@@ -147,7 +127,7 @@ bool ComponentMesh::IntersectsAABB(LineSegment & line) const
 	ComponentTransform* myGOTransform = (ComponentTransform*)myGO->FindComponent(Component_Transform);
 
 	globalLine.Transform(myGOTransform->GetGlobalTransform().Inverted());
-	return globalLine.Intersects(enclosingBox);
+	return globalLine.Intersects(mesh->enclosingBox);
 }
 
 bool ComponentMesh::TriIntersection(LineSegment & line, float& distance, float3 &hitPoint)
@@ -163,9 +143,9 @@ bool ComponentMesh::TriIntersection(LineSegment & line, float& distance, float3 
 
 	localLine.Transform(myGOTransform->GetGlobalTransform().Inverted());
 
-	for (int i = 0; i < numIndices; i += 3)
+	for (int i = 0; i < mesh->numIndices; i += 3)
 	{
-		Triangle face(float3(vertices[indices[i] * 3], vertices[indices[i] * 3 + 1], vertices[indices[i] * 3 + 2]), float3(vertices[indices[i + 1] * 3], vertices[indices[i + 1] * 3 + 1], vertices[indices[i + 1] * 3 + 2]), float3(vertices[indices[i + 2] * 3], vertices[indices[i + 2] * 3 + 1], vertices[indices[i + 2] * 3 + 2]));
+		Triangle face(float3(mesh->vertices[mesh->indices[i] * 3], mesh->vertices[mesh->indices[i] * 3 + 1], mesh->vertices[mesh->indices[i] * 3 + 2]), float3(mesh->vertices[mesh->indices[i + 1] * 3], mesh->vertices[mesh->indices[i + 1] * 3 + 1], mesh->vertices[mesh->indices[i + 1] * 3 + 2]), float3(mesh->vertices[mesh->indices[i + 2] * 3], mesh->vertices[mesh->indices[i + 2] * 3 + 1], mesh->vertices[mesh->indices[i + 2] * 3 + 2]));
 		if (localLine.Intersects(face, &minDistance, &hitPoint))
 		{
 			if (minDistance < prevDistance)
@@ -187,5 +167,77 @@ void ComponentMesh::OnSave(Configuration & data) const
 
 void ComponentMesh::OnLoad(Configuration & data)
 {
-	App->importer->LoadOwnFormat(data.GetString("MeshFile"), this);
+	//App->importer->LoadOwnFormat(data.GetString("MeshFile"), this);
 }
+
+void ComponentMesh::AddResource(int UID)
+{
+	mesh = (ResourceMesh*)App->resources->Get(UID);
+	mesh->LoadToComponent();
+}
+
+uint ComponentMesh::GetIDVertices() const
+{
+	return mesh->idVertices;
+}
+
+uint ComponentMesh::GetNumVertices() const
+{
+	return mesh->numVertices;
+}
+
+uint ComponentMesh::GetIDIndices() const
+{
+	return mesh->idIndices;
+}
+
+uint ComponentMesh::GetNumIndices() const
+{
+	return mesh->numIndices;
+}
+
+uint ComponentMesh::GetIDNormals() const
+{
+	return mesh->idNormals;
+}
+
+uint ComponentMesh::GetIDColors() const
+{
+	return mesh->idColors;
+}
+
+uint ComponentMesh::GetIDTextCoords() const
+{
+	return mesh->idTexCoords;
+}
+
+AABB ComponentMesh::GetEnclosingBox() const
+{
+	return mesh->enclosingBox;
+}
+
+const float* ComponentMesh::GetVertices() const
+{
+	return mesh->vertices;
+}
+
+const uint* ComponentMesh::GetIndices() const
+{
+	return mesh->indices;
+}
+
+const float* ComponentMesh::GetNormals() const
+{
+	return mesh->normals;
+}
+
+const float* ComponentMesh::GetColors() const
+{
+	return mesh->colors;
+}
+
+const float* ComponentMesh::GetTexCoords() const
+{
+	return mesh->texCoords;
+}
+

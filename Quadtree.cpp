@@ -122,7 +122,7 @@ void QuadtreeNode::RedistributeChilds()
 			ComponentMesh* tmp = (ComponentMesh*)(*it)->FindComponent(Component_Mesh);
 				if (tmp != nullptr)
 				{
-				if (childs[i]->box.Intersects(tmp->enclosingBox))
+				if (childs[i]->box.Intersects(tmp->GetEnclosingBox()))
 				{
 					childs[i]->Insert((*it));
 				}
@@ -183,7 +183,7 @@ void Quadtree::Insert(GameObject* toInsert)
 	ComponentMesh* tmp = (ComponentMesh*)toInsert->FindComponent(Component_Mesh);
 	ComponentTransform* tmpTransform = (ComponentTransform*)toInsert->FindComponent(Component_Transform);
 
-	AABB tmpBox = tmp->enclosingBox;
+	AABB tmpBox = tmp->GetEnclosingBox();
 	tmpBox.TransformAsAABB(tmpTransform->GetGlobalTransform());
 
 	if (root != nullptr && root->box.Contains(tmpBox))
@@ -200,7 +200,7 @@ void Quadtree::Insert(GameObject* toInsert)
 void Quadtree::Remove(GameObject* toRemove)
 {
 	ComponentMesh* tmp = (ComponentMesh*)toRemove->FindComponent(Component_Mesh);
-	if (root != nullptr && root->box.Contains(tmp->enclosingBox))
+	if (root != nullptr && root->box.Contains(tmp->GetEnclosingBox()))
 	{
 		root->Remove(toRemove);
 	}

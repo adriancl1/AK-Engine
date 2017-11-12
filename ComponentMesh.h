@@ -4,31 +4,14 @@
 #include "Component.h"
 #include "MathGeo\Geometry\AABB.h"
 
+class ResourceMesh;
+
 class ComponentMesh : public Component
 {
 public:
 	ComponentMesh();
 
 	~ComponentMesh();
-
-	uint idVertices = 0; // id in VRAM 
-	uint numVertices = 0;
-	float* vertices = nullptr;
-
-	uint idIndices = 0; // id in VRAM 
-	uint numIndices = 0;
-	uint* indices = nullptr;
-
-	uint idNormals = 0; // id in VRAM
-	float* normals = nullptr;
-
-	uint idColors = 0; // id in VRAM
-	float* colors = nullptr;
-
-	uint idTexCoords = 0; // id in VRAM
-	float* texCoords = nullptr;
-
-	AABB enclosingBox;
 
 	void Update();
 
@@ -43,4 +26,28 @@ public:
 
 	void OnSave(Configuration& data) const override;
 	void OnLoad(Configuration& data) override;
+	void AddResource(int UID) override;
+
+
+	uint GetIDVertices() const;
+	uint GetNumVertices() const;
+	const float* GetVertices() const;
+
+	uint GetIDIndices() const;
+	uint GetNumIndices() const;
+	const uint* GetIndices() const;
+
+	uint GetIDNormals() const;
+	const float* GetNormals() const;
+
+	uint GetIDColors() const;
+	const float* GetColors() const;
+
+	uint GetIDTextCoords() const;
+	const float* GetTexCoords() const;
+
+	AABB GetEnclosingBox() const;
+
+private:
+	ResourceMesh* mesh = nullptr;
 };

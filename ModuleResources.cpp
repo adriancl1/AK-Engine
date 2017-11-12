@@ -2,6 +2,15 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ResourceTexture.h"
+#include "ResourceMesh.h"
+#include "ModuleImporter.h"
+
+#include "Assimp\include\cimport.h" 
+#include "Assimp\include\scene.h" 
+#include "Assimp\include\postprocess.h" 
+#include "Assimp\include\cfileio.h"
+
+#pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 ModuleResources::ModuleResources(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -33,13 +42,13 @@ int ModuleResources::ImportFile(const char * fileName, ResourceType type)
 	{
 		bool imported;
 		UID = App->randomGenerator->Int();
-		std::string exportedFile = std::to_string(UID);
+		std::string exFile = std::to_string(UID);
 
 		switch(type)
 		{
 		case Resource_Texture:
 		{
-			imported = App->textures->Import(fileName, exportedFile);
+			imported = App->textures->Import(fileName, exFile);
 			break;
 		}
 		case Resource_Unknown:
@@ -54,7 +63,7 @@ int ModuleResources::ImportFile(const char * fileName, ResourceType type)
 			Resource* newResource = CreateNewResource(type, UID);
 			newResource->file = fileName;
 			newResource->exportedFile = "Library/Material/";
-			newResource->exportedFile += exportedFile;
+			newResource->exportedFile += exFile;
 			newResource->exportedFile += ".dds";
 			return UID;
 		}
@@ -67,6 +76,33 @@ int ModuleResources::ImportFile(const char * fileName, ResourceType type)
 	{
 		return UID;
 	}
+}
+
+int ModuleResources::ImportFile(aiMesh * mesh)
+{
+	//TODO: Assign or read a name from aiMesh
+	bool imported;
+	int UID = App->randomGenerator->Int();
+	std::string exFile = std::to_string(UID);
+
+	imported = App->importer->SaveOwnFormat(mesh, exFile.c_str());
+
+	if (imported == true)
+	{
+		Resource* newResource = CreateNewResource(Resource_Mesh, UID);
+		//newResource->file = fileName; ?
+
+		newResource->exportedFile = "Library/Mesh/";
+		newResource->exportedFile += exFile;
+		newResource->exportedFile += ".don";
+		return UID;
+	}
+	else
+	{
+		return -1;
+	}
+
+	return 0;
 }
 
 Resource * ModuleResources::Get(int UID)
@@ -86,6 +122,12 @@ Resource * ModuleResources::CreateNewResource(ResourceType type, int UID)
 	case Resource_Texture:
 	{
 		ret = (Resource*) new ResourceTexture(UID);
+		break;
+	}
+	case Resource_Mesh:
+	{
+		ret = (Resource*) new ResourceMesh(UID);
+		break;
 	}
 	}
 

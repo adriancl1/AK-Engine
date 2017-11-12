@@ -7,6 +7,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ResourceMesh.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleSceneEditor.h"
 #include "Glew\include\glew.h"
@@ -349,7 +350,7 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 			ComponentMesh* toDraw = dynamic_cast<ComponentMesh*> (objectDraw->GetComponents()[i]);
 			if (camera != nullptr && camera->GetFrustumCulling() == true)
 			{
-				AABB recalculatedBox = toDraw->enclosingBox;
+				AABB recalculatedBox = toDraw->GetEnclosingBox();
 				recalculatedBox.TransformAsAABB(tmpTrans->GetTransMatrix());
 				if (camera->Contains(recalculatedBox))
 				{
@@ -368,65 +369,65 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 
 void ModuleRenderer3D::DrawMesh(ComponentMesh * toDraw)
 {
-		if (wframe == true)
+	if (wframe == true)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glColor3f(0, 1, 1);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
+	if (toDraw->GetIDNormals() > 0)
+	{
+		glEnable(GL_LIGHTING);
+		glEnableClientState(GL_NORMAL_ARRAY);
+
+		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDNormals());
+		glNormalPointer(GL_FLOAT, 0, NULL);
+	}
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+	glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDVertices());
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+
+	if (toDraw->GetIDTextCoords() > 0)
+	{
+		ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(toDraw->GetGameObject()->FindComponent(Component_Material));
+		if (mat != nullptr && wframe == false)
 		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			glColor3f(0, 1, 1);
+			glBindTexture(GL_TEXTURE_2D, mat->GetTextureID());
 		}
-		else
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		}
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDTextCoords());
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+	}
 
-		if (toDraw->idNormals > 0)
-		{
-			glEnable(GL_LIGHTING);
-			glEnableClientState(GL_NORMAL_ARRAY);
+	if (toDraw->GetIDColors() > 0)
+	{
+		glEnableClientState(GL_COLOR_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDColors());
+		glColorPointer(3, GL_FLOAT, 0, NULL);
+	}
 
-			glBindBuffer(GL_ARRAY_BUFFER, toDraw->idNormals);
-			glNormalPointer(GL_FLOAT, 0, NULL);
-		}
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-		glBindBuffer(GL_ARRAY_BUFFER, toDraw->idVertices);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw->GetIDIndices());
+	glDrawElements(GL_TRIANGLES, toDraw->GetNumIndices(), GL_UNSIGNED_INT, NULL);
 
 
-		if (toDraw->idTexCoords > 0)
-		{
-			ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(toDraw->GetGameObject()->FindComponent(Component_Material));
-			if (mat != nullptr && wframe == false)
-			{
-				glBindTexture(GL_TEXTURE_2D, mat->GetTextureID());
-			}
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, toDraw->idTexCoords);
-			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-		}
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
 
-		if (toDraw->idColors > 0)
-		{
-			glEnableClientState(GL_COLOR_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, toDraw->idColors);
-			glColorPointer(3, GL_FLOAT, 0, NULL);
-		}
+	glBindTexture(GL_TEXTURE_2D, 0);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw->idIndices);
-		glDrawElements(GL_TRIANGLES, toDraw->numIndices, GL_UNSIGNED_INT, NULL);
-
-
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_NORMAL_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		if (App->physics->debug)
-		{
-			toDraw->DrawDebug();
-		}
+	if (App->physics->debug)
+	{
+		toDraw->DrawDebug();
+	}
 }
 

@@ -6,6 +6,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
+#include "ResourceMesh.h"
 #include "Quadtree.h"
 #include "MeshImporter.h"
 
@@ -109,9 +110,14 @@ void ModuleImporter::LoadNewTexture(const char* fullPath)
 	LOG("Set %s as new texture for current meshes.");*/
 }
 
-void ModuleImporter::LoadOwnFormat(const char * path, ComponentMesh* mesh) const
+void ModuleImporter::LoadOwnFormat(const char * path, ResourceMesh* mesh) const
 {
-	return meshImporter->Load(path, mesh);
+	meshImporter->Load(path, mesh);
+}
+
+bool ModuleImporter::SaveOwnFormat(aiMesh * mesh, const char * UID)
+{
+	return meshImporter->Save(mesh, UID);
 }
 
 void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* addTo)
@@ -128,89 +134,23 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 		if (newMesh != nullptr)
 		{
 			ComponentMesh* m = new ComponentMesh();
-			//VERTICES
-			m->numVertices = newMesh->mNumVertices;
-			
-			m->vertices = new float[m->numVertices * 3];
 
-			memcpy(m->vertices, newMesh->mVertices, sizeof(float)* m->numVertices * 3);
-
-			LOG("New mesh with %d vertices", m->numVertices);
-
-			glGenBuffers(1, (GLuint*)&m->idVertices);
-			glBindBuffer(GL_ARRAY_BUFFER, m->idVertices);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->vertices, GL_STATIC_DRAW);
-
-			//INDICES
-			if (newMesh->HasFaces())
+			int meshUID = App->resources->ImportFile(newMesh);
+			if (meshUID != -1)
 			{
-				m->numIndices = newMesh->mNumFaces * 3;
-				m->indices = new uint[m->numIndices];
-
-				for (uint i = 0; i < newMesh->mNumFaces; ++i)
-				{
-					if (newMesh->mFaces[i].mNumIndices != 3)
-					{
-						LOG("WARNING, geometry face with != 3 indices!");
-					}
-					else
-					{
-						memcpy(&m->indices[i * 3], newMesh->mFaces[i].mIndices, 3 * sizeof(uint));
-					}
-				}
-
-				glGenBuffers(1, (GLuint*)&m->idIndices);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->idIndices);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m->numIndices, m->indices, GL_STATIC_DRAW);
+				m->AddResource(meshUID);
 			}
-
-			//NORMALS
-			if (newMesh->HasNormals())
-			{
-				m->normals = new float[m->numVertices * 3];
-				memcpy(m->normals, newMesh->mNormals, sizeof(float) * m->numVertices * 3);
-
-				glGenBuffers(1, (GLuint*) &(m->idNormals));
-				glBindBuffer(GL_ARRAY_BUFFER, m->idNormals);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->normals, GL_STATIC_DRAW);
-			}
-
-			//COLORS
-			if (newMesh->HasVertexColors(0))
-			{
-				m->colors = new float[m->numVertices * 3];
-				memcpy(m->colors, newMesh->mColors, sizeof(float) * m->numVertices * 3);
-
-				glGenBuffers(1, (GLuint*) &(m->idColors));
-				glBindBuffer(GL_ARRAY_BUFFER, m->idColors);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->colors, GL_STATIC_DRAW);
-			}
-
-			//TEXTURE COORDS
-			if (newMesh->HasTextureCoords(0))
-			{
-				m->texCoords = new float[m->numVertices * 3];
-				memcpy(m->texCoords, newMesh->mTextureCoords[0], sizeof(float) * m->numVertices * 3);
-
-				glGenBuffers(1, (GLuint*) &(m->idTexCoords));
-				glBindBuffer(GL_ARRAY_BUFFER, m->idTexCoords);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->numVertices * 3, m->texCoords, GL_STATIC_DRAW);
-
-				aiMaterial* material = nullptr;
-				material = scene->mMaterials[newMesh->mMaterialIndex];
-				newObject->AddComponent(LoadMaterial(material));
-
-			}
+			aiMaterial* material = nullptr;
+			material = scene->mMaterials[newMesh->mMaterialIndex];
+			newObject->AddComponent(LoadMaterial(material));
 
 			m->SetName("Mesh");
 
-			m->enclosingBox.SetNegativeInfinity();
+			m->GetEnclosingBox().SetNegativeInfinity();
 
-			m->enclosingBox.Enclose((float3*)m->vertices, m->numVertices);
-
+			m->GetEnclosingBox().Enclose((float3*)m->GetVertices(), m->GetNumVertices());
+			
 			newObject->AddComponent(m);
-
-			meshImporter->Save(*m, newObject->GetName());
 
 			App->sceneEditor->GetQuadtree()->Insert(newObject);
 		}

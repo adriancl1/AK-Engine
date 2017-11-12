@@ -17,6 +17,8 @@ class ComponentMesh;
 class ComponentMaterial;
 class ComponentTransform;
 
+class ResourceMesh;
+
 class ModuleImporter : public Module
 {
 public:
@@ -28,12 +30,13 @@ public:
 
 	GameObject* LoadGameObject(const char* fullPath);
 
-	void LoadNodes(aiNode* root, const aiScene* scene, GameObject* addTo);
 	ComponentMaterial* LoadMaterial(aiMaterial* newMaterial);
 	ComponentTransform* LoadTransform(aiNode* node);
 
+	void LoadNodes(aiNode* root, const aiScene* scene, GameObject* addTo);
 	void LoadNewTexture(const char* fullPath);
-	void LoadOwnFormat(const char* path, ComponentMesh* mesh) const;
+	void LoadOwnFormat(const char* path, ResourceMesh* mesh) const;
+	bool SaveOwnFormat(aiMesh* mesh, const char* UID);
 
 private:
 	MeshImporter* meshImporter = nullptr;

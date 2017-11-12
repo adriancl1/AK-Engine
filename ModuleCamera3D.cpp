@@ -197,7 +197,7 @@ void ModuleCamera3D::CenterToGO(GameObject * centerTo)
 	if (mesh != nullptr)
 	{
 		float3 temp = mesh->GetCenter();
-		float3 size = mesh->enclosingBox.Size() * 0.5f;
+		float3 size = mesh->GetEnclosingBox().Size() * 0.5f;
 		Position = vec3(temp.x + size.x, temp.y + size.y, temp.z + 5.0f + size.z);
 		Reference = vec3(temp.x + size.x, temp.y + size.y, temp.z + size.z);
 		LookAt(vec3(temp.x, temp.y, temp.z));

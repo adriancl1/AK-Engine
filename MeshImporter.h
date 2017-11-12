@@ -2,7 +2,8 @@
 
 #include "Importer.h"
 
-class ComponentMesh;
+class ResourceMesh;
+class aiMesh;
 
 class MeshImporter : public Importer
 {
@@ -10,6 +11,6 @@ public:
 	MeshImporter();
 	~MeshImporter();
 
-	void Load(const char* inputFile, ComponentMesh* mesh);
-	bool Save(const ComponentMesh& mesh, const char* outputFile);
+	void Load(const char* inputFile, ResourceMesh* mesh);
+	bool Save(const aiMesh* mesh, const char* outputFile);
 };

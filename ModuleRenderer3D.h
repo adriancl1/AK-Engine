@@ -8,6 +8,7 @@
 
 #define MAX_LIGHTS 8
 
+class ResourceMesh;
 class ComponentMesh;
 class GameObject;
 

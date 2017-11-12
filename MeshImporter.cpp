@@ -1,9 +1,17 @@
 #include "MeshImporter.h"
 #include "Application.h"
 #include "ComponentMesh.h"
+#include "ResourceMesh.h"
 #include "ModuleFileSystem.h"
 
 #include "Glew\include\glew.h"
+
+#include "Assimp\include\cimport.h" 
+#include "Assimp\include\scene.h" 
+#include "Assimp\include\postprocess.h" 
+#include "Assimp\include\cfileio.h"
+
+#pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 MeshImporter::MeshImporter()
 {
@@ -13,7 +21,7 @@ MeshImporter::~MeshImporter()
 {
 }
 
-void MeshImporter::Load(const char * inputFile, ComponentMesh* mesh)
+void MeshImporter::Load(const char * inputFile, ResourceMesh* mesh)
 {
 	char* buffer;
 	uint size;
@@ -75,20 +83,21 @@ void MeshImporter::Load(const char * inputFile, ComponentMesh* mesh)
 	}
 }
 
-bool MeshImporter::Save(const ComponentMesh & mesh, const char * outputFile)
+bool MeshImporter::Save(const aiMesh* mesh, const char * outputFile)
 {
-	uint ranges[4] = { mesh.numIndices, mesh.numVertices, mesh.numVertices, mesh.numVertices };
-	float size = sizeof(ranges);
-	size += sizeof(uint) * mesh.numIndices; //Indices
-	size += sizeof(float) * mesh.numVertices * 3; //Vertices
+	uint ranges[4] = { mesh->mNumFaces*3, mesh->mNumVertices, mesh->mNumVertices, mesh->mNumVertices };
 
-	if (mesh.normals != nullptr)
+	float size = sizeof(ranges);
+	size += sizeof(uint) * mesh->mNumFaces * 3; //Indices
+	size += sizeof(float) * mesh->mNumVertices * 3; //Vertices
+
+	if (mesh->mNormals != nullptr)
 	{
-		size += sizeof(float) * mesh.numVertices * 3; //Normals
+		size += sizeof(float) * mesh->mNumVertices * 3; //Normals
 	}
-	if (mesh.texCoords != nullptr)
+	if (mesh->mTextureCoords != nullptr)
 	{
-		size += sizeof(float) * mesh.numVertices * 3; //TexCoords
+		size += sizeof(float) * mesh->mNumVertices * 3; //TexCoords
 	}
 
 	char* data = new char[size];
@@ -100,25 +109,25 @@ bool MeshImporter::Save(const ComponentMesh & mesh, const char * outputFile)
 	cursor += bytes;
 
 	// Store indices
-	bytes = sizeof(uint) * mesh.numIndices;
-	memcpy(cursor, mesh.indices, mesh.numIndices * sizeof(uint));
+	bytes = sizeof(uint) * mesh->mNumFaces * 3;
+	memcpy(cursor, mesh->mFaces, mesh->mNumFaces * 3 * sizeof(uint));
 	cursor += bytes;
 
 	// Store vertices
-	bytes = sizeof(float) * mesh.numVertices * 3;
-	memcpy(cursor, mesh.vertices, mesh.numVertices * 3 * sizeof(float));
+	bytes = sizeof(float) * mesh->mNumVertices * 3;
+	memcpy(cursor, mesh->mVertices, mesh->mNumVertices * 3 * sizeof(float));
 	cursor += bytes;
 
-	if (mesh.normals != nullptr)
+	if (mesh->mNormals != nullptr)
 	{
-		bytes = sizeof(float) * mesh.numVertices * 3;
-		memcpy(cursor, mesh.normals, mesh.numVertices * 3 * sizeof(float));
+		bytes = sizeof(float) * mesh->mNumVertices * 3;
+		memcpy(cursor, mesh->mNormals, mesh->mNumVertices * 3 * sizeof(float));
 		cursor += bytes;
 	}
-	if (mesh.texCoords != nullptr)
+	if (mesh->mTextureCoords != nullptr)
 	{
-		bytes = sizeof(float) * mesh.numVertices * 3;
-		memcpy(cursor, mesh.texCoords, mesh.numVertices * 3 * sizeof(float));
+		bytes = sizeof(float) * mesh->mNumVertices * 3;
+		memcpy(cursor, mesh->mTextureCoords, mesh->mNumVertices * 3 * sizeof(float));
 		cursor += bytes;
 	}
 
