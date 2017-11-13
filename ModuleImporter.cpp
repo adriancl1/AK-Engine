@@ -46,18 +46,6 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 {
 	GameObject* newObject = new GameObject();
 
-	uint length = strlen(fullPath);
-
-	std::string namePath = fullPath;
-
-	uint i = namePath.find_last_of("\\");
-	char* testM = new char[length-i];
-	namePath.copy(testM, length - i, i);
-	newObject->SetName(testM);
-
-	delete[] testM;
-	testM = nullptr;
-
 	const aiScene* scene = aiImportFile(fullPath, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -69,6 +57,20 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 		newObject->AddComponent(LoadTransform(node));
 
 		LOG("Loading meshes");
+		std::string tmpPath = fullPath;
+		uint length = tmpPath.length();	
+
+		uint i = tmpPath.find_last_of("\\");
+		length = length - i - 1;
+		char* fileName = new char[length + 1];
+		tmpPath.copy(fileName, length, i + 1);
+		fileName[length] = '\0';
+
+		for (int i = 0; i < scene->mNumMeshes; i++)
+		{
+			scene->mMeshes[i]->mName = fileName;
+			scene->mMeshes[i]->mName.Append(std::to_string(i).c_str());
+		}
 
 		LoadNodes(node, scene, newObject);
 
@@ -135,7 +137,7 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 		{
 			ComponentMesh* m = new ComponentMesh();
 
-			int meshUID = App->resources->ImportFile(newMesh);
+			int meshUID = App->resources->ImportFile(newMesh->mName.C_Str(), newMesh);
 			if (meshUID != -1)
 			{
 				m->AddResource(meshUID);

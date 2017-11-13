@@ -78,31 +78,36 @@ int ModuleResources::ImportFile(const char * fileName, ResourceType type)
 	}
 }
 
-int ModuleResources::ImportFile(aiMesh * mesh)
+int ModuleResources::ImportFile(const char* meshName, aiMesh * mesh)
 {
-	//TODO: Assign or read a name from aiMesh
-	bool imported;
-	int UID = App->randomGenerator->Int();
-	std::string exFile = std::to_string(UID);
+	int UID = Find(meshName);
 
-	imported = App->importer->SaveOwnFormat(mesh, exFile.c_str());
-
-	if (imported == true)
+	if (UID == 0)
 	{
-		Resource* newResource = CreateNewResource(Resource_Mesh, UID);
-		//newResource->file = fileName; ?
+		bool imported;
+		int UID = App->randomGenerator->Int();
+		std::string exFile = std::to_string(UID);
 
-		newResource->exportedFile = "Library/Mesh/";
-		newResource->exportedFile += exFile;
-		newResource->exportedFile += ".don";
-		return UID;
+		imported = App->importer->SaveOwnFormat(mesh, exFile.c_str());
+
+		if (imported == true)
+		{
+			Resource* newResource = CreateNewResource(Resource_Mesh, UID);
+			newResource->file = meshName;
+			newResource->exportedFile = "Library/Mesh/";
+			newResource->exportedFile += exFile;
+			newResource->exportedFile += ".don";
+			return UID;
+		}
+		else
+		{
+			return -1;
+		}
 	}
 	else
 	{
-		return -1;
+		return UID;
 	}
-
-	return 0;
 }
 
 Resource * ModuleResources::Get(int UID)
