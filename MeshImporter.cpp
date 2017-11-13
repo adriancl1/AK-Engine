@@ -85,19 +85,53 @@ void MeshImporter::Load(const char * inputFile, ResourceMesh* mesh)
 
 bool MeshImporter::Save(const aiMesh* mesh, const char * outputFile)
 {
-	uint ranges[4] = { mesh->mNumFaces*3, mesh->mNumVertices, mesh->mNumVertices, mesh->mNumVertices };
+	ResourceMesh* tmpMesh = new ResourceMesh(0);
+
+	tmpMesh->numVertices = mesh->mNumVertices;
+	tmpMesh->vertices = new float[tmpMesh->numVertices * 3];
+	memcpy(tmpMesh->vertices, mesh->mVertices, sizeof(float) * tmpMesh->numVertices * 3);
+	LOG("Saving mesh with %d vertices", tmpMesh->numVertices);
+
+	if (mesh->HasFaces())
+	{
+		tmpMesh->numIndices = mesh->mNumFaces * 3;
+		tmpMesh->indices = new uint[tmpMesh->numIndices];
+		for (uint i = 0; i < mesh->mNumFaces; ++i)
+		{
+			if (mesh->mFaces[i].mNumIndices != 3)
+			{
+				LOG("WARNING, geometry face with != 3 indices!");
+			}
+			else
+			{
+				memcpy(&tmpMesh->indices[i * 3], mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+			}
+		}
+	}
+	if (mesh->HasNormals())
+	{
+		tmpMesh->normals = new float[tmpMesh->numVertices * 3];
+		memcpy(tmpMesh->normals, mesh->mNormals, sizeof(float) * tmpMesh->numVertices * 3);
+	}
+	if (mesh->HasTextureCoords(0))
+	{
+		tmpMesh->texCoords = new float[tmpMesh->numVertices * 3];
+		memcpy(tmpMesh->texCoords, mesh->mTextureCoords[0], sizeof(float) * tmpMesh->numVertices * 3);
+	}
+
+	uint ranges[4] = { tmpMesh->numIndices, tmpMesh->numVertices, tmpMesh->numVertices, tmpMesh->numVertices };
 
 	float size = sizeof(ranges);
-	size += sizeof(uint) * mesh->mNumFaces * 3; //Indices
-	size += sizeof(float) * mesh->mNumVertices * 3; //Vertices
+	size += sizeof(uint) * tmpMesh->numIndices; //Indices
+	size += sizeof(float) * tmpMesh->numVertices * 3; //Vertices
 
-	if (mesh->mNormals != nullptr)
+	if (tmpMesh->normals != nullptr)
 	{
-		size += sizeof(float) * mesh->mNumVertices * 3; //Normals
+		size += sizeof(float) * tmpMesh->numVertices * 3; //Normals
 	}
-	if (mesh->mTextureCoords != nullptr)
+	if (tmpMesh->texCoords != nullptr)
 	{
-		size += sizeof(float) * mesh->mNumVertices * 3; //TexCoords
+		size += sizeof(float) * tmpMesh->numVertices * 3; //TexCoords
 	}
 
 	char* data = new char[size];
@@ -109,30 +143,31 @@ bool MeshImporter::Save(const aiMesh* mesh, const char * outputFile)
 	cursor += bytes;
 
 	// Store indices
-	bytes = sizeof(uint) * mesh->mNumFaces * 3;
-	memcpy(cursor, mesh->mFaces, mesh->mNumFaces * 3 * sizeof(uint));
+	bytes = sizeof(uint) * tmpMesh->numIndices;
+	memcpy(cursor, tmpMesh->indices, tmpMesh->numIndices * sizeof(uint));
 	cursor += bytes;
 
 	// Store vertices
-	bytes = sizeof(float) * mesh->mNumVertices * 3;
-	memcpy(cursor, mesh->mVertices, mesh->mNumVertices * 3 * sizeof(float));
+	bytes = sizeof(float) * tmpMesh->numVertices * 3;
+	memcpy(cursor, tmpMesh->vertices, tmpMesh->numVertices * 3 * sizeof(float));
 	cursor += bytes;
 
-	if (mesh->mNormals != nullptr)
+	if (tmpMesh->normals != nullptr)
 	{
-		bytes = sizeof(float) * mesh->mNumVertices * 3;
-		memcpy(cursor, mesh->mNormals, mesh->mNumVertices * 3 * sizeof(float));
+		bytes = sizeof(float) * tmpMesh->numVertices * 3;
+		memcpy(cursor, tmpMesh->normals, tmpMesh->numVertices * 3 * sizeof(float));
 		cursor += bytes;
 	}
-	if (mesh->mTextureCoords != nullptr)
+	if (tmpMesh->texCoords != nullptr)
 	{
-		bytes = sizeof(float) * mesh->mNumVertices * 3;
-		memcpy(cursor, mesh->mTextureCoords, mesh->mNumVertices * 3 * sizeof(float));
+		bytes = sizeof(float) * tmpMesh->numVertices * 3;
+		memcpy(cursor, tmpMesh->texCoords, tmpMesh->numVertices * 3 * sizeof(float));
 		cursor += bytes;
 	}
 
 	App->fileSystem->SaveFile(outputFile, data, size, fileMesh);
 
+	delete tmpMesh;
 	RELEASE_ARRAY(data);
 
 	return true;

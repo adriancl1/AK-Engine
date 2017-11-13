@@ -47,7 +47,7 @@ void ComponentMesh::DrawDebug() const
 		}
 		if (mesh->numVertices % 3 == 0)
 		{
-			for (int i = 0; i < 	mesh->numIndices; i += 3)
+			for (int i = 0; i < mesh->numIndices; i += 3)
 			{
 
 				Triangle face(float3(mesh->vertices[mesh->indices[i] * 3], mesh->vertices[mesh->indices[i] * 3 + 1], mesh->vertices[mesh->indices[i] * 3 + 2]), float3(mesh->vertices[mesh->indices[i + 1] * 3], mesh->vertices[mesh->indices[i + 1] * 3 + 1], mesh->vertices[mesh->indices[i + 1] * 3 + 2]), float3(mesh->vertices[mesh->indices[i + 2] * 3], mesh->vertices[mesh->indices[i + 2] * 3 + 1], mesh->vertices[mesh->indices[i + 2] * 3 + 2]));
@@ -117,6 +117,12 @@ void ComponentMesh::OnEditor()
 		ImGui::Text("Normals ID: %i", mesh->idNormals);
 		ImGui::Text("Colors ID: %i", mesh->idColors);
 		ImGui::Text("Texture Coords: %i", mesh->idTexCoords);
+		ImGui::Text("Resource ID: %i", mesh->GetUID());
+		ImGui::Text("Resource reference counting: %i", mesh->GetReferenceCount());
+		if (ImGui::Button("Delete Component"))
+		{
+			wantsToDie = true;
+		}
 		ImGui::TreePop();
 	}
 }

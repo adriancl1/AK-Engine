@@ -140,6 +140,7 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 			{
 				m->AddResource(meshUID);
 			}
+
 			aiMaterial* material = nullptr;
 			material = scene->mMaterials[newMesh->mMaterialIndex];
 			newObject->AddComponent(LoadMaterial(material));
