@@ -46,11 +46,17 @@ public:
 	Quadtree* GetQuadtree();
 	void SetSelected(GameObject* selected);
 
+	void InsertToQuadtree(GameObject* toAdd);
+	void RecalculateQuadtree();
+
 	GameObject* CreateNewGameObject(const char* path);
 
 	void WantToLoadScene(const char* fileTitle);
 	void SaveScene(const char* fileTitle)const;
 	void LoadScene(const char* fileTitle);
+
+public:
+	bool recalcTree = false;
 
 private:
 	//For now ----

@@ -119,10 +119,13 @@ void QuadtreeNode::RedistributeChilds()
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			ComponentMesh* tmp = (ComponentMesh*)(*it)->FindComponent(Component_Mesh);
-				if (tmp != nullptr)
+			ComponentMesh* tmpMesh = (ComponentMesh*)(*it)->FindComponent(Component_Mesh);
+			ComponentTransform* tmpTransform = (ComponentTransform*)(*it)->FindComponent(Component_Transform);
+			AABB tmpBox = tmpMesh->GetEnclosingBox();
+			tmpBox.TransformAsAABB(tmpTransform->GetGlobalTransform());
+				if (tmpMesh != nullptr)
 				{
-				if (childs[i]->box.Intersects(tmp->GetEnclosingBox()))
+				if (childs[i]->box.Intersects(tmpBox))
 				{
 					childs[i]->Insert((*it));
 				}
@@ -168,6 +171,10 @@ void QuadtreeNode::CollectIntersections(std::vector<GameObject*>& objects, const
 	}
 }
 
+Quadtree::Quadtree()
+{
+}
+
 Quadtree::Quadtree(const AABB& box)
 {
 	root = new QuadtreeNode(box);
@@ -180,20 +187,28 @@ Quadtree::~Quadtree()
 
 void Quadtree::Insert(GameObject* toInsert)
 {
-	ComponentMesh* tmp = (ComponentMesh*)toInsert->FindComponent(Component_Mesh);
+	ComponentMesh* tmpMesh = (ComponentMesh*)toInsert->FindComponent(Component_Mesh);
 	ComponentTransform* tmpTransform = (ComponentTransform*)toInsert->FindComponent(Component_Transform);
 
-	AABB tmpBox = tmp->GetEnclosingBox();
-	tmpBox.TransformAsAABB(tmpTransform->GetGlobalTransform());
+	if (tmpMesh != nullptr)
+	{
+		AABB tmpBox = tmpMesh->GetEnclosingBox();
+		tmpBox.TransformAsAABB(tmpTransform->GetGlobalTransform());
 
-	if (root != nullptr && root->box.Contains(tmpBox))
-	{
-		root->Insert(toInsert);
-	}
-	else if (root != nullptr && !root->box.Contains(tmpBox))
-	{
-		root->box.Enclose(tmpBox);
-		root->Insert(toInsert);
+		if (root != nullptr && root->box.Contains(tmpBox))
+		{
+			root->Insert(toInsert);
+		}
+		else if (root != nullptr && !root->box.Contains(tmpBox))
+		{
+			root->box.Enclose(tmpBox);
+			root->Insert(toInsert);
+		}
+		else if (root == nullptr)
+		{
+			root = new QuadtreeNode(tmpBox);
+			root->Insert(toInsert);
+		}
 	}
 }
 
@@ -214,5 +229,8 @@ void Quadtree::Clear()
 
 void Quadtree::DrawDebug(Color color) const
 {
-	root->DrawDebug(color);
+	if (root != nullptr)
+	{
+		root->DrawDebug(color);
+	}
 }

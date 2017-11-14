@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleSceneEditor.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
@@ -114,7 +115,7 @@ void GameObject::UpdateChildsTransform()
 		ComponentTransform* tmp = (ComponentTransform*)childs[i]->FindComponent(Component_Transform);
 		if (tmp != nullptr)
 		{
-			tmp->needToUpdate = true;
+			tmp->UpdateTrans();
 			childs[i]->UpdateChildsTransform();
 		}
 	}
@@ -325,6 +326,35 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 			LOG("Error in component %i of %s, unknown type", &i, name.c_str());
 			break;
 		}
+		}
+	}
+}
+
+void GameObject::InsertSelfAndChilds()
+{
+	if (isStatic)
+	{
+		App->sceneEditor->InsertToQuadtree(this);
+	}
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->InsertSelfAndChilds();
+	}
+}
+
+void GameObject::OnStaticChange()
+{
+	if (isStatic == true)
+	{
+		App->sceneEditor->InsertToQuadtree(this);
+	}
+	else
+	{
+		App->sceneEditor->recalcTree = true;
+		for (int i = 0; i < childs.size(); i++)
+		{
+			childs[i]->isStatic = false;
+			childs[i]->OnStaticChange();
 		}
 	}
 }

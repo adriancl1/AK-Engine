@@ -25,7 +25,7 @@ ComponentTransform::~ComponentTransform()
 
 void ComponentTransform::Update()
 {
-	if (needToUpdate && myGO->isStatic == false)
+	if (needToUpdate)
 	{
 		UpdateTrans();
 		needToUpdate = false;		
@@ -169,8 +169,10 @@ void ComponentTransform::OnEditor()
 					needToUpdate = true;
 				}
 			}
-		ImGui::Checkbox("Static:", &myGO->isStatic);
-
+			if (ImGui::Checkbox("Static:", &myGO->isStatic))
+			{
+				myGO->OnStaticChange();
+			}
 		ImGui::TreePop();
 	}
 }
@@ -208,6 +210,10 @@ void ComponentTransform::OnLoad(Configuration & data)
 void ComponentTransform::ShowGizmo(ComponentCamera & camera)
 {
 	ImGuizmo::Enable(true);
+	if (myGO->isStatic == true)
+	{
+		ImGuizmo::Enable(false);
+	}
 
 	static ImGuizmo::OPERATION currentOperation(ImGuizmo::TRANSLATE);
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)

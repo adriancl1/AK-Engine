@@ -154,8 +154,6 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 			m->GetEnclosingBox().Enclose((float3*)m->GetVertices(), m->GetNumVertices());
 			
 			newObject->AddComponent(m);
-
-			App->sceneEditor->GetQuadtree()->Insert(newObject);
 		}
 	}
 

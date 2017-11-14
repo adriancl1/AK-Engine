@@ -10,7 +10,7 @@ class Configuration;
 class GameObject
 {
 public:
-	GameObject(GameObject* parent = nullptr, bool isStatic = false);
+	GameObject(GameObject* parent = nullptr, bool isStatic = true);
 	~GameObject();
 
 	void Update();
@@ -32,6 +32,9 @@ public:
 
 	void OnSerialize(Configuration& dataToSave)const;
 	void OnDeserialize(Configuration& dataToLoad);
+	void InsertSelfAndChilds();
+
+	void OnStaticChange();
 
 	Component* FindComponent(ComponentType type) const;
 	GameObject* GetParent() const;

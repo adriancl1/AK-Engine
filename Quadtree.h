@@ -28,6 +28,7 @@ public:
 class Quadtree
 {
 public: 
+	Quadtree();
 	Quadtree(const AABB& box);
 	virtual ~Quadtree();
 	

@@ -58,7 +58,7 @@ bool ModuleSceneEditor::Start()
 
 	scene->AddComponent(camera);
 
-	tree = new Quadtree(AABB(float3(0, 0, 0), float3(0, 0, 0))); 
+	tree = new Quadtree(); 
 
 	return true;
 }
@@ -107,6 +107,10 @@ update_status ModuleSceneEditor::PostUpdate(float dt)
 		LOG("Save completed in %i ms", saveLoadTimer.Read());
 		saveLoadTimer.Stop();
 		wantToSave = false;
+	}
+	if (recalcTree == true)
+	{
+		RecalculateQuadtree();
 	}
 	return UPDATE_CONTINUE;
 }
@@ -293,6 +297,19 @@ void ModuleSceneEditor::SetSelected(GameObject * selected)
 	}
 }
 
+void ModuleSceneEditor::InsertToQuadtree(GameObject * toAdd)
+{
+	tree->Insert(toAdd);
+}
+
+void ModuleSceneEditor::RecalculateQuadtree()
+{
+	delete tree;
+	tree = new Quadtree();
+	root->InsertSelfAndChilds();
+	recalcTree = false;
+}
+
 GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 {
 	GameObject* ret = App->importer->LoadGameObject(path);
@@ -302,6 +319,7 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 		root->AddChild(ret);
 		ret->UpdateChildsTransform();
 		App->camera->CenterToGO(ret);
+		root->InsertSelfAndChilds();
 	}
 	else
 	{
