@@ -1,4 +1,5 @@
 #include "Resource.h"
+#include "Configuration.h"
 
 Resource::Resource(int UID, ResourceType type) : UID(UID), type(type)
 {
@@ -59,10 +60,20 @@ uint Resource::GetReferenceCount() const
 	return references;
 }
 
-void Resource::Save(Configuration & config) const
+void Resource::Save(Configuration & dataToSave) const
 {
+	Configuration myConf;
+
+	myConf.SetString("File Name", file.c_str());
+	myConf.SetString("Exported File Name", exportedFile.c_str());
+	myConf.SetInt("UID", UID);
+	myConf.SetInt("Type", type);
+
+	dataToSave.AddArrayEntry(myConf);
 }
 
-void Resource::Load(Configuration & config)
+void Resource::Load(Configuration & dataToLoad)
 {
+	file = dataToLoad.GetString("File Name");
+	exportedFile = dataToLoad.GetString("Exported File Name");
 }

@@ -19,6 +19,9 @@ public:
 	Resource* Get(int UID);
 	Resource* CreateNewResource(ResourceType type, int UID);
 
+	void SaveResources(Configuration& resources) const;
+	void LoadResources(Configuration& resources);
+
 private:
 	std::map<int, Resource*> resources;
 };

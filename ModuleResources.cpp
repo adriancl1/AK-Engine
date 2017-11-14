@@ -143,3 +143,40 @@ Resource * ModuleResources::CreateNewResource(ResourceType type, int UID)
 
 	return ret;
 }
+
+void ModuleResources::SaveResources(Configuration& save) const
+{
+	for (std::map<int, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		(*it).second->Save(save);
+	}
+}
+
+void ModuleResources::LoadResources(Configuration& resources)
+{
+	for (int i = 0; i < resources.GetArraySize("Scene Resources"); i++)
+	{
+		Configuration tmpConfig = resources.GetArray("Scene Resources", i);
+		int tmpUID = tmpConfig.GetInt("UID");
+		if (Get(tmpUID) == nullptr)
+		{
+			switch(tmpConfig.GetInt("Type"))
+			{
+			case Resource_Mesh:
+			{
+				ResourceMesh* resourceMesh = (ResourceMesh*)CreateNewResource(Resource_Mesh, tmpUID);
+				resourceMesh->Load(tmpConfig);
+				break;
+			}
+			case Resource_Texture:
+			{
+				ResourceTexture* resourceTexture = (ResourceTexture*)CreateNewResource(Resource_Texture, tmpUID);
+				resourceTexture->Load(tmpConfig);
+				break;
+			}
+			}
+		}
+	}
+}
+
+

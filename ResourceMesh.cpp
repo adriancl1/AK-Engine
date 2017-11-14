@@ -11,7 +11,6 @@
 
 ResourceMesh::ResourceMesh(int UID) : Resource(UID, Resource_Mesh)
 {
-	//Name = ?
 }
 
 ResourceMesh::~ResourceMesh()
@@ -102,12 +101,4 @@ bool ResourceMesh::UnloadFromMemory()
 		idTexCoords = 0;
 	}
 	return true;
-}
-
-void ResourceMesh::Save(Configuration & config) const
-{
-}
-
-void ResourceMesh::Load(Configuration & config)
-{
 }

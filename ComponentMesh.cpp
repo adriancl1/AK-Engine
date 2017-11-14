@@ -167,13 +167,12 @@ bool ComponentMesh::TriIntersection(LineSegment & line, float& distance, float3 
 
 void ComponentMesh::OnSave(Configuration & data) const
 {
-	std::string myName = myGO->GetName();
-	data.SetString("MeshFile", myName.c_str());
+	data.SetInt("Resource UID", mesh->GetUID());
 }
 
 void ComponentMesh::OnLoad(Configuration & data)
 {
-	//App->importer->LoadOwnFormat(data.GetString("MeshFile"), this);
+	AddResource(data.GetInt("Resource UID"));
 }
 
 void ComponentMesh::AddResource(int UID)

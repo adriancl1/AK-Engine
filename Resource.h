@@ -28,8 +28,8 @@ public:
 	void UnloadFromComponent();
 	uint GetReferenceCount()const;
 
-	virtual void Save(Configuration& config) const;
-	virtual void Load(Configuration& config);
+	virtual void Save(Configuration& dataToSave) const;
+	virtual void Load(Configuration& dataToLoad);
 	virtual bool LoadInMemory() = 0;
 	virtual bool UnloadFromMemory() = 0;
 

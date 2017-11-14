@@ -26,11 +26,3 @@ bool ResourceTexture::UnloadFromMemory()
 	textureID = 0;
 	return true;
 }
-
-void ResourceTexture::Save(Configuration & config) const
-{
-}
-
-void ResourceTexture::Load(Configuration & config)
-{
-}

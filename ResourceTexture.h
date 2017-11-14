@@ -10,8 +10,6 @@ public:
 
 	bool LoadInMemory()override;
 	bool UnloadFromMemory()override;
-	void Save(Configuration& config)const override;
-	void Load(Configuration& config)override;
 
 public:
 	uint textureID = 0;

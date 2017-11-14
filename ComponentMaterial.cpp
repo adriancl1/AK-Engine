@@ -51,7 +51,7 @@ void ComponentMaterial::OnSave(Configuration & data) const
 
 void ComponentMaterial::OnLoad(Configuration & data)
 {
-	tex = (ResourceTexture*)App->resources->Get(data.GetInt("Texture UID"));
+	AddResource(data.GetInt("Texture UID"));
 }
 
 void ComponentMaterial::AddResource(int UID)

@@ -338,6 +338,8 @@ void ModuleSceneEditor::WantToLoadScene(const char * fileTitle)
 void ModuleSceneEditor::SaveScene(const char* fileTitle) const
 {
 	Configuration save;
+	save.AddArray("Scene Resources");
+	App->resources->SaveResources(save);
 	save.AddArray("Scene Game Objects");
 
 	root->OnSerialize(save);
@@ -347,7 +349,6 @@ void ModuleSceneEditor::SaveScene(const char* fileTitle) const
 	App->fileSystem->SaveFile(fileTitle, buffer, fileSize, FileType::fileScene);
 
 	RELEASE_ARRAY(buffer);
-
 }
 
 void ModuleSceneEditor::LoadScene(const char * fileTitle)
@@ -359,6 +360,7 @@ void ModuleSceneEditor::LoadScene(const char * fileTitle)
 		root->DeleteChilds();
 		selected = nullptr;
 		App->camera->SetMainCamera(nullptr);
+		App->resources->LoadResources(load);
 		for (int i = 0; i < load.GetArraySize("Scene Game Objects"); i++)
 		{
 			GameObject* tmp = new GameObject();
