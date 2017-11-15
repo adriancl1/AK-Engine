@@ -5,6 +5,7 @@
 
 #include "Resource.h"
 #include <map>
+#include <vector>
 
 class aiMesh;
 
@@ -18,6 +19,7 @@ public:
 	int ImportFile(const char* meshName, aiMesh* mesh);
 	Resource* Get(int UID);
 	Resource* CreateNewResource(ResourceType type, int UID);
+	std::vector<Resource*> GetResourcesOfType(ResourceType type) const;
 
 	void SaveResources(Configuration& resources) const;
 	void LoadResources(Configuration& resources);

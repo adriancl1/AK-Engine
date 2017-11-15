@@ -144,6 +144,19 @@ Resource * ModuleResources::CreateNewResource(ResourceType type, int UID)
 	return ret;
 }
 
+std::vector<Resource*> ModuleResources::GetResourcesOfType(ResourceType type) const
+{
+	 std::vector<Resource*> ret;
+	 for (std::map<int, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	 {
+		 if ((*it).second->GetType() == type)
+		 {
+			 ret.push_back((*it).second);
+		 }
+	 }
+	 return ret;
+}
+
 void ModuleResources::SaveResources(Configuration& save) const
 {
 	for (std::map<int, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)

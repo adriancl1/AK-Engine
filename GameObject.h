@@ -51,6 +51,9 @@ protected:
 
 	GameObject* parent;
 
+	bool addingMesh = false;
+	bool addingMaterial = false;
+
 	std::string name;
 	std::vector<Component*> components;
 	std::vector<GameObject*> childs;

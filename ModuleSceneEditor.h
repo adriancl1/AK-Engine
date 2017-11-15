@@ -50,6 +50,7 @@ public:
 	void RecalculateQuadtree();
 
 	GameObject* CreateNewGameObject(const char* path);
+	void CreateEmptyGameObject();
 
 	void WantToLoadScene(const char* fileTitle);
 	void SaveScene(const char* fileTitle)const;

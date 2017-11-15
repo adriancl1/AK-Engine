@@ -120,6 +120,16 @@ update_status ModuleImGui::Update(float dt)
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Create"))
+		{
+			if (ImGui::MenuItem("Empty Game Object"))
+			{
+				App->sceneEditor->CreateEmptyGameObject();
+			}
+
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Help"))
 		{
 			if (ImGui::MenuItem("ImGui Demo"))
@@ -740,11 +750,7 @@ void ModuleImGui::ShowEditorWindow(bool* p_open)
 	//ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.65f);    // 2/3 of the space for widget and 1/3 for labels
 	ImGui::PushItemWidth(-140);                                 // Right align, keep 140 pixels for labels
 
-	if (ImGui::CollapsingHeader("GameObjects Hieriarchy"))
-	{
-		App->sceneEditor->ShowEditor();
-	}
-
+	App->sceneEditor->ShowEditor();
 
 	ImGui::End();
 }

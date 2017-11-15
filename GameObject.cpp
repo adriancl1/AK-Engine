@@ -207,6 +207,64 @@ void GameObject::ShowProperties()
 	{
 		components[i]->OnEditor();
 	}
+	if (components.size() < 4)//Transform, mesh and texture
+	{
+		if (addingMesh == false && FindComponent(Component_Mesh) == nullptr && ImGui::Button("Add Component Mesh"))
+		{
+			addingMesh = true;
+		}
+		if (addingMaterial == false &&FindComponent(Component_Material) == nullptr && ImGui::Button("Add Component Material"))
+		{
+			addingMaterial = true;
+		}
+	}
+
+	if (addingMesh == true)
+	{
+		ImGui::Begin("Select new mesh");
+		ImGui::PushItemWidth(-140);
+
+		std::vector<Resource*> tmp = App->resources->GetResourcesOfType(Resource_Mesh);
+		for (int i = 0; i < tmp.size(); i++)
+		{
+			if (ImGui::Button(tmp[i]->GetFile()))
+			{
+				ComponentMesh* newMesh = new ComponentMesh();
+				newMesh->AddResource(tmp[i]->GetUID());
+				AddComponent(newMesh);
+				addingMesh = false;
+			}
+		}
+		if (ImGui::Button("Cancel"))
+		{
+			addingMesh = false;
+		}
+		ImGui::End();
+	}
+
+	if (addingMaterial == true)
+	{
+		ImGui::Begin("Select new material texture");
+		ImGui::PushItemWidth(-140);
+
+		std::vector<Resource*> tmp = App->resources->GetResourcesOfType(Resource_Texture);
+		for (int i = 0; i < tmp.size(); i++)
+		{
+			if (ImGui::Button(tmp[i]->GetFile()))
+			{
+				ComponentMaterial* newMat = new ComponentMaterial();
+				newMat->AddResource(tmp[i]->GetUID());
+				AddComponent(newMat);
+				addingMaterial = false;
+			}
+		}
+		if (ImGui::Button("Cancel"))
+		{
+			addingMaterial = false;
+		}
+		ImGui::End();
+	}
+
 	ImGui::End();
 }
 
@@ -346,7 +404,7 @@ void GameObject::OnStaticChange()
 {
 	if (isStatic == true)
 	{
-		App->sceneEditor->InsertToQuadtree(this);
+		App->sceneEditor->recalcTree = true;
 	}
 	else
 	{

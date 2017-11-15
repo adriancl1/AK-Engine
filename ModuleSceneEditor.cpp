@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ModuleSceneEditor.h"
 #include "Quadtree.h"
@@ -315,7 +316,6 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 	GameObject* ret = App->importer->LoadGameObject(path);
 	if (ret != nullptr)
 	{
-		//root->DeleteChilds();
 		root->AddChild(ret);
 		ret->UpdateChildsTransform();
 		App->camera->CenterToGO(ret);
@@ -327,6 +327,22 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 	}
 
 	return ret;
+}
+
+void ModuleSceneEditor::CreateEmptyGameObject()
+{
+	GameObject* newGO = new GameObject();
+	ComponentTransform* newTrans = new ComponentTransform();
+	newGO->AddComponent(newTrans);
+	if (selected != nullptr)
+	{
+		selected->AddChild(newGO);
+		newTrans->UpdateTrans();
+	}
+	else
+	{
+		root->AddChild(newGO);
+	}
 }
 
 void ModuleSceneEditor::WantToLoadScene(const char * fileTitle)

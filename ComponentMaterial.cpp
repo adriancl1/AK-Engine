@@ -27,10 +27,14 @@ void ComponentMaterial::OnEditor()
 			ImGui::Text("Resource ID: %i", tex->GetUID());
 			ImGui::Text("Resource reference counting: %i", tex->GetReferenceCount());
 			ImGui::Image((ImTextureID)tex->textureID, ImVec2(124, 124));
-			if (ImGui::Button("Delete Component"))
-			{
-				wantsToDie = true;
-			}
+		}
+		else
+		{
+			ImGui::Text("Missing resource texture!");
+		}
+		if (ImGui::Button("Delete Component"))
+		{
+			wantsToDie = true;
 		}
 		ImGui::TreePop();
 	}
@@ -57,7 +61,10 @@ void ComponentMaterial::OnLoad(Configuration & data)
 void ComponentMaterial::AddResource(int UID)
 {
 	tex = (ResourceTexture*)App->resources->Get(UID);
-	tex->LoadToComponent();
+	if (tex != nullptr)
+	{
+		tex->LoadToComponent();
+	}	
 }
 
 int ComponentMaterial::GetTextureID() const

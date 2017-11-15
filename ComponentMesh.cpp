@@ -32,7 +32,10 @@ void ComponentMesh::Update()
 
 float3 ComponentMesh::GetCenter() const
 {
-	return 	mesh->enclosingBox.Centroid();
+	if (mesh != nullptr)
+	{
+		return 	mesh->enclosingBox.Centroid();
+	}
 }
 
 void ComponentMesh::DrawDebug() const
@@ -110,15 +113,22 @@ void ComponentMesh::OnEditor()
 {
 	if (ImGui::TreeNodeEx(name.c_str()))
 	{
-		ImGui::Text("Vertices ID: %i", mesh->idVertices);
-		ImGui::Text("Num Vertices: %i", mesh->numVertices);
-		ImGui::Text("Indexes ID: %i", mesh->idIndices);
-		ImGui::Text("Num Indexes: %i", mesh->numIndices);
-		ImGui::Text("Normals ID: %i", mesh->idNormals);
-		ImGui::Text("Colors ID: %i", mesh->idColors);
-		ImGui::Text("Texture Coords: %i", mesh->idTexCoords);
-		ImGui::Text("Resource ID: %i", mesh->GetUID());
-		ImGui::Text("Resource reference counting: %i", mesh->GetReferenceCount());
+		if (mesh != nullptr)
+		{
+			ImGui::Text("Vertices ID: %i", mesh->idVertices);
+			ImGui::Text("Num Vertices: %i", mesh->numVertices);
+			ImGui::Text("Indexes ID: %i", mesh->idIndices);
+			ImGui::Text("Num Indexes: %i", mesh->numIndices);
+			ImGui::Text("Normals ID: %i", mesh->idNormals);
+			ImGui::Text("Colors ID: %i", mesh->idColors);
+			ImGui::Text("Texture Coords: %i", mesh->idTexCoords);
+			ImGui::Text("Resource ID: %i", mesh->GetUID());
+			ImGui::Text("Resource reference counting: %i", mesh->GetReferenceCount());
+		}
+		else
+		{
+			ImGui::Text("Missing resource mesh!");
+		}
 		if (ImGui::Button("Delete Component"))
 		{
 			wantsToDie = true;
@@ -167,7 +177,10 @@ bool ComponentMesh::TriIntersection(LineSegment & line, float& distance, float3 
 
 void ComponentMesh::OnSave(Configuration & data) const
 {
-	data.SetInt("Resource UID", mesh->GetUID());
+	if (mesh != nullptr)
+	{
+		data.SetInt("Resource UID", mesh->GetUID());
+	}
 }
 
 void ComponentMesh::OnLoad(Configuration & data)
@@ -183,66 +196,118 @@ void ComponentMesh::AddResource(int UID)
 
 uint ComponentMesh::GetIDVertices() const
 {
-	return mesh->idVertices;
+	if (mesh != nullptr)
+	{
+		return mesh->idVertices;
+	}
+	return 0;
 }
 
 uint ComponentMesh::GetNumVertices() const
 {
-	return mesh->numVertices;
+	if (mesh != nullptr)
+	{
+		return mesh->numVertices;
+	}
+	return 0;
 }
 
 uint ComponentMesh::GetIDIndices() const
 {
-	return mesh->idIndices;
+	if (mesh != nullptr)
+	{
+		return mesh->idIndices;
+	}
+	return 0;
 }
 
 uint ComponentMesh::GetNumIndices() const
 {
-	return mesh->numIndices;
+	if (mesh != nullptr)
+	{
+		return mesh->numIndices;
+	}
+	return 0;
 }
 
 uint ComponentMesh::GetIDNormals() const
 {
-	return mesh->idNormals;
+	if (mesh != nullptr)
+	{
+		return mesh->idNormals;
+	}
+	return 0;
 }
 
 uint ComponentMesh::GetIDColors() const
 {
-	return mesh->idColors;
+	if (mesh != nullptr)
+	{
+		return mesh->idColors;
+	}
+	return 0;
 }
 
 uint ComponentMesh::GetIDTextCoords() const
 {
-	return mesh->idTexCoords;
+	if (mesh != nullptr)
+	{
+		return mesh->idTexCoords;
+	}
+	return 0;
 }
 
 AABB ComponentMesh::GetEnclosingBox() const
 {
-	return mesh->enclosingBox;
+	if (mesh != nullptr)
+	{
+		return mesh->enclosingBox;
+	}
+	return AABB(float3(0, 0, 0), float3(0, 0, 0));
 }
 
 const float* ComponentMesh::GetVertices() const
 {
-	return mesh->vertices;
+	if (mesh != nullptr)
+	{
+		return mesh->vertices;
+	}
+	return 0;
 }
 
 const uint* ComponentMesh::GetIndices() const
 {
-	return mesh->indices;
+	if (mesh != nullptr)
+	{
+		return mesh->indices;
+	}
+	return 0;
 }
 
 const float* ComponentMesh::GetNormals() const
 {
-	return mesh->normals;
+	if (mesh != nullptr)
+	{
+		return mesh->normals;
+	}
+	return 0;
 }
 
 const float* ComponentMesh::GetColors() const
 {
-	return mesh->colors;
+	if (mesh != nullptr)
+	{
+		return mesh->colors;
+	}
+	return 0;
 }
 
 const float* ComponentMesh::GetTexCoords() const
 {
-	return mesh->texCoords;
+	if (mesh != nullptr)
+	{
+		return mesh->texCoords;
+	}
+	return 0;
 }
 
