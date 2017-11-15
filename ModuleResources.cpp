@@ -19,6 +19,11 @@ ModuleResources::ModuleResources(Application* app, bool startEnabled) : Module(a
 
 ModuleResources::~ModuleResources()
 {
+	for (std::map<int, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		delete (*it).second;
+		(*it).second = nullptr;
+	}
 }
 
 int ModuleResources::Find(const char * fileName)

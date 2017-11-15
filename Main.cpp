@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
-#include "Brofiler-1.1.2\Brofiler.h"
+#include "Brofiler-1.1.2/Brofiler.h"
 
-#include "mmgr\mmgr.h"
+#include "mmgr/mmgr.h"
 
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )

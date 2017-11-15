@@ -5,6 +5,8 @@
 #include "Devil\include\ilu.h"
 #include "Devil\include\ilut.h"
 
+#include "mmgr/mmgr.h"
+
 #include <stdio.h>
 
 #pragma comment (lib, "Devil/libx86/DevIL.lib" ) /* Loading Devil lib */

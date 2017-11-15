@@ -11,6 +11,7 @@
 #include "MathGeo\Math\float4x4.h"
 #include "MathGeo\Geometry\LineSegment.h"
 #include "Brofiler-1.1.2\Brofiler.h"
+#include "mmgr/mmgr.h"
 
 
 
@@ -66,6 +67,7 @@ bool ModuleSceneEditor::Start()
 bool ModuleSceneEditor::CleanUp(Configuration data)
 {
 	delete root;
+	delete tree;
 	return true;
 }
 

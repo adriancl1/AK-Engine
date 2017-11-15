@@ -41,7 +41,11 @@ bool ModuleCamera3D::Start()
 bool ModuleCamera3D::CleanUp(Configuration data)
 {
 	LOG("Cleaning camera");
-
+	if (editorCamera != nullptr)
+	{
+		delete editorCamera;
+		editorCamera = nullptr;
+	}
 	return true;
 }
 
