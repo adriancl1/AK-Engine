@@ -17,7 +17,15 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 
 
 ## Changelog
-Version 0.4.0 Beta
+Version 0.5.0 
+* Added Resource Management.
+* Quadtree is now adaptative.
+* Added ImGuizmos.
+* Save&Load working with resources.
+* Creation of empty gameobjects in runtime.
+* Bug Fixes.
+
+Version 0.4.0 
 * Added Mouse Picking.
 * Added Time Manager.
 * Added Scene Save&Load.
