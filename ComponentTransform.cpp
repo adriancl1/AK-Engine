@@ -196,6 +196,7 @@ void ComponentTransform::OnLoad(Configuration & data)
 	rotation.z = data.GetFloat("Rotation", 2);
 	rotation.w = data.GetFloat("Rotation", 3);
 	rotationEuler = rotation.ToEulerXYZ();
+	rotationEuler *= RADTODEG;
 	scale.x = data.GetFloat("Scale", 0);
 	scale.y = data.GetFloat("Scale", 1);
 	scale.z = data.GetFloat("Scale", 2);

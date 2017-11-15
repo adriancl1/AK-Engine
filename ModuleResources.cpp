@@ -47,7 +47,15 @@ int ModuleResources::ImportFile(const char * fileName, ResourceType type)
 	{
 		bool imported;
 		UID = App->randomGenerator->Int();
-		std::string exFile = std::to_string(UID);
+		std::string tmpPath = fileName;
+		int length = tmpPath.length();
+		uint i = tmpPath.find_last_of("/");
+		length = length - i - 1;
+		char* tmp = new char[length + 1];
+		tmpPath.copy(tmp, length, i + 1);
+		tmp[length] = '\0';
+		std::string exFile = tmp;
+		delete[] tmp;
 
 		switch(type)
 		{
@@ -91,9 +99,9 @@ int ModuleResources::ImportFile(const char* meshName, aiMesh * mesh)
 	{
 		bool imported;
 		int UID = App->randomGenerator->Int();
-		std::string exFile = std::to_string(UID);
+		std::string exFile = meshName;
 
-		imported = App->importer->SaveOwnFormat(mesh, exFile.c_str());
+		imported = App->importer->SaveOwnFormat(mesh, meshName);
 
 		if (imported == true)
 		{

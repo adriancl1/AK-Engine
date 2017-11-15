@@ -335,7 +335,7 @@ bool ModuleRenderer3D::GetWireframe() const
 void ModuleRenderer3D::Draw(GameObject* objectDraw)
 {
 	ComponentTransform* tmpTrans = (ComponentTransform*)objectDraw->FindComponent(Component_Transform);
-	ComponentCamera* camera = (ComponentCamera*)App->sceneEditor->GetRoot()->FindComponent(Component_Camera);
+	ComponentCamera* camera = (ComponentCamera*)App->camera->GetMainCamera();
 
 	glPushMatrix();
 	if (tmpTrans != nullptr)

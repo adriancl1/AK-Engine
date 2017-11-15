@@ -228,6 +228,11 @@ ComponentCamera * ModuleCamera3D::GetEditorCamera() const
 	return editorCamera;
 }
 
+ComponentCamera * ModuleCamera3D::GetMainCamera() const
+{
+	return mainCamera;
+}
+
 // -----------------------------------------------------------------
 const float* ModuleCamera3D::GetViewMatrix() const
 {

@@ -53,6 +53,7 @@ protected:
 
 	bool addingMesh = false;
 	bool addingMaterial = false;
+	bool wantsToDie = false;
 
 	std::string name;
 	std::vector<Component*> components;

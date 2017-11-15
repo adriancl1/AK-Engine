@@ -59,6 +59,19 @@ void GameObject::Update()
 			it++;
 		}
 	}
+	for (std::vector<GameObject*>::iterator it = childs.begin(); it != childs.end();)
+	{
+		if ((*it)->wantsToDie)
+		{
+			delete(*it);
+			(*it) = nullptr;
+			it = childs.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
 }
 
 void GameObject::AddChild(GameObject* child)
@@ -263,6 +276,12 @@ void GameObject::ShowProperties()
 			addingMaterial = false;
 		}
 		ImGui::End();
+	}
+
+	if (ImGui::Button("Delete Game object"))
+	{
+		App->sceneEditor->SetSelected(nullptr);
+		wantsToDie = true;
 	}
 
 	ImGui::End();

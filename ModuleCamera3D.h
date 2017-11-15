@@ -31,6 +31,7 @@ public:
 
 	bool UsingSceneCamera()const;
 	ComponentCamera* GetEditorCamera()const;
+	ComponentCamera* GetMainCamera()const;
 
 	const float* GetViewMatrix() const;
 

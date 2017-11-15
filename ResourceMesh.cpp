@@ -44,7 +44,7 @@ ResourceMesh::~ResourceMesh()
 
 bool ResourceMesh::LoadInMemory()
 {
-	App->importer->LoadOwnFormat(std::to_string(UID).c_str(), this);
+	App->importer->LoadOwnFormat(file.c_str(), this);
 	return true;
 }
 

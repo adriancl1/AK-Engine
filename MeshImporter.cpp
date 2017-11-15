@@ -5,7 +5,6 @@
 #include "ModuleFileSystem.h"
 
 #include "Glew\include\glew.h"
-
 #include "Assimp\include\cimport.h" 
 #include "Assimp\include\scene.h" 
 #include "Assimp\include\postprocess.h" 
@@ -80,6 +79,8 @@ void MeshImporter::Load(const char * inputFile, ResourceMesh* mesh)
 		mesh->enclosingBox.SetNegativeInfinity();
 
 		mesh->enclosingBox.Enclose((float3*)mesh->vertices, mesh->numVertices);
+
+		RELEASE_ARRAY(buffer);
 	}
 }
 
