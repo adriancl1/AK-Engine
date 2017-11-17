@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "Primitive.h"
 #include "Timer.h"
-#include "MathGeo\Geometry\AABB.h"
+#include "MathGeo/Geometry/AABB.h"
 #include <list>
 
 class GameObject;
@@ -58,7 +58,6 @@ public:
 
 public:
 	bool recalcTree = false;
-
 private:
 	//For now ----
 	std::list<Primitive*> sceneObjects;

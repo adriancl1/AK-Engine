@@ -2,9 +2,9 @@
 #include "ComponentCamera.h"
 #include "Configuration.h"
 
-#include "imgui-1.51\imgui.h"
-#include "Glew\include\glew.h"
-#include "MathGeo\Math\MathAll.h"
+#include "imgui-1.51/imgui.h"
+#include "Glew/include/glew.h"
+#include "MathGeo/Math/MathAll.h"
 
 ComponentCamera::ComponentCamera(float3 pos, float3 front, float3 up, float nearPlaneDistance, float farPlaneDistance, float verticalFov, float aspectRatio, FrustumType type) : Component(Component_Camera)
 {
@@ -56,7 +56,7 @@ void ComponentCamera::OnEditor()
 		ImGui::TreePop();
 
 		ImGui::Text("FOV:");
-		if(ImGui::DragFloat("VFOV", &FOV, 1, 115))
+		if(ImGui::InputFloat("VFOV", &FOV, 0.5f, 115, 3))
 		{
 			SetFOV();
 		}

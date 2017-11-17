@@ -33,19 +33,18 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
-
-	App->renderer3D->Draw(this);
-
-	for (int i = 0; i < childs.size(); i++)
-	{
-		childs[i]->Update();
-	}
-
 	for (int i = 0; i < components.size(); i++)
 	{
 		components[i]->Update();
 	}
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->Update();
+	}
+}
 
+void GameObject::PostUpdate()
+{
 	for (std::vector<Component*>::iterator it = components.begin(); it != components.end();)
 	{
 		if ((*it)->wantsToDie)
@@ -63,12 +62,14 @@ void GameObject::Update()
 	{
 		if ((*it)->wantsToDie)
 		{
+			App->sceneEditor->recalcTree = true;
 			delete(*it);
 			(*it) = nullptr;
 			it = childs.erase(it);
 		}
 		else
 		{
+			(*it)->PostUpdate();
 			it++;
 		}
 	}
@@ -285,6 +286,15 @@ void GameObject::ShowProperties()
 	}
 
 	ImGui::End();
+}
+
+void GameObject::RecursiveDraw()
+{
+	App->renderer3D->Draw(this);
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->RecursiveDraw();
+	}
 }
 
 void GameObject::CollectIntersectionsAABB(std::vector<GameObject*>& intersections, LineSegment & line)

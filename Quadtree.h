@@ -14,8 +14,7 @@ public:
 	void Remove(GameObject* toRemove);
 	void CreateChilds();
 	void RedistributeChilds();
-	template<typename TYPE>
-	void CollectIntersections(std::vector<GameObject*>& objects, const TYPE & primitive) const;
+	void CollectIntersections(std::vector<GameObject*>& objects, const Frustum & primitive) const;
 	void DrawDebug(Color color) const;
 
 public:
@@ -35,6 +34,7 @@ public:
 	void Insert(GameObject* toInsert);
 	void Remove(GameObject* toRemove);
 	void Clear();
+	void CollectIntersections(std::vector<GameObject*>& objects, const Frustum & primitive) const;
 
 	void DrawDebug(Color color) const;
 

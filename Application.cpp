@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Configuration.h"
-#include "parson\parson.h"
-#include "Brofiler-1.1.2\Brofiler.h"
+#include "parson/parson.h"
+#include "Brofiler-1.1.2/Brofiler.h"
 
 #define MAX_FPS_MS_COUNT 81
 
@@ -80,8 +80,6 @@ bool Application::Init()
 	{
 		defaultValues = false;
 	}
-	/*JSON_Value * configValue = json_parse_file("config.json");
-	JSON_Object * configObject = json_value_get_object(configValue);*/
 
 	while (item != listModules.end() && ret == true)
 	{
@@ -169,8 +167,6 @@ bool Application::CleanUp()
 	item--;
 
 	Configuration config("config.json");
-	/*JSON_Value* configValue = json_parse_file("config.json");
-	JSON_Object* objectData = json_value_get_object(configValue);*/
 
 	while (item != listModules.begin() && ret == true)
 	{
@@ -192,6 +188,7 @@ void Application::OnConfiguration()
 
 	if (ImGui::CollapsingHeader("Application"))
 	{
+		ImGui::Checkbox("Quadtree Acceleration", &quadtreeAcceleration);
 		char frameMStitle[25];
 		sprintf_s(frameMStitle, 25, "Framerate %.1f", FPSData[FPSData.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &FPSData[0], FPSData.size(), 0, frameMStitle, 0.0f, 100.0f, ImVec2(310, 100));

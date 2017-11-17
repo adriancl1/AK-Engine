@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "MathGeo\Math\float3.h"
+#include "MathGeo/Math/float3.h"
 
 #include <string>
 #include <vector>
@@ -14,6 +14,7 @@ public:
 	~GameObject();
 
 	void Update();
+	void PostUpdate();
 	void AddChild(GameObject* child);
 	void DeleteChilds();
 	void AddComponent(Component* component);
@@ -26,6 +27,7 @@ public:
 	void UpdateChildsTransform();
 	void OnEditor();
 	void ShowProperties();
+	void RecursiveDraw();
 
 	void CollectIntersectionsAABB(std::vector<GameObject*>& intersections, LineSegment& line);
 	void CollectTriIntersections(LineSegment& line, float& distance, float3& hitPoint);

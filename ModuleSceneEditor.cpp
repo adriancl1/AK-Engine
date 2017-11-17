@@ -5,15 +5,14 @@
 #include "ComponentCamera.h"
 #include "ModuleSceneEditor.h"
 #include "Quadtree.h"
+#include "ModuleRenderer3D.h"
 
-#include "Glew\include\glew.h"
-#include "MathGeo\Geometry\Triangle.h"
-#include "MathGeo\Math\float4x4.h"
-#include "MathGeo\Geometry\LineSegment.h"
-#include "Brofiler-1.1.2\Brofiler.h"
+#include "Glew/include/glew.h"
+#include "MathGeo/Geometry/Triangle.h"
+#include "MathGeo/Math/float4x4.h"
+#include "MathGeo/Geometry/LineSegment.h"
+#include "Brofiler-1.1.2/Brofiler.h"
 #include "mmgr/mmgr.h"
-
-
 
 ModuleSceneEditor::ModuleSceneEditor(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -90,10 +89,14 @@ update_status ModuleSceneEditor::Update(float dt)
 		wantToSave = true;
 	}
 
+	root->Update();
+
 	return UPDATE_CONTINUE;
 }
 update_status ModuleSceneEditor::PostUpdate(float dt)
 {
+	root->PostUpdate();
+
 	if (wantToLoad == true)
 	{
 		LOG("Loading scene.");
@@ -119,13 +122,21 @@ update_status ModuleSceneEditor::PostUpdate(float dt)
 }
 
 void ModuleSceneEditor::Draw()
-{
-	for (std::list<Primitive*>::iterator it = sceneObjects.begin(); it != sceneObjects.end(); ++it)
+{	
+	if (App->quadtreeAcceleration == true)
 	{
-		(*it)->Render();
+		std::vector<GameObject*> toDraw;
+		tree->CollectIntersections(toDraw, App->camera->GetMainCamera()->GetFrustum());
+
+		for (int i = 0; i < toDraw.size(); i++)
+		{
+			App->renderer3D->Draw(toDraw[i]);
+		}
 	}
-	
-	root->Update();
+	else
+	{
+		root->RecursiveDraw();
+	}
 
 	if (App->physics->debug)
 	{

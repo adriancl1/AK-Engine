@@ -3,8 +3,9 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
-#include "MathGeo\MathGeoLib.h"
-#include "MathGeo\Geometry\AABB.h"
+#include "MathGeo/MathGeoLib.h"
+#include "MathGeo/Geometry/AABB.h"
+#include "MathGeo/Geometry/Frustum.h"
 
 #define MAX_OBJECTS 4
 #define MIN_SIZE 1
@@ -150,21 +151,13 @@ void QuadtreeNode::DrawDebug(Color color) const
 	}
 }
 
-template<typename TYPE>
-void QuadtreeNode::CollectIntersections(std::vector<GameObject*>& objects, const TYPE & primitive) const
+void QuadtreeNode::CollectIntersections(std::vector<GameObject*>& objects, const Frustum & primitive) const
 {
 	if (primitive.Intersects(box))
 	{
 		for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
 		{
-			ComponentMesh* tmp = (ComponentMesh*)(*it)->FindComponent(Component_Mesh);
-			if (tmp != nullptr)
-			{
-				if (primitive.Intersects(tmp->enclosingBox))
-				{
-					objects.push_back(*it);
-				}
-			}
+			objects.push_back(*it);
 		}
 		for (int i = 0; i < 4; ++i)
 			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, primitive);
@@ -225,6 +218,14 @@ void Quadtree::Clear()
 {
 	delete root;
 	root = nullptr;
+}
+
+void Quadtree::CollectIntersections(std::vector<GameObject*>& objects, const Frustum & frustum) const
+{
+	if (root != nullptr)
+	{
+		root->CollectIntersections(objects, frustum);
+	}
 }
 
 void Quadtree::DrawDebug(Color color) const

@@ -18,7 +18,7 @@
 #include "ModuleTimeManager.h"
 #include "ModuleResources.h"
 
-#include "MathGeo\Algorithm\Random\LCG.h"
+#include "MathGeo/Algorithm/Random/LCG.h"
 
 #include <stdlib.h>
 
@@ -41,6 +41,7 @@ public:
 	ModuleResources* resources;
 
 	math::LCG* randomGenerator = nullptr;
+	bool quadtreeAcceleration = false;
 
 private:
 	Timer ms_timer;
