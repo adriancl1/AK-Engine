@@ -130,6 +130,19 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 
 	newObject->AddComponent(LoadTransform(node));
 
+	//In case of nodes with multiple meshes ----
+	std::vector<GameObject*> tmpVector;
+	tmpVector.push_back(newObject);
+
+	for (int i = 0; i < (int)(node->mNumMeshes - 1); i++)
+	{
+		GameObject* vecGO = new GameObject();
+		addTo->AddChild(vecGO);
+		vecGO->SetName(node->mName.C_Str());
+		vecGO->AddComponent(LoadTransform(node));
+		tmpVector.push_back(vecGO);
+	}
+	//--------
 	for (int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* newMesh = scene->mMeshes[node->mMeshes[i]];
@@ -145,7 +158,7 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 
 			aiMaterial* material = nullptr;
 			material = scene->mMaterials[newMesh->mMaterialIndex];
-			newObject->AddComponent(LoadMaterial(material));
+			tmpVector[i]->AddComponent(LoadMaterial(material));
 
 			m->SetName("Mesh");
 
@@ -153,7 +166,7 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 
 			m->GetEnclosingBox().Enclose((float3*)m->GetVertices(), m->GetNumVertices());
 			
-			newObject->AddComponent(m);
+			tmpVector[i]->AddComponent(m);
 		}
 	}
 
