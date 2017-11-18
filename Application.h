@@ -42,6 +42,7 @@ public:
 
 	math::LCG* randomGenerator = nullptr;
 	bool quadtreeAcceleration = false;
+	bool performanceTimers = false;
 
 private:
 	Timer ms_timer;

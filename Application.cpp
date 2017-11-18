@@ -189,6 +189,7 @@ void Application::OnConfiguration()
 	if (ImGui::CollapsingHeader("Application"))
 	{
 		ImGui::Checkbox("Quadtree Acceleration", &quadtreeAcceleration);
+		ImGui::Checkbox("Show performance timers on console", &performanceTimers);
 		char frameMStitle[25];
 		sprintf_s(frameMStitle, 25, "Framerate %.1f", FPSData[FPSData.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &FPSData[0], FPSData.size(), 0, frameMStitle, 0.0f, 100.0f, ImVec2(310, 100));

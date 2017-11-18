@@ -123,7 +123,7 @@ update_status ModuleSceneEditor::PostUpdate(float dt)
 
 void ModuleSceneEditor::Draw()
 {	
-	if (App->quadtreeAcceleration == true)
+	if (App->quadtreeAcceleration == true && App->camera->GetMainCamera()->GetFrustumCulling() == true)
 	{
 		std::vector<GameObject*> toDraw;
 		tree->CollectIntersections(toDraw, App->camera->GetMainCamera()->GetFrustum());
@@ -150,10 +150,34 @@ void ModuleSceneEditor::Draw()
 
 void ModuleSceneEditor::SelectGameObject(LineSegment& picking)
 {
+	Timer tmpTimer;
 	std::vector<GameObject*> aabbIntersections;
-
-	root->CollectIntersectionsAABB(aabbIntersections, picking);
-
+	if (App->quadtreeAcceleration == true)
+	{
+		if (App->performanceTimers == true)
+		{
+			LOG("Starting timer for mouse picking with quadtree acceleration");
+			tmpTimer.Start();
+		}
+		std::vector<GameObject*> quadtreeIntersections;
+		tree->CollectIntersections(quadtreeIntersections, picking);
+		for (int i = 0; i < quadtreeIntersections.size(); i++)
+		{
+			if (quadtreeIntersections[i]->Intersects(picking) == true)
+			{
+				aabbIntersections.push_back(quadtreeIntersections[i]);
+			}
+		}
+	}
+	else
+	{
+		if (App->performanceTimers == true)
+		{
+			LOG("Starting timer for mouse picking without quadtree acceleration");
+			tmpTimer.Start();
+		}
+		root->CollectAllIntersectionsAABB(aabbIntersections, picking);
+	}
 	if (!aabbIntersections.empty())
 	{
 		GameObject* closest = nullptr;
@@ -178,6 +202,10 @@ void ModuleSceneEditor::SelectGameObject(LineSegment& picking)
 		{
 			SetSelected(nullptr);
 		}
+	}
+	if (App->performanceTimers == true)
+	{
+		LOG("Picking ended in %i ms", tmpTimer.Read());
 	}
 }
 

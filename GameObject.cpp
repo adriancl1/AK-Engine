@@ -297,7 +297,7 @@ void GameObject::RecursiveDraw()
 	}
 }
 
-void GameObject::CollectIntersectionsAABB(std::vector<GameObject*>& intersections, LineSegment & line)
+void GameObject::CollectAllIntersectionsAABB(std::vector<GameObject*>& intersections, LineSegment & line)
 {
 	ComponentMesh* cMesh = (ComponentMesh*)FindComponent(Component_Mesh);
 
@@ -311,7 +311,21 @@ void GameObject::CollectIntersectionsAABB(std::vector<GameObject*>& intersection
 
 	for (int i = 0; i < childs.size(); i++)
 	{
-		childs[i]->CollectIntersectionsAABB(intersections, line);
+		childs[i]->CollectAllIntersectionsAABB(intersections, line);
+	}
+}
+
+bool GameObject::Intersects(LineSegment & line) const
+{
+	ComponentMesh* cMesh = (ComponentMesh*)FindComponent(Component_Mesh);
+
+	if (cMesh != nullptr)
+	{
+		return cMesh->IntersectsAABB(line);
+	}
+	else
+	{
+		return false;
 	}
 }
 

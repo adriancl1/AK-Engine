@@ -151,16 +151,29 @@ void QuadtreeNode::DrawDebug(Color color) const
 	}
 }
 
-void QuadtreeNode::CollectIntersections(std::vector<GameObject*>& objects, const Frustum & primitive) const
+void QuadtreeNode::CollectIntersections(std::vector<GameObject*>& objects, const Frustum & frustum) const
 {
-	if (primitive.Intersects(box))
+	if (frustum.Intersects(box))
 	{
 		for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
 		{
 			objects.push_back(*it);
 		}
 		for (int i = 0; i < 4; ++i)
-			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, primitive);
+			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, frustum);
+	}
+}
+
+void QuadtreeNode::CollectIntersections(std::vector<GameObject*>& objects, const LineSegment & line) const
+{
+	if (line.Intersects(box))
+	{
+		for (std::list<GameObject*>::const_iterator it = this->objects.begin(); it != this->objects.end(); ++it)
+		{
+			objects.push_back(*it);
+		}
+		for (int i = 0; i < 4; ++i)
+			if (childs[i] != nullptr) childs[i]->CollectIntersections(objects, line);
 	}
 }
 
@@ -225,6 +238,14 @@ void Quadtree::CollectIntersections(std::vector<GameObject*>& objects, const Fru
 	if (root != nullptr)
 	{
 		root->CollectIntersections(objects, frustum);
+	}
+}
+
+void Quadtree::CollectIntersections(std::vector<GameObject*>& objects, const LineSegment & line) const
+{
+	if (root != nullptr)
+	{
+		root->CollectIntersections(objects, line);
 	}
 }
 

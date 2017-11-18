@@ -29,7 +29,9 @@ public:
 	void ShowProperties();
 	void RecursiveDraw();
 
-	void CollectIntersectionsAABB(std::vector<GameObject*>& intersections, LineSegment& line);
+	//Used from root when there's no quadtree acceleration
+	void CollectAllIntersectionsAABB(std::vector<GameObject*>& intersections, LineSegment& line);
+	bool Intersects(LineSegment& line)const;
 	void CollectTriIntersections(LineSegment& line, float& distance, float3& hitPoint);
 
 	void OnSerialize(Configuration& dataToSave)const;

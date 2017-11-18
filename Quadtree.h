@@ -15,6 +15,7 @@ public:
 	void CreateChilds();
 	void RedistributeChilds();
 	void CollectIntersections(std::vector<GameObject*>& objects, const Frustum & primitive) const;
+	void CollectIntersections(std::vector<GameObject*>& objects, const LineSegment & primitive) const;
 	void DrawDebug(Color color) const;
 
 public:
@@ -34,7 +35,8 @@ public:
 	void Insert(GameObject* toInsert);
 	void Remove(GameObject* toRemove);
 	void Clear();
-	void CollectIntersections(std::vector<GameObject*>& objects, const Frustum & primitive) const;
+	void CollectIntersections(std::vector<GameObject*>& objects, const Frustum & frustum) const;
+	void CollectIntersections(std::vector<GameObject*>& objects, const LineSegment & line) const;
 
 	void DrawDebug(Color color) const;
 
