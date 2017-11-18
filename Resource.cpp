@@ -69,6 +69,11 @@ void Resource::Save(Configuration & dataToSave) const
 	myConf.SetInt("UID", UID);
 	myConf.SetInt("Type", type);
 
+	if (this->type == Resource_Texture)
+	{
+		myConf.SetString("Last Modified", lastModified.c_str());
+	}
+
 	dataToSave.AddArrayEntry(myConf);
 }
 
@@ -76,4 +81,9 @@ void Resource::Load(Configuration & dataToLoad)
 {
 	file = dataToLoad.GetString("File Name");
 	exportedFile = dataToLoad.GetString("Exported File Name");
+
+	if (this->type == Resource_Texture)
+	{
+		lastModified = dataToLoad.GetString("Last Modified");
+	}
 }

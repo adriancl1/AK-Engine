@@ -37,6 +37,7 @@ protected:
 	int UID = 0;
 	std::string file;
 	std::string exportedFile;
+	std::string lastModified;
 
 	ResourceType type = Resource_Unknown;
 	uint references = 0;

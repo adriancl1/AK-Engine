@@ -4,17 +4,22 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ModuleImporter.h"
+#include "Timer.h"
 
 #include "Assimp\include\cimport.h" 
 #include "Assimp\include\scene.h" 
 #include "Assimp\include\postprocess.h" 
 #include "Assimp\include\cfileio.h"
 
+#include <experimental\filesystem>
+
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 ModuleResources::ModuleResources(Application* app, bool startEnabled) : Module(app, startEnabled)
 {
 	name = "resources";
+
+	checkTexturesTimer.Start();
 }
 
 ModuleResources::~ModuleResources()
@@ -24,6 +29,81 @@ ModuleResources::~ModuleResources()
 		delete (*it).second;
 		(*it).second = nullptr;
 	}
+}
+
+update_status ModuleResources::PostUpdate(float dt)
+{
+	if (checkTexturesTimer.Read() > 4000)
+	{
+		CheckTextures();
+		checkTexturesTimer.Start();
+	}
+	
+	return UPDATE_CONTINUE;
+}
+
+void ModuleResources::CheckTextures()
+{
+	for (std::map<int, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		for (std::experimental::filesystem::recursive_directory_iterator::value_type fileIterator : std::experimental::filesystem::recursive_directory_iterator("Assets"))
+		{
+			if (it->second->GetType() == Resource_Texture)
+			{
+				ResourceTexture* tmpTex = nullptr;
+
+				std::experimental::filesystem::file_time_type ftime;
+				std::time_t cFileTime;
+				std::string fileModifiedTime;
+
+				//Remove "Assets/"
+				std::string tmpPath = it->second->file;
+				int length = tmpPath.length();
+				uint i = tmpPath.find_last_of("/");
+				length = length - i - 1;
+				char* tmp = new char[length + 1];
+				tmpPath.copy(tmp, length, i + 1);
+				tmp[length] = '\0';
+				std::string exFile = tmp;
+				delete[] tmp;
+				// --------------
+
+				std::string fileName = fileIterator.path().filename().string();
+				if (strcmp(exFile.c_str(), fileName.c_str()) == 0)
+				{
+					ftime = std::experimental::filesystem::last_write_time(fileIterator.path());
+					cFileTime = decltype(ftime)::clock::to_time_t(ftime);
+					fileModifiedTime = std::asctime(std::localtime(&cFileTime));
+
+					if (strcmp(it->second->lastModified.c_str(), fileModifiedTime.c_str()) != 0)
+					{
+						tmpTex = (ResourceTexture*)it->second;
+						tmpTex->UnloadFromMemory();
+						ReImportFile(tmpTex->file.c_str());
+						if (tmpTex->GetReferenceCount() > 0)
+						{
+							tmpTex->LoadInMemory();
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void ModuleResources::ReImportFile(const char* fileName)
+{
+	std::string tmpPath = fileName;
+	int length = tmpPath.length();
+	uint i = tmpPath.find_last_of("/");
+	length = length - i - 1;
+	char* tmp = new char[length + 1];
+	tmpPath.copy(tmp, length, i + 1);
+	tmp[length] = '\0';
+	std::string exFile = tmp;
+	delete[] tmp;
+
+	App->textures->Import(fileName, exFile);
 }
 
 int ModuleResources::Find(const char * fileName)
@@ -78,6 +158,21 @@ int ModuleResources::ImportFile(const char * fileName, ResourceType type)
 			newResource->exportedFile = "Library/Material/";
 			newResource->exportedFile += exFile;
 			newResource->exportedFile += ".dds";
+
+
+			for (std::experimental::filesystem::recursive_directory_iterator::value_type fileIterator : std::experimental::filesystem::recursive_directory_iterator("Assets"))
+			{
+				if (std::experimental::filesystem::is_regular_file(fileIterator.path()))
+				{
+					if (strcmp(exFile.c_str(), fileIterator.path().filename().string().c_str()) == 0)
+					{
+						std::experimental::filesystem::file_time_type fTimeType = std::experimental::filesystem::last_write_time(fileIterator.path());
+						std::time_t cFileTime = decltype(fTimeType)::clock::to_time_t(fTimeType);
+						newResource->lastModified = std::asctime(std::localtime(&cFileTime));
+					}
+				}
+			}
+
 			return UID;
 		}
 		else
