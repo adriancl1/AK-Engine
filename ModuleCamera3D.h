@@ -25,7 +25,7 @@ public:
 	void Move(const vec3 &Movement);
 	void ZoomIn();
 	void ZoomOut();
-	void CenterToGO(GameObject* centerTo);
+	void CenterToGO(const AABB& box);
 	void SetMainCamera(ComponentCamera* camera);
 	void RecalcAspectRatio(int width, int height);
 

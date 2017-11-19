@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
+#include "ComponentTransform.h"
 
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -121,6 +122,17 @@ update_status ModuleCamera3D::Update(float dt)
 
 				App->sceneEditor->SelectGameObject(picking);
 			}
+			if (App->sceneEditor->GetSelected() != nullptr)
+			{
+				ComponentMesh* mesh = (ComponentMesh*)App->sceneEditor->GetSelected()->FindComponent(Component_Mesh);
+				if (mesh != nullptr)
+				{
+					AABB box = mesh->GetEnclosingBox();
+					ComponentTransform* trans = (ComponentTransform*)App->sceneEditor->GetSelected()->FindComponent(Component_Transform);
+					box.TransformAsAABB(trans->GetGlobalTransform());
+					LookAt(vec3(box.CenterPoint().x, box.CenterPoint().y, box.CenterPoint().z));
+				}
+			}
 			editorCamera->UpdateCamera(float3(Position.x, Position.y, Position.z), -float3(Z.x, Z.y, Z.z), float3(Y.x, Y.y, Y.z));
 			CalculateViewMatrix();
 		}
@@ -163,8 +175,6 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 	Z = normalize(Position - Reference);
 	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
 	Y = cross(Z, X);
-
-	CalculateViewMatrix();
 }
 
 
@@ -195,17 +205,13 @@ void ModuleCamera3D::ZoomOut()
 	Reference += newPos;
 }
 
-void ModuleCamera3D::CenterToGO(GameObject * centerTo)
+void ModuleCamera3D::CenterToGO(const AABB& box)
 {
-	ComponentMesh* mesh = dynamic_cast<ComponentMesh*>(centerTo->FindComponent(Component_Mesh));
-	if (mesh != nullptr)
-	{
-		float3 temp = mesh->GetCenter();
-		float3 size = mesh->GetEnclosingBox().Size() * 0.5f;
-		Position = vec3(temp.x + size.x, temp.y + size.y, temp.z + 5.0f + size.z);
-		Reference = vec3(temp.x + size.x, temp.y + size.y, temp.z + size.z);
-		LookAt(vec3(temp.x, temp.y, temp.z));
-	}
+	float3 temp = box.CenterPoint();
+	float3 size = box.Size() * 0.8f;
+	Position = vec3(temp.x + size.x, temp.y + size.y, temp.z + 5.0f + size.z);
+	Reference = vec3(temp.x + size.x, temp.y + size.y, temp.z + size.z);
+	LookAt(vec3(temp.x, temp.y, temp.z));
 }
 
 void ModuleCamera3D::SetMainCamera(ComponentCamera * camera)

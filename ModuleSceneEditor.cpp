@@ -76,9 +76,16 @@ update_status ModuleSceneEditor::PreUpdate(float dt)
 }
 update_status ModuleSceneEditor::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && root->GetChilds().empty() != true)
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && selected != nullptr)
 	{
-		App->camera->CenterToGO(root->GetChilds()[0]);
+			ComponentMesh* mesh = (ComponentMesh*)selected->FindComponent(Component_Mesh);
+			if (mesh != nullptr)
+			{
+				AABB box = mesh->GetEnclosingBox();
+				ComponentTransform* trans = (ComponentTransform*)selected->FindComponent(Component_Transform);
+				box.TransformAsAABB(trans->GetGlobalTransform());
+				App->camera->CenterToGO(box);
+			}
 	}
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
@@ -203,6 +210,10 @@ void ModuleSceneEditor::SelectGameObject(LineSegment& picking)
 			SetSelected(nullptr);
 		}
 	}
+	else
+	{
+		SetSelected(nullptr);
+	}
 	if (App->performanceTimers == true)
 	{
 		LOG("Picking ended in %i ms", tmpTimer.Read());
@@ -315,6 +326,11 @@ Quadtree * ModuleSceneEditor::GetQuadtree()
 	return tree;
 }
 
+GameObject * ModuleSceneEditor::GetSelected() const
+{
+	return selected;
+}
+
 void ModuleSceneEditor::SetSelected(GameObject * selected)
 {
 	if (this->selected != selected)
@@ -359,8 +375,8 @@ GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 	{
 		root->AddChild(ret);
 		ret->UpdateChildsTransform();
-		App->camera->CenterToGO(ret);
 		root->InsertSelfAndChilds();
+		App->camera->CenterToGO(tree->root->box);
 	}
 	else
 	{

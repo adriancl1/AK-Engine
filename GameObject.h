@@ -23,7 +23,6 @@ public:
 	const char* GetName() const;
 	int GetUID()const;
 
-	void SetLocalTransform();
 	void UpdateChildsTransform();
 	void OnEditor();
 	void ShowProperties();

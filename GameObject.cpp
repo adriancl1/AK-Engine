@@ -113,15 +113,6 @@ int GameObject::GetUID() const
 	return uid;
 }
 
-void GameObject::SetLocalTransform()
-{
-	ComponentTransform* myTrans = (ComponentTransform*)FindComponent(Component_Transform);
-	if (myTrans != nullptr)
-	{
-		myTrans->SetLocalTrans(GetParent());
-	}
-}
-
 void GameObject::UpdateChildsTransform()
 {
 	for (int i = 0; i < childs.size(); i++)

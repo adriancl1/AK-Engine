@@ -97,6 +97,7 @@ void ModuleTimeManager::PlayGame(bool play)
 	{
 		time.Start();
 		time.Stop();
+		App->sceneEditor->SetSelected(nullptr);
 		App->sceneEditor->LoadScene("Assets/Scenes/MainScene.akS");
 	}
 }

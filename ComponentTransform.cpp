@@ -50,7 +50,7 @@ void ComponentTransform::UpdateTrans()
 	rotationEuler.x *= RADTODEG;
 	rotationEuler.y *= RADTODEG;
 	rotationEuler.z *= RADTODEG;
-
+	localTransformMatrix = globalTransformMatrix;
 	if (myGO != nullptr)
 	{
 		ComponentTransform* parentTrans = (ComponentTransform*)myGO->GetParent()->FindComponent(Component_Transform);
@@ -62,45 +62,6 @@ void ComponentTransform::UpdateTrans()
 
 	needToUpdate = false;
 	myGO->UpdateChildsTransform();
-}
-
-void ComponentTransform::UpdateTransFromParent(GameObject * parent)
-{
-	ComponentTransform* parentTrans = (ComponentTransform*)parent->FindComponent(Component_Transform);
-	if (parentTrans != nullptr)
-	{
-		globalTransformMatrix = parentTrans->localTransformMatrix * globalTransformMatrix;
-		float4x4 temp;
-		globalTransformMatrix.Decompose(position, temp, scale);
-		rotationEuler = temp.ToEulerXYZ();
-		UpdateTrans();		
-	}
-}
-
-void ComponentTransform::SetLocalTrans(GameObject* parent)
-{
-	if (parent != nullptr)
-	{
-		ComponentTransform* parentTrans = (ComponentTransform*)parent->FindComponent(Component_Transform);
-		if (parentTrans != nullptr)
-		{
-			float3 localPos = position - parentTrans->position;
-			Quat localRot = rotation * parentTrans->rotation.Conjugated();
-			float3 localScale = scale.Mul(parentTrans->scale.Recip());
-
-			localTransformMatrix = float4x4::FromQuat(localRot);
-			localTransformMatrix = float4x4::Scale(localScale, float3(0, 0, 0)) * globalTransformMatrix;
-			localTransformMatrix.float4x4::SetTranslatePart(localPos.x, localPos.y, localPos.z);
-		}
-		else
-		{
-			localTransformMatrix = globalTransformMatrix;
-		}
-	}
-	else
-	{
-		localTransformMatrix = globalTransformMatrix;
-	}
 }
 
 float4x4 ComponentTransform::GetGlobalTransform() const
@@ -238,12 +199,15 @@ void ComponentTransform::ShowGizmo(ComponentCamera & camera)
 	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
 	ImGuizmo::Manipulate(float4x4::identity.ptr(), projMatrixg, currentOperation, ImGuizmo::WORLD, transMatrix);
-	if (ImGuizmo::IsUsing())
+	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RALT) == KEY_IDLE && !ImGui::GetIO().WantCaptureKeyboard)
 	{
-		ImGuizmo::DecomposeMatrixToComponents(transMatrix, (float*)position.ptr(), (float*)rotationEuler.ptr(), (float*)scale.ptr());
-		globalTransformMatrix.Transpose();
-		ImGuizmo::RecomposeMatrixFromComponents((float*)position.ptr(), (float*)rotationEuler.ptr(), (float*)scale.ptr(), globalTransformMatrix.ptr());
-		globalTransformMatrix.Transpose();
+		if (ImGuizmo::IsUsing())
+		{
+			ImGuizmo::DecomposeMatrixToComponents(transMatrix, (float*)position.ptr(), (float*)rotationEuler.ptr(), (float*)scale.ptr());
+			globalTransformMatrix.Transpose();
+			ImGuizmo::RecomposeMatrixFromComponents((float*)position.ptr(), (float*)rotationEuler.ptr(), (float*)scale.ptr(), globalTransformMatrix.ptr());
+			globalTransformMatrix.Transpose();
+		}
 	}
 }
 

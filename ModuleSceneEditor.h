@@ -44,6 +44,7 @@ public:
 
 	GameObject* GetRoot();
 	Quadtree* GetQuadtree();
+	GameObject* GetSelected()const;
 	void SetSelected(GameObject* selected);
 
 	void InsertToQuadtree(GameObject* toAdd);

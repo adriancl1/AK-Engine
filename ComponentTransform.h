@@ -16,9 +16,6 @@ public:
 	void Update();
 	void UpdateTrans();
 
-	void UpdateTransFromParent(GameObject* parent);
-	void SetLocalTrans(GameObject* parent);
-
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
 	float3 GetPosition() const;
