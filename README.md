@@ -13,10 +13,18 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 - To move the camera use: A/D (left/right), W/S (forwards/backwards), R/F (up/down). To move faster hold down L-Shift.
 - Drag and drop a .fbx file to import it into the scene.
 - Drag and drop a .wav file to play it.
-- Press F1 to activate debug features.
+- Click into a game object to select it.
+- Use configuration to activate quadtree acceleration, drawing of quadtree and debug features.
 
 
 ## Changelog
+Version 0.5.5 (Assignment 2) 
+* Added acceleration through quadtree for mouse picking & camera culling.
+* Textures resources are now updated on runtime if the original file is changed.
+* Camera centers and focuses around the selected gameobject.
+* You can add and delete mesh and material components.
+* Bug Fixes.
+
 Version 0.5.0 
 * Added Resource Management.
 * Quadtree is now adaptative.
