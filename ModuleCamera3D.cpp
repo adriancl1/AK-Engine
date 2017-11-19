@@ -115,8 +115,8 @@ update_status ModuleCamera3D::Update(float dt)
 				}
 
 				Position = Reference + Z * length(Position);
-			}//App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RALT) == KEY_IDLE
-			else if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+			}
+			else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RALT) == KEY_IDLE && !ImGui::GetIO().WantCaptureKeyboard)
 			{
 				LineSegment picking = editorCamera->GetFrustum().UnProjectLineSegment(-(1 - App->input->GetNormalizedMouseX() * 2), (1 -App->input->GetNormalizedMouseY() * 2));
 				lastPick = picking;
