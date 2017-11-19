@@ -9,6 +9,7 @@
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
 
+#include "ImGuizmo\ImGuizmo.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -122,15 +123,19 @@ update_status ModuleCamera3D::Update(float dt)
 
 				App->sceneEditor->SelectGameObject(picking);
 			}
-			if (App->sceneEditor->GetSelected() != nullptr)
+
+			if (App->sceneEditor->GetSelected() != nullptr )
 			{
-				ComponentMesh* mesh = (ComponentMesh*)App->sceneEditor->GetSelected()->FindComponent(Component_Mesh);
-				if (mesh != nullptr)
+				if (ImGuizmo::IsUsing() == false)
 				{
-					AABB box = mesh->GetEnclosingBox();
-					ComponentTransform* trans = (ComponentTransform*)App->sceneEditor->GetSelected()->FindComponent(Component_Transform);
-					box.TransformAsAABB(trans->GetGlobalTransform());
-					LookAt(vec3(box.CenterPoint().x, box.CenterPoint().y, box.CenterPoint().z));
+					ComponentMesh* mesh = (ComponentMesh*)App->sceneEditor->GetSelected()->FindComponent(Component_Mesh);
+					if (mesh != nullptr)
+					{
+						AABB box = mesh->GetEnclosingBox();
+						ComponentTransform* trans = (ComponentTransform*)App->sceneEditor->GetSelected()->FindComponent(Component_Transform);
+						box.TransformAsAABB(trans->GetGlobalTransform());
+						LookAt(vec3(box.CenterPoint().x, box.CenterPoint().y, box.CenterPoint().z));
+					}
 				}
 			}
 			editorCamera->UpdateCamera(float3(Position.x, Position.y, Position.z), -float3(Z.x, Z.y, Z.z), float3(Y.x, Y.y, Y.z));

@@ -425,7 +425,7 @@ void ModuleRenderer3D::DrawMesh(ComponentMesh * toDraw)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	if (App->physics->debug)
+	if (App->GetDebug())
 	{
 		toDraw->DrawDebug();
 	}

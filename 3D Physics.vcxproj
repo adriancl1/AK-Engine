@@ -160,7 +160,6 @@
     <ClInclude Include="ModuleHardware.h" />
     <ClInclude Include="ModuleImporter.h" />
     <ClInclude Include="ModuleImGui.h" />
-    <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="ModuleResources.h" />
     <ClInclude Include="ModuleSceneEditor.h" />
@@ -239,7 +238,6 @@
     <ClCompile Include="ModuleImporter.cpp" />
     <ClCompile Include="ModuleImGui.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModulePhysics3D.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleResources.cpp" />
     <ClCompile Include="ModuleSceneEditor.cpp" />

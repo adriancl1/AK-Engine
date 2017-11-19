@@ -8,7 +8,6 @@
 #include "ModuleAudio.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-#include "ModulePhysics3D.h"
 #include "ModuleImGui.h"
 #include "ModuleSceneEditor.h"
 #include "ModuleImporter.h"
@@ -30,7 +29,6 @@ public:
 	ModuleAudio* audio;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
-	ModulePhysics3D* physics;
 	ModuleImGui* imGui;
 	ModuleSceneEditor* sceneEditor;
 	ModuleImporter* importer;
@@ -52,6 +50,8 @@ private:
 	float lastMs = 0;
 	std::vector<float> FPSData;
 	std::vector<float> MsData;
+	bool showQuadtree = false;
+	bool debug = false;
 	bool defaultValues = true;
 	std::list<Module*> listModules;
 
@@ -66,8 +66,12 @@ public:
 	void OnConfiguration();
 
 	bool UseDefaultValues()const;
+	bool GetDebug() const;
+	bool GetShowQuadtree() const;
+
 	float GetFPS();
 	float GetMs();
+
 	void CycleFPSAndMsData(float fps, float ms);
 
 private:

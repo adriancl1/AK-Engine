@@ -15,7 +15,6 @@ Application::Application()
 	audio = new ModuleAudio(this, true);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
-	physics = new ModulePhysics3D(this);
 	imGui = new ModuleImGui(this);
 	sceneEditor = new ModuleSceneEditor(this);
 	importer = new ModuleImporter(this);
@@ -34,7 +33,6 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	AddModule(physics);
 	AddModule(imGui);
 	AddModule(importer);
 	AddModule(sceneEditor);
@@ -125,6 +123,16 @@ void Application::FinishUpdate()
 	timeManager->SetFrameCount(1);
 }
 
+bool Application::GetDebug() const
+{
+	return debug;
+}
+
+bool Application::GetShowQuadtree() const
+{
+	return showQuadtree;
+}
+
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
@@ -190,6 +198,8 @@ void Application::OnConfiguration()
 	{
 		ImGui::Checkbox("Quadtree Acceleration", &quadtreeAcceleration);
 		ImGui::Checkbox("Show performance timers on console", &performanceTimers);
+		ImGui::Checkbox("Show Quadtree", &showQuadtree);
+		ImGui::Checkbox("Debug Mode", &debug);
 		char frameMStitle[25];
 		sprintf_s(frameMStitle, 25, "Framerate %.1f", FPSData[FPSData.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &FPSData[0], FPSData.size(), 0, frameMStitle, 0.0f, 100.0f, ImVec2(310, 100));

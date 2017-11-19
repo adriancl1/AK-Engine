@@ -22,13 +22,9 @@ public:
 
 private:
 	//ImGui Menu Active Booleans
-	bool testWindowActive;
-	bool menuActive;
 	bool consoleActive;
-	bool mathPlaygroundActive;
 	bool configurationActive;
 	bool aboutActive;
-	bool createGeometryActive;
 	bool editorActive;
 
 	bool closeApp = false;
@@ -37,54 +33,20 @@ private:
 
 //ImGui
 public:
-	IMGUI_API void ShowMenuWindow(bool* p_open = NULL);
 	IMGUI_API void ShowDebugWindow(bool* p_open = NULL);
 	IMGUI_API void ShowConsoleWindow(bool* p_open = NULL);
-	IMGUI_API void ShowMathWindow(bool* p_open = NULL);
 	IMGUI_API void ShowConfigurationWindow(bool* p_open = NULL);
 	IMGUI_API void ShowAboutWindow(bool* p_open = NULL);
-	IMGUI_API void ShowCreateGeometryWindow(bool* p_open = NULL);
 	IMGUI_API void ShowEditorWindow(bool* p_open = NULL);
 	void AddLogToWindow(std::string toAdd);
 	void ProcessEvent(SDL_Event* event);
 
 private:
 	//Booleans for ImGui Checkbox buttons
-	bool openMenuWindow;
 	bool openConsoleWindow;
 	bool openConfigurationWindow;
-	bool openMathPlaygroundWindow;
 	bool openAboutWindow;
-	bool openCreateGeometryWindow;
 	bool openEditorWindow;
-
-//Math Geometric Shape
-public:
-	//Properties Sphere 1
-	int sphereRadius = 0;
-	int sphereX = 0;
-	int sphereY = 0;
-	int sphereZ = 0;
-
-	//Sphere 2
-	int sphereRadius2 = 0;
-	int sphereX2 = 0;
-	int sphereY2 = 0;
-	int sphereZ2 = 0;
-
-	//Capsule 1
-	int capsuleRadius = 0;
-	int capsuleBotX = 0;
-	int capsuleBotY = 0;
-	int capsuleBotZ = 0;
-	int capsuleTopX = 0;
-	int capsuleTopY = 0;
-	int capsuleTopZ = 0;
-
-	//Booleans
-	bool intersects = false;
-	bool intersectsTrue = false;
-	bool intersectsFalse = false;
 };
 
 #endif // __ModuleImGui_H__
