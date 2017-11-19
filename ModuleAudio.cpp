@@ -1,6 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
-#include "Brofiler-1.1.2\Brofiler.h"
+#include "Brofiler-1.1.2/Brofiler.h"
 #include "ModuleAudio.h"
 #include "ModuleImGui.h"
 

@@ -2,7 +2,7 @@
 #include "ComponentMaterial.h"
 #include "ResourceTexture.h"
 #include "ModuleResources.h"
-#include "imgui-1.51\imgui.h"
+#include "imgui-1.51/imgui.h"
 
 ComponentMaterial::ComponentMaterial() : Component(Component_Material)
 {

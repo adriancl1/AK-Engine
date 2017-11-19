@@ -10,15 +10,17 @@
 #include "Quadtree.h"
 #include "MeshImporter.h"
 
-#include "Glew\include\glew.h"
-#include "MathGeo\Math\Quat.h"
+#include "Glew/include/glew.h"
+#include "MathGeo/Math/Quat.h"
 
 #include <cstdio>
 
-#include "Assimp\include\cimport.h" 
-#include "Assimp\include\scene.h" 
-#include "Assimp\include\postprocess.h" 
-#include "Assimp\include\cfileio.h"
+#include "Assimp/include/cimport.h" 
+#include "Assimp/include/scene.h" 
+#include "Assimp/include/postprocess.h" 
+#include "Assimp/include/cfileio.h"
+
+#include "mmgr/mmgr.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
@@ -71,6 +73,8 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 			scene->mMeshes[i]->mName = fileName;
 			scene->mMeshes[i]->mName.Append(std::to_string(i).c_str());
 		}
+
+		delete[] fileName;
 
 		LoadNodes(node, scene, newObject);
 

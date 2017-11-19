@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Component.h"
-#include "MathGeo\Math\float3.h"
-#include "MathGeo\Math\Quat.h"
-#include "MathGeo\Math\float4x4.h"
+#include "MathGeo/Math/float3.h"
+#include "MathGeo/Math/Quat.h"
+#include "MathGeo/Math/float4x4.h"
 
 class ComponentCamera;
 

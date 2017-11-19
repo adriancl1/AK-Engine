@@ -6,12 +6,13 @@
 #include "ModuleImporter.h"
 #include "Timer.h"
 
-#include "Assimp\include\cimport.h" 
-#include "Assimp\include\scene.h" 
-#include "Assimp\include\postprocess.h" 
-#include "Assimp\include\cfileio.h"
+#include "Assimp/include/cimport.h" 
+#include "Assimp/include/scene.h" 
+#include "Assimp/include/postprocess.h" 
+#include "Assimp/include/cfileio.h"
 
 #include <experimental\filesystem>
+#include "mmgr/mmgr.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 

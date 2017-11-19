@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+#include "mmgr/mmgr.h"
+
 #define MESH_DIRECTORY "Library/Mesh"
 #define MESH_EXTENSION ".don"
 #define MATERIAL_DIRECTORY "Library/Material"

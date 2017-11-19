@@ -106,7 +106,7 @@ update_status ModuleSceneEditor::PostUpdate(float dt)
 	{
 		LOG("Saving scene.");
 		saveLoadTimer.Start();
-		SaveScene("TestScene");
+		SaveScene("MainScene");
 		LOG("Save completed in %i ms", saveLoadTimer.Read());
 		saveLoadTimer.Stop();
 		wantToSave = false;

@@ -5,8 +5,8 @@
 #include "Globals.h"
 #include "ComponentCamera.h"
 
-#include "imgui-1.51\imgui.h"
-#include "ImGuizmo\ImGuizmo.h"
+#include "imgui-1.51/imgui.h"
+#include "ImGuizmo/ImGuizmo.h"
 
 ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, ComponentType type) : Component(Component_Transform), position(pos), newPosition(pos), scale(scale), rotation(rot)
 {

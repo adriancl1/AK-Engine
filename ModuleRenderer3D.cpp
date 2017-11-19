@@ -10,11 +10,11 @@
 #include "ResourceMesh.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleSceneEditor.h"
-#include "Glew\include\glew.h"
-#include "SDL\include\SDL_opengl.h"
-#include "Brofiler-1.1.2\Brofiler.h"
-#include "Devil\include\ilut.h"
-#include "Devil\include\il.h"
+#include "Glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include "Brofiler-1.1.2/Brofiler.h"
+#include "Devil/include/ilut.h"
+#include "Devil/include/il.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
