@@ -49,6 +49,9 @@
     <Filter Include="Sources\GameObjects\Resources">
       <UniqueIdentifier>{c6186d9a-837c-40f7-a9f6-f6450cd7a16f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\UI">
+      <UniqueIdentifier>{efa317d7-83c4-4482-b700-c5bf91447dca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -357,6 +360,12 @@
     <ClInclude Include="ResourceMesh.h">
       <Filter>Sources\GameObjects\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="uiEntity.h">
+      <Filter>Sources\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleUI.h">
+      <Filter>Sources\Modules\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -574,6 +583,12 @@
     </ClCompile>
     <ClCompile Include="ResourceMesh.cpp">
       <Filter>Sources\GameObjects\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="uiEntity.cpp">
+      <Filter>Sources\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleUI.cpp">
+      <Filter>Sources\Modules\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -85,6 +85,8 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ModuleUI.h" />
+    <ClInclude Include="uiEntity.h" />
     <ClInclude Include="imgui-1.51\imgui.h" />
     <ClInclude Include="imgui-1.51\imgui_impl_sdl_gl3.h" />
     <ClInclude Include="imgui-1.51\imgui_internal.h" />
@@ -251,6 +253,8 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
+    <ClCompile Include="ModuleUI.cpp" />
+    <ClCompile Include="uiEntity.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
