@@ -369,65 +369,68 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 
 void ModuleRenderer3D::DrawMesh(ComponentMesh * toDraw)
 {
-	if (wframe == true)
+	if (toDraw->GetNumVertices() > 4)
 	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glColor3f(0, 1, 1);
-	}
-	else
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-
-	if (toDraw->GetIDNormals() > 0)
-	{
-		glEnable(GL_LIGHTING);
-		glEnableClientState(GL_NORMAL_ARRAY);
-
-		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDNormals());
-		glNormalPointer(GL_FLOAT, 0, NULL);
-	}
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-	glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDVertices());
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-
-	if (toDraw->GetIDTextCoords() > 0)
-	{
-		ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(toDraw->GetGameObject()->FindComponent(Component_Material));
-		if (mat != nullptr && wframe == false)
+		if (wframe == true)
 		{
-			glBindTexture(GL_TEXTURE_2D, mat->GetTextureID());
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glColor3f(0, 1, 1);
 		}
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDTextCoords());
-		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-	}
+		else
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
 
-	if (toDraw->GetIDColors() > 0)
-	{
-		glEnableClientState(GL_COLOR_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDColors());
-		glColorPointer(3, GL_FLOAT, 0, NULL);
-	}
+		if (toDraw->GetIDNormals() > 0)
+		{
+			glEnable(GL_LIGHTING);
+			glEnableClientState(GL_NORMAL_ARRAY);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw->GetIDIndices());
-	glDrawElements(GL_TRIANGLES, toDraw->GetNumIndices(), GL_UNSIGNED_INT, NULL);
+			glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDNormals());
+			glNormalPointer(GL_FLOAT, 0, NULL);
+		}
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDVertices());
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+		if (toDraw->GetIDTextCoords() > 0)
+		{
+			ComponentMaterial* mat = dynamic_cast<ComponentMaterial*>(toDraw->GetGameObject()->FindComponent(Component_Material));
+			if (mat != nullptr && wframe == false)
+			{
+				glBindTexture(GL_TEXTURE_2D, mat->GetTextureID());
+			}
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDTextCoords());
+			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+		}
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+		if (toDraw->GetIDColors() > 0)
+		{
+			glEnableClientState(GL_COLOR_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDColors());
+			glColorPointer(3, GL_FLOAT, 0, NULL);
+		}
 
-	if (App->GetDebug())
-	{
-		toDraw->DrawDebug();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, toDraw->GetIDIndices());
+		glDrawElements(GL_TRIANGLES, toDraw->GetNumIndices(), GL_UNSIGNED_INT, NULL);
+
+
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_ELEMENT_ARRAY_BUFFER);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		if (App->GetDebug())
+		{
+			toDraw->DrawDebug();
+		}
 	}
 }
 
