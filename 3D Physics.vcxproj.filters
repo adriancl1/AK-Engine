@@ -357,6 +357,12 @@
     <ClInclude Include="ResourceMesh.h">
       <Filter>Sources\GameObjects\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="RigImporter.h">
+      <Filter>Sources\Tools\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceRig.h">
+      <Filter>Sources\GameObjects\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -573,6 +579,12 @@
       <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ResourceMesh.cpp">
+      <Filter>Sources\GameObjects\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="RigImporter.cpp">
+      <Filter>Sources\Tools\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceRig.cpp">
       <Filter>Sources\GameObjects\Resources</Filter>
     </ClCompile>
   </ItemGroup>

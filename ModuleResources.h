@@ -22,6 +22,7 @@ public:
 	int Find(const char* fileName);
 	int ImportFile(const char* fileName, ResourceType type = Resource_Unknown);
 	int ImportFile(const char* meshName, aiMesh* mesh);
+	int ImportRig(const char* rigName, aiMesh* mesh);
 	Resource* Get(int UID);
 	Resource* CreateNewResource(ResourceType type, int UID);
 	std::vector<Resource*> GetResourcesOfType(ResourceType type) const;

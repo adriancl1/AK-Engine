@@ -10,6 +10,8 @@
 #define MATERIAL_EXTENSION ".dds" 
 #define SCENE_DIRECTORY "Assets/Scenes"
 #define SCENE_EXTENSION ".akS"
+#define RIG_DIRECTORY "Library/Rig"
+#define RIG_EXTENSION ".pearl"
 
 ModuleFileSystem::ModuleFileSystem(Application * app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -26,6 +28,7 @@ bool ModuleFileSystem::Init(Configuration data)
 	CreateNewDirectory(MESH_DIRECTORY);
 	CreateNewDirectory(MATERIAL_DIRECTORY);
 	CreateNewDirectory(SCENE_DIRECTORY);
+	CreateNewDirectory(RIG_DIRECTORY);
 
 	return true;
 }
@@ -67,6 +70,13 @@ void ModuleFileSystem::SaveFile(const char * name, char * buffer, int bufferSize
 		path += "/";
 		path += name;
 		path += SCENE_EXTENSION;
+	}
+	else if (type == fileRig)
+	{
+		path += RIG_DIRECTORY;
+		path += "/";
+		path += name;
+		path += RIG_EXTENSION;
 	}
 
 	std::ofstream file(path.c_str(), std::ofstream::out | std::ofstream::binary);

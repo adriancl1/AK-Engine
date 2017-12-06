@@ -12,6 +12,7 @@ class aiScene;
 class GameObject;
 
 class MeshImporter;
+class RigImporter;
 
 class ComponentMesh;
 class ComponentMaterial;
@@ -36,10 +37,12 @@ public:
 	void LoadNodes(aiNode* root, const aiScene* scene, GameObject* addTo);
 	void LoadNewTexture(const char* fullPath);
 	void LoadOwnFormat(const char* path, ResourceMesh* mesh) const;
-	bool SaveOwnFormat(aiMesh* mesh, const char* UID);
+	bool SaveMeshOwnFormat(aiMesh* mesh, const char* UID);
+	bool SaveRigOwnFormat(aiMesh* mesh, const char* rigName);
 
 private:
 	MeshImporter* meshImporter = nullptr;
+	RigImporter* rigImporter = nullptr;
 };
 
 #endif //__ModuleImporter_H__

@@ -3,6 +3,7 @@
 #include "ModuleTextures.h"
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
+#include "ResourceRig.h"
 #include "ModuleImporter.h"
 #include "Timer.h"
 
@@ -197,7 +198,7 @@ int ModuleResources::ImportFile(const char* meshName, aiMesh * mesh)
 		int UID = App->randomGenerator->Int();
 		std::string exFile = meshName;
 
-		imported = App->importer->SaveOwnFormat(mesh, meshName);
+		imported = App->importer->SaveMeshOwnFormat(mesh, meshName);
 
 		if (imported == true)
 		{
@@ -206,6 +207,38 @@ int ModuleResources::ImportFile(const char* meshName, aiMesh * mesh)
 			newResource->exportedFile = "Library/Mesh/";
 			newResource->exportedFile += exFile;
 			newResource->exportedFile += ".don";
+			return UID;
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	else
+	{
+		return UID;
+	}
+}
+
+int ModuleResources::ImportRig(const char * rigName, aiMesh * mesh)
+{
+	int UID = Find(rigName);
+
+	if (UID == 0)
+	{
+		bool imported;
+		int UID = App->randomGenerator->Int();
+		std::string exFile = rigName;
+
+		imported = App->importer->SaveRigOwnFormat(mesh, rigName);
+
+		if (imported == true)
+		{
+			Resource* newResource = CreateNewResource(Resource_Rig, UID);
+			newResource->file = rigName;
+			newResource->exportedFile = "Library/Mesh/";
+			newResource->exportedFile += exFile;
+			newResource->exportedFile += ".pearl";
 			return UID;
 		}
 		else
@@ -241,6 +274,11 @@ Resource * ModuleResources::CreateNewResource(ResourceType type, int UID)
 	case Resource_Mesh:
 	{
 		ret = (Resource*) new ResourceMesh(UID);
+		break;
+	}
+	case Resource_Rig:
+	{
+		ret = (Resource*) new ResourceRig(UID);
 		break;
 	}
 	}

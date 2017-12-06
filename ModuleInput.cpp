@@ -129,7 +129,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				// Shows directory of dropped file
 				LOG("%s dropped on window.", fileDir);
 				length = strlen(fileDir);
-				if (strcmp(&fileDir[length - 4], ".fbx") == 0 || strcmp(&fileDir[length - 4], ".FBX") == 0)
+				if (strcmp(&fileDir[length - 4], ".fbx") == 0 || strcmp(&fileDir[length - 4], ".FBX") == 0 || strcmp(&fileDir[length - 4], ".dae") == 0 || strcmp(&fileDir[length - 4], ".DAE") == 0)
 				{
 					App->sceneEditor->CreateNewGameObject(fileDir);
 				}

@@ -9,6 +9,7 @@
 #include "ResourceMesh.h"
 #include "Quadtree.h"
 #include "MeshImporter.h"
+#include "RigImporter.h"
 
 #include "Glew/include/glew.h"
 #include "MathGeo/Math/Quat.h"
@@ -32,11 +33,13 @@ ModuleImporter::ModuleImporter(Application* app, bool start_enabled) : Module(ap
 ModuleImporter::~ModuleImporter()
 {
 	delete meshImporter;
+	delete rigImporter;
 }
 
 bool ModuleImporter::Init(Configuration data)
 {
 	meshImporter = new MeshImporter();
+	rigImporter = new RigImporter();
 
 	struct aiLogStream stream; 
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr); 
@@ -121,9 +124,15 @@ void ModuleImporter::LoadOwnFormat(const char * path, ResourceMesh* mesh) const
 	meshImporter->Load(path, mesh);
 }
 
-bool ModuleImporter::SaveOwnFormat(aiMesh * mesh, const char * UID)
+bool ModuleImporter::SaveMeshOwnFormat(aiMesh * mesh, const char * UID)
 {
 	return meshImporter->Save(mesh, UID);
+}
+
+bool ModuleImporter::SaveRigOwnFormat(aiMesh * mesh, const char * rigName)
+{
+	rigImporter->Save(mesh, rigName);
+	return true;
 }
 
 void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* addTo)
@@ -158,6 +167,13 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 			if (meshUID != -1)
 			{
 				m->AddResource(meshUID);
+			}
+
+			if (newMesh->mNumBones > 0)
+			{
+				std::string rigName = newMesh->mName.C_Str();
+				rigName += "RIG";
+				int rigUID = App->resources->ImportRig(rigName.c_str(), newMesh);
 			}
 
 			aiMaterial* material = nullptr;
