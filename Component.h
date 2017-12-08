@@ -11,7 +11,8 @@ enum ComponentType
 	Component_Mesh,
 	Component_Material,
 	Component_Camera,
-	Component_Rig
+	Component_Rig,
+	Component_Bone
 };
 
 class Component

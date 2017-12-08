@@ -128,7 +128,6 @@ update_status ModuleImGui::Update(float dt)
 				ShellExecuteA(NULL, "open", "https://github.com/adriancl1/AK-Engine/issues", NULL, NULL, SW_SHOWNORMAL); 
 			}
 
-
 			ImGui::EndMenu();
 		}
 

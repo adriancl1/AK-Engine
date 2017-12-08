@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentBone.h"
 
 ResourceRig::ResourceRig(int UID) : Resource(UID, Resource_Mesh)
 {
@@ -23,6 +24,7 @@ bool ResourceRig::LoadToGameObject(GameObject* GO)
 
 		for (uint i = 0; i < bones.size(); i++)
 		{
+
 			float3 bonePos;
 			Quat boneRot;
 			float3 boneScale;
@@ -32,6 +34,8 @@ bool ResourceRig::LoadToGameObject(GameObject* GO)
 			ComponentTransform* tmpTrans = new ComponentTransform(goPos + bonePos, goScale, goRot * boneRot);
 			tmp->AddComponent(tmpTrans);
 			tmp->SetName(bones[i].name.c_str());
+			ComponentBone* tmpBone = new ComponentBone(bones[i]);
+			tmp->AddComponent(tmpBone);
 			GO->AddChild(tmp);
 		}
 	}

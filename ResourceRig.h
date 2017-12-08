@@ -8,7 +8,6 @@
 
 class GameObject;
 
-
 struct VertexWeight
 {
 	int vertexID;
@@ -22,7 +21,7 @@ struct Bone
 	std::vector<VertexWeight> weights;
 };
 
-class ResourceRig :public Resource
+class ResourceRig: public Resource
 {
 	friend RigImporter;
 public:
