@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+class GameObject;
+
 
 struct VertexWeight
 {
@@ -27,8 +29,11 @@ public:
 	ResourceRig(int UID);
 	~ResourceRig();
 
+	bool LoadToGameObject(GameObject* GO);
 	bool LoadInMemory()override;
 	bool UnloadFromMemory()override;
+
+	int GetBoneNum() const;
 
 private:
 	std::vector<Bone> bones;

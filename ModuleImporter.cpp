@@ -6,6 +6,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
+#include "ComponentRig.h"
 #include "ResourceMesh.h"
 #include "Quadtree.h"
 #include "MeshImporter.h"
@@ -124,6 +125,11 @@ void ModuleImporter::LoadOwnFormat(const char * path, ResourceMesh* mesh) const
 	meshImporter->Load(path, mesh);
 }
 
+void ModuleImporter::LoadRigOwnFormat(const char * path, ResourceRig * rig) const
+{
+	rigImporter->Load(path, rig);
+}
+
 bool ModuleImporter::SaveMeshOwnFormat(aiMesh * mesh, const char * UID)
 {
 	return meshImporter->Save(mesh, UID);
@@ -171,9 +177,16 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 
 			if (newMesh->mNumBones > 0)
 			{
+				ComponentRig* rig = new ComponentRig();
+				tmpVector[i]->AddComponent(rig);
+
 				std::string rigName = newMesh->mName.C_Str();
 				rigName += "RIG";
 				int rigUID = App->resources->ImportRig(rigName.c_str(), newMesh);
+				if (rigUID != -1)
+				{
+					rig->AddResource(rigUID);
+				}
 			}
 
 			aiMaterial* material = nullptr;

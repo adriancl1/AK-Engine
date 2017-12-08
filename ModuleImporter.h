@@ -19,6 +19,7 @@ class ComponentMaterial;
 class ComponentTransform;
 
 class ResourceMesh;
+class ResourceRig;
 
 class ModuleImporter : public Module
 {
@@ -37,6 +38,7 @@ public:
 	void LoadNodes(aiNode* root, const aiScene* scene, GameObject* addTo);
 	void LoadNewTexture(const char* fullPath);
 	void LoadOwnFormat(const char* path, ResourceMesh* mesh) const;
+	void LoadRigOwnFormat(const char* path, ResourceRig* rig) const;
 	bool SaveMeshOwnFormat(aiMesh* mesh, const char* UID);
 	bool SaveRigOwnFormat(aiMesh* mesh, const char* rigName);
 

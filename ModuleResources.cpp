@@ -236,7 +236,7 @@ int ModuleResources::ImportRig(const char * rigName, aiMesh * mesh)
 		{
 			Resource* newResource = CreateNewResource(Resource_Rig, UID);
 			newResource->file = rigName;
-			newResource->exportedFile = "Library/Mesh/";
+			newResource->exportedFile = "Library/Rig/";
 			newResource->exportedFile += exFile;
 			newResource->exportedFile += ".pearl";
 			return UID;

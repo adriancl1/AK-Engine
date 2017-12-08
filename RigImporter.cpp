@@ -23,6 +23,47 @@ RigImporter::~RigImporter()
 
 void RigImporter::Load(const char * inputFile, ResourceRig * rig)
 {
+	Configuration load(inputFile);
+
+	if (load.IsValueValid() == true)
+	{
+		for (int i = 0; i < load.GetArraySize("Bones"); i++)
+		{
+			Configuration confBone = load.GetArray("Bones", i);
+			Bone tmpBone;
+			tmpBone.name = confBone.GetString("Name");
+
+			float3 pos;
+			float3 sca;
+			Quat rot;
+			pos.x = confBone.GetFloat("Position", 0);
+			pos.y = confBone.GetFloat("Position", 1);
+			pos.z = confBone.GetFloat("Position", 2);
+			sca.x = confBone.GetFloat("Scale", 0);
+			sca.y = confBone.GetFloat("Scale", 1);
+			sca.z = confBone.GetFloat("Scale", 2);
+			rot.x = confBone.GetFloat("Rotation", 0);
+			rot.y = confBone.GetFloat("Rotation", 1);
+			rot.z = confBone.GetFloat("Rotation", 2);
+			rot.w = confBone.GetFloat("Rotation", 3);
+			tmpBone.offsetMatrix = float4x4::FromQuat(rot);
+			tmpBone.offsetMatrix = float4x4::Scale(sca, float3(0, 0, 0)) * tmpBone.offsetMatrix;
+			tmpBone.offsetMatrix.float4x4::SetTranslatePart(pos.x, pos.y, pos.z);
+
+			for (int i = 0; i < confBone.GetArraySize("Vertex Weights"); i++)
+			{
+				Configuration confWeight = confBone.GetArray("Vertex Weights", i);
+
+				VertexWeight tmpWeight;
+				tmpWeight.vertexID = confWeight.GetInt("VertexID");
+				tmpWeight.weight = confWeight.GetFloat("Weight");
+
+				tmpBone.weights.push_back(tmpWeight);
+			}
+			
+			rig->bones.push_back(tmpBone);
+		}
+	}
 }
 
 bool RigImporter::Save(const aiMesh * mesh, const char * outputFile)
