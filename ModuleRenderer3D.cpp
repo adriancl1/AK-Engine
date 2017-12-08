@@ -386,13 +386,29 @@ void ModuleRenderer3D::DrawMesh(ComponentMesh * toDraw)
 			glEnable(GL_LIGHTING);
 			glEnableClientState(GL_NORMAL_ARRAY);
 
-			glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDNormals());
+			if (toDraw->GetMeshDeformable() != nullptr)
+			{
+				glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetMeshDeformable()->idNormals);
+			}
+			else
+			{
+				glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDNormals());
+			}		
 			glNormalPointer(GL_FLOAT, 0, NULL);
 		}
 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDVertices());
+
+		if (toDraw->GetMeshDeformable() != nullptr)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetMeshDeformable()->idVertices);
+		}
+		else
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDVertices());
+		}
+	
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 

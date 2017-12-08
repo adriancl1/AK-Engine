@@ -6,6 +6,30 @@
 
 class ResourceMesh;
 
+struct Mesh
+{
+	Mesh()
+	{}
+	~Mesh()
+	{
+		if (vertices != nullptr)
+		{
+			delete vertices;
+		}
+		if (normals != nullptr)
+		{
+			delete normals;
+		}
+	}
+
+	uint idVertices = 0; // id in VRAM 
+	uint numVertices = 0;
+	float* vertices = nullptr;
+
+	uint idNormals = 0; // id in VRAM
+	float* normals = nullptr;
+};
+
 class ComponentMesh : public Component
 {
 public:
@@ -28,7 +52,6 @@ public:
 	void OnLoad(Configuration& data) override;
 	void AddResource(int UID) override;
 
-
 	uint GetIDVertices() const;
 	uint GetNumVertices() const;
 	const float* GetVertices() const;
@@ -48,6 +71,11 @@ public:
 
 	AABB GetEnclosingBox() const;
 
+	void createDeformable();
+
+	Mesh* GetMeshDeformable() const;
+
 private:
 	ResourceMesh* mesh = nullptr;
+	Mesh* meshDeformable = nullptr;
 };

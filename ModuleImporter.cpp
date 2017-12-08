@@ -178,6 +178,7 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 			if (newMesh->mNumBones > 0)
 			{
 				ComponentRig* rig = new ComponentRig();
+				m->createDeformable();
 				tmpVector[i]->AddComponent(rig);
 
 				std::string rigName = newMesh->mName.C_Str();

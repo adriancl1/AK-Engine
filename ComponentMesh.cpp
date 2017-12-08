@@ -28,6 +28,14 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::Update()
 {
+	if (meshDeformable != nullptr)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idVertices);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->vertices, GL_DYNAMIC_DRAW);
+
+		glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idNormals);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->normals, GL_DYNAMIC_DRAW);
+	}
 }
 
 float3 ComponentMesh::GetCenter() const
@@ -264,6 +272,29 @@ AABB ComponentMesh::GetEnclosingBox() const
 		return mesh->enclosingBox;
 	}
 	return AABB(float3(0, 0, 0), float3(0, 0, 0));
+}
+
+void ComponentMesh::createDeformable()
+{
+	meshDeformable = new Mesh();
+	meshDeformable->vertices = new float[mesh->numVertices * 3 * sizeof(float)];
+	memcpy(meshDeformable->vertices, mesh->vertices, mesh->numVertices * 3 * sizeof(float));
+	meshDeformable->numVertices = mesh->numVertices;
+	meshDeformable->normals = new float[mesh->numVertices * 3 * sizeof(float)];
+	memcpy(meshDeformable->normals, mesh->normals, mesh->numVertices * 3 * sizeof(float));
+
+	glGenBuffers(1, (GLuint*)&meshDeformable->idVertices);
+	glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idVertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->vertices, GL_DYNAMIC_DRAW);
+
+	glGenBuffers(1, (GLuint*)&meshDeformable->idNormals);
+	glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idNormals);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->normals, GL_DYNAMIC_DRAW);
+}
+
+Mesh* ComponentMesh::GetMeshDeformable() const
+{
+	return meshDeformable;
 }
 
 const float* ComponentMesh::GetVertices() const

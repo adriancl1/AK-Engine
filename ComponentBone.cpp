@@ -33,5 +33,3 @@ void ComponentBone::DrawDebug() const
 {
 
 }
-
-
