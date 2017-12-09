@@ -161,6 +161,22 @@ GameObject* GameObject::FindByUID(int toFind)
 
 }
 
+GameObject * GameObject::FindByName(const char * name)
+{
+	if (strcmp(name, this->name.c_str()) == 0)
+	{
+		return this;
+	}
+
+	GameObject* ret = nullptr;
+	for (int i = 0; i < childs.size() && ret == nullptr; i++)
+	{
+		ret = childs[i]->FindByName(name);
+	}
+
+	return ret;
+}
+
 void GameObject::OnEditor()
 {
 	if (strcmp(name.c_str(), "Root") != 0)

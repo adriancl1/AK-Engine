@@ -42,6 +42,7 @@ public:
 	Component* FindComponent(ComponentType type) const;
 	GameObject* GetParent() const;
 	GameObject* FindByUID(int toFind);
+	GameObject* FindByName(const char* name);
 
 	std::vector<GameObject*> GetChilds() const;
 	std::vector<Component*> GetComponents() const;

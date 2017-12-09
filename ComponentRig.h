@@ -11,6 +11,8 @@ public:
 	ComponentRig();
 	~ComponentRig();
 
+	void Update()override;
+
 	void OnEditor()override;
 
 	void OnSave(Configuration& data) const override;
@@ -19,4 +21,5 @@ public:
 
 private:
 	ResourceRig* rig;
+	bool assignedBones = false;
 };

@@ -15,6 +15,15 @@ ComponentRig::~ComponentRig()
 	}
 }
 
+void ComponentRig::Update()
+{
+	if (assignedBones == false)
+	{
+		rig->LoadToGameObject(myGO);
+		assignedBones = true;
+	}
+}
+
 void ComponentRig::OnEditor()
 {
 	if (ImGui::TreeNodeEx(name.c_str()))
@@ -49,5 +58,4 @@ void ComponentRig::AddResource(int UID)
 {
 	rig = (ResourceRig*)App->resources->Get(UID);
 	rig->LoadToComponent();
-	rig->LoadToGameObject(myGO);
 }

@@ -28,14 +28,6 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::Update()
 {
-	if (meshDeformable != nullptr)
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idVertices);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->vertices, GL_DYNAMIC_DRAW);
-
-		glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idNormals);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->normals, GL_DYNAMIC_DRAW);
-	}
 }
 
 float3 ComponentMesh::GetCenter() const
@@ -290,6 +282,12 @@ void ComponentMesh::createDeformable()
 	glGenBuffers(1, (GLuint*)&meshDeformable->idNormals);
 	glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idNormals);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->normals, GL_DYNAMIC_DRAW);
+}
+
+void ComponentMesh::UpdateDeformable()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idVertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->vertices, GL_DYNAMIC_DRAW);
 }
 
 Mesh* ComponentMesh::GetMeshDeformable() const

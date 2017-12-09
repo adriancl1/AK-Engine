@@ -14,43 +14,20 @@ ResourceRig::~ResourceRig()
 
 bool ResourceRig::LoadToGameObject(GameObject* GO)
 {
-	ComponentTransform* goTrans = (ComponentTransform*)GO->FindComponent(Component_Transform);
-	if (goTrans != nullptr)
+	for (int i = 0; i < bones.size(); i++)
 	{
-		float3 goPos;
-		Quat goRot;
-		float3 goScale;
-		goTrans->GetGlobalTransform().Decompose(goPos, goRot, goScale);
-
-		for (uint i = 0; i < bones.size(); i++)
+		GameObject* tmp = GO->GetParent()->FindByName(bones[i].name.c_str());
+		if (tmp != nullptr)
 		{
-
-			float3 bonePos;
-			Quat boneRot;
-			float3 boneScale;
-			bones[i].offsetMatrix.Decompose(bonePos, boneRot, boneScale);
-
-			GameObject* tmp = new GameObject();
-			ComponentTransform* tmpTrans = new ComponentTransform(goPos + bonePos, goScale, goRot * boneRot);
-			tmp->AddComponent(tmpTrans);
-			tmp->SetName(bones[i].name.c_str());
-			ComponentBone* tmpBone = new ComponentBone(bones[i]);
+			ComponentBone* tmpBone = new ComponentBone(bones[i], (ComponentMesh*)GO->FindComponent(Component_Mesh));
 			tmp->AddComponent(tmpBone);
-			GO->AddChild(tmp);
-		}
-	}
-	else
-	{
-		for (uint i = 0; i < bones.size(); i++)
-		{
-			float3 bonePos;
-			Quat boneRot;
-			float3 boneScale;
-			bones[i].offsetMatrix.Decompose(bonePos, boneRot, boneScale);
 
-			GameObject* tmp = new GameObject();
-			ComponentTransform* tmpTrans = new ComponentTransform(bonePos, boneScale, boneRot);
-			GO->AddChild(tmp);
+			ComponentTransform* tmpTrans = (ComponentTransform*)tmp->FindComponent(Component_Transform);
+			if (tmpTrans != nullptr)
+			{
+				tmpTrans->UpdateTrans();
+				tmpBone->SetOriginalTrans(tmpTrans->GetGlobalTransform());
+			}
 		}
 	}
 	return true;

@@ -169,6 +169,8 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 		{
 			ComponentMesh* m = new ComponentMesh();
 
+			tmpVector[i]->AddComponent(m);
+
 			int meshUID = App->resources->ImportFile(newMesh->mName.C_Str(), newMesh);
 			if (meshUID != -1)
 			{
@@ -199,8 +201,6 @@ void ModuleImporter::LoadNodes(aiNode* node, const aiScene* scene, GameObject* a
 			m->GetEnclosingBox().SetNegativeInfinity();
 
 			m->GetEnclosingBox().Enclose((float3*)m->GetVertices(), m->GetNumVertices());
-			
-			tmpVector[i]->AddComponent(m);
 		}
 	}
 

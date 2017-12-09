@@ -107,17 +107,17 @@ void ComponentTransform::OnEditor()
 			else
 			{
 				ImGui::Text("Position:");
-				if (ImGui::DragFloat3("X", &position.x, 0.5f))
+				if (ImGui::DragFloat3("X", &position.x, 0.05f, NULL, NULL, "%.2f"))
 				{
 					needToUpdate = true;
 				}
 				ImGui::Text("Scale:");
-				if (ImGui::DragFloat3("X##1", &scale.x, 0.5f, 1.0f))
+				if (ImGui::DragFloat3("X##1", &scale.x, 0.05f, 1.0f, NULL, "%.2f"))
 				{
 					needToUpdate = true;
 				}
 				ImGui::Text("Rotation:");
-				if (ImGui::DragFloat3("X##2", &rotationEuler.x, 0.5f, -180, 180))
+				if (ImGui::DragFloat3("X##2", &rotationEuler.x, 0.05f, -180, 180, "%.2f"))
 				{
 					needToUpdate = true;
 				}

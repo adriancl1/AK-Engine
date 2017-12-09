@@ -72,6 +72,8 @@ public:
 	AABB GetEnclosingBox() const;
 
 	void createDeformable();
+	
+	void UpdateDeformable();
 
 	Mesh* GetMeshDeformable() const;
 
