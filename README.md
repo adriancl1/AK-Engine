@@ -1,4 +1,33 @@
-﻿[![Build status](https://ci.appveyor.com/api/projects/status/3gsv4qx0eknqhfkr?retina=true)](https://ci.appveyor.com/project/MarcLF/ak-engine)
+﻿##APPVEYOR STATUS:
+
+
+
+[![Build status](https://ci.appveyor.com/api/projects/status/2e9av5y6o70lle38?svg=true)](https://ci.appveyor.com/project/SrPerso/mc-engine)
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+[![GitHub issues](https://img.shields.io/github/issues/SrPerso/MC-ENGINE-.svg)](https://github.com/SrPerso/MC-ENGINE-/issues)
+
+
+#Creating Particles...
+
+
+
+## TEAM on Particle system creation
+
+ by:
+
+
+- Carlos Peralta Sorolla
+[![GitHub issues](https://img.shields.io/badge/Github-Carlos-yellowgreen.svg)](https://github.com/SrPerso)
+ 
+
+- Marc Samper Tarancón
+[![GitHub issues](https://img.shields.io/badge/Github-Marc-yellowgreen.svg)](https://github.com/marcsamper)
+ 
+
+
+#ENGINE
 
 # AK Engine
 
