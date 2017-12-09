@@ -12,6 +12,8 @@
 #define SCENE_EXTENSION ".akS"
 #define RIG_DIRECTORY "Library/Rig"
 #define RIG_EXTENSION ".pearl"
+#define ANIMATION_DIRECTORY "Library/Animation"
+#define ANIMATION_EXTENSION ".blossom"
 
 ModuleFileSystem::ModuleFileSystem(Application * app, bool startEnabled) : Module(app, startEnabled)
 {
@@ -29,6 +31,7 @@ bool ModuleFileSystem::Init(Configuration data)
 	CreateNewDirectory(MATERIAL_DIRECTORY);
 	CreateNewDirectory(SCENE_DIRECTORY);
 	CreateNewDirectory(RIG_DIRECTORY);
+	CreateNewDirectory(ANIMATION_DIRECTORY);
 
 	return true;
 }
@@ -77,6 +80,13 @@ void ModuleFileSystem::SaveFile(const char * name, char * buffer, int bufferSize
 		path += "/";
 		path += name;
 		path += RIG_EXTENSION;
+	}
+	else if (type == fileAnimation)
+	{
+		path += ANIMATION_DIRECTORY;
+		path += "/";
+		path += name;
+		path += ANIMATION_EXTENSION;
 	}
 
 	std::ofstream file(path.c_str(), std::ofstream::out | std::ofstream::binary);

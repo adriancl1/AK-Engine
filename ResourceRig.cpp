@@ -37,7 +37,6 @@ bool ResourceRig::LoadInMemory()
 {
 	App->importer->LoadRigOwnFormat(exportedFile.c_str(), this);
 	return true;
-	return false;
 }
 
 bool ResourceRig::UnloadFromMemory()

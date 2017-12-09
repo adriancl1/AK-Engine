@@ -79,6 +79,20 @@ float3 ComponentTransform::GetPosition() const
 	return position;
 }
 
+void ComponentTransform::SetPosition(float3 pos)
+{
+	position = pos;
+	UpdateTrans();
+}
+
+void ComponentTransform::SetRotation(Quat rot)
+{
+	rotation = rot;
+	rotationEuler = rot.ToEulerXYZ();
+	rotationEuler *= RADTODEG;
+	UpdateTrans();
+}
+
 void ComponentTransform::OnEditor()
 {
 	if (ImGui::TreeNodeEx(name.c_str()))

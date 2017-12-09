@@ -20,6 +20,9 @@ public:
 	float4x4 GetLocalTransform() const;
 	float3 GetPosition() const;
 
+	void SetPosition(float3 pos);
+	void SetRotation(Quat rot);
+
 	void OnEditor() override;
 	void OnSave(Configuration& data) const override;
 	void OnLoad(Configuration& data) override;

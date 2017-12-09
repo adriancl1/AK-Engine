@@ -19,19 +19,6 @@ ComponentBone::~ComponentBone()
 
 void ComponentBone::Update()
 {
-	/*ComponentTransform* cTrans = (ComponentTransform*)myGO->FindComponent(Component_Transform);
-	float3 pos;
-	Quat rot;
-	float3 sca;
-	float4x4 trans = cTrans->GetGlobalTransform();
-	trans.Decompose(pos, rot, sca);
-	float3 originalPos;
-	Quat originalRot;
-	float3 originalSca;
-	originalTrans.Decompose(originalPos, originalRot, originalSca);
-
-	float3 posDiff = originalPos - pos;*/
-
 	ComponentTransform* cTrans = (ComponentTransform*)myGO->FindComponent(Component_Transform);
 	float4x4 trans = cTrans->GetGlobalTransform();
 	ComponentTransform* meshTrans = (ComponentTransform*)attachedMesh->GetGameObject()->FindComponent(Component_Transform);

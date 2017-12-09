@@ -10,7 +10,8 @@ enum FileType
 	fileMaterial,
 	fileScene,
 	fileTexture,
-	fileRig
+	fileRig,
+	fileAnimation
 };
 
 class ModuleFileSystem : public Module

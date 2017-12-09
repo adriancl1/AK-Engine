@@ -11,6 +11,7 @@
 #include "Quadtree.h"
 #include "MeshImporter.h"
 #include "RigImporter.h"
+#include "AnimationImporter.h"
 
 #include "Glew/include/glew.h"
 #include "MathGeo/Math/Quat.h"
@@ -41,6 +42,7 @@ bool ModuleImporter::Init(Configuration data)
 {
 	meshImporter = new MeshImporter();
 	rigImporter = new RigImporter();
+	animImporter = new AnimationImporter();
 
 	struct aiLogStream stream; 
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr); 
@@ -78,11 +80,19 @@ GameObject* ModuleImporter::LoadGameObject(const char* fullPath)
 			scene->mMeshes[i]->mName.Append(std::to_string(i).c_str());
 		}
 
-		delete[] fileName;
-
 		LoadNodes(node, scene, newObject);
 
+		for (int i = 0; i < scene->mNumAnimations; i++)
+		{
+			std::string animName;
+			animName = fileName;
+			animName += "Anim";
+			animName += std::to_string(i).c_str();
+			App->resources->ImportAnimation(animName.c_str(), scene->mAnimations[i]);
+		}
+
 		aiReleaseImport(scene);
+		delete[] fileName;
 
 		return newObject;
 	}
@@ -130,6 +140,11 @@ void ModuleImporter::LoadRigOwnFormat(const char * path, ResourceRig * rig) cons
 	rigImporter->Load(path, rig);
 }
 
+void ModuleImporter::LoadAnimOwnFormat(const char * path, ResourceAnimation * animation) const
+{
+	animImporter->Load(path, animation);
+}
+
 bool ModuleImporter::SaveMeshOwnFormat(aiMesh * mesh, const char * UID)
 {
 	return meshImporter->Save(mesh, UID);
@@ -138,6 +153,12 @@ bool ModuleImporter::SaveMeshOwnFormat(aiMesh * mesh, const char * UID)
 bool ModuleImporter::SaveRigOwnFormat(aiMesh * mesh, const char * rigName)
 {
 	rigImporter->Save(mesh, rigName);
+	return true;
+}
+
+bool ModuleImporter::SaveAnimOwnFormat(aiAnimation * anim, const char * animName)
+{
+	animImporter->Save(anim, animName);
 	return true;
 }
 

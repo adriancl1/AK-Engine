@@ -6,6 +6,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
+#include "ComponentAnimation.h"
 
 #define PROPERTIES_WIDTH 300
 #define PROPERTIES_HEIGHT 500
@@ -228,7 +229,7 @@ void GameObject::ShowProperties()
 	{
 		components[i]->OnEditor();
 	}
-	if (components.size() < 4)//Transform, mesh and texture
+	if (components.size() < 5)//Transform, mesh and texture
 	{
 		if (addingMesh == false && FindComponent(Component_Mesh) == nullptr && ImGui::Button("Add Component Mesh"))
 		{
@@ -237,6 +238,10 @@ void GameObject::ShowProperties()
 		if (addingMaterial == false &&FindComponent(Component_Material) == nullptr && ImGui::Button("Add Component Material"))
 		{
 			addingMaterial = true;
+		}
+		if (addingAnimation == false && FindComponent(Component_Animation) == nullptr && ImGui::Button("Add Component Animation"))
+		{
+			addingAnimation = true;
 		}
 	}
 
@@ -282,6 +287,29 @@ void GameObject::ShowProperties()
 		if (ImGui::Button("Cancel"))
 		{
 			addingMaterial = false;
+		}
+		ImGui::End();
+	}
+
+	if (addingAnimation == true)
+	{
+		ImGui::Begin("Select new animation");
+		ImGui::PushItemWidth(-140);
+
+		std::vector<Resource*> tmp = App->resources->GetResourcesOfType(Resource_Animation);
+		for (int i = 0; i < tmp.size(); i++)
+		{
+			if (ImGui::Button(tmp[i]->GetFile()))
+			{
+				ComponentAnimation* newAnim = new ComponentAnimation();
+				newAnim->AddResource(tmp[i]->GetUID());
+				AddComponent(newAnim);
+				addingAnimation = false;
+			}
+		}
+		if (ImGui::Button("Cancel"))
+		{
+			addingAnimation = false;
 		}
 		ImGui::End();
 	}

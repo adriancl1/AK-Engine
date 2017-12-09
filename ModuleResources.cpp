@@ -4,6 +4,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceRig.h"
+#include "ResourceAnimation.h"
 #include "ModuleImporter.h"
 #include "Timer.h"
 
@@ -252,6 +253,38 @@ int ModuleResources::ImportRig(const char * rigName, aiMesh * mesh)
 	}
 }
 
+int ModuleResources::ImportAnimation(const char * animName, aiAnimation * anim)
+{
+	int UID = Find(animName);
+
+	if (UID == 0)
+	{
+		bool imported;
+		int UID = App->randomGenerator->Int();
+		std::string exFile = animName;
+
+		imported = App->importer->SaveAnimOwnFormat(anim, animName);
+
+		if (imported == true)
+		{
+			Resource* newResource = CreateNewResource(Resource_Animation, UID);
+			newResource->file = animName;
+			newResource->exportedFile = "Library/Animation/";
+			newResource->exportedFile += exFile;
+			newResource->exportedFile += ".blossom";
+			return UID;
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	else
+	{
+		return UID;
+	}
+}
+
 Resource * ModuleResources::Get(int UID)
 {
 	std::map<int, Resource*>::iterator it = resources.find(UID);
@@ -279,6 +312,11 @@ Resource * ModuleResources::CreateNewResource(ResourceType type, int UID)
 	case Resource_Rig:
 	{
 		ret = (Resource*) new ResourceRig(UID);
+		break;
+	}
+	case Resource_Animation:
+	{
+		ret = (Resource*) new ResourceAnimation(UID);
 		break;
 	}
 	}

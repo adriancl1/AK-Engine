@@ -9,6 +9,7 @@
 #include <vector>
 
 class aiMesh;
+class aiAnimation;
 class Timer;
 
 class ModuleResources : public Module
@@ -23,6 +24,7 @@ public:
 	int ImportFile(const char* fileName, ResourceType type = Resource_Unknown);
 	int ImportFile(const char* meshName, aiMesh* mesh);
 	int ImportRig(const char* rigName, aiMesh* mesh);
+	int ImportAnimation(const char* animName, aiAnimation* anim);
 	Resource* Get(int UID);
 	Resource* CreateNewResource(ResourceType type, int UID);
 	std::vector<Resource*> GetResourcesOfType(ResourceType type) const;

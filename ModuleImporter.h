@@ -8,11 +8,13 @@ class aiMesh;
 class aiMaterial;
 class aiNode;
 class aiScene;
+class aiAnimation;
 
 class GameObject;
 
 class MeshImporter;
 class RigImporter;
+class AnimationImporter;
 
 class ComponentMesh;
 class ComponentMaterial;
@@ -20,6 +22,7 @@ class ComponentTransform;
 
 class ResourceMesh;
 class ResourceRig;
+class ResourceAnimation;
 
 class ModuleImporter : public Module
 {
@@ -39,12 +42,15 @@ public:
 	void LoadNewTexture(const char* fullPath);
 	void LoadOwnFormat(const char* path, ResourceMesh* mesh) const;
 	void LoadRigOwnFormat(const char* path, ResourceRig* rig) const;
+	void LoadAnimOwnFormat(const char* path, ResourceAnimation* animation) const;
 	bool SaveMeshOwnFormat(aiMesh* mesh, const char* UID);
 	bool SaveRigOwnFormat(aiMesh* mesh, const char* rigName);
+	bool SaveAnimOwnFormat(aiAnimation* anim, const char* animName);
 
 private:
 	MeshImporter* meshImporter = nullptr;
 	RigImporter* rigImporter = nullptr;
+	AnimationImporter* animImporter = nullptr;
 };
 
 #endif //__ModuleImporter_H__
