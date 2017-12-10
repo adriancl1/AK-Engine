@@ -2,9 +2,10 @@
 
 #include "Component.h"
 
-class ResourceParticles;
+#include "MathGeo\MathGeoLib.h"
 
-class ComponentParticles: public Component
+
+class ComponentParticles : public Component
 {
 public:
 	ComponentParticles();
@@ -14,8 +15,37 @@ public:
 
 	void OnSave(Configuration& data) const override;
 	void OnLoad(Configuration& data) override;
-	void AddResource(int UID) override;
 
-private:
-	ResourceParticles* particle = nullptr;
+private: //particle system
+	//maybe a particles vectr ( fastest i think)
+private:// Usuary data
+	//basic stats---------------------------------------------------
+	float duration = 5.f;
+
+	bool looping = true;
+	bool prewarm = true;
+
+	float startDelay = 0.f;
+	float startLifeTime = 5.f;
+	float startSpeed = 5.f;
+
+	bool startSize3D = false;
+	float startSize = 1.f;
+	bool startRotation3D = false;
+	float startRotation = 0;
+
+	float randomizeRotation = 0.f; //may be between 0 & 1
+	float3 color = { 0.f,0.f,0.f }; // RGB
+
+	//Gravity modifier
+	//enum simulation Space 
+	float simulationSpeed = 1.f;
+	//enum scaling mode -local -world
+
+	bool playOnAwake = true;
+	int maxParticles = 1000;
+
+	bool autoRandomSeed = true;
+	int seed = 0;
+	//---------------------------------------------------------------
 };

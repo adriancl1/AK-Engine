@@ -372,9 +372,6 @@
     <ClInclude Include="ComponentParticles.h">
       <Filter>Sources\Engine\GameObjects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceParticles.h">
-      <Filter>Sources\Engine\GameObjects\Resources</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -596,10 +593,6 @@
     <ClCompile Include="ComponentParticles.cpp">
       <Filter>Sources\Engine\GameObjects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceParticles.cpp">
-      <Filter>Sources\Engine\GameObjects\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourcesParticles.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeo\Geometry\KDTree.inl">

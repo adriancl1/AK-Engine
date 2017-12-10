@@ -176,7 +176,6 @@
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceMesh.h" />
-    <ClInclude Include="ResourceParticles.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ComponentTransform.h" />
@@ -253,7 +252,6 @@
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
-    <ClCompile Include="ResourceParticles.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
