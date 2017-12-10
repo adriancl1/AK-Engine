@@ -18,6 +18,7 @@ ModuleSceneEditor::ModuleSceneEditor(Application* app, bool startEnabled) : Modu
 {
 	name = "Scene editor";
 }
+
 ModuleSceneEditor::~ModuleSceneEditor()
 {
 

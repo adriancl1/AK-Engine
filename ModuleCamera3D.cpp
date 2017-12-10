@@ -57,7 +57,8 @@ update_status ModuleCamera3D::Update(float dt)
 	BROFILER_CATEGORY("Module Camera Update", Profiler::Color::AliceBlue);
 
 	vec3 newPos(0,0,0);
-	float speed = 15.0f * dt;
+	float speed = 10.0f * dt;
+
 	if (!ImGui::GetIO().WantCaptureKeyboard)
 	{
 		if (UsingSceneCamera() == false)
@@ -82,7 +83,8 @@ update_status ModuleCamera3D::Update(float dt)
 
 			// Mouse motion ----------------
 
-			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && (App->input->GetKey(SDL_SCANCODE_LALT) || App->input->GetKey(SDL_SCANCODE_RALT)))
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT &&
+				(App->input->GetKey(SDL_SCANCODE_LALT) || App->input->GetKey(SDL_SCANCODE_RALT)))
 			{
 				int dx = -App->input->GetMouseXMotion();
 				int dy = -App->input->GetMouseYMotion();
@@ -116,12 +118,82 @@ update_status ModuleCamera3D::Update(float dt)
 
 				Position = Reference + Z * length(Position);
 			}
-			else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE && App->input->GetKey(SDL_SCANCODE_RALT) == KEY_IDLE && !ImGui::GetIO().WantCaptureKeyboard)
+
+			else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN &&
+				App->input->GetKey(SDL_SCANCODE_LALT) == KEY_IDLE &&
+				App->input->GetKey(SDL_SCANCODE_RALT) == KEY_IDLE && 
+				!ImGui::GetIO().WantCaptureKeyboard && 	!ImGui::GetIO().WantCaptureMouse)
 			{
 				LineSegment picking = editorCamera->GetFrustum().UnProjectLineSegment(-(1 - App->input->GetNormalizedMouseX() * 2), (1 -App->input->GetNormalizedMouseY() * 2));
 				lastPick = picking;
 
 				App->sceneEditor->SelectGameObject(picking);
+			}
+
+			if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+			{
+				if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+					speed = 8.0f * dt;
+
+				if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
+				if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+
+
+				if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
+				if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+
+
+				Position += newPos;
+				Reference += newPos;
+
+				// Mouse motion ----------------
+
+
+				int dx = -App->input->GetMouseXMotion();
+				int dy = -App->input->GetMouseYMotion();
+
+				float Sensitivity = 0.25f;
+
+				Position -= Reference;
+
+				if (dx != 0)
+				{
+					if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+					{
+						float DeltaX = (float)dx * Sensitivity;
+						X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+						Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+						Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+					}
+				}
+
+
+				if (dx != 0)
+				{
+					float DeltaX = (float)dx * Sensitivity;
+
+					X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+					Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+					Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				}
+
+
+				if (dy != 0)
+				{
+					float DeltaY = (float)dy * Sensitivity;
+
+					Y = rotate(Y, DeltaY, X);
+					Z = rotate(Z, DeltaY, X);
+
+					if (Y.y < 0.0f)
+					{
+						Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+						Y = cross(Z, X);
+					}
+				}
+
+				Position = Reference + Z * length(Position);
 			}
 
 			if (App->sceneEditor->GetSelected() != nullptr )

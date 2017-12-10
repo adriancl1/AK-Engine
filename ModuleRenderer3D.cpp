@@ -369,6 +369,10 @@ void ModuleRenderer3D::Draw(GameObject* objectDraw)
 
 void ModuleRenderer3D::DrawMesh(ComponentMesh * toDraw)
 {
+	if (toDraw->GetNumVertices() <= 4)
+		return;
+
+
 	if (wframe == true)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
