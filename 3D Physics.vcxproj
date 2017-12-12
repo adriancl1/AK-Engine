@@ -172,6 +172,7 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="parson\parson.h" />
     <ClInclude Include="ParticleSystem\Emiter.h" />
+    <ClInclude Include="ParticleSystem\GlobalDefines.h" />
     <ClInclude Include="ParticleSystem\Particle.h" />
     <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="PhysBody3D.h" />

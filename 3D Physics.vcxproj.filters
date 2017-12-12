@@ -384,6 +384,9 @@
     <ClInclude Include="ParticleSystem\ParticleSystem.h">
       <Filter>Sources\Engine\ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystem\GlobalDefines.h">
+      <Filter>Sources\Engine\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">

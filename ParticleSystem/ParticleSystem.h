@@ -2,9 +2,9 @@
 #define _PS_PARTICLE_SYSTEM_
 
 #include <vector>
+#include "../MathGeo/MathGeoLib.h"
+#include "GlobalDefines.h"
 
-
-typedef unsigned int uint;
 
 class Particle;
 class Emiter;
@@ -21,6 +21,10 @@ private:
 	std::vector<Particle*> particleVec;
 	Emiter* emiter;
 
+public:
+
+	float3 cameraPos = float3::zero;
+
 };
 struct SystemState //going to global state to set on particles latter
 {
@@ -33,5 +37,14 @@ struct TextureData // it is like resource texture, contains all the data of the 
 
 
 };
+
+struct PTransformation
+{
+	float3 Position;
+	Quat Rotation;
+	float3 Scale;
+};
+
+
 
 #endif // !_PS_PARTICLE_SYSTEM_

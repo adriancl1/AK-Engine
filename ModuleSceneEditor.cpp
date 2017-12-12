@@ -8,6 +8,13 @@
 #include "ModuleRenderer3D.h"
 
 #include "Glew/include/glew.h"
+
+//To test
+#include "MathGeo/Geometry/Sphere.h"
+#include "ParticleSystem\Emiter.h"
+
+
+//
 #include "MathGeo/Geometry/Triangle.h"
 #include "MathGeo/Math/float4x4.h"
 #include "MathGeo/Geometry/LineSegment.h"
@@ -51,6 +58,8 @@ bool ModuleSceneEditor::Start()
 	scene->AddComponent(camera);
 
 	tree = new Quadtree(); 
+	spheretest.r = 2.f;
+
 
 	return true;
 }
@@ -67,6 +76,9 @@ update_status ModuleSceneEditor::PreUpdate(float dt)
 }
 update_status ModuleSceneEditor::Update(float dt)
 {
+	emiterTest->DrawSphere(spheretest);	//To test
+	
+
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && selected != nullptr)
 	{
 			ComponentMesh* mesh = (ComponentMesh*)selected->FindComponent(Component_Mesh);

@@ -5,11 +5,14 @@
 #include "Primitive.h"
 #include "Timer.h"
 #include "MathGeo/Geometry/AABB.h"
+#include "MathGeo/MathGeoLib.h"//To test
 #include <list>
 
 class GameObject;
 class Mesh;
 class Quadtree;
+
+class Emiter;	//To test
 
 class ModuleSceneEditor : public Module
 {
@@ -59,7 +62,14 @@ private:
 	bool wantToLoad = false;
 	std::string loadPath;
 
+
 	Timer saveLoadTimer;
+
+
+	//To test
+	Sphere spheretest;
+	Emiter* emiterTest = nullptr;
+	//
 };
 
 #endif
