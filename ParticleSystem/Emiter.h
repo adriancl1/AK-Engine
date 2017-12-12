@@ -29,12 +29,15 @@ struct SCone
 
 union Shape
 {
+	Shape(){}
+
 	AABB box;
 	Sphere sphere;
 	Sphere semiSphere;
 	Circle circle;
 	SCone cone;
-};
+	AABB quad;
+}; 
 
 
 
@@ -55,12 +58,14 @@ public:
 	void DrawBox(const AABB& box);
 	void DrawSemiSphere(const Sphere&sphere);
 	void DrawCone(const SCone& cone);
-	//void DrawPoligon(const Polygon& pol);
+	void DrawPoligon(const AABB& box);
 	void DrawCircle(const Circle& circle);
 
 private:
 	bool active = true; //can be draw the shape or not
 	Etype type;
+
+	Shape shape; 
 };
 
 //-------------------------------[DATA]

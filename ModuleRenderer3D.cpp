@@ -147,10 +147,10 @@ bool ModuleRenderer3D::Init(Configuration data)
 		{
 			glEnable(GL_CULL_FACE);
 		}
-		lights[0].Active(true);
+	//	lights[0].Active(true);
 		if (lighting)
 		{
-			glEnable(GL_LIGHTING);
+		//	glEnable(GL_LIGHTING);
 		}
 		if (colorMaterial)
 		{
@@ -385,7 +385,7 @@ void ModuleRenderer3D::DrawMesh(ComponentMesh * toDraw)
 
 	if (toDraw->GetIDNormals() > 0)
 	{
-		glEnable(GL_LIGHTING);
+	//	glEnable(GL_LIGHTING);
 		glEnableClientState(GL_NORMAL_ARRAY);
 
 		glBindBuffer(GL_ARRAY_BUFFER, toDraw->GetIDNormals());

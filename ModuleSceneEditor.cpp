@@ -58,7 +58,8 @@ bool ModuleSceneEditor::Start()
 	scene->AddComponent(camera);
 
 	tree = new Quadtree(); 
-	spheretest.r = 2.f;
+	
+	//spheretest.r = 2.f;
 
 
 	return true;
@@ -76,7 +77,7 @@ update_status ModuleSceneEditor::PreUpdate(float dt)
 }
 update_status ModuleSceneEditor::Update(float dt)
 {
-	emiterTest->DrawSphere(spheretest);	//To test
+	//emiterTest->DrawSemiSphere(spheretest);	//To test
 	
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && selected != nullptr)
