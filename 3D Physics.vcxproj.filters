@@ -61,6 +61,9 @@
     <Filter Include="Sources\3rd\Helpers">
       <UniqueIdentifier>{121f8e6b-df36-4ab0-be0d-601ddfc9e503}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Engine\ParticleSystem">
+      <UniqueIdentifier>{6be35a2f-29ce-4316-b14d-b76696fb1e95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -372,6 +375,15 @@
     <ClInclude Include="ComponentParticles.h">
       <Filter>Sources\Engine\GameObjects\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystem\Emiter.h">
+      <Filter>Sources\Engine\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem\Particle.h">
+      <Filter>Sources\Engine\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem\ParticleSystem.h">
+      <Filter>Sources\Engine\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -592,6 +604,15 @@
     </ClCompile>
     <ClCompile Include="ComponentParticles.cpp">
       <Filter>Sources\Engine\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem\Emiter.cpp">
+      <Filter>Sources\Engine\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem\Particle.cpp">
+      <Filter>Sources\Engine\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem\ParticleSystem.cpp">
+      <Filter>Sources\Engine\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

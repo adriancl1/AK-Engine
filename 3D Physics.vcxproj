@@ -171,6 +171,9 @@
     <ClInclude Include="ModuleTimeManager.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="parson\parson.h" />
+    <ClInclude Include="ParticleSystem\Emiter.h" />
+    <ClInclude Include="ParticleSystem\Particle.h" />
+    <ClInclude Include="ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Quadtree.h" />
@@ -247,6 +250,9 @@
     <ClCompile Include="ModuleTimeManager.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="parson\parson.c" />
+    <ClCompile Include="ParticleSystem\Emiter.cpp" />
+    <ClCompile Include="ParticleSystem\Particle.cpp" />
+    <ClCompile Include="ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Quadtree.cpp" />
