@@ -15,7 +15,12 @@ ComponentAnimation::~ComponentAnimation()
 
 void ComponentAnimation::Update()
 {
-	//animTimer += (float)anim->ticksPerSecond / anim->duration;
+	PositionKey currentPosKey;
+	PositionKey nextPosKey;
+	RotationKey currentRotKey; 
+	RotationKey nextRotKey;
+	animTimer += (float)anim->ticksPerSecond / anim->duration;
+	animTimer += 0.16f;
 	bool foundBone = false;
 	for (int i = 0; i < anim->bones.size(); i++)
 	{
@@ -34,25 +39,60 @@ void ComponentAnimation::Update()
 
 		if (animTimer == 0)
 		{
-			boneTrans->SetPosition(anim->bones[i].posKeys[0].value);
-			foundBone == true;
+			currentPosKey = anim->bones[i].posKeys[0];
+			nextPosKey = anim->bones[i].posKeys[0];
+			currentRotKey = anim->bones[i].rotKeys[0];
+			nextRotKey = anim->bones[i].rotKeys[0];
+		}
+		else if (animTimer > anim->duration)
+		{
+			animTimer = 0;
+			currentPosKey = anim->bones[i].posKeys[0];
+			nextPosKey = anim->bones[i].posKeys[0];
+			currentRotKey = anim->bones[i].rotKeys[0];
+			nextRotKey = anim->bones[i].rotKeys[0];
 		}
 		else
 		{
 			for (int j = 0; j < anim->bones[i].posKeys.size(); j++)
 			{
-				if (anim->bones[i].posKeys[j].time > animTimer)
+				if (anim->bones[i].posKeys[j].time < animTimer)
 				{
-					boneTrans->SetPosition(anim->bones[i].posKeys[j].value);
-					foundBone == true;
-					break;
+					currentPosKey = anim->bones[i].posKeys[j];
+					if (anim->bones[i].posKeys.size() > j + 1)
+					{
+						nextPosKey = anim->bones[i].posKeys[j + 1];
+					}
+					else
+					{
+						nextPosKey = anim->bones[i].posKeys[j];
+					}
+					
+				}
+			}
+			for (int j = 0; j < anim->bones[i].rotKeys.size(); j++)
+			{
+				if (anim->bones[i].rotKeys[j].time < animTimer)
+				{
+					currentRotKey = anim->bones[i].rotKeys[j];
+					if (anim->bones[i].rotKeys.size() > j + 1)
+					{
+						nextRotKey= anim->bones[i].rotKeys[j + 1];
+					}
+					else
+					{
+						nextRotKey = anim->bones[i].rotKeys[j];
+					}
+
 				}
 			}
 		}
-	}
-	if (foundBone == false)
-	{
-		//animTimer = 0;
+		float time = (animTimer - currentPosKey.time) / (nextPosKey.time - currentPosKey.time);
+		float3 bonePos = float3::Lerp(currentPosKey.value, nextPosKey.value, time);
+		time = (animTimer - currentRotKey.time) / (nextRotKey.time - currentRotKey.time);
+		Quat boneRot = Quat::Slerp(currentRotKey.value, nextRotKey.value, time); 
+		boneTrans->SetPosition(bonePos);
+		boneTrans->SetRotation(boneRot);
 	}
 }
 

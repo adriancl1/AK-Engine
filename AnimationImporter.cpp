@@ -82,7 +82,8 @@ bool AnimationImporter::Save(const aiAnimation * anim, const char * outputFile)
 		{
 			Configuration rotKey;
 			rotKey.SetFloat("Time", tmp->mRotationKeys[j].mTime);
-			rotKey.AddArrayFloat("Rotation", &tmp->mRotationKeys[j].mValue.x, 4);
+			Quat tmpQuat(tmp->mRotationKeys[j].mValue.x, tmp->mRotationKeys[j].mValue.y, tmp->mRotationKeys[j].mValue.z, tmp->mRotationKeys[j].mValue.w);
+			rotKey.AddArrayFloat("Rotation", &tmpQuat.x, 4);
 			boneConf.AddArrayEntry(rotKey);
 		}
 		save.AddArrayEntry(boneConf);

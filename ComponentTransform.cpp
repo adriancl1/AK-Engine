@@ -82,7 +82,6 @@ float3 ComponentTransform::GetPosition() const
 void ComponentTransform::SetPosition(float3 pos)
 {
 	position = pos;
-	UpdateTrans();
 }
 
 void ComponentTransform::SetRotation(Quat rot)
@@ -90,7 +89,6 @@ void ComponentTransform::SetRotation(Quat rot)
 	rotation = rot;
 	rotationEuler = rot.ToEulerXYZ();
 	rotationEuler *= RADTODEG;
-	UpdateTrans();
 }
 
 void ComponentTransform::OnEditor()
