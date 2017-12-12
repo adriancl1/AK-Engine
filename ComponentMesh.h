@@ -75,6 +75,8 @@ public:
 	
 	void UpdateDeformable();
 
+	void ResetDeformable();
+
 	Mesh* GetMeshDeformable() const;
 
 private:

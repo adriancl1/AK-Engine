@@ -21,13 +21,6 @@ bool ResourceRig::LoadToGameObject(GameObject* GO)
 		{
 			ComponentBone* tmpBone = new ComponentBone(bones[i], (ComponentMesh*)GO->FindComponent(Component_Mesh));
 			tmp->AddComponent(tmpBone);
-
-			ComponentTransform* tmpTrans = (ComponentTransform*)tmp->FindComponent(Component_Transform);
-			if (tmpTrans != nullptr)
-			{
-				tmpTrans->UpdateTrans();
-				tmpBone->SetOriginalTrans(tmpTrans->GetGlobalTransform());
-			}
 		}
 	}
 	return true;

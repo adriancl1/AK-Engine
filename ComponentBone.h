@@ -18,12 +18,11 @@ public:
 
 	void DrawDebug() const;
 
-	void SetOriginalTrans(float4x4 trans);
-
 private:
 	Bone bone;
 	ComponentMesh* attachedMesh = nullptr;
 	float4x4 originalTrans;
 	float3 lastDiff = float3::zero;
 	Timer toCheck;
+	bool debug = false;
 };

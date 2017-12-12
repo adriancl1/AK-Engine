@@ -6,6 +6,13 @@
 #include "Application.h"
 #include "imgui-1.51\imgui.h"
 
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
+
+#pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
+#pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+
 ComponentBone::ComponentBone(Bone bone, ComponentMesh* mesh): bone(bone), attachedMesh(mesh), Component(Component_Bone)
 {
 	name = mesh->GetGameObject()->GetName();
@@ -22,24 +29,33 @@ void ComponentBone::Update()
 	ComponentTransform* cTrans = (ComponentTransform*)myGO->FindComponent(Component_Transform);
 	float4x4 trans = cTrans->GetGlobalTransform();
 	ComponentTransform* meshTrans = (ComponentTransform*)attachedMesh->GetGameObject()->FindComponent(Component_Transform);
-	trans = trans * meshTrans->GetLocalTransform().Inverted();
+	trans = meshTrans->GetLocalTransform().Inverted() * trans ;
 	trans = trans * bone.offsetMatrix;
 
 	float3 pos;
 	Quat rot;
 	float3 sca;
 
-	trans.Decompose(pos, rot, sca);
+	//trans.Decompose(pos, rot, sca);
 	Mesh* deformableMesh = attachedMesh->GetMeshDeformable();
 	const float* originalVertices = attachedMesh->GetVertices();
 	for (int i = 0; i < bone.weights.size(); i++)
 	{
-		deformableMesh->vertices[bone.weights[i].vertexID * 3] = originalVertices[bone.weights[i].vertexID * 3] + (pos.x * bone.weights[i].weight);
-		deformableMesh->vertices[bone.weights[i].vertexID * 3 + 1] = originalVertices[bone.weights[i].vertexID * 3 + 1] + (-pos.y * bone.weights[i].weight);
-		deformableMesh->vertices[bone.weights[i].vertexID * 3 + 2] = originalVertices[bone.weights[i].vertexID * 3 + 2] + (-pos.z * bone.weights[i].weight);
+		int ind = bone.weights[i].vertexID;
+		float3 originalVertex(&originalVertices[ind * 3]);
+		float3 vertex(&deformableMesh->vertices[ind * 3]);
+
+		vertex = trans.TransformPos(originalVertex);
+
+		deformableMesh->vertices[ind * 3] += vertex.x * bone.weights[i].weight;
+		deformableMesh->vertices[ind * 3 + 1] += vertex.y * bone.weights[i].weight;
+		deformableMesh->vertices[ind * 3 + 2] += vertex.z * bone.weights[i].weight;
 	}
 	attachedMesh->UpdateDeformable();
-	toCheck.Start();
+	if (debug)
+	{
+		DrawDebug();
+	}
 }
 
 void ComponentBone::OnEditor()
@@ -52,16 +68,32 @@ void ComponentBone::OnEditor()
 		{
 			ImGui::Text("Vertex %i: ID: %i, Weight: %.2f", i, bone.weights[i].vertexID, bone.weights[i].weight);
 		}
+		ImGui::Checkbox("Debug", &debug);
 		ImGui::TreePop();
 	}
 }
 
 void ComponentBone::DrawDebug() const
 {
+	Mesh* deformableMesh = attachedMesh->GetMeshDeformable();
+	ComponentTransform* tmpTrans = (ComponentTransform*)attachedMesh->GetGameObject()->FindComponent(Component_Transform);
 
-}
+	glPushMatrix();
+	if (tmpTrans != nullptr)
+	{
+		glMultMatrixf(tmpTrans->GetTransMatrix().Transposed().ptr());
+	}
 
-void ComponentBone::SetOriginalTrans(float4x4 trans)
-{
-	originalTrans = trans;
+	for (int i = 0; i < bone.weights.size(); i++)
+	{
+		glColor3f(bone.weights[i].weight, 1.0f - bone.weights[i].weight, 0.0f);
+		int ind = bone.weights[i].vertexID;
+		float3 vertex(&deformableMesh->vertices[ind * 3]);
+		glPointSize(5.0f);
+		glBegin(GL_POINTS);
+		glVertex3f(vertex.x, vertex.y, vertex.z);
+		glEnd();
+	}
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glPopMatrix();
 }

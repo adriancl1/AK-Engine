@@ -28,6 +28,7 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::Update()
 {
+	ResetDeformable();
 }
 
 float3 ComponentMesh::GetCenter() const
@@ -288,6 +289,12 @@ void ComponentMesh::UpdateDeformable()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, meshDeformable->idVertices);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * meshDeformable->numVertices * 3, meshDeformable->vertices, GL_DYNAMIC_DRAW);
+}
+
+void ComponentMesh::ResetDeformable()
+{
+	memcpy(meshDeformable->vertices, mesh->vertices, mesh->numVertices * 3 * sizeof(float));
+	memcpy(meshDeformable->normals, mesh->normals, mesh->numVertices * 3 * sizeof(float));
 }
 
 Mesh* ComponentMesh::GetMeshDeformable() const
