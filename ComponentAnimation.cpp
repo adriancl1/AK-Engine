@@ -17,102 +17,121 @@ void ComponentAnimation::Update()
 {
 	PositionKey currentPosKey;
 	PositionKey nextPosKey;
-	RotationKey currentRotKey; 
+	RotationKey currentRotKey;
 	RotationKey nextRotKey;
-	animTimer += (float)anim->ticksPerSecond / anim->duration;
-	animTimer += 0.08f * speedFactor;
+
 	bool foundBone = false;
-	for (int i = 0; i < anim->bones.size(); i++)
+
+	switch (AnimStatus)
 	{
-		GameObject* boneGO = myGO->FindByName(anim->bones[i].name.c_str());
-		ComponentTransform* boneTrans;
-		if (boneGO != nullptr)
+	case ANIMATION_PLAY:
+	
+		animTimer += (float)anim->ticksPerSecond / anim->duration;
+		animTimer += 0.08f * speedFactor;
+	
+		for (int i = 0; i < anim->bones.size(); i++)
 		{
-			boneTrans = (ComponentTransform*)boneGO->FindComponent(Component_Transform);
-		}
-		else
-		{
-			LOG("Couldn't finde bone with name %s! Deleting animation component.", anim->bones[i].name.c_str())
-				wantsToDie = true;
-			return;
-		}
-
-		if (animTimer == 0)
-		{
-			currentPosKey = anim->bones[i].posKeys[0];
-			nextPosKey = anim->bones[i].posKeys[0];
-			currentRotKey = anim->bones[i].rotKeys[0];
-			nextRotKey = anim->bones[i].rotKeys[0];
-		}
-		else if (animTimer > anim->duration)
-		{
-			animTimer = 0;
-			currentPosKey = anim->bones[i].posKeys[0];
-			nextPosKey = anim->bones[i].posKeys[0];
-			currentRotKey = anim->bones[i].rotKeys[0];
-			nextRotKey = anim->bones[i].rotKeys[0];
-		}
-		else
-		{
-			for (int j = 0; j < anim->bones[i].posKeys.size(); j++)
+			GameObject* boneGO = myGO->FindByName(anim->bones[i].name.c_str());
+			ComponentTransform* boneTrans;
+			if (boneGO != nullptr)
 			{
-				if (anim->bones[i].posKeys[j].time < animTimer)
+				boneTrans = (ComponentTransform*)boneGO->FindComponent(Component_Transform);
+			}
+			else
+			{
+				LOG("Couldn't finde bone with name %s! Deleting animation component.", anim->bones[i].name.c_str())
+					wantsToDie = true;
+				return;
+			}
+
+			if (animTimer == 0)
+			{
+				currentPosKey = anim->bones[i].posKeys[0];
+				nextPosKey = anim->bones[i].posKeys[0];
+				currentRotKey = anim->bones[i].rotKeys[0];
+				nextRotKey = anim->bones[i].rotKeys[0];
+			}
+			else if (animTimer > anim->duration)
+			{
+				animTimer = 0;
+				currentPosKey = anim->bones[i].posKeys[0];
+				nextPosKey = anim->bones[i].posKeys[0];
+				currentRotKey = anim->bones[i].rotKeys[0];
+				nextRotKey = anim->bones[i].rotKeys[0];
+			}
+			else
+			{
+				for (int j = 0; j < anim->bones[i].posKeys.size(); j++)
 				{
-					currentPosKey = anim->bones[i].posKeys[j];
-					if (anim->bones[i].posKeys.size() > j + 1)
+					if (anim->bones[i].posKeys[j].time < animTimer)
 					{
-						nextPosKey = anim->bones[i].posKeys[j + 1];
+						currentPosKey = anim->bones[i].posKeys[j];
+						if (anim->bones[i].posKeys.size() > j + 1)
+						{
+							nextPosKey = anim->bones[i].posKeys[j + 1];
+						}
+						else
+						{
+							nextPosKey = anim->bones[i].posKeys[j];
+						}
+
 					}
-					else
+				}
+				for (int j = 0; j < anim->bones[i].rotKeys.size(); j++)
+				{
+					if (anim->bones[i].rotKeys[j].time < animTimer)
 					{
-						nextPosKey = anim->bones[i].posKeys[j];
+						currentRotKey = anim->bones[i].rotKeys[j];
+						if (anim->bones[i].rotKeys.size() > j + 1)
+						{
+							nextRotKey = anim->bones[i].rotKeys[j + 1];
+						}
+						else
+						{
+							nextRotKey = anim->bones[i].rotKeys[j];
+						}
+
 					}
-					
 				}
 			}
-			for (int j = 0; j < anim->bones[i].rotKeys.size(); j++)
+			float time;
+			float3 bonePos;
+			Quat boneRot;
+
+			if (nextPosKey.time != currentPosKey.time)
 			{
-				if (anim->bones[i].rotKeys[j].time < animTimer)
-				{
-					currentRotKey = anim->bones[i].rotKeys[j];
-					if (anim->bones[i].rotKeys.size() > j + 1)
-					{
-						nextRotKey= anim->bones[i].rotKeys[j + 1];
-					}
-					else
-					{
-						nextRotKey = anim->bones[i].rotKeys[j];
-					}
-
-				}
+				time = (animTimer - currentPosKey.time) / (nextPosKey.time - currentPosKey.time);
+				bonePos = float3::Lerp(currentPosKey.value, nextPosKey.value, time);
 			}
-		}
-		float time;
-		float3 bonePos;
-		Quat boneRot;
+			else
+			{
+				bonePos = currentPosKey.value;
+			}
+			if (nextRotKey.time != currentRotKey.time)
+			{
+				time = (animTimer - currentRotKey.time) / (nextRotKey.time - currentRotKey.time);
+				boneRot = Quat::Slerp(currentRotKey.value, nextRotKey.value, time);
+			}
+			else
+			{
+				boneRot = currentRotKey.value;
+			}
 
-		if (nextPosKey.time != currentPosKey.time)
-		{
-			time = (animTimer - currentPosKey.time) / (nextPosKey.time - currentPosKey.time);
-			bonePos = float3::Lerp(currentPosKey.value, nextPosKey.value, time);
+			boneTrans->SetPosition(bonePos);
+			boneTrans->SetRotation(boneRot);
 		}
-		else
-		{
-			bonePos = currentPosKey.value;
-		}
-		if (nextRotKey.time != currentRotKey.time)
-		{
-			time = (animTimer - currentRotKey.time) / (nextRotKey.time - currentRotKey.time);
-			boneRot = Quat::Slerp(currentRotKey.value, nextRotKey.value, time);
-		}
-		else
-		{
-			boneRot = currentRotKey.value;
-		}
-		
-		boneTrans->SetPosition(bonePos);
-		boneTrans->SetRotation(boneRot);
-	}
+		break;
+
+		case ANIMATION_PAUSE:
+			break;
+
+		case ANIMATION_STOP:
+			animTimer = 0.0f;				
+			break;
+
+		default:
+			break;
+	}	
 }
 
 void ComponentAnimation::OnEditor()
@@ -127,6 +146,34 @@ void ComponentAnimation::OnEditor()
 		{
 			wantsToDie = true;
 		}
+
+		if (ImGui::Button("Play"))
+		{
+			AnimStatus = ANIMATION_PLAY;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Pause"))
+		{
+			AnimStatus = ANIMATION_PAUSE;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Stop"))
+		{
+			for (int i = 0; i < anim->bones.size(); i++)
+			{
+				GameObject* boneGO = myGO->FindByName(anim->bones[i].name.c_str());
+				ComponentTransform* boneTrans;
+				if (boneGO != nullptr)
+				{
+					boneTrans = (ComponentTransform*)boneGO->FindComponent(Component_Transform);
+				}
+				boneTrans->SetPosition(anim->bones[i].posKeys[0].value);
+				boneTrans->SetRotation(anim->bones[i].rotKeys[0].value);
+
+			}
+			AnimStatus = ANIMATION_STOP;
+		}
+
 		ImGui::TreePop();
 	}
 }

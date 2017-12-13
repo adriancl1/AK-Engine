@@ -5,6 +5,13 @@
 
 #include "MathGeo/Math/float3.h"
 
+enum AnimationStatus
+{
+	ANIMATION_PLAY,
+	ANIMATION_PAUSE,
+	ANIMATION_STOP
+};
+
 class ResourceAnimation;
 
 class ComponentAnimation : public Component
@@ -27,4 +34,6 @@ private:
 	ResourceAnimation* anim;
 	float animTimer = 0;
 	float speedFactor = 1;
+
+	AnimationStatus AnimStatus;
 };
