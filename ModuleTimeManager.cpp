@@ -45,12 +45,8 @@ update_status ModuleTimeManager::PreUpdate(float dt)
 
 update_status ModuleTimeManager::PostUpdate(float dt)
 {
-	if (!ImGui::Begin("Time Manager"))
-	{
-		ImGui::End();
-	}
-	if (ImGui::CollapsingHeader("Time Status"))
-	{
+	ImGui::Begin("Time Manager");
+
 		if (ImGui::Button("Play"))
 		{
 			PlayGame(!isInGame);
@@ -78,8 +74,9 @@ update_status ModuleTimeManager::PostUpdate(float dt)
 		{
 			ImGui::Text("Not Playing!");
 		}
-	}
+
 	ImGui::End();
+
 
 	return UPDATE_CONTINUE;
 }

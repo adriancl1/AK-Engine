@@ -16,22 +16,36 @@ public:
 	ParticleSystem();
 	~ParticleSystem();
 	
-
+	//UI -------------------------------
+	
+	//Draws ---
+	void DrawParticleSystemEditor();
+	void Draw();
+	//Show/unshow Window ---
+	void openCloseWindowPS(bool state);
+	bool isOpenCloseWindowPS();
+	void changeOpenCloseWindowPS();
+	
 private:
 	std::vector<Particle*> particleVec;
 	Emiter* emiter;
+
+	bool windowShow = true;
 
 public:
 
 	float3 cameraPos = float3::zero;
 
 };
+
+
+// -------------------------------------- [STATE]
 struct SystemState //going to global state to set on particles latter
 {
 
 
 };
-
+// -------------------------------------- [TEXTURE]
 struct TextureData // it is like resource texture, contains all the data of the texture.
 {
 

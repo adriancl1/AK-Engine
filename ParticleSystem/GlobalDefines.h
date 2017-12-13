@@ -33,7 +33,6 @@ typedef unsigned int uint;
 #ifndef DEGTORAD
 #define DEGTORAD 0.0174532925199432957f
 #endif 
-
 #ifndef RADTODEG
 #define RADTODEG 57.295779513082320876f
 #endif 
@@ -42,22 +41,38 @@ typedef unsigned int uint;
 #define CIRCLEDEGREES 360.f
 #endif 
 
+
+
+//DEFAULT VALORS ------------------------- 
+/*shapes */
+#define PS_DEFAULT_SIZE_SPHERE 1.0f 
+#define PS_DEFAULT_SIZE_SEMISPHERE 1.0f 
+#define PS_DEFAULT_SIZE_CUBE 1.0f 
+#define PS_DEFAULT_SIZE_SQUARE 1.0f 
+#define PS_DEFAULT_SIZE_CONE_TALL 3.0f
+#define PS_DEFAULT_SIZE_CONE_DOWN 1.0f //circle
+#define PS_DEFAULT_SIZE_CONE_UP 1.0f  //circle
+#define PS_DEFAULT_SIZE_CIRCLE 1.0f 
+
 #ifndef CIRCLEPERFECTION
 #define CIRCLEPERFECTION 20
 #endif 
-
 // DEBUG ------------------------------------------------
-
-#ifndef DEBUG_COLOR_LINES
-#define DEBUG_COLOR_LINES 0.7f, 1.0f, 1.0f// AZURE 
+/*Used to the shapes lines, */
+#ifndef PS_DEBUG_COLOR_LINES
+#define PS_DEBUG_COLOR_LINES 0.7f, 1.0f, 1.0f// AZURE 
 #endif  
-
-//COLORS
-
+/*some colors... */
 // AZURE  0.7f, 1.0f, 1.0f //BLUE
 // ORANGE  1.3f, 0.5f, 0.3f
 // BROWN 0.6f, 0.3f, 0.2f
 // YELLOW 1.0f, 0.85f, 0.0f
-// CYAN 0.0f, 0.8f, 0.9f
+// CYAN 0.0f, 0.8f, 0.9f //BLUE
+
+
+
+
+
+
 
 #endif // !_GLOBAL_DEFINES_

@@ -4,6 +4,7 @@
 #include "..\MathGeo\Math\float3.h"
 #include "..\MathGeo\Math\float4.h"
 #include "..\MathGeo\Math\Quat.h"
+#include "ParticleSystem.h"
 
 struct ParticleData
 {
@@ -12,7 +13,7 @@ struct ParticleData
 	float3 Scale = float3::one;						//Particle Actual Scale
 	float Size = 0.0f;								//Scale Multiplicator to modify
 	float3 Speed = float3::zero;					//Particle Speed
-	float3 Direction = float3::zero;		//Particle Emission Direction
+	float3 Direction = float3::zero;			//Particle Emission Direction
 	float3 force = float3::zero;					//Force that effects that particle
 	float MaxLifeTime = 0;							//Max Particle Lifetime
 	float LifeTime = 0;								//Actual Particle Lifetime
@@ -26,8 +27,6 @@ struct State
 	float Size = 0.0f;
 	float4 RGBA = float4::one;
 };
-
-class ParticleSystem;
 
 class Particle
 {
@@ -45,7 +44,7 @@ public:
 
 private:
 	ParticleSystem * pSystem;
-	ParticleData Data;
+	ParticleData data;
 	State Initial;
 	State Final;
 

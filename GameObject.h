@@ -56,6 +56,7 @@ protected:
 
 	bool addingMesh = false;
 	bool addingMaterial = false;
+	bool addingParticlesystem = false;
 	bool wantsToDie = false;
 
 	std::string name;

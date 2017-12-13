@@ -20,7 +20,7 @@ enum Etype //type of the emiter
 	E_CIRCLE
 };
 
-struct SCone
+struct SCone //Basic figure from a cone
 {
 	Circle up;
 	Circle down;
@@ -39,20 +39,25 @@ union Shape
 	AABB quad;
 }; 
 
-
-
-
 //-------------------------------[EMITER]
 class Emiter 	//shapes // sphere, cube, cone, semiphere
 {
 public:
 	Emiter();
-	~Emiter();
-	
-	void DrawEmiter();
-	//draws
+	~Emiter();	
 
-	//	E_SPHERE,E_BOX,	E_SEMISPHERE, E_CONE, E_SQUARE,	E_CIRCLE
+	/* -DefaultEmiterData- Used to put default sizes of the shapes ( you can change it from GlobalDefines) */
+	void DefaultEmiterData();
+
+	//---[Draws]
+
+	/*-DrawEmiter- Draws the emiter on the scene*/
+	void DrawEmiter();
+
+	/*-DrawEmiterEditor- Draws the emiter on the editor*/
+	void DrawEmiterEditor();
+
+	/* Draw shapes functiones.... E_SPHERE,E_BOX,	E_SEMISPHERE, E_CONE, E_SQUARE,	E_CIRCLE */
 
 	void DrawSphere(const Sphere&sphere);
 	void DrawBox(const AABB& box);
@@ -60,11 +65,10 @@ public:
 	void DrawCone(const SCone& cone);
 	void DrawPoligon(const AABB& box);
 	void DrawCircle(const Circle& circle);
-
+	Etype type = E_SPHERE;
 private:
 	bool active = true; //can be draw the shape or not
-	Etype type;
-
+	
 	Shape shape; 
 };
 

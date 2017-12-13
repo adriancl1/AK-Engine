@@ -3,7 +3,7 @@
 #include "Component.h"
 
 #include "MathGeo\MathGeoLib.h"
-
+#include "ParticleSystem\ParticleSystem.h"
 
 class ComponentParticles : public Component
 {
@@ -13,11 +13,19 @@ public:
 
 	void Update() override;
 
+
+	void OnEditor()override;
+
 	void OnSave(Configuration& data) const override;
 	void OnLoad(Configuration& data) override;
 
-private: //particle system
-	//maybe a particles vectr ( fastest i think)
+private:
+	ParticleSystem * particleSystem = nullptr;
+
+
+
+	//this must work on API
+
 private:// Usuary data
 	//basic stats---------------------------------------------------
 	float duration = 5.f;

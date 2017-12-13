@@ -1,18 +1,33 @@
 #include "ComponentParticles.h"
 #include "Configuration.h"
+#include "imgui-1.51/imgui.h"
 
-ComponentParticles::ComponentParticles() : Component(Component_Mesh)
+ComponentParticles::ComponentParticles() : Component(Component_Particles)
 {
-
+	name = "Particle System";
+	
+	particleSystem = new ParticleSystem();
 }
 
 ComponentParticles::~ComponentParticles()
 {
-
+	RELEASE(particleSystem);
 }
 
 void ComponentParticles::Update()
 {
+	particleSystem->Draw();
+}
+
+void ComponentParticles::OnEditor()
+{
+
+	if (ImGui::TreeNodeEx(name.c_str()))
+	{
+		particleSystem->DrawParticleSystemEditor();
+
+		ImGui::TreePop();
+	}
 }
 
 void ComponentParticles::OnSave(Configuration & data) const

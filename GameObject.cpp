@@ -6,6 +6,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
+#include "ComponentParticles.h"
 
 #define PROPERTIES_WIDTH 300
 #define PROPERTIES_HEIGHT 500
@@ -222,6 +223,10 @@ void GameObject::ShowProperties()
 		{
 			addingMaterial = true;
 		}
+		if (addingParticlesystem == false && FindComponent(Component_Particles) == nullptr && ImGui::Button("Add Component Particle System"))
+		{
+			addingParticlesystem = true;
+		}
 	}
 
 	if (addingMesh == true)
@@ -269,6 +274,38 @@ void GameObject::ShowProperties()
 		}
 		ImGui::End();
 	}
+
+	if (addingParticlesystem == true)
+	{
+		ImGui::Begin("Select new Particle system");
+		ImGui::PushItemWidth(-140);
+
+		std::vector<Resource*> tmp = App->resources->GetResourcesOfType(Resource_Particle);
+		for (int i = 0; i < tmp.size(); i++)
+		{
+			if (ImGui::Button(tmp[i]->GetFile()))
+			{
+				ComponentParticles* newPart = new ComponentParticles();
+				newPart->AddResource(tmp[i]->GetUID());
+				AddComponent(newPart);
+				addingParticlesystem = false;
+			}
+		}
+		if (ImGui::Button("New"))
+		{
+			ComponentParticles* newPart = new ComponentParticles();
+			AddComponent(newPart);
+			addingParticlesystem = false;
+		}
+		ImGui::SameLine;
+		if (ImGui::Button("Cancel"))
+		{
+			addingParticlesystem = false;
+		}
+		ImGui::End();
+	}
+
+
 
 	if (ImGui::Button("Delete Game object"))
 	{
@@ -411,6 +448,13 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 			ComponentMaterial* compMat = new ComponentMaterial();
 			compMat->OnLoad(componentConfig);
 			AddComponent(compMat);
+			break;
+		}
+		case Component_Particles:
+		{
+			ComponentParticles* compPart = new ComponentParticles();
+			compPart->OnLoad(componentConfig);
+			AddComponent(compPart);
 			break;
 		}
 		default:

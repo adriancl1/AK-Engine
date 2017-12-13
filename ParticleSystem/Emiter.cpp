@@ -1,6 +1,7 @@
 #include "Emiter.h"
 #include "../MathGeo/MathGeoLib.h"
-
+#include "../imgui-1.51/imgui.h"
+#include "GlobalDefines.h"
 
 Emiter::Emiter()
 {
@@ -9,6 +10,42 @@ Emiter::Emiter()
 
 Emiter::~Emiter()
 {
+
+}
+
+void Emiter::DefaultEmiterData()
+/* -DefaultEmiterData- Used to put default sizes of the shapes ( you can change it from GlobalDefines) */
+{
+	switch (type)
+	{
+	case E_SPHERE:
+		shape.sphere.r = PS_DEFAULT_SIZE_SPHERE*0.5f;
+		break;
+
+	case E_BOX:
+		shape.box.maxPoint = float3(-PS_DEFAULT_SIZE_CUBE*0.5f, -PS_DEFAULT_SIZE_CUBE*0.5f, -PS_DEFAULT_SIZE_CUBE*0.5f);
+		shape.box.minPoint = float3(PS_DEFAULT_SIZE_CUBE*0.5f, PS_DEFAULT_SIZE_CUBE*0.5f, PS_DEFAULT_SIZE_CUBE*0.5f);
+		break;
+
+	case E_SEMISPHERE:
+		shape.semiSphere.r = PS_DEFAULT_SIZE_SEMISPHERE*0.5f;
+		break;
+
+	case E_CONE:
+		shape.cone.up.r = PS_DEFAULT_SIZE_CONE_UP*0.5f;
+		shape.cone.down.r = PS_DEFAULT_SIZE_CONE_DOWN*0.5f;
+		shape.cone.tall = PS_DEFAULT_SIZE_CONE_TALL;
+		break;
+
+	case E_SQUARE:
+		shape.box.maxPoint = float3(PS_DEFAULT_SIZE_SQUARE *-0.5f, 0, -PS_DEFAULT_SIZE_SQUARE*0.5f);
+		shape.box.minPoint = float3(PS_DEFAULT_SIZE_SQUARE*0.5f, 0, PS_DEFAULT_SIZE_SQUARE* 0.5f);
+		break;
+
+	case E_CIRCLE:
+		shape.circle.r = PS_DEFAULT_SIZE_CIRCLE*0.5f;
+		break;
+	}
 
 }
 
@@ -46,11 +83,53 @@ void Emiter::DrawEmiter()
 	}
 }
 
+void Emiter::DrawEmiterEditor()
+{
+	/* Enable Disable Draw*/
+	ImGui::Checkbox("Draw Shape", &active);
+
+	/* Select the shape*/
+	if (ImGui::Combo("Shape", (int*)&type, "Sphere\0Box\0SemiSphere\0Cone\0Square\0Circle")) DefaultEmiterData();
+
+	switch (type)
+	{
+	case E_SPHERE:
+		ImGui::SliderFloat("Radio", (float*)&shape.sphere.r, 0.25, 20);
+		break;
+
+	case E_BOX:
+		ImGui::DragFloat3("Max Point", (float*)&shape.box.maxPoint, 0.1f, -100.0f, 100.0f);
+		ImGui::DragFloat3("Min Point", (float*)&shape.box.minPoint, 0.1f, -100.0f, 100.0f);
+		break;
+
+	case E_SEMISPHERE:
+		ImGui::SliderFloat("Radio", (float*)&shape.semiSphere.r, 0.25, 20);
+		break;
+
+	case E_CONE:
+		ImGui::SliderFloat("Radio Superior Circle", (float*)&shape.cone.up.r, 0.25, 20);
+		ImGui::SliderFloat("Radio inferior Circle", (float*)&shape.cone.down.r, 0.25, 20);
+		ImGui::SliderFloat("Radio inferior Circle", (float*)&shape.cone.tall, 0.25, 20);
+		break;
+
+	case E_SQUARE:
+		ImGui::DragFloat3("Max Point", (float*)&shape.box.maxPoint, 0.1f, 0, 100.0f);
+		shape.box.maxPoint.y = 0.22f;
+		ImGui::DragFloat3("Min Point", (float*)&shape.box.minPoint, 0.1f, 0, 100.0f);
+		shape.box.minPoint.y = 0.2f;
+		break;
+
+	case E_CIRCLE:
+		ImGui::SliderFloat("Radio", (float*)&shape.circle.r, 0.25, 20);
+		break;
+	}
+}
+
 void Emiter::DrawSphere(const Sphere & sphere)
 {
 
 	glLineWidth(2.0f);
-	glColor3f(DEBUG_COLOR_LINES); 
+	glColor3f(PS_DEBUG_COLOR_LINES);
 
 	float totalRad = CIRCLEDEGREES / CIRCLEPERFECTION;
 	totalRad *= DEGTORAD;
@@ -99,7 +178,7 @@ void Emiter::DrawBox(const AABB & box)
 	float3 vertex6 = box.CornerPoint(6);
 	float3 vertex7 = box.CornerPoint(7);
 
-	glColor3f(DEBUG_COLOR_LINES);
+	glColor3f(PS_DEBUG_COLOR_LINES);
 
 	glBegin(GL_LINES);
 
@@ -162,7 +241,7 @@ void Emiter::DrawSemiSphere(const Sphere & sphere)
 {
 
 	glLineWidth(2.0f);
-	glColor3f(DEBUG_COLOR_LINES);
+	glColor3f(PS_DEBUG_COLOR_LINES);
 
 	
 	float totalRad = CIRCLEDEGREES / CIRCLEPERFECTION;
@@ -204,7 +283,7 @@ void Emiter::DrawCone(const SCone & cone)
 	DrawCircle(cone.down);
 
 	glLineWidth(2.0f);
-	glColor3f(DEBUG_COLOR_LINES);
+	glColor3f(PS_DEBUG_COLOR_LINES);
 
 	glBegin(GL_LINE_LOOP);
 	glVertex3f(0.0f, 0.0f, -cone.down.r);
@@ -258,7 +337,7 @@ void Emiter::DrawCircle(const Circle & circle)
 {
 
 	glLineWidth(2.0f);
-	glColor3f(DEBUG_COLOR_LINES);
+	glColor3f(PS_DEBUG_COLOR_LINES);
 
 
 	float totalRad = CIRCLEDEGREES / CIRCLEPERFECTION;
