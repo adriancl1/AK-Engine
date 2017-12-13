@@ -51,6 +51,9 @@ void Emiter::DefaultEmiterData()
 
 void Emiter::DrawEmiter()
 {
+	if (!active)
+		return;
+
 	switch (type)
 	{
 	case E_SPHERE:	
@@ -107,9 +110,9 @@ void Emiter::DrawEmiterEditor()
 		break;
 
 	case E_CONE:
-		ImGui::SliderFloat("Radio Superior Circle", (float*)&shape.cone.up.r, 0.25, 20);
-		ImGui::SliderFloat("Radio inferior Circle", (float*)&shape.cone.down.r, 0.25, 20);
-		ImGui::SliderFloat("Radio inferior Circle", (float*)&shape.cone.tall, 0.25, 20);
+		ImGui::SliderFloat("Superior Circle Radio", (float*)&shape.cone.up.r, 0.25, 20);
+		ImGui::SliderFloat("Inferior Circle Radio", (float*)&shape.cone.down.r, 0.25, 20);
+		ImGui::SliderFloat("Height", (float*)&shape.cone.tall, 0.25, 20);
 		break;
 
 	case E_SQUARE:
@@ -279,7 +282,16 @@ void Emiter::DrawSemiSphere(const Sphere & sphere)
 void Emiter::DrawCone(const SCone & cone)
 {
 
-	DrawCircle(cone.up);
+	float totalRad = CIRCLEDEGREES / CIRCLEPERFECTION;
+	totalRad *= DEGTORAD;
+
+	glBegin(GL_LINE_LOOP);
+	for (unsigned int i = 0; i < CIRCLEPERFECTION; i++)
+	{
+		glVertex3f(cos(totalRad * i) * cone.up.r, cone.tall, sin(totalRad * i) * cone.up.r);
+	}
+	glEnd();
+
 	DrawCircle(cone.down);
 
 	glLineWidth(2.0f);
@@ -288,6 +300,9 @@ void Emiter::DrawCone(const SCone & cone)
 	glBegin(GL_LINE_LOOP);
 	glVertex3f(0.0f, 0.0f, -cone.down.r);
 	glVertex3f(0.0f, cone.tall, -cone.up.r);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
 	glVertex3f(0.0f, cone.tall, cone.up.r);
 	glVertex3f(0.0f, 0.0f, cone.down.r);
 	glEnd();
@@ -295,6 +310,9 @@ void Emiter::DrawCone(const SCone & cone)
 	glBegin(GL_LINE_LOOP);
 	glVertex3f(cone.down.r, 0.0f, 0.0f);
 	glVertex3f(cone.up.r, cone.tall, 0.0f);
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
 	glVertex3f(-cone.up.r, cone.tall, 0.0f);
 	glVertex3f(-cone.down.r, 0.0f, 0.0f);
 	glEnd();
@@ -344,9 +362,9 @@ void Emiter::DrawCircle(const Circle & circle)
 	totalRad *= DEGTORAD;
 
 	glBegin(GL_LINE_LOOP);
-	for (unsigned int i = 0; i <= CIRCLEPERFECTION * 0.5f; i++)
+	for (unsigned int i = 0; i < CIRCLEPERFECTION; i++)
 	{
-		glVertex3f(0.0f, sin(totalRad * i) *  circle.r, cos(totalRad * i) *  circle.r);
+		glVertex3f(cos(totalRad * i) *  circle.r, 0.0f, sin(totalRad * i) *  circle.r);
 	}
 	glEnd();
 
@@ -354,11 +372,9 @@ void Emiter::DrawCircle(const Circle & circle)
 	glColor3f(1.0f, 1.0f, 1.0f);
 }
 
-
-
 EmiterData::EmiterData()
 {
-	transformation.Position = float3::zero;
-	transformation.Rotation = Quat::identity;
-	transformation.Scale = float3::zero;
+	transformation.position = float3::zero;
+	transformation.rotation = Quat::identity;
+	transformation.scale = float3::zero;
 }

@@ -45,7 +45,7 @@ bool Particle::PostUpdate(float dt)
 void Particle::CalcInterpolation() 
 {
 	//Position
-	data.Speed += data.force*data.LifeTime;
+	data.Speed += data.gravity*data.LifeTime;
 	data.Position += data.Speed*data.LifeTime;
 
 	//Size;
@@ -59,7 +59,7 @@ void Particle::CalcInterpolation()
 
 	//Gravity
 
-	data.force.x = Initial.force.x + data.LifeTime*(Final.force.x - Initial.force.x);
-	data.force.y = Initial.force.y + data.LifeTime*(Final.force.y - Initial.force.y);
-	data.force.z = Initial.force.z + data.LifeTime*(Final.force.z - Initial.force.z);
+	data.gravity.x = Initial.gravity.x + data.LifeTime*(Final.gravity.x - Initial.gravity.x);
+	data.gravity.y = Initial.gravity.y + data.LifeTime*(Final.gravity.y - Initial.gravity.y);
+	data.gravity.z = Initial.gravity.z + data.LifeTime*(Final.gravity.z - Initial.gravity.z);
 }

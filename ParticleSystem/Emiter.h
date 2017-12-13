@@ -39,9 +39,35 @@ union Shape
 	AABB quad;
 }; 
 
+//-------------------------------[DATA]
+
+struct EmiterData
+
+	//contains all data of the Emiter
+{
+	EmiterData(); //init transform
+public:
+	//emitor --------
+	float timeToEmite = 0.f; // if the timeToEmite == 0.0f then never ends to emite == bool loop = true
+	bool loop = true;
+
+	int particleRate = 4; // quantity of particles droped in a sec
+
+						  //Particles --------
+	float timePLife = 2.f;
+	float modTimePlife = 0.f; // intervale of time life of the particle
+
+	float speed = 0.f; // speed to drop the particles
+	float modSpeed = 0.f; // intervale of speed to drop particles
+
+	PTransformation transformation;
+};
+
+
 //-------------------------------[EMITER]
 class Emiter 	//shapes // sphere, cube, cone, semiphere
 {
+	friend class ParticleSystem;
 public:
 	Emiter();
 	~Emiter();	
@@ -65,34 +91,15 @@ public:
 	void DrawCone(const SCone& cone);
 	void DrawPoligon(const AABB& box);
 	void DrawCircle(const Circle& circle);
-	Etype type = E_SPHERE;
+
+	
 private:
 	bool active = true; //can be draw the shape or not
 	
+
+	Etype type = E_SPHERE;
 	Shape shape; 
 };
 
-//-------------------------------[DATA]
-
-struct EmiterData 
-	//contains all data of the Emiter
-{
-	EmiterData(); //init transform
-public:
-	//emitor --------
-	float timeToEmite = 0.f; // if the timeToEmite == 0.0f then never ends to emite == bool loop = true
-	bool loop = true;
-
-	int particleRate = 4; // quantity of particles droped in a sec
-	
- 	//Particles --------
-	float timePLife = 2.f;
-	float modTimePlife = 0.f; // intervale of time life of the particle
-
-	float speed = 0.f; // speed to drop the particles
-	float modSpeed = 0.f; // intervale of speed to drop particles
-	
-	PTransformation transformation;
-};
 
 #endif // !_PS_EMITER

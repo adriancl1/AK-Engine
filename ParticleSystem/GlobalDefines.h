@@ -41,7 +41,7 @@ typedef unsigned int uint;
 #define CIRCLEDEGREES 360.f
 #endif 
 
-
+#define PS_DEFAULT_COLOR_START 1.0f, 1.0f, 1.0f
 
 //DEFAULT VALORS ------------------------- 
 /*shapes */
@@ -49,7 +49,7 @@ typedef unsigned int uint;
 #define PS_DEFAULT_SIZE_SEMISPHERE 1.0f 
 #define PS_DEFAULT_SIZE_CUBE 1.0f 
 #define PS_DEFAULT_SIZE_SQUARE 1.0f 
-#define PS_DEFAULT_SIZE_CONE_TALL 3.0f
+#define PS_DEFAULT_SIZE_CONE_TALL 2.0f
 #define PS_DEFAULT_SIZE_CONE_DOWN 1.0f //circle
 #define PS_DEFAULT_SIZE_CONE_UP 1.0f  //circle
 #define PS_DEFAULT_SIZE_CIRCLE 1.0f 
@@ -60,7 +60,7 @@ typedef unsigned int uint;
 // DEBUG ------------------------------------------------
 /*Used to the shapes lines, */
 #ifndef PS_DEBUG_COLOR_LINES
-#define PS_DEBUG_COLOR_LINES 0.7f, 1.0f, 1.0f// AZURE 
+#define PS_DEBUG_COLOR_LINES 1.3f, 0.5f, 0.3f// AZURE 
 #endif  
 /*some colors... */
 // AZURE  0.7f, 1.0f, 1.0f //BLUE
