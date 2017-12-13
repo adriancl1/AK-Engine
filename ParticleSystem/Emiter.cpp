@@ -5,7 +5,8 @@
 
 Emiter::Emiter()
 {
-
+	type = E_SPHERE;
+	DefaultEmiterData();
 }
 
 Emiter::~Emiter()
@@ -19,6 +20,7 @@ void Emiter::DefaultEmiterData()
 	switch (type)
 	{
 	case E_SPHERE:
+
 		shape.sphere.r = PS_DEFAULT_SIZE_SPHERE*0.5f;
 		break;
 
@@ -38,8 +40,8 @@ void Emiter::DefaultEmiterData()
 		break;
 
 	case E_SQUARE:
-		shape.box.maxPoint = float3(PS_DEFAULT_SIZE_SQUARE *-0.5f, 0, -PS_DEFAULT_SIZE_SQUARE*0.5f);
-		shape.box.minPoint = float3(PS_DEFAULT_SIZE_SQUARE*0.5f, 0, PS_DEFAULT_SIZE_SQUARE* 0.5f);
+		shape.quad.maxPoint = float3(PS_DEFAULT_SIZE_SQUARE *-0.5f, 0, -PS_DEFAULT_SIZE_SQUARE*0.5f);
+		shape.quad.minPoint = float3(PS_DEFAULT_SIZE_SQUARE*0.5f, 0, PS_DEFAULT_SIZE_SQUARE* 0.5f);
 		break;
 
 	case E_CIRCLE:
@@ -57,26 +59,43 @@ void Emiter::DrawEmiter()
 	switch (type)
 	{
 	case E_SPHERE:	
+		shape.sphere.Transform(pSystem->transformation->rotation);
+		shape.sphere.pos = pSystem->transformation->position;
+
 		DrawSphere(shape.sphere);
 		break;
 
 	case E_BOX:
+
 		DrawBox(shape.box);
+
 		break;
 
 	case E_SEMISPHERE:
+
+		shape.semiSphere.Transform(pSystem->transformation->rotation);
+		shape.semiSphere.pos = pSystem->transformation->position;
+
 		DrawSemiSphere(shape.semiSphere);
 		break;
 
 	case E_CONE:
+
+		shape.cone.down.pos = pSystem->transformation->position;
+		shape.cone.up.pos = pSystem->transformation->position;
+
 		DrawCone(shape.cone);
 		break;
 
 	case E_SQUARE:
-		DrawPoligon(shape.quad);
+		
+		DrawBox(shape.quad);
 		break;
 
 	case E_CIRCLE:
+
+		shape.circle.pos = pSystem->transformation->position;
+
 		DrawCircle(shape.circle);
 		break;
 
@@ -90,6 +109,23 @@ void Emiter::DrawEmiterEditor()
 {
 	/* Enable Disable Draw*/
 	ImGui::Checkbox("Draw Shape", &active);
+
+	ImGui::SliderFloat("Emiting time", (float*)&data.timeToEmite, 0, 50);
+
+	if (data.timeToEmite == 0)// in the case that the Emiting time is null the emiter will emite all time
+		data.loop = true;
+	
+	ImGui::Checkbox("Loop", &data.loop);
+	ImGui::DragInt("Particle Emittion rate", &data.particleRate, 2);
+
+	if (data.particleRate < 0)
+		data.particleRate = 0;
+
+	ImGui::DragFloat("Particle time life", &data.timePLife, 2.2f);
+	ImGui::DragFloat("variance of the Particle time life", &data.modTimePlife, 0.1f);
+
+	ImGui::DragFloat("Start Speed", &data.speed, 2.f);
+	ImGui::DragFloat("variance of the Start speed", &data.modSpeed, 0.1f);
 
 	/* Select the shape*/
 	if (ImGui::Combo("Shape", (int*)&type, "Sphere\0Box\0SemiSphere\0Cone\0Square\0Circle")) DefaultEmiterData();
@@ -141,7 +177,7 @@ void Emiter::DrawSphere(const Sphere & sphere)
 	glBegin(GL_LINE_LOOP);
 	for (unsigned int i = 0; i < CIRCLEPERFECTION; i++)
 	{
-		glVertex3f(cos(totalRad * i) *  sphere.r, 0.0f, sin(totalRad * i) *  sphere.r);
+		glVertex3f(cos(totalRad * i) *  sphere.r + sphere.pos.x, 0.0f + sphere.pos.y, sin(totalRad * i) *  sphere.r + sphere.pos.z);
 	}		
 	glEnd();
 
@@ -149,7 +185,7 @@ void Emiter::DrawSphere(const Sphere & sphere)
 	glBegin(GL_LINE_LOOP);
 	for (unsigned int i = 0; i < CIRCLEPERFECTION; i++)
 	{
-		glVertex3f(cos(totalRad * i) *  sphere.r, sin(totalRad * i) *  sphere.r, 0.0f);
+		glVertex3f(cos(totalRad * i) *  sphere.r + sphere.pos.x, sin(totalRad * i) *  sphere.r + sphere.pos.y, 0.0f + sphere.pos.z);
 	}	
 	glEnd();
 
@@ -157,7 +193,7 @@ void Emiter::DrawSphere(const Sphere & sphere)
 	glBegin(GL_LINE_LOOP);
 	for (unsigned int i = 0; i < CIRCLEPERFECTION; i++)
 	{
-		glVertex3f(0.0f, sin(totalRad * i) *  sphere.r, cos(totalRad * i) *  sphere.r);
+		glVertex3f(0.0f + sphere.pos.x, sin(totalRad * i) *  sphere.r + sphere.pos.y, cos(totalRad * i) *  sphere.r + sphere.pos.z);
 	}	
 	glEnd();
 
@@ -169,6 +205,8 @@ void Emiter::DrawSphere(const Sphere & sphere)
 
 void Emiter::DrawBox(const AABB & box)
 {
+
+	float3 pos = pSystem->transformation->position;
 
 	glLineWidth(2.0f);
 	//box vertices
@@ -186,52 +224,52 @@ void Emiter::DrawBox(const AABB & box)
 	glBegin(GL_LINES);
 
 	//A
-	glVertex3f(vertex0.x, vertex0.y, vertex0.z);
-	glVertex3f(vertex1.x, vertex1.y, vertex1.z);
+	glVertex3f(vertex0.x + pos.x, vertex0.y + pos.y, vertex0.z + pos.z);
+	glVertex3f(vertex1.x + pos.x, vertex1.y + pos.y, vertex1.z + pos.z);
 
 	//B
-	glVertex3f(vertex0.x, vertex0.y, vertex0.z);
-	glVertex3f(vertex2.x, vertex2.y, vertex2.z);
+	glVertex3f(vertex0.x + pos.x, vertex0.y + pos.y, vertex0.z + pos.z);
+	glVertex3f(vertex2.x + pos.x, vertex2.y + pos.y, vertex2.z + pos.z);
 
 	//C
-	glVertex3f(vertex0.x, vertex0.y, vertex0.z);
-	glVertex3f(vertex4.x, vertex4.y, vertex4.z);
+	glVertex3f(vertex0.x + pos.x, vertex0.y + pos.y, vertex0.z + pos.z);
+	glVertex3f(vertex4.x + pos.x, vertex4.y + pos.y, vertex4.z + pos.z);
 
 	//D
-	glVertex3f(vertex7.x, vertex7.y, vertex7.z);
-	glVertex3f(vertex6.x, vertex6.y, vertex6.z);
+	glVertex3f(vertex7.x + pos.x, vertex7.y + pos.y, vertex7.z + pos.z);
+	glVertex3f(vertex6.x + pos.x, vertex6.y + pos.y, vertex6.z + pos.z);
 
 	//E
-	glVertex3f(vertex7.x, vertex7.y, vertex7.z);
-	glVertex3f(vertex3.x, vertex3.y, vertex3.z);
+	glVertex3f(vertex7.x + pos.x, vertex7.y + pos.y, vertex7.z + pos.z);
+	glVertex3f(vertex3.x + pos.x, vertex3.y + pos.y, vertex3.z + pos.z);
 
 	//F
-	glVertex3f(vertex7.x, vertex7.y, vertex7.z);
-	glVertex3f(vertex5.x, vertex5.y, vertex5.z);
+	glVertex3f(vertex7.x + pos.x, vertex7.y + pos.y, vertex7.z + pos.z);
+	glVertex3f(vertex5.x + pos.x, vertex5.y + pos.y, vertex5.z + pos.z);
 
 	//G
-	glVertex3f(vertex5.x, vertex5.y, vertex5.z);
-	glVertex3f(vertex1.x, vertex1.y, vertex1.z);
+	glVertex3f(vertex5.x + pos.x, vertex5.y + pos.y, vertex5.z + pos.z);
+	glVertex3f(vertex1.x + pos.x, vertex1.y + pos.y, vertex1.z + pos.z);
 
 	//H
-	glVertex3f(vertex5.x, vertex5.y, vertex5.z);
-	glVertex3f(vertex4.x, vertex4.y, vertex4.z);
+	glVertex3f(vertex5.x + pos.x, vertex5.y + pos.y, vertex5.z + pos.z);
+	glVertex3f(vertex4.x + pos.x, vertex4.y + pos.y, vertex4.z + pos.z);
 
 	//Y
-	glVertex3f(vertex2.x, vertex2.y, vertex2.z);
-	glVertex3f(vertex3.x, vertex3.y, vertex3.z);
+	glVertex3f(vertex2.x + pos.x, vertex2.y + pos.y, vertex2.z + pos.z);
+	glVertex3f(vertex3.x + pos.x, vertex3.y + pos.y, vertex3.z + pos.z);
 
 	//J
-	glVertex3f(vertex2.x, vertex2.y, vertex2.z);
-	glVertex3f(vertex6.x, vertex6.y, vertex6.z);
+	glVertex3f(vertex2.x + pos.x, vertex2.y + pos.y, vertex2.z + pos.z);
+	glVertex3f(vertex6.x + pos.x, vertex6.y + pos.y, vertex6.z + pos.z);
 
 	//K
-	glVertex3f(vertex6.x, vertex6.y, vertex6.z);
-	glVertex3f(vertex4.x, vertex4.y, vertex4.z);
+	glVertex3f(vertex6.x + pos.x, vertex6.y + pos.y, vertex6.z + pos.z);
+	glVertex3f(vertex4.x + pos.x, vertex4.y + pos.y, vertex4.z + pos.z);
 
 	//L
-	glVertex3f(vertex3.x, vertex3.y, vertex3.z);
-	glVertex3f(vertex1.x, vertex1.y, vertex1.z);
+	glVertex3f(vertex3.x + pos.x, vertex3.y + pos.y, vertex3.z + pos.z);
+	glVertex3f(vertex1.x + pos.x, vertex1.y + pos.y, vertex1.z + pos.z);
 
 	glEnd();
 
@@ -254,7 +292,7 @@ void Emiter::DrawSemiSphere(const Sphere & sphere)
 	glBegin(GL_LINE_LOOP);
 	for (unsigned int i = 0; i < CIRCLEPERFECTION; i++)
 	{
-		glVertex3f(cos(totalRad * i) *  sphere.r, 0.0f, sin(totalRad * i) *  sphere.r);
+		glVertex3f(cos(totalRad * i) *  sphere.r + sphere.pos.x, 0.0f + sphere.pos.y, sin(totalRad * i) *  sphere.r + sphere.pos.z);
 	}	
 	glEnd();
 
@@ -262,7 +300,7 @@ void Emiter::DrawSemiSphere(const Sphere & sphere)
 	glBegin(GL_LINE_LOOP);
 	for (unsigned int i = 0; i <= CIRCLEPERFECTION * 0.5f; i++)
 	{
-		glVertex3f(cos(totalRad * i) *  sphere.r, sin(totalRad * i) *  sphere.r, 0.0f);
+		glVertex3f(cos(totalRad * i) *  sphere.r + sphere.pos.x, sin(totalRad * i) *  sphere.r + sphere.pos.y, 0.0f + sphere.pos.z);
 	}	
 	glEnd();
 
@@ -270,7 +308,7 @@ void Emiter::DrawSemiSphere(const Sphere & sphere)
 	glBegin(GL_LINE_LOOP);
 	for (unsigned int i = 0; i <= CIRCLEPERFECTION * 0.5f; i++)
 	{
-		glVertex3f(0.0f, sin(totalRad * i) *  sphere.r, cos(totalRad * i) *  sphere.r);
+		glVertex3f(0.0f + sphere.pos.x, sin(totalRad * i) *  sphere.r + sphere.pos.y, cos(totalRad * i) *  sphere.r + sphere.pos.z);
 	}
 	glEnd();
 
@@ -288,7 +326,7 @@ void Emiter::DrawCone(const SCone & cone)
 	glBegin(GL_LINE_LOOP);
 	for (unsigned int i = 0; i < CIRCLEPERFECTION; i++)
 	{
-		glVertex3f(cos(totalRad * i) * cone.up.r, cone.tall, sin(totalRad * i) * cone.up.r);
+		glVertex3f(cos(totalRad * i) * cone.up.r + cone.up.pos.x, cone.tall + cone.up.pos.y, sin(totalRad * i) * cone.up.r + cone.up.pos.z);
 	}
 	glEnd();
 
@@ -298,23 +336,23 @@ void Emiter::DrawCone(const SCone & cone)
 	glColor3f(PS_DEBUG_COLOR_LINES);
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, 0.0f, -cone.down.r);
-	glVertex3f(0.0f, cone.tall, -cone.up.r);
+	glVertex3f(0.0f+ cone.down.pos.x, 0.0f + cone.down.pos.y, -cone.down.r + cone.down.pos.z);
+	glVertex3f(0.0f + cone.down.pos.x, cone.tall + cone.down.pos.y, -cone.up.r + cone.down.pos.z);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(0.0f, cone.tall, cone.up.r);
-	glVertex3f(0.0f, 0.0f, cone.down.r);
+	glVertex3f(0.0f + cone.down.pos.x, cone.tall + cone.down.pos.y, cone.up.r + cone.down.pos.z);
+	glVertex3f(0.0f + cone.down.pos.x, 0.0f + cone.down.pos.y, cone.down.r + cone.down.pos.z);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(cone.down.r, 0.0f, 0.0f);
-	glVertex3f(cone.up.r, cone.tall, 0.0f);
+	glVertex3f(cone.down.r + cone.down.pos.x, 0.0f + cone.down.pos.y, 0.0f + cone.down.pos.z);
+	glVertex3f(cone.up.r + cone.down.pos.x, cone.tall + cone.down.pos.y, 0.0f + cone.down.pos.z);
 	glEnd();
 
 	glBegin(GL_LINE_LOOP);
-	glVertex3f(-cone.up.r, cone.tall, 0.0f);
-	glVertex3f(-cone.down.r, 0.0f, 0.0f);
+	glVertex3f(-cone.up.r + cone.down.pos.x, cone.tall + cone.down.pos.y, 0.0f + cone.down.pos.z);
+	glVertex3f(-cone.down.r + cone.down.pos.x, 0.0f + cone.down.pos.y, 0.0f + cone.down.pos.z);
 	glEnd();
 
 	glLineWidth(1.0f);
@@ -364,7 +402,7 @@ void Emiter::DrawCircle(const Circle & circle)
 	glBegin(GL_LINE_LOOP);
 	for (unsigned int i = 0; i < CIRCLEPERFECTION; i++)
 	{
-		glVertex3f(cos(totalRad * i) *  circle.r, 0.0f, sin(totalRad * i) *  circle.r);
+		glVertex3f(cos(totalRad * i) *  circle.r + circle.pos.x, 0.0f + circle.pos.y, sin(totalRad * i) *  circle.r+ circle.pos.z);
 	}
 	glEnd();
 
@@ -374,7 +412,5 @@ void Emiter::DrawCircle(const Circle & circle)
 
 EmiterData::EmiterData()
 {
-	transformation.position = float3::zero;
-	transformation.rotation = Quat::identity;
-	transformation.scale = float3::zero;
+	
 }

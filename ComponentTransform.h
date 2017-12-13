@@ -18,14 +18,16 @@ public:
 
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
+
 	float3 GetPosition() const;
+	float3 GetScale() const;
+	Quat GetRotation() const;
 
 	void OnEditor() override;
 	void OnSave(Configuration& data) const override;
 	void OnLoad(Configuration& data) override;
 
 	void ShowGizmo(ComponentCamera& camera);
-
 	float4x4 GetTransMatrix() const;
 
 	bool needToUpdate;

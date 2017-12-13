@@ -4,14 +4,17 @@
 #include "GlobalDefines.h"
 ParticleSystem::ParticleSystem()
 {
+
+	transformation = new PTransformation();
+
 	emiter = new Emiter();
-
-
+	emiter->pSystem = this;
 }
 
 ParticleSystem::~ParticleSystem()
 {
 	RELEASE(emiter);
+	RELEASE(transformation);
 }
 
 void ParticleSystem::DrawParticleSystemEditor()
@@ -24,13 +27,13 @@ void ParticleSystem::DrawParticleSystemEditor()
 		DrawBasicEditor();
 	}
 
-	if (ImGui::CollapsingHeader("Shapes"))
+	if (ImGui::CollapsingHeader("Emiter"))
 	{
 	emiter->DrawEmiterEditor();
 	}
-	if (ImGui::CollapsingHeader("Renderer"))
+	if (ImGui::CollapsingHeader("Emiter Options"))
 	{
-
+		
 	}
 }
 
@@ -129,4 +132,12 @@ bool ParticleSystem::isOpenCloseWindowPS()
 void ParticleSystem::changeOpenCloseWindowPS()
 {
 	windowShow = !windowShow;
+}
+
+void ParticleSystem::SetTransform(float3 Position, Quat Rotation, float3 Scale)
+{
+	transformation->position = Position;
+	transformation->rotation = Rotation;
+	transformation->scale = Scale;
+
 }

@@ -15,6 +15,7 @@ ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, Compo
 	rotationEuler = rot.ToEulerXYZ();
 	rotationEuler *= RADTODEG;
 	rotation = rot;
+
 	globalTransformMatrix = float4x4::FromQuat(rot);
 	globalTransformMatrix = float4x4::Scale(scale, float3(0, 0, 0)) * globalTransformMatrix;
 	globalTransformMatrix.float4x4::SetTranslatePart(pos.x, pos.y, pos.z);
@@ -51,6 +52,7 @@ void ComponentTransform::UpdateTrans()
 	rotationEuler.y *= RADTODEG;
 	rotationEuler.z *= RADTODEG;
 	localTransformMatrix = globalTransformMatrix;
+
 	if (myGO != nullptr)
 	{
 		ComponentTransform* parentTrans = (ComponentTransform*)myGO->GetParent()->FindComponent(Component_Transform);
@@ -77,6 +79,16 @@ float4x4 ComponentTransform::GetLocalTransform() const
 float3 ComponentTransform::GetPosition() const
 {
 	return position;
+}
+
+float3 ComponentTransform::GetScale() const
+{
+	return scale;
+}
+
+Quat ComponentTransform::GetRotation() const
+{
+	return rotation;
 }
 
 void ComponentTransform::OnEditor()

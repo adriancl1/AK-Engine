@@ -1,12 +1,15 @@
 #include "ComponentParticles.h"
 #include "Configuration.h"
 #include "imgui-1.51/imgui.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
 
 ComponentParticles::ComponentParticles() : Component(Component_Particles)
 {
 	name = "Particle System";
 	
 	particleSystem = new ParticleSystem();
+	
 }
 
 ComponentParticles::~ComponentParticles()
@@ -16,6 +19,11 @@ ComponentParticles::~ComponentParticles()
 
 void ComponentParticles::Update()
 {
+
+	ComponentTransform* myTransform = (ComponentTransform*)myGO->FindComponent(Component_Transform);
+
+
+	particleSystem->SetTransform(myTransform->GetPosition(),myTransform->GetRotation(),myTransform->GetScale());
 	particleSystem->Draw();
 }
 

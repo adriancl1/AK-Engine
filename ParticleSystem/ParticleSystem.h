@@ -46,6 +46,7 @@ public:
 	//Draws ---
 	void DrawParticleSystemEditor();
 	void Draw();
+
 	
 	void DrawBasicEditor();
 	
@@ -54,6 +55,7 @@ public:
 	bool isOpenCloseWindowPS();
 	void changeOpenCloseWindowPS();
 	
+	void SetTransform(float3 Position, Quat rotation, float3 scale);
 
 private:
 	std::vector<Particle*> particleVec;
@@ -64,6 +66,7 @@ private:
 
 
 public:
+	PTransformation* transformation; 
 
 	TextureData tData;
 	float3 cameraPos = float3::zero;
