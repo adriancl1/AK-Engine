@@ -26,4 +26,5 @@ public:
 private:
 	ResourceAnimation* anim;
 	float animTimer = 0;
+	float speedFactor = 1;
 };

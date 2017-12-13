@@ -24,6 +24,7 @@ public:
 
 	virtual void Enable();
 	virtual void Update();
+	virtual void PostUpdate();
 	virtual void Disable();
 	virtual void OnEditor();
 

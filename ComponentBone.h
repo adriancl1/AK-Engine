@@ -13,6 +13,7 @@ public:
 	~ComponentBone();
 
 	void Update();
+	void PostUpdate()override;
 
 	void OnEditor() override;
 

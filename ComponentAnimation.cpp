@@ -20,7 +20,7 @@ void ComponentAnimation::Update()
 	RotationKey currentRotKey; 
 	RotationKey nextRotKey;
 	animTimer += (float)anim->ticksPerSecond / anim->duration;
-	animTimer += 0.16f;
+	animTimer += 0.08f * speedFactor;
 	bool foundBone = false;
 	for (int i = 0; i < anim->bones.size(); i++)
 	{
@@ -87,10 +87,29 @@ void ComponentAnimation::Update()
 				}
 			}
 		}
-		float time = (animTimer - currentPosKey.time) / (nextPosKey.time - currentPosKey.time);
-		float3 bonePos = float3::Lerp(currentPosKey.value, nextPosKey.value, time);
-		time = (animTimer - currentRotKey.time) / (nextRotKey.time - currentRotKey.time);
-		Quat boneRot = Quat::Slerp(currentRotKey.value, nextRotKey.value, time); 
+		float time;
+		float3 bonePos;
+		Quat boneRot;
+
+		if (nextPosKey.time != currentPosKey.time)
+		{
+			time = (animTimer - currentPosKey.time) / (nextPosKey.time - currentPosKey.time);
+			bonePos = float3::Lerp(currentPosKey.value, nextPosKey.value, time);
+		}
+		else
+		{
+			bonePos = currentPosKey.value;
+		}
+		if (nextRotKey.time != currentRotKey.time)
+		{
+			time = (animTimer - currentRotKey.time) / (nextRotKey.time - currentRotKey.time);
+			boneRot = Quat::Slerp(currentRotKey.value, nextRotKey.value, time);
+		}
+		else
+		{
+			boneRot = currentRotKey.value;
+		}
+		
 		boneTrans->SetPosition(bonePos);
 		boneTrans->SetRotation(boneRot);
 	}
@@ -103,6 +122,11 @@ void ComponentAnimation::OnEditor()
 		ImGui::Text("Duration : %f", anim->duration);
 		ImGui::Text("Ticks Per Second : %i", anim->ticksPerSecond);
 		ImGui::DragFloat("TIME TEST", &animTimer, 0.01f, 0.0f, 10.0f);
+		ImGui::DragFloat("Speed Factor", &speedFactor, 0.01f, 0.01f, 4.0f);
+		if (ImGui::Button("Delete Component"))
+		{
+			wantsToDie = true;
+		}
 		ImGui::TreePop();
 	}
 }

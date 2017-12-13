@@ -56,6 +56,7 @@ void GameObject::PostUpdate()
 		}
 		else
 		{
+			(*it)->PostUpdate();
 			it++;
 		}
 	}

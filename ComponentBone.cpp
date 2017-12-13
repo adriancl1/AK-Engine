@@ -52,6 +52,10 @@ void ComponentBone::Update()
 		deformableMesh->vertices[ind * 3 + 2] += vertex.z * bone.weights[i].weight;
 	}
 	attachedMesh->UpdateDeformable();
+}
+
+void ComponentBone::PostUpdate()
+{
 	if (debug)
 	{
 		DrawDebug();
