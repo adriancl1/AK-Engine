@@ -5,47 +5,53 @@
 #include "..\MathGeo\Math\float4.h"
 #include "..\MathGeo\Math\Quat.h"
 #include "ParticleSystem.h"
+#include "..\Glew\include\glew.h"
+
 
 struct ParticleData
 {
-	float3 Position = float3::zero;				
-	Quat Rotation = Quat::identity;					
-	float3 Scale = float3::one;					
-	float Size = 0.0f;							
-	float3 Speed = float3::zero;				
-	float3 Direction = float3::zero;			
-	float3 gravity = float3::zero;
-	float MaxLifeTime = 0;							
-	float LifeTime = 0;							
-	uint TextureID = 0;							
-	float4 RGBA = float4::zero;
+	float3 position = float3::zero;				
+	Quat rotation = Quat::identity;					
+	float3 scale = float3::one;					
+	float size = 0.0f;							
+	float speed = 0.0f;				
+	float3 direction = float3::zero;			
+	float gravity = -9.8f;
+	float maxLifeTime = 0;							
+	float lifeTime = 0;							
+	uint textureID = 0;							
+	float4 color = float4::zero;
 };
 
 struct State 
 {
-	float3 gravity = float3::zero;
-	float Size = 0.0f;
-	float4 RGBA = float4::one;
+	
+	float gravity = -9.8f;
+	float size = 0.0f;
+	float4 color = float4::one;
 };
 
 class Particle
 {
 public:
 
-	Particle(ParticleSystem* parent, const SystemState& initial , const SystemState& final, float3 Speed, float MaxLifeTime);
+	Particle(ParticleSystem* parent, const SystemState& initial , const SystemState& final, float3 direction, float MaxLifeTime);
 	~Particle();
 
 	bool PreUpdate(float dt);
 	bool Update(float dt);
 	bool PostUpdate(float dt);
-
+	void SetState(State& myState,const SystemState& sState);
 	void CalcInterpolation();
+
+	void DrawParticle();
 
 private:
 	ParticleSystem * pSystem;
 	ParticleData data;
 	State Initial;
 	State Final;
+	bool killThis = false;
 
 };
 

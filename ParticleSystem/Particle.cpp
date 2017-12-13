@@ -1,65 +1,107 @@
 #include "Particle.h"
 #include "ParticleSystem.h"
 
+#include "..\MathGeo\Algorithm\Random\LCG.h"
 
 
-Particle::Particle(ParticleSystem * parent, const SystemState & initial, const SystemState & final, float3 Speed, float MaxLifeTime)
+Particle::Particle(ParticleSystem * parent, const SystemState & initial, const SystemState & final, float3 direction, float MaxLifeTime)
 {
+	SetState(Initial, initial);
+	SetState(Initial, initial);
 
-	data.MaxLifeTime = MaxLifeTime;
-	data.Speed = Speed;
+	data.maxLifeTime = MaxLifeTime;
+	data.direction = direction;
 }
 
 
 Particle::~Particle()
 {
+
 }
 
 bool Particle::PreUpdate(float dt)
 {
 	//billboard
-
-	float3 Orientation = pSystem->cameraPos - data.Position;
-	Orientation.y = data.Position.y;
-	data.Rotation= Quat::LookAt(float3(0.0f, 0.0f, 1.0f), Orientation, float3(0.0f, 1.0f, 0.0f), float3(0.0f, 1.0f, 0.0f));
+	float3 Orientation = pSystem->cameraPos - data.position;
+	Orientation.y = data.position.y;
+	data.rotation= Quat::LookAt(float3(0.0f, 0.0f, 1.0f), Orientation, float3(0.0f, 1.0f, 0.0f), float3(0.0f, 1.0f, 0.0f));
 	return true;
 }
 
 bool Particle::Update(float dt) 
 {
-	data.LifeTime += dt;
+	data.lifeTime += dt;
 	CalcInterpolation();
 	return true;
 }
 
 bool Particle::PostUpdate(float dt) 
 {
-	if (data.LifeTime >= data.MaxLifeTime)
+	if (data.lifeTime >= data.maxLifeTime)
 	{
-
+		killThis = true;
 	}
 
 	return true;
 }
 
-void Particle::CalcInterpolation() 
+void Particle::SetState(State & myState, const SystemState & sState)
+{
+	LCG randG;
+
+	//Gravity
+	myState.gravity = sState.gravity+ randG.Float(-sState.gravityVariation, sState.gravityVariation);
+	
+	//Color
+	myState.color.x = randG.Float(sState.color.x, sState.color2.x);
+	myState.color.y = randG.Float(sState.color.y, sState.color2.y);
+	myState.color.z = randG.Float(sState.color.z, sState.color2.z);
+	myState.color.w = randG.Float(sState.color.w, sState.color2.w);
+
+	//Size
+	myState.size = randG.Float(sState.size, 100.f);
+}
+
+void Particle::CalcInterpolation()
 {
 	//Position
-	data.Speed += data.gravity*data.LifeTime;
-	data.Position += data.Speed*data.LifeTime;
+	data.direction.y += data.gravity*data.lifeTime;
+	data.position +=data.direction*data.lifeTime;
 
 	//Size;
-	data.Size = Initial.Size + data.LifeTime*(Final.Size - Initial.Size);
+	data.size = Initial.size + data.lifeTime*(Final.size - Initial.size);
 
 	//Color
-	data.RGBA.x = Initial.RGBA.x + data.LifeTime*(Final.RGBA.x - Initial.RGBA.x);
-	data.RGBA.y = Initial.RGBA.y + data.LifeTime*(Final.RGBA.y - Initial.RGBA.y);
-	data.RGBA.z = Initial.RGBA.z + data.LifeTime*(Final.RGBA.z - Initial.RGBA.z);
-	data.RGBA.w = Initial.RGBA.w + data.LifeTime*(Final.RGBA.w - Initial.RGBA.w);
+	data.color.x = Initial.color.x + data.lifeTime*(Final.color.x - Initial.color.x);
+	data.color.y = Initial.color.y + data.lifeTime*(Final.color.y - Initial.color.y);
+	data.color.z = Initial.color.z + data.lifeTime*(Final.color.z - Initial.color.z);
+	data.color.w = Initial.color.w + data.lifeTime*(Final.color.w - Initial.color.w);
 
 	//Gravity
 
-	data.gravity.x = Initial.gravity.x + data.LifeTime*(Final.gravity.x - Initial.gravity.x);
-	data.gravity.y = Initial.gravity.y + data.LifeTime*(Final.gravity.y - Initial.gravity.y);
-	data.gravity.z = Initial.gravity.z + data.LifeTime*(Final.gravity.z - Initial.gravity.z);
+	data.gravity = Initial.gravity + data.lifeTime*(Final.gravity - Initial.gravity);
+}
+
+void Particle::DrawParticle()
+{
+
+	glDisable(GL_CULL_FACE);
+
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	if (pSystem->tData.textureID != 0)
+	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBindTexture(GL_TEXTURE_2D, pSystem->tData.textureID);
+	}
+
+	glPushMatrix();
+	float4x4 ParticleMatrix = float4x4::FromTRS(data.position, data.rotation, data.scale).Transposed();
+	glMultMatrixf(ParticleMatrix.ptr());
+
+	glPopMatrix();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
 }

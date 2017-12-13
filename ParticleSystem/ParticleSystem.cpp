@@ -43,7 +43,6 @@ void ParticleSystem::Draw()
 void ParticleSystem::DrawBasicEditor()
 {
 
-
 	if (ImGui::TreeNodeEx("Initial"))
 	{
 			ImGui::SliderFloat("Speed", (float*)&initialState.speed, 0, 50);
