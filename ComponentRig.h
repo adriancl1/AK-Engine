@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "Component.h"
 
+#include <vector>
+
 class ResourceRig;
 
 class ComponentRig : public Component
@@ -12,6 +14,9 @@ public:
 	~ComponentRig();
 
 	void Update()override;
+	void PostUpdate()override;
+
+	void DrawDebug()const;
 
 	void OnEditor()override;
 
@@ -22,4 +27,6 @@ public:
 private:
 	ResourceRig* rig;
 	bool assignedBones = false;
+	std::vector <GameObject*> bonesGO;
+	bool debug = false;
 };

@@ -33,7 +33,7 @@ void ComponentTransform::Update()
 	if (myGO->selected == true)
 	{
 		ShowGizmo(*App->camera->GetEditorCamera());
-		myGO->UpdateChildsTransform();
+		//myGO->UpdateChildsTransform();
 	}
 }
 
@@ -77,6 +77,14 @@ float4x4 ComponentTransform::GetLocalTransform() const
 float3 ComponentTransform::GetPosition() const
 {
 	return position;
+}
+
+float3 ComponentTransform::GetGlobalPosition() const
+{
+	float3 pos, sca;
+	Quat rot;
+	globalTransformMatrix.Decompose(pos, rot, sca);
+	return pos;
 }
 
 void ComponentTransform::SetPosition(float3 pos)

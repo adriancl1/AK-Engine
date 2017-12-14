@@ -19,6 +19,7 @@ public:
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
 	float3 GetPosition() const;
+	float3 GetGlobalPosition()const;
 
 	void SetPosition(float3 pos);
 	void SetRotation(Quat rot);

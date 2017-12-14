@@ -12,7 +12,7 @@ ResourceRig::~ResourceRig()
 {
 }
 
-bool ResourceRig::LoadToGameObject(GameObject* GO)
+bool ResourceRig::LoadToGameObject(GameObject* GO, std::vector<GameObject*>* toFill)
 {
 	for (int i = 0; i < bones.size(); i++)
 	{
@@ -21,6 +21,7 @@ bool ResourceRig::LoadToGameObject(GameObject* GO)
 		{
 			ComponentBone* tmpBone = new ComponentBone(bones[i], (ComponentMesh*)GO->FindComponent(Component_Mesh));
 			tmp->AddComponent(tmpBone);
+			toFill->push_back(tmp);
 		}
 	}
 	return true;

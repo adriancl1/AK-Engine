@@ -28,7 +28,7 @@ public:
 	ResourceRig(int UID);
 	~ResourceRig();
 
-	bool LoadToGameObject(GameObject* GO);
+	bool LoadToGameObject(GameObject* GO, std::vector<GameObject*>* toFill);
 	bool LoadInMemory()override;
 	bool UnloadFromMemory()override;
 
