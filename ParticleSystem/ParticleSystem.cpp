@@ -2,9 +2,12 @@
 #include "Emiter.h"
 #include "../imgui-1.51/imgui.h"
 #include "GlobalDefines.h"
+#include "Particle.h"
+
+
 ParticleSystem::ParticleSystem()
 {
-
+	//SetPlaneMesh();
 	transformation = new PTransformation();
 
 	emiter = new Emiter();
@@ -15,6 +18,21 @@ ParticleSystem::~ParticleSystem()
 {
 	RELEASE(emiter);
 	RELEASE(transformation);
+}
+
+bool ParticleSystem::PreUpdate(float dt)
+{
+	return true;
+}
+
+bool ParticleSystem::Update(float dt)
+{
+	return false;
+}
+
+bool ParticleSystem::PostUpdate(float dt)
+{
+	return false;
 }
 
 void ParticleSystem::DrawParticleSystemEditor()
@@ -39,6 +57,7 @@ void ParticleSystem::DrawParticleSystemEditor()
 
 void ParticleSystem::Draw()
 {
+	
 	emiter->DrawEmiter();
 
 }
@@ -141,3 +160,57 @@ void ParticleSystem::SetTransform(float3 Position, Quat Rotation, float3 Scale)
 	transformation->scale = Scale;
 
 }
+
+ParticleMesh* ParticleSystem::GetMesh() const
+{
+	return particleMesh;
+}
+
+void ParticleSystem::SetPlaneMesh()
+{
+	particleMesh->numVertices = 4;
+	particleMesh->numFaces = 2;
+	float vertex[] = {-1.f,1.f,0,1.f,1.f,0,-1.f,-1.f,0,1.f,-1.f,0};
+	particleMesh->vertices = new float[particleMesh->numVertices * 3];
+	memcpy(particleMesh->vertices, vertex, sizeof(float) * particleMesh->numVertices * 3);
+
+	glGenBuffers(1, (GLuint*)&particleMesh->idVertices);
+	glBindBuffer(GL_ARRAY_BUFFER, particleMesh->idVertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * particleMesh->numVertices * 3, particleMesh->vertices, GL_STATIC_DRAW);
+
+	particleMesh->numIndices = 6;
+	uint indices[] = {2,1,0,2,3,1};
+	particleMesh->indices = new uint[6];
+	memcpy(particleMesh->indices, indices, sizeof(uint)*particleMesh->numVertices);
+	
+	glGenBuffers(1, (GLuint*)&particleMesh->idIndices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, particleMesh->idIndices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * particleMesh->idIndices, particleMesh->indices, GL_STATIC_DRAW);
+
+	float colors[]={ 0, 1.f, 0,1.f, 1.f, 0,	0, 0, 0,1.f, 0, 0 };
+	particleMesh->colors = new float[particleMesh->numVertices * 3];
+	memcpy(particleMesh->colors, colors, sizeof(float) * particleMesh->numVertices * 3);
+
+	glGenBuffers(1, (GLuint*)&particleMesh->idColors);
+	glBindBuffer(GL_ARRAY_BUFFER, particleMesh->idColors);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * particleMesh->numIndices * 3, particleMesh->colors, GL_STATIC_DRAW);
+	
+}
+
+void ParticleSystem::CreateParticle()
+{
+	LCG rGen;
+	float3 direction;
+	switch (emiter->type) 
+	{
+		
+	case E_SPHERE:
+		direction = emiter->shape.sphere.RandomPointOnSurface(rGen);
+			break;
+	
+	};
+	Particle* nParticle = new Particle(this, initialState, finalState, direction, emiter->data.timePLife);
+	particleVec.push_back(nParticle);
+}
+
+

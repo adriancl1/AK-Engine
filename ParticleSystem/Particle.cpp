@@ -1,6 +1,5 @@
 #include "Particle.h"
 #include "ParticleSystem.h"
-
 #include "..\MathGeo\Algorithm\Random\LCG.h"
 
 
@@ -84,6 +83,7 @@ void Particle::CalcInterpolation()
 
 void Particle::DrawParticle()
 {
+	ParticleMesh* mesh = pSystem->GetMesh();
 
 	glDisable(GL_CULL_FACE);
 
@@ -94,14 +94,55 @@ void Particle::DrawParticle()
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBindTexture(GL_TEXTURE_2D, pSystem->tData.textureID);
 	}
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->idVertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	if (mesh->normals != nullptr)
+	{
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->idNormals);
+		glNormalPointer(GL_FLOAT, 0, NULL);
+	}
+	if (mesh->texCoords != nullptr) {
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->idTexCoords);
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+	}
 
 	glPushMatrix();
 	float4x4 ParticleMatrix = float4x4::FromTRS(data.position, data.rotation, data.scale).Transposed();
 	glMultMatrixf(ParticleMatrix.ptr());
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->idIndices);
+	glDrawElements(GL_TRIANGLES, mesh->numIndices, GL_UNSIGNED_INT, NULL);
 
 	glPopMatrix();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+
+
+void ParticleMesh::SetMesh(ParticleMesh & newMesh)
+{
+	idVertices = newMesh.idVertices;
+	numVertices = newMesh.numVertices;
+	vertices = newMesh.vertices;
+	idIndices = newMesh.idIndices;
+	numIndices = newMesh.numIndices;
+	indices = newMesh.indices;
+	idNormals = newMesh.idNormals;
+	normals = newMesh.normals;
+	idColors = newMesh.idColors;
+	colors = newMesh.colors;
+	idTexCoords = newMesh.idTexCoords;
+	texCoords = newMesh.texCoords;
+	enclosingBox = newMesh.enclosingBox;
 }

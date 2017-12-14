@@ -23,6 +23,31 @@ struct ParticleData
 	float4 color = float4::zero;
 };
 
+struct ParticleMesh
+{
+
+	void SetMesh(ParticleMesh& newMesh);
+	uint numFaces = 0;
+	uint idVertices = 0; 
+	uint numVertices = 0;
+	float* vertices = nullptr;
+
+	uint idIndices = 0; 
+	uint numIndices = 0;
+	uint* indices = nullptr;
+
+	uint idNormals = 0; 
+	float* normals = nullptr;
+
+	uint idColors = 0; 
+	float* colors = nullptr;
+
+	uint idTexCoords = 0; 
+	float* texCoords = nullptr;
+
+	AABB enclosingBox;
+};
+
 struct State 
 {
 	
@@ -31,8 +56,11 @@ struct State
 	float4 color = float4::one;
 };
 
+class ParticleSystem;
+
 class Particle
 {
+	
 public:
 
 	Particle(ParticleSystem* parent, const SystemState& initial , const SystemState& final, float3 direction, float MaxLifeTime);

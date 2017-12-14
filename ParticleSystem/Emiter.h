@@ -100,6 +100,7 @@ private:
 	EmiterData data;
 	Etype type = E_SPHERE;
 	Shape shape; 
+	
 };
 
 

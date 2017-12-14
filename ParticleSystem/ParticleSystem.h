@@ -7,6 +7,8 @@
 
 
 
+
+
 // -------------------------------------- [STATE]
 struct SystemState //going to global state to set on particles latter
 {	
@@ -33,14 +35,20 @@ struct PTransformation
 // -------------------------------------- [PARTICLE SYSTEM]
 class Particle;
 class Emiter;
+struct ParticleMesh;
+
 
 class ParticleSystem
 {
-	friend class Particle;
+	friend class Particle;	
+
 public:
 	ParticleSystem();
 	~ParticleSystem();
 	
+	bool PreUpdate(float dt);
+	bool Update(float dt);
+	bool PostUpdate(float dt);
 	//UI -------------------------------
 	
 	//Draws ---
@@ -57,7 +65,15 @@ public:
 	
 	void SetTransform(float3 Position, Quat rotation, float3 scale);
 
+	ParticleMesh * GetMesh() const;
+
+	void SetPlaneMesh();
+
+	void CreateParticle();
+	
+
 private:
+	ParticleMesh* particleMesh;
 	std::vector<Particle*> particleVec;
 	Emiter* emiter;
 	SystemState initialState;
@@ -66,8 +82,8 @@ private:
 
 
 public:
+	
 	PTransformation* transformation; 
-
 	TextureData tData;
 	float3 cameraPos = float3::zero;
 
