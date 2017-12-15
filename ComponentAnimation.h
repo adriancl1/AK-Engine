@@ -44,6 +44,8 @@ private:
 	ResourceAnimation* anim;
 	float animTimer = 0;
 	float lastAnimTimer = 0;
+	float blendDuration = 1.0f;
+	float blendTimer = 0;
 	float speedFactor = 1;
 	bool blending = true;
 
