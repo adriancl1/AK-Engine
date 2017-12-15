@@ -15,9 +15,7 @@ ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, Compo
 	rotationEuler = rot.ToEulerXYZ();
 	rotationEuler *= RADTODEG;
 	rotation = rot;
-	globalTransformMatrix = float4x4::FromQuat(rot);
-	globalTransformMatrix = float4x4::Scale(scale, float3(0, 0, 0)) * globalTransformMatrix;
-	globalTransformMatrix.float4x4::SetTranslatePart(pos.x, pos.y, pos.z);
+	globalTransformMatrix = float4x4::FromTRS(position, rot, scale);
 }
 
 ComponentTransform::~ComponentTransform()
@@ -43,9 +41,7 @@ void ComponentTransform::UpdateTrans()
 	rotationEuler.y *= DEGTORAD;
 	rotationEuler.z *= DEGTORAD;
 	rotation = Quat::FromEulerXYZ(rotationEuler.x, rotationEuler.y, rotationEuler.z);
-	globalTransformMatrix = float4x4::FromQuat(rotation);
-	globalTransformMatrix = float4x4::Scale(scale, float3(0,0,0)) * globalTransformMatrix;
-	globalTransformMatrix.float4x4::SetTranslatePart(position.x, position.y, position.z);
+	globalTransformMatrix = float4x4::FromTRS(position, rotation, scale);
 
 	rotationEuler.x *= RADTODEG;
 	rotationEuler.y *= RADTODEG;
@@ -98,6 +94,12 @@ void ComponentTransform::SetRotation(Quat rot)
 	rotation = rot;
 	rotationEuler = rot.ToEulerXYZ();
 	rotationEuler *= RADTODEG;
+	needToUpdate = true;
+}
+
+void ComponentTransform::SetScale(float3 scale)
+{
+	this->scale = scale;
 	needToUpdate = true;
 }
 

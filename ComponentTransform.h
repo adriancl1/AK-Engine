@@ -23,6 +23,7 @@ public:
 
 	void SetPosition(float3 pos);
 	void SetRotation(Quat rot);
+	void SetScale(float3 scale);
 
 	void OnEditor() override;
 	void OnSave(Configuration& data) const override;

@@ -21,6 +21,8 @@ bool ResourceRig::LoadToGameObject(GameObject* GO, std::vector<GameObject*>* toF
 		{
 			ComponentBone* tmpBone = new ComponentBone(bones[i], (ComponentMesh*)GO->FindComponent(Component_Mesh));
 			tmp->AddComponent(tmpBone);
+			ComponentTransform* trans = (ComponentTransform*)GO->FindComponent(Component_Transform);
+			trans->SetScale(float3(0.03f, 0.03f, 0.03f));
 			toFill->push_back(tmp);
 		}
 	}
