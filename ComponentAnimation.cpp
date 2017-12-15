@@ -11,6 +11,19 @@ ComponentAnimation::ComponentAnimation() : Component(Component_Animation)
 
 ComponentAnimation::~ComponentAnimation()
 {
+	std::list<Animation*>::iterator item = animationList.end();
+	item--;
+	while (item != animationList.begin())
+	{
+		RELEASE((*item));
+		item--;
+	}
+	if (item == animationList.begin())
+	{
+		RELEASE((*item));
+	}
+
+	animationList.clear();
 }
 
 void ComponentAnimation::Update()
@@ -25,10 +38,8 @@ void ComponentAnimation::Update()
 	switch (AnimStatus)
 	{
 	case ANIMATION_PLAY:
-	
-		animTimer += (float)anim->ticksPerSecond / anim->duration;
-		animTimer += 0.08f * speedFactor;
-	
+		animTimer += ((float)anim->ticksPerSecond / anim->duration) * speedFactor;
+
 		for (int i = 0; i < anim->bones.size(); i++)
 		{
 			GameObject* boneGO = myGO->FindByName(anim->bones[i].name.c_str());
@@ -44,16 +55,16 @@ void ComponentAnimation::Update()
 				return;
 			}
 
-			if (animTimer == 0)
+			if (animTimer == currentAnimation->startTime)
 			{
 				currentPosKey = anim->bones[i].posKeys[0];
 				nextPosKey = anim->bones[i].posKeys[0];
 				currentRotKey = anim->bones[i].rotKeys[0];
 				nextRotKey = anim->bones[i].rotKeys[0];
 			}
-			else if (animTimer > anim->duration)
+			else if (animTimer > currentAnimation->endTime)
 			{
-				animTimer = 0;
+				animTimer = currentAnimation->startTime;
 				currentPosKey = anim->bones[i].posKeys[0];
 				nextPosKey = anim->bones[i].posKeys[0];
 				currentRotKey = anim->bones[i].rotKeys[0];
@@ -128,6 +139,7 @@ void ComponentAnimation::Update()
 		case ANIMATION_STOP:
 			animTimer = 0.0f;				
 			break;
+		case ANIMATION_BLENDING:
 
 		default:
 			break;
@@ -142,10 +154,9 @@ void ComponentAnimation::OnEditor()
 		ImGui::Text("Ticks Per Second : %i", anim->ticksPerSecond);
 		ImGui::DragFloat("TIME TEST", &animTimer, 0.01f, 0.0f, 10.0f);
 		ImGui::DragFloat("Speed Factor", &speedFactor, 0.01f, 0.01f, 4.0f);
-		if (ImGui::Button("Delete Component"))
-		{
-			wantsToDie = true;
-		}
+		ImGui::Text("Playing %s animation", currentAnimation->name.c_str());
+		ImGui::DragFloat("Start time", &currentAnimation->startTime, 0.2f, 0.0f, currentAnimation->endTime - 0.1f);
+		ImGui::DragFloat("End time", &currentAnimation->endTime, 0.2f, currentAnimation->startTime + 0.1f, anim->duration);
 
 		if (ImGui::Button("Play"))
 		{
@@ -174,6 +185,45 @@ void ComponentAnimation::OnEditor()
 			AnimStatus = ANIMATION_STOP;
 		}
 
+		if (ImGui::Button("Add Animation"))
+		{
+			std::string tmpName = "Animation ";
+			tmpName += std::to_string(animationList.size());
+			Animation* newAnim = new Animation(tmpName.c_str());
+			newAnim->startTime = 0.0f;
+			newAnim->endTime = anim->duration;
+			animationList.push_back(newAnim);
+		}
+
+		for (std::list<Animation*>::iterator it = animationList.begin(); it != animationList.end(); it++)
+		{
+			ImGui::Text("Animation: %s", (*it)->name.c_str());
+			ImGui::SameLine();
+			std::string tmpSelect = "Select##";
+			tmpSelect += (*it)->name;
+			if (ImGui::Button(tmpSelect.c_str()))
+			{
+				if (currentAnimation != (*it))
+				{
+					lastAnimTimer = animTimer;
+					lastAnimation = currentAnimation;
+					currentAnimation = (*it);
+					animTimer = (*it)->startTime;
+					if (blending)
+					{
+						//AnimStatus = ANIMATION_BLENDING; NOT YET
+					}
+				}
+			}
+		}
+
+		ImGui::Checkbox("Blending", &blending);
+
+		if (ImGui::Button("Delete Component"))
+		{
+			wantsToDie = true;
+		}
+
 		ImGui::TreePop();
 	}
 }
@@ -192,6 +242,11 @@ void ComponentAnimation::AddResource(int UID)
 	if (anim != nullptr)
 	{
 		anim->LoadToComponent();
+		Animation* defaultAnim = new Animation("Default");
+		defaultAnim->startTime = 0.0f;
+		defaultAnim->endTime = anim->duration;
+		currentAnimation = defaultAnim;
+		animationList.push_back(defaultAnim);
 	}
 }
 

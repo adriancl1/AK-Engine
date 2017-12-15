@@ -4,12 +4,22 @@
 #include "Component.h"
 
 #include "MathGeo/Math/float3.h"
+#include <list>
 
 enum AnimationStatus
 {
 	ANIMATION_PLAY,
 	ANIMATION_PAUSE,
-	ANIMATION_STOP
+	ANIMATION_STOP,
+	ANIMATION_BLENDING
+};
+
+struct Animation
+{
+	Animation(const char* name) : name(name){};
+	std::string name;
+	float startTime;
+	float endTime;
 };
 
 class ResourceAnimation;
@@ -33,7 +43,12 @@ public:
 private:
 	ResourceAnimation* anim;
 	float animTimer = 0;
+	float lastAnimTimer = 0;
 	float speedFactor = 1;
+	bool blending = true;
 
 	AnimationStatus AnimStatus;
+	Animation* currentAnimation = nullptr;
+	Animation* lastAnimation = nullptr;
+	std::list<Animation*> animationList;
 };
