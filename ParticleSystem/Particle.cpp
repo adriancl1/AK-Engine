@@ -10,6 +10,10 @@ Particle::Particle(ParticleSystem * parent, const SystemState & initial, const S
 
 	data.maxLifeTime = MaxLifeTime;
 	data.direction = direction;
+
+
+	pSystem = parent;
+	data.position = parent->transformation->position;
 }
 
 
@@ -20,6 +24,7 @@ Particle::~Particle()
 
 bool Particle::PreUpdate(float dt)
 {
+
 	//billboard
 	float3 Orientation = pSystem->cameraPos - data.position;
 	Orientation.y = data.position.y;
@@ -29,6 +34,8 @@ bool Particle::PreUpdate(float dt)
 
 bool Particle::Update(float dt) 
 {
+	DrawParticle();
+
 	data.lifeTime += dt;
 	CalcInterpolation();
 	return true;
@@ -43,6 +50,7 @@ bool Particle::PostUpdate(float dt)
 
 	return true;
 }
+
 
 void Particle::SetState(State & myState, const SystemState & sState)
 {
@@ -126,6 +134,11 @@ void Particle::DrawParticle()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+bool Particle::isAlive()
+{
+	return !killThis;
 }
 
 

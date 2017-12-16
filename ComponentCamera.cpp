@@ -31,7 +31,7 @@ ComponentCamera::ComponentCamera(float3 pos, float3 front, float3 up, float near
 ComponentCamera::~ComponentCamera()
 {}
 
-void ComponentCamera::Update()
+void ComponentCamera::Update(float dt)
 {
 	DrawDebug();
 }

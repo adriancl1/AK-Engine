@@ -17,12 +17,12 @@ ComponentParticles::~ComponentParticles()
 	RELEASE(particleSystem);
 }
 
-void ComponentParticles::Update()
+void ComponentParticles::Update(float dt)
 {
-
+	particleSystem->Update(dt);
+	
 	ComponentTransform* myTransform = (ComponentTransform*)myGO->FindComponent(Component_Transform);
-
-
+	
 	particleSystem->SetTransform(myTransform->GetPosition(),myTransform->GetRotation(),myTransform->GetScale());
 	particleSystem->Draw();
 }

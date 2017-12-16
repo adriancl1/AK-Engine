@@ -13,7 +13,7 @@ void Component::Enable()
 	active = true;
 }
 
-void Component::Update()
+void Component::Update(float dt)
 {}
 
 void Component::Disable()

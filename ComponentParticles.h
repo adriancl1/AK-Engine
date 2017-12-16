@@ -11,7 +11,7 @@ public:
 	ComponentParticles();
 	~ComponentParticles();
 
-	void Update() override;
+	void Update(float dt) override;
 
 
 

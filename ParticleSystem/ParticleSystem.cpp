@@ -7,8 +7,11 @@
 
 ParticleSystem::ParticleSystem()
 {
-	//SetPlaneMesh();
+
 	transformation = new PTransformation();
+
+	particleMesh = new ParticleMesh();
+	SetPlaneMesh();
 
 	emiter = new Emiter();
 	emiter->pSystem = this;
@@ -18,6 +21,14 @@ ParticleSystem::~ParticleSystem()
 {
 	RELEASE(emiter);
 	RELEASE(transformation);
+	RELEASE(particleMesh);
+
+
+
+	//for (std::vector<Particle*>::iterator it = particleVec.end(); it != particleVec.begin(); --it)
+	//{
+	//	particleVec.pop_back();
+	//}
 }
 
 bool ParticleSystem::PreUpdate(float dt)
@@ -27,7 +38,44 @@ bool ParticleSystem::PreUpdate(float dt)
 
 bool ParticleSystem::Update(float dt)
 {
-	return false;
+	bool ret = true;
+
+
+	float SpawnRate = 1.0f / (float)emiter->data.particleRate;
+
+	if (emiter->data.loop == true)
+	{
+		if (emiter->data.particleRate > 0)
+		{
+			if (SpawnRate > dt)
+			{
+				CreateParticle();
+			}
+			else
+			{
+				uint nParticles = dt / SpawnRate;
+
+				for (unsigned int i = 0; i < nParticles; i++)
+				{
+					CreateParticle();
+				}			
+			}
+
+			timeToCreateNParticle = (float)emiter->data.timeToEmite + (float)SpawnRate;
+		}
+	}
+	//else
+	//{
+	//}
+	
+
+	for (std::vector<Particle*>::iterator it = particleVec.begin(); it != particleVec.end(); ++it)
+	{
+		ret = (*it)->Update(dt);
+	}
+
+
+	return ret;
 }
 
 bool ParticleSystem::PostUpdate(float dt)
@@ -57,7 +105,7 @@ void ParticleSystem::DrawParticleSystemEditor()
 
 void ParticleSystem::Draw()
 {
-	
+	CreateParticle();
 	emiter->DrawEmiter();
 
 }
@@ -170,7 +218,9 @@ void ParticleSystem::SetPlaneMesh()
 {
 	particleMesh->numVertices = 4;
 	particleMesh->numFaces = 2;
-	float vertex[] = {-1.f,1.f,0,1.f,1.f,0,-1.f,-1.f,0,1.f,-1.f,0};
+
+	float vertex[] = {-0.5f, 0.5f, 0.f, 0.5f, 0.5f, 0.f, 0.5f, -0.5f, 0.f, -0.5f, -0.5f, 0.f};
+
 	particleMesh->vertices = new float[particleMesh->numVertices * 3];
 	memcpy(particleMesh->vertices, vertex, sizeof(float) * particleMesh->numVertices * 3);
 

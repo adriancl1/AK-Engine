@@ -100,7 +100,7 @@ update_status ModuleSceneEditor::Update(float dt)
 		wantToSave = true;
 	}
 
-	root->Update();
+	root->Update(dt);
 
 	return UPDATE_CONTINUE;
 }

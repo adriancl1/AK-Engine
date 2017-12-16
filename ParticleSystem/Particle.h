@@ -69,11 +69,13 @@ public:
 	bool PreUpdate(float dt);
 	bool Update(float dt);
 	bool PostUpdate(float dt);
+
+
 	void SetState(State& myState,const SystemState& sState);
 	void CalcInterpolation();
 
 	void DrawParticle();
-
+	bool isAlive();
 private:
 	ParticleSystem * pSystem;
 	ParticleData data;

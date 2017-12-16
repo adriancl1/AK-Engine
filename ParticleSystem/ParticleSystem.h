@@ -70,7 +70,7 @@ public:
 	void SetPlaneMesh();
 
 	void CreateParticle();
-	
+
 
 private:
 	ParticleMesh* particleMesh;
@@ -80,6 +80,8 @@ private:
 	SystemState finalState;
 	bool windowShow = true;
 
+private: //times
+	float timeToCreateNParticle = 0.f;
 
 public:
 	

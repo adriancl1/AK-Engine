@@ -24,7 +24,7 @@ ComponentTransform::ComponentTransform(float3 pos, float3 scale, Quat rot, Compo
 ComponentTransform::~ComponentTransform()
 {}
 
-void ComponentTransform::Update()
+void ComponentTransform::Update(float dt)
 {
 	if (needToUpdate)
 	{

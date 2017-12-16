@@ -13,7 +13,7 @@ public:
 	GameObject(GameObject* parent = nullptr, bool isStatic = true);
 	~GameObject();
 
-	void Update();
+	void Update(float dt);
 	void PostUpdate();
 	void AddChild(GameObject* child);
 	void DeleteChilds();
