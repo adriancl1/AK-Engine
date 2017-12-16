@@ -17,8 +17,17 @@ ComponentParticles::~ComponentParticles()
 	RELEASE(particleSystem);
 }
 
+void ComponentParticles::PreUpdate(float dt)
+{
+	//cuando se le de al Play
+	
+}
+
 void ComponentParticles::Update(float dt)
 {
+	ComponentCamera* camera = App->camera->GetEditorCamera();
+	particleSystem->cameraPos = camera->GetFrustum().pos;
+
 	particleSystem->Update(dt);
 	
 	ComponentTransform* myTransform = (ComponentTransform*)myGO->FindComponent(Component_Transform);

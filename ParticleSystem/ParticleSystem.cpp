@@ -33,12 +33,14 @@ ParticleSystem::~ParticleSystem()
 
 bool ParticleSystem::PreUpdate(float dt)
 {
+	
 	return true;
 }
 
 bool ParticleSystem::Update(float dt)
 {
 	bool ret = true;
+	
 
 
 	float SpawnRate = 1.0f / (float)emiter->data.particleRate;
@@ -95,7 +97,7 @@ void ParticleSystem::DrawParticleSystemEditor()
 
 	if (ImGui::CollapsingHeader("Emiter"))
 	{
-	emiter->DrawEmiterEditor();
+		emiter->DrawEmiterEditor();
 	}
 	if (ImGui::CollapsingHeader("Emiter Options"))
 	{
@@ -121,29 +123,28 @@ void ParticleSystem::DrawBasicEditor()
 
 			if (ImGui::TreeNodeEx("Color"))
 			{
-				float col2[4] = { initialState.color.x,initialState.color.y,initialState.color.z,initialState.color.w };
+				float col[4] = { initialState.color.x,initialState.color.y,initialState.color.z,initialState.color.w };
 
-				ImGui::ColorPicker4("Color", col2);
+				ImGui::ColorPicker4("Color", col);
 
-				initialState.color.x = col2[0];
-				initialState.color.y = col2[1];
-				initialState.color.z = col2[2];
-				initialState.color.w = col2[3];
+				initialState.color.x = col[0];
+				initialState.color.y = col[1];
+				initialState.color.z = col[2];
+				initialState.color.w = col[3];
 				ImGui::TreePop();
 			}
 			if (ImGui::TreeNodeEx("Color2"))
 			{
-				float col2[4] = { initialState.color.x,initialState.color.y,initialState.color.z,initialState.color.w };
+				float col3[4] = { initialState.color2.x,initialState.color2.y,initialState.color2.z,initialState.color2.w };
 
-				ImGui::ColorPicker4("Color", col2);
+				ImGui::ColorPicker4("Color", col3);
 
-				initialState.color2.x = col2[0];
-				initialState.color2.y = col2[1];
-				initialState.color2.z = col2[2];
-				initialState.color2.w = col2[3];
+				initialState.color2.x = col3[0];
+				initialState.color2.y = col3[1];
+				initialState.color2.z = col3[2];
+				initialState.color2.w = col3[3];
 				ImGui::TreePop();
 			}
-
 
 		ImGui::TreePop();
 	}
@@ -156,14 +157,14 @@ void ParticleSystem::DrawBasicEditor()
 
 			if (ImGui::TreeNodeEx("Color"))
 			{
-				float col2[4] = { finalState.color.x,finalState.color.y,finalState.color.z,finalState.color.w };
+				float col1[4] = { finalState.color.x,finalState.color.y,finalState.color.z,finalState.color.w };
 
-				ImGui::ColorPicker4("Color", col2);
+				ImGui::ColorPicker4("Color", col1);
 
-				finalState.color.x = col2[0];
-				finalState.color.y = col2[1];
-				finalState.color.z = col2[2];
-				finalState.color.w = col2[3];
+				finalState.color.x = col1[0];
+				finalState.color.y = col1[1];
+				finalState.color.z = col1[2];
+				finalState.color.w = col1[3];
 				ImGui::TreePop();
 			}
 			if (ImGui::TreeNodeEx("Color2"))
@@ -215,11 +216,11 @@ ParticleMesh* ParticleSystem::GetMesh() const
 }
 
 void ParticleSystem::SetPlaneMesh()
-{
+{	
 	particleMesh->numVertices = 4;
 	particleMesh->numFaces = 2;
 
-	float vertex[] = {-0.5f, 0.5f, 0.f, 0.5f, 0.5f, 0.f, 0.5f, -0.5f, 0.f, -0.5f, -0.5f, 0.f};
+	float vertex[] = {-0.5f, 0.5f, 0.f, 0.5f, 0.5f, 0.f, -0.5f, -0.5f, 0.f, 0.5f, -0.5f, 0.f};
 
 	particleMesh->vertices = new float[particleMesh->numVertices * 3];
 	memcpy(particleMesh->vertices, vertex, sizeof(float) * particleMesh->numVertices * 3);
@@ -231,19 +232,19 @@ void ParticleSystem::SetPlaneMesh()
 	particleMesh->numIndices = 6;
 	uint indices[] = {2,1,0,2,3,1};
 	particleMesh->indices = new uint[6];
-	memcpy(particleMesh->indices, indices, sizeof(uint)*particleMesh->numVertices);
+	memcpy(particleMesh->indices, indices, sizeof(float)*particleMesh->numIndices);
 	
 	glGenBuffers(1, (GLuint*)&particleMesh->idIndices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, particleMesh->idIndices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * particleMesh->idIndices, particleMesh->indices, GL_STATIC_DRAW);
 
-	float colors[]={ 0, 1.f, 0,1.f, 1.f, 0,	0, 0, 0,1.f, 0, 0 };
+	float colors[]={ 0, 1.f, 0,1.f, 1.f, 0,	0, 0,1.f, 0, 0 };
 	particleMesh->colors = new float[particleMesh->numVertices * 3];
 	memcpy(particleMesh->colors, colors, sizeof(float) * particleMesh->numVertices * 3);
 
 	glGenBuffers(1, (GLuint*)&particleMesh->idColors);
 	glBindBuffer(GL_ARRAY_BUFFER, particleMesh->idColors);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * particleMesh->numIndices * 3, particleMesh->colors, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * particleMesh->numIndices * 6, particleMesh->colors, GL_STATIC_DRAW);
 	
 }
 
@@ -251,14 +252,15 @@ void ParticleSystem::CreateParticle()
 {
 	LCG rGen;
 	float3 direction;
+
 	switch (emiter->type) 
 	{
 		
-	case E_SPHERE:
+	case E_SPHERE:		
 		direction = emiter->shape.sphere.RandomPointOnSurface(rGen);
-			break;
-	
+			break;	
 	};
+
 	Particle* nParticle = new Particle(this, initialState, finalState, direction, emiter->data.timePLife);
 	particleVec.push_back(nParticle);
 }

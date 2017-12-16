@@ -4,6 +4,8 @@
 
 #include "MathGeo\MathGeoLib.h"
 #include "ParticleSystem\ParticleSystem.h"
+#include "ComponentCamera.h"
+#include "ModuleCamera3D.h"
 
 class ComponentParticles : public Component
 {
@@ -11,6 +13,7 @@ public:
 	ComponentParticles();
 	~ComponentParticles();
 
+	void PreUpdate(float dt);
 	void Update(float dt) override;
 
 

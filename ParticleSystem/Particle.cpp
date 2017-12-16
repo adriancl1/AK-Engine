@@ -6,11 +6,10 @@
 Particle::Particle(ParticleSystem * parent, const SystemState & initial, const SystemState & final, float3 direction, float MaxLifeTime)
 {
 	SetState(Initial, initial);
-	SetState(Initial, initial);
+	SetState(Final, final);
 
 	data.maxLifeTime = MaxLifeTime;
 	data.direction = direction;
-
 
 	pSystem = parent;
 	data.position = parent->transformation->position;
@@ -24,16 +23,16 @@ Particle::~Particle()
 
 bool Particle::PreUpdate(float dt)
 {
-
 	//billboard
-	float3 Orientation = pSystem->cameraPos - data.position;
-	Orientation.y = data.position.y;
-	data.rotation= Quat::LookAt(float3(0.0f, 0.0f, 1.0f), Orientation, float3(0.0f, 1.0f, 0.0f), float3(0.0f, 1.0f, 0.0f));
+	
 	return true;
 }
 
 bool Particle::Update(float dt) 
 {
+	float3 Orientation = pSystem->cameraPos - data.position;
+	Orientation.y = data.position.y;
+	data.rotation = Quat::LookAt(float3(0.0f, 0.0f, 1.0f), Orientation, float3(0.0f, 1.0f, 0.0f), float3(0.0f, 1.0f, 0.0f));
 	DrawParticle();
 
 	data.lifeTime += dt;
@@ -93,7 +92,7 @@ void Particle::DrawParticle()
 {
 	ParticleMesh* mesh = pSystem->GetMesh();
 
-	glDisable(GL_CULL_FACE);
+	//glDisable(GL_CULL_FACE);
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
@@ -112,9 +111,10 @@ void Particle::DrawParticle()
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->idNormals);
 		glNormalPointer(GL_FLOAT, 0, NULL);
 	}
-	if (mesh->texCoords != nullptr) {
+	if (mesh->colors != nullptr) {
+		
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->idTexCoords);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->idColors);
 		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 	}
 
