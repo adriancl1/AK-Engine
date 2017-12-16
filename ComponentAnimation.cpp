@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ModuleInput.h"
 
 ComponentAnimation::ComponentAnimation() : Component(Component_Animation)
 {
@@ -33,7 +34,7 @@ void ComponentAnimation::Update()
 	RotationKey currentRotKey;
 	RotationKey nextRotKey;
 
-	bool foundBone = false;
+	HandleInput();
 
 	switch (animStatus)
 	{
@@ -55,16 +56,13 @@ void ComponentAnimation::Update()
 				return;
 			}
 
-			if (animTimer == currentAnimation->startTime)
-			{
-				currentPosKey = anim->bones[i].posKeys[0];
-				nextPosKey = anim->bones[i].posKeys[0];
-				currentRotKey = anim->bones[i].rotKeys[0];
-				nextRotKey = anim->bones[i].rotKeys[0];
-			}
-			else if (animTimer > currentAnimation->endTime)
+			if (animTimer > currentAnimation->endTime)
 			{
 				animTimer = currentAnimation->startTime;
+			}
+
+			if (animTimer == currentAnimation->startTime && currentAnimation->startTime == 0.0f)
+			{
 				currentPosKey = anim->bones[i].posKeys[0];
 				nextPosKey = anim->bones[i].posKeys[0];
 				currentRotKey = anim->bones[i].rotKeys[0];
@@ -165,16 +163,12 @@ void ComponentAnimation::Update()
 				}
 
 				//Current new Animation -----
-				if (animTimer == currentAnimation->startTime)
-				{
-					currentPosKey = anim->bones[i].posKeys[0];
-					nextPosKey = anim->bones[i].posKeys[0];
-					currentRotKey = anim->bones[i].rotKeys[0];
-					nextRotKey = anim->bones[i].rotKeys[0];
-				}
-				else if (animTimer > currentAnimation->endTime)
+				if (animTimer > currentAnimation->endTime)
 				{
 					animTimer = currentAnimation->startTime;
+				}
+				if (animTimer == currentAnimation->startTime && currentAnimation->startTime == 0.0f)
+				{
 					currentPosKey = anim->bones[i].posKeys[0];
 					nextPosKey = anim->bones[i].posKeys[0];
 					currentRotKey = anim->bones[i].rotKeys[0];
@@ -239,16 +233,12 @@ void ComponentAnimation::Update()
 				}
 				// ------
 				//Last Anim -----
-				if (lastAnimTimer == lastAnimation->startTime)
-				{
-					lasAnimCurrentPosKey = anim->bones[i].posKeys[0];
-					lastAnimNextPosKey = anim->bones[i].posKeys[0];
-					lastAnimCurrentRotKey = anim->bones[i].rotKeys[0];
-					lastAnimNextRotKey = anim->bones[i].rotKeys[0];
-				}
-				else if (lastAnimTimer > lastAnimation->endTime)
+				if (lastAnimTimer > lastAnimation->endTime)
 				{
 					lastAnimTimer = lastAnimation->startTime;
+				}
+				if (lastAnimTimer == lastAnimation->startTime && lastAnimation->startTime == 0.0f)
+				{
 					lasAnimCurrentPosKey = anim->bones[i].posKeys[0];
 					lastAnimNextPosKey = anim->bones[i].posKeys[0];
 					lastAnimCurrentRotKey = anim->bones[i].rotKeys[0];
@@ -468,6 +458,88 @@ void ComponentAnimation::AddResource(int UID)
 	}
 }
 
-void ComponentAnimation::SetBonePos(float3 value) const
+void ComponentAnimation::HandleInput()
 {
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		int key = 0;
+		for (std::list<Animation*>::iterator it = animationList.begin(); it != animationList.end(); it++)
+		{
+			if (key == 1)
+			{
+				if ((*it) != nullptr && currentAnimation != (*it))
+				{
+					lastAnimTimer = animTimer;
+					lastAnimation = currentAnimation;
+					currentAnimation = (*it);
+					animTimer = (*it)->startTime;
+					if (blending == true)
+					{
+						animStatus = ANIMATION_BLENDING;
+					}
+					else
+					{
+						animStatus = ANIMATION_PLAY;
+					}
+				}
+				break;
+			}
+			key++;
+		}
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		int key = 0;
+		for (std::list<Animation*>::iterator it = animationList.begin(); it != animationList.end(); it++)
+		{
+			if (key == 2)
+			{
+				if ((*it) != nullptr && currentAnimation != (*it))
+				{
+					lastAnimTimer = animTimer;
+					lastAnimation = currentAnimation;
+					currentAnimation = (*it);
+					animTimer = (*it)->startTime;
+					if (blending == true)
+					{
+						animStatus = ANIMATION_BLENDING;
+					}
+					else
+					{
+						animStatus = ANIMATION_PLAY;
+					}
+				}
+				break;
+			}
+			key++;
+		}
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	{
+		int key = 0;
+		for (std::list<Animation*>::iterator it = animationList.begin(); it != animationList.end(); it++)
+		{
+			if (key == 3)
+			{
+				if ((*it) != nullptr && currentAnimation != (*it))
+				{
+					lastAnimTimer = animTimer;
+					lastAnimation = currentAnimation;
+					currentAnimation = (*it);
+					animTimer = (*it)->startTime;
+					if (blending == true)
+					{
+						animStatus = ANIMATION_BLENDING;
+					}
+					else
+					{
+						animStatus = ANIMATION_PLAY;
+					}
+				}
+				break;
+			}
+			key++;
+		}
+	}
 }

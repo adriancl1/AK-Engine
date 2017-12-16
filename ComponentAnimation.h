@@ -39,6 +39,7 @@ public:
 	void AddResource(int UID) override;
 
 	void SetBonePos(float3 value)const;
+	void HandleInput();
 
 private:
 	ResourceAnimation* anim;
