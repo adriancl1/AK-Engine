@@ -49,6 +49,14 @@ public:
 	bool PreUpdate(float dt);
 	bool Update(float dt);
 	bool PostUpdate(float dt);
+
+	// Events
+
+	void Stop();
+	void Play();
+	void Pause();
+
+
 	//UI -------------------------------
 	
 	//Draws ---
@@ -68,7 +76,8 @@ public:
 	ParticleMesh * GetMesh() const;
 
 	void SetPlaneMesh();
-
+	void SetActive();
+	void SetDesactive();
 	void CreateParticle();
 
 
@@ -80,15 +89,19 @@ private:
 	SystemState finalState;
 	bool windowShow = true;
 
-private: //times
-	float timeToCreateNParticle = 0.f;
+private: //times   // time variables with _
+	float time_ToCreateNParticle = 0.f;
+	ParticleSystem_State ps_state= PS_STOP;
+
+	float ps_dt = 0.f; //particlesystem dt
+	bool active = true;
 
 public:
 	
 	PTransformation* transformation; 
 	TextureData tData;
 	float3 cameraPos = float3::zero;
-
+	
 };
 
 #endif // !_PS_PARTICLE_SYSTEM_

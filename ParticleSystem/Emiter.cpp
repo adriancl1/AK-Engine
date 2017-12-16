@@ -116,7 +116,8 @@ void Emiter::DrawEmiterEditor()
 		data.loop = true;
 	
 	ImGui::Checkbox("Loop", &data.loop);
-	ImGui::DragInt("Particle Emittion rate", &data.particleRate, 2);
+
+	ImGui::SliderFloat("Particle Emittion rate", &data.particleRate, 0.02, 4);
 
 	if (data.particleRate < 0)
 		data.particleRate = 0;

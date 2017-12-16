@@ -64,6 +64,9 @@
     <Filter Include="Sources\Engine\ParticleSystem">
       <UniqueIdentifier>{6be35a2f-29ce-4316-b14d-b76696fb1e95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Engine\Modules\SCENE">
+      <UniqueIdentifier>{7dc8bd8b-afa2-4e1c-a790-377c2d878e49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -360,9 +363,6 @@
     <ClInclude Include="ModuleImGui.h">
       <Filter>Sources\Engine\Modules\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleSceneEditor.h">
-      <Filter>Sources\Engine\Modules\UI</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleTextures.h">
       <Filter>Sources\Engine\Modules\DATA</Filter>
     </ClInclude>
@@ -386,6 +386,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem\GlobalDefines.h">
       <Filter>Sources\Engine\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleSceneEditor.h">
+      <Filter>Sources\Engine\Modules\SCENE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -590,9 +593,6 @@
     <ClCompile Include="ModuleImGui.cpp">
       <Filter>Sources\Engine\Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleSceneEditor.cpp">
-      <Filter>Sources\Engine\Modules\UI</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleTextures.cpp">
       <Filter>Sources\Engine\Modules\DATA</Filter>
     </ClCompile>
@@ -616,6 +616,9 @@
     </ClCompile>
     <ClCompile Include="ParticleSystem\ParticleSystem.cpp">
       <Filter>Sources\Engine\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneEditor.cpp">
+      <Filter>Sources\Engine\Modules\SCENE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

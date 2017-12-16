@@ -3,6 +3,7 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "ComponentParticles.h"
 #include "ModuleSceneEditor.h"
 #include "Quadtree.h"
 #include "ModuleRenderer3D.h"
@@ -54,8 +55,15 @@ bool ModuleSceneEditor::Start()
 	ComponentCamera* camera = new ComponentCamera();
 
 	App->camera->SetMainCamera(camera);
-
 	scene->AddComponent(camera);
+
+	GameObject* newGO = new GameObject();
+	root->AddChild(newGO);
+	scene->SetName("Particles");
+	ComponentTransform* newTrans = new ComponentTransform();
+	newGO->AddComponent(newTrans);	
+	ComponentParticles* newPart = new ComponentParticles();
+	newGO->AddComponent(newPart);
 
 	tree = new Quadtree(); 
 	
@@ -289,6 +297,7 @@ void ModuleSceneEditor::RecalculateQuadtree()
 GameObject* ModuleSceneEditor::CreateNewGameObject(const char* path)
 {
 	GameObject* ret = App->importer->LoadGameObject(path);
+
 	if (ret != nullptr)
 	{
 		root->AddChild(ret);

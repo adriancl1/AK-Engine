@@ -33,6 +33,9 @@ ParticleSystem::~ParticleSystem()
 
 bool ParticleSystem::PreUpdate(float dt)
 {
+
+	emiter->data.emiterTime = dt; // set the time of play to the editr timme
+
 	return true;
 }
 
@@ -40,34 +43,23 @@ bool ParticleSystem::Update(float dt)
 {
 	bool ret = true;
 
+	if (ps_state != PS_PLAYING || emiter->data.loop != true /*&& emiter->data.emiterTime > emiter->data.timeToEmite*/)
+		return ret;
 
-	float SpawnRate = 1.0f / (float)emiter->data.particleRate;
+	this->ps_dt += dt;
 
-	if (emiter->data.loop == true)
-	{
-		if (emiter->data.particleRate > 0)
-		{
-			if (SpawnRate > dt)
-			{
-				CreateParticle();
-			}
-			else
-			{
-				uint nParticles = dt / SpawnRate;
-
-				for (unsigned int i = 0; i < nParticles; i++)
-				{
-					CreateParticle();
-				}			
-			}
-
-			timeToCreateNParticle = (float)emiter->data.timeToEmite + (float)SpawnRate;
-		}
-	}
-	//else
+	//if (ps_dt <= emiter->data.particleRate)
 	//{
-	//}
-	
+
+		uint nParticles = ps_dt / emiter->data.particleRate;
+
+		for (int i = 0; i < nParticles; i++)
+			CreateParticle();
+
+		ps_dt -= emiter->data.particleRate * nParticles;
+
+
+//	}
 
 	for (std::vector<Particle*>::iterator it = particleVec.begin(); it != particleVec.end(); ++it)
 	{
@@ -83,10 +75,33 @@ bool ParticleSystem::PostUpdate(float dt)
 	return false;
 }
 
+void ParticleSystem::Stop()
+{
+	ps_state = PS_STOP;
+
+	for (std::vector<Particle*>::iterator it = particleVec.begin(); it != particleVec.end(); ++it)
+		(*it)->KillParticle();
+
+
+}
+
+void ParticleSystem::Play()
+{
+	ps_state = PS_PLAYING;
+}
+
+void ParticleSystem::Pause()
+{
+	ps_state = PS_PAUSE;
+}
+
 void ParticleSystem::DrawParticleSystemEditor()
 {
 	if (!windowShow)
 		return;
+
+	ImGui::Text("Number of particles %i",particleVec.size());
+
 
 	if (ImGui::CollapsingHeader("Basic"))
 	{
@@ -97,15 +112,12 @@ void ParticleSystem::DrawParticleSystemEditor()
 	{
 	emiter->DrawEmiterEditor();
 	}
-	if (ImGui::CollapsingHeader("Emiter Options"))
-	{
-		
-	}
+
 }
 
 void ParticleSystem::Draw()
 {
-	CreateParticle();
+	//CreateParticle();
 	emiter->DrawEmiter();
 
 }
@@ -245,6 +257,16 @@ void ParticleSystem::SetPlaneMesh()
 	glBindBuffer(GL_ARRAY_BUFFER, particleMesh->idColors);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * particleMesh->numIndices * 3, particleMesh->colors, GL_STATIC_DRAW);
 	
+}
+
+void ParticleSystem::SetActive()
+{
+	active = true;
+}
+
+void ParticleSystem::SetDesactive()
+{
+	active = false;
 }
 
 void ParticleSystem::CreateParticle()

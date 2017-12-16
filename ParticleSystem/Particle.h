@@ -76,6 +76,7 @@ public:
 
 	void DrawParticle();
 	bool isAlive();
+	void KillParticle();
 private:
 	ParticleSystem * pSystem;
 	ParticleData data;

@@ -104,6 +104,34 @@ void GameObject::SetName(const char * name)
 	this->name.assign(name);
 }
 
+void GameObject::Play()
+{
+
+	for (int i = 0; i < components.size(); i++)
+	{
+		components[i]->OnPlay();
+	}
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->Play();
+	}
+
+}
+
+void GameObject::Pause()
+{
+
+	for (int i = 0; i < components.size(); i++)
+	{
+		components[i]->OnPause();
+	}
+	for (int i = 0; i < childs.size(); i++)
+	{
+		childs[i]->Pause();
+	}
+
+}
+
 const char * GameObject::GetName() const
 {
 	return name.c_str();

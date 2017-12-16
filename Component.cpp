@@ -24,6 +24,16 @@ void Component::Disable()
 void Component::OnEditor()
 {}
 
+void Component::OnPause()
+{
+
+}
+
+void Component::OnPlay()
+{
+
+}
+
 void Component::OnSave(Configuration& data) const
 {
 }

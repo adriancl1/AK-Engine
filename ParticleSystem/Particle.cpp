@@ -11,7 +11,6 @@ Particle::Particle(ParticleSystem * parent, const SystemState & initial, const S
 	data.maxLifeTime = MaxLifeTime;
 	data.direction = direction;
 
-
 	pSystem = parent;
 	data.position = parent->transformation->position;
 }
@@ -139,6 +138,11 @@ void Particle::DrawParticle()
 bool Particle::isAlive()
 {
 	return !killThis;
+}
+
+void Particle::KillParticle()
+{
+	killThis = true;
 }
 
 

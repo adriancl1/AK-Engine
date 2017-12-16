@@ -51,7 +51,7 @@ public:
 	float timeToEmite = 0.f; // if the timeToEmite == 0.0f then never ends to emite == bool loop = true
 	bool loop = true;
 
-	int particleRate = 4; // quantity of particles droped in a sec
+	float particleRate = 2.f; // quantity of particles droped in a sec
 
 						  //Particles --------
 	float timePLife = 2.f;
@@ -59,7 +59,8 @@ public:
 
 	float speed = 0.f; // speed to drop the particles
 	float modSpeed = 0.f; // intervale of speed to drop particles
-		
+public:
+	float emiterTime = 0.f;
 };
 
 

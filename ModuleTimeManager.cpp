@@ -1,8 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleTimeManager.h"
-#include "ModuleSceneEditor.h"
 
+#include "ModuleSceneEditor.h"
+#include "GameObject.h"
 #include <stdio.h>
 
 
@@ -83,6 +84,7 @@ update_status ModuleTimeManager::PostUpdate(float dt)
 
 void ModuleTimeManager::PlayGame(bool play)
 {
+
 	isInGame = play;
 
 	if (play == true)
@@ -97,6 +99,8 @@ void ModuleTimeManager::PlayGame(bool play)
 		App->sceneEditor->SetSelected(nullptr);
 		App->sceneEditor->LoadScene("Assets/Scenes/MainScene.akS");
 	}
+	App->sceneEditor->GetRoot()->Play();
+
 }
 
 void ModuleTimeManager::PauseGame(bool pause)
@@ -111,6 +115,8 @@ void ModuleTimeManager::PauseGame(bool pause)
 	{
 		time.Continue();
 	}
+
+	App->sceneEditor->GetRoot()->Pause();
 }
 
 void ModuleTimeManager::PlayOneFrame()
@@ -126,6 +132,7 @@ bool ModuleTimeManager::IsGamePaused()
 
 void ModuleTimeManager::StartTime()
 {
+
 	time.Start();
 }
 

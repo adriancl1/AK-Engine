@@ -25,6 +25,9 @@ public:
 	virtual void Disable();
 	virtual void OnEditor();
 
+	virtual void OnPause();
+	virtual void OnPlay();
+
 	virtual void OnSave(Configuration& data)const;
 	virtual void OnLoad(Configuration& data);
 

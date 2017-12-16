@@ -3,6 +3,7 @@
 #include "imgui-1.51/imgui.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "Application.h"
 
 ComponentParticles::ComponentParticles() : Component(Component_Particles)
 {
@@ -19,12 +20,22 @@ ComponentParticles::~ComponentParticles()
 
 void ComponentParticles::Update(float dt)
 {
-	particleSystem->Update(dt);
+	particleSystem->Update(/*App->timeManager->GetRealDeltaTime()*/dt);
 	
 	ComponentTransform* myTransform = (ComponentTransform*)myGO->FindComponent(Component_Transform);
 	
-	particleSystem->SetTransform(myTransform->GetPosition(),myTransform->GetRotation(),myTransform->GetScale());
+	particleSystem->SetTransform(myTransform->GetPosition(), myTransform->GetRotation(), {1,1,1});
 	particleSystem->Draw();
+}
+
+void ComponentParticles::OnPlay()
+{
+	particleSystem->Play();
+}
+
+void ComponentParticles::OnPause()
+{
+	particleSystem->Pause();
 }
 
 void ComponentParticles::OnEditor()

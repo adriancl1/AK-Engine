@@ -13,7 +13,8 @@ public:
 
 	void Update(float dt) override;
 
-
+	void OnPlay() override;
+	void OnPause() override;
 
 	void OnEditor()override;
 
