@@ -57,24 +57,30 @@ void MeshImporter::Load(const char * inputFile, ResourceMesh* mesh)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->vertices, GL_STATIC_DRAW);
 
 		// Load Normals
-		cursor += bytes;
-		bytes = sizeof(float) * mesh->numVertices * 3;
-		mesh->normals = new float[mesh->numVertices * 3];
-		memcpy(mesh->normals, cursor, bytes);
+		if (ranges[2] > 0)
+		{
+			cursor += bytes;
+			bytes = sizeof(float) * mesh->numVertices * 3;
+			mesh->normals = new float[mesh->numVertices * 3];
+			memcpy(mesh->normals, cursor, bytes);
 
-		glGenBuffers(1, (GLuint*) &(mesh->idNormals));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->idNormals);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->normals, GL_STATIC_DRAW);
+			glGenBuffers(1, (GLuint*) &(mesh->idNormals));
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->idNormals);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->normals, GL_STATIC_DRAW);
+		}
 
 		// Load TexCoords
-		cursor += bytes;
-		bytes = sizeof(float) * mesh->numVertices * 3;
-		mesh->texCoords = new float[mesh->numVertices * 3];
-		memcpy(mesh->texCoords, cursor, bytes);
+		if (ranges[3] > 0)
+		{
+			cursor += bytes;
+			bytes = sizeof(float) * mesh->numVertices * 3;
+			mesh->texCoords = new float[mesh->numVertices * 3];
+			memcpy(mesh->texCoords, cursor, bytes);
 
-		glGenBuffers(1, (GLuint*) &(mesh->idTexCoords));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->idTexCoords);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->texCoords, GL_STATIC_DRAW);
+			glGenBuffers(1, (GLuint*) &(mesh->idTexCoords));
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->idTexCoords);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->numVertices * 3, mesh->texCoords, GL_STATIC_DRAW);
+		}
 
 		mesh->enclosingBox.SetNegativeInfinity();
 
@@ -120,7 +126,15 @@ bool MeshImporter::Save(const aiMesh* mesh, const char * outputFile)
 		memcpy(tmpMesh->texCoords, mesh->mTextureCoords[0], sizeof(float) * tmpMesh->numVertices * 3);
 	}
 
-	uint ranges[4] = { tmpMesh->numIndices, tmpMesh->numVertices, tmpMesh->numVertices, tmpMesh->numVertices };
+	uint ranges[4] = { tmpMesh->numIndices, tmpMesh->numVertices, 0, 0 };
+	if (mesh->HasNormals())
+	{
+		ranges[2] = tmpMesh->numVertices;
+	}
+	if (mesh->HasTextureCoords(0))
+	{
+		ranges[3] = tmpMesh->numVertices;
+	}
 
 	float size = sizeof(ranges);
 	size += sizeof(uint) * tmpMesh->numIndices; //Indices
