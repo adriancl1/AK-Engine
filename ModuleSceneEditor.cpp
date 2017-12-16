@@ -34,7 +34,6 @@ bool ModuleSceneEditor::Init(Configuration data)
 
 bool ModuleSceneEditor::Start()
 {
-	//App->audio->PlayMusic("audio/walkwithme.ogg");
 	App->camera->Move(vec3(0, 1, 0));
 
 	root = new GameObject();

@@ -293,8 +293,11 @@ void ComponentMesh::UpdateDeformable()
 
 void ComponentMesh::ResetDeformable()
 {
-	memcpy(meshDeformable->vertices, mesh->vertices, mesh->numVertices * 3 * sizeof(float));
-	memcpy(meshDeformable->normals, mesh->normals, mesh->numVertices * 3 * sizeof(float));
+	if (meshDeformable != nullptr)
+	{
+		memcpy(meshDeformable->vertices, mesh->vertices, mesh->numVertices * 3 * sizeof(float));
+		memcpy(meshDeformable->normals, mesh->normals, mesh->numVertices * 3 * sizeof(float));
+	}
 }
 
 Mesh* ComponentMesh::GetMeshDeformable() const
