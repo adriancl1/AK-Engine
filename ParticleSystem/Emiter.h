@@ -69,6 +69,7 @@ class Emiter 	//shapes // sphere, cube, cone, semiphere
 {
 	friend class ParticleSystem;
 public:
+
 	Emiter();
 	~Emiter();	
 

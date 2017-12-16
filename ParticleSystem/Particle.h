@@ -49,8 +49,7 @@ struct ParticleMesh
 };
 
 struct State 
-{
-	
+{	
 	float gravity = -9.8f;
 	float size = 0.0f;
 	float4 color = float4::one;
@@ -77,6 +76,7 @@ public:
 	void DrawParticle();
 	bool isAlive();
 	void KillParticle();
+
 private:
 	ParticleSystem * pSystem;
 	ParticleData data;

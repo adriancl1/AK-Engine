@@ -1,9 +1,12 @@
 #ifndef _PS_PARTICLE_SYSTEM_
 #define _PS_PARTICLE_SYSTEM_
 
+#include "../Application.h"
 #include <vector>
 #include "../MathGeo/MathGeoLib.h"
 #include "GlobalDefines.h"
+#include "../ModuleTextures.h"
+
 
 
 
@@ -22,7 +25,9 @@ struct SystemState //going to global state to set on particles latter
 // -------------------------------------- [TEXTURE]
 struct TextureData // it is like resource texture, contains all the data of the texture.
 {
-	uint textureID = 0;
+	
+	uint textureID = 0;//App->textures->ImportImage("../Game/Assets/Baker_house.png");
+	float4 color = float4::one;
 };
 
 struct PTransformation
@@ -96,8 +101,7 @@ private: //times   // time variables with _
 	float ps_dt = 0.f; //particlesystem dt
 	bool active = true;
 
-public:
-	
+public:	
 	PTransformation* transformation; 
 	TextureData tData;
 	float3 cameraPos = float3::zero;
