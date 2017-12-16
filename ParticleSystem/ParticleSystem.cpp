@@ -33,7 +33,7 @@ ParticleSystem::~ParticleSystem()
 
 bool ParticleSystem::PreUpdate(float dt)
 {
-
+	
 	emiter->data.emiterTime = dt; // set the time of play to the editr timme
 	return true;
 }
@@ -42,13 +42,13 @@ bool ParticleSystem::Update(float dt)
 {
 	bool ret = true;
 	
-
+	//tData.textureID = App->textures->ImportImage("../Game/Assets/Baker_house.png");
 	if (ps_state != PS_PLAYING  /*&& emiter->data.emiterTime > emiter->data.timeToEmite*/)
 		return ret;
 
 	this->control += dt;
 	this->ps_dt += dt;
-	if (control <= emiter->data.timeToEmite /*|| emiter->data.loop == true*/)
+	if (control <= emiter->data.timeToEmite || emiter->data.loop == true)
 	{
 
 		uint nParticles = ps_dt / emiter->data.particleRate;
@@ -227,6 +227,7 @@ void ParticleSystem::SetPlaneMesh()
 	particleMesh->numVertices = 4;
 	particleMesh->numFaces = 2;
 
+
 	float vertex[] = {-0.5f, 0.5f, 0.f, 0.5f, 0.5f, 0.f, -0.5f, -0.5f, 0.f, 0.5f, -0.5f, 0.f};
 
 	particleMesh->vertices = new float[particleMesh->numVertices * 3];
@@ -244,10 +245,10 @@ void ParticleSystem::SetPlaneMesh()
 	glGenBuffers(1, (GLuint*)&particleMesh->idIndices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, particleMesh->idIndices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * particleMesh->idIndices, particleMesh->indices, GL_STATIC_DRAW);
-
-	float colors[]={ 0, 1.f, 0,1.f, 1.f, 0,	0, 0,1.f, 0, 0 };
+	
+	
 	particleMesh->colors = new float[particleMesh->numVertices * 3];
-	memcpy(particleMesh->colors, colors, sizeof(float) * particleMesh->numVertices * 3);
+	memcpy(particleMesh->colors, particleMesh->colors, sizeof(float) * particleMesh->numVertices * 3);
 
 	glGenBuffers(1, (GLuint*)&particleMesh->idColors);
 	glBindBuffer(GL_ARRAY_BUFFER, particleMesh->idColors);

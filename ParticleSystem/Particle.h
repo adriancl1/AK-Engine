@@ -53,6 +53,7 @@ struct State
 	float gravity = -9.8f;
 	float size = 0.0f;
 	float4 color = float4::one;
+	
 };
 
 class ParticleSystem;

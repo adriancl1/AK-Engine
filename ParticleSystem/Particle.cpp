@@ -94,9 +94,13 @@ void Particle::DrawParticle()
 
 	//glDisable(GL_CULL_FACE);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
-	if (pSystem->tData.textureID != 0)
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glColor4f(data.color.x,data.color.y,data.color.z,data.color.z);
+	if (mesh->idColors != 0)
 	{
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBindTexture(GL_TEXTURE_2D, pSystem->tData.textureID);
@@ -134,6 +138,7 @@ void Particle::DrawParticle()
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	 glEnd();
 }
 
 bool Particle::isAlive()

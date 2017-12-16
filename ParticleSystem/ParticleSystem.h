@@ -24,9 +24,8 @@ struct SystemState //going to global state to set on particles latter
 };
 // -------------------------------------- [TEXTURE]
 struct TextureData // it is like resource texture, contains all the data of the texture.
-{
-	
-	uint textureID = 0;//App->textures->ImportImage("../Game/Assets/Baker_house.png");
+{	
+	uint textureID = 0;
 	float4 color = float4::one;
 };
 
