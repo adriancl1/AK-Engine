@@ -85,10 +85,15 @@ void ComponentRig::OnEditor()
 
 void ComponentRig::OnSave(Configuration & data) const
 {
+	if (rig != nullptr)
+	{
+		data.SetInt("Resource UID", rig->GetUID());
+	}
 }
 
 void ComponentRig::OnLoad(Configuration & data)
 {
+	AddResource(data.GetInt("Resource UID"));
 }
 
 void ComponentRig::AddResource(int UID)

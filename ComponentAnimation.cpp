@@ -35,7 +35,7 @@ void ComponentAnimation::Update()
 
 	bool foundBone = false;
 
-	switch (AnimStatus)
+	switch (animStatus)
 	{
 	case ANIMATION_PLAY:
 		animTimer += ((float)anim->ticksPerSecond / anim->duration) * speedFactor;
@@ -320,7 +320,7 @@ void ComponentAnimation::Update()
 			if (blendTimer > blendDuration)
 			{
 				blendTimer = 0;
-				AnimStatus = ANIMATION_PLAY;
+				animStatus = ANIMATION_PLAY;
 			}
 			break;
 		}
@@ -343,12 +343,12 @@ void ComponentAnimation::OnEditor()
 
 		if (ImGui::Button("Play"))
 		{
-			AnimStatus = ANIMATION_PLAY;
+			animStatus = ANIMATION_PLAY;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Pause"))
 		{
-			AnimStatus = ANIMATION_PAUSE;
+			animStatus = ANIMATION_PAUSE;
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Stop"))
@@ -365,7 +365,7 @@ void ComponentAnimation::OnEditor()
 				boneTrans->SetRotation(anim->bones[i].rotKeys[0].value);
 
 			}
-			AnimStatus = ANIMATION_STOP;
+			animStatus = ANIMATION_STOP;
 		}
 
 		if (ImGui::Button("Add Animation"))
@@ -394,11 +394,11 @@ void ComponentAnimation::OnEditor()
 					animTimer = (*it)->startTime;
 					if (blending)
 					{
-						AnimStatus = ANIMATION_BLENDING;
+						animStatus = ANIMATION_BLENDING;
 					}
 					else
 					{
-						AnimStatus = ANIMATION_PLAY;
+						animStatus = ANIMATION_PLAY;
 					}
 				}
 			}
@@ -417,10 +417,41 @@ void ComponentAnimation::OnEditor()
 
 void ComponentAnimation::OnSave(Configuration & data) const
 {
+	if (anim != nullptr)
+	{
+		data.SetInt("Resource UID", anim->GetUID());
+
+		data.AddArray("Animation List");
+
+		for (std::list<Animation*>::const_iterator it = animationList.begin(); it != animationList.end(); it++)
+		{
+			Configuration animationConfig;
+
+			animationConfig.SetString("Name", (*it)->name.c_str());
+			animationConfig.SetFloat("Start Time", (*it)->startTime);
+			animationConfig.SetFloat("End Time", (*it)->endTime);
+
+			data.AddArrayEntry(animationConfig);
+		}
+	}
 }
 
 void ComponentAnimation::OnLoad(Configuration & data)
 {
+	AddResource(data.GetInt("Resource UID"));
+
+	for (int i = 0; i < data.GetArraySize("Animation List"); i++)
+	{
+		Configuration animConfig = data.GetArray("Animation List", i);
+		if (strcmp(animConfig.GetString("Name"), "Default") != 0)
+		{
+			Animation* tmp = new Animation(animConfig.GetString("Name"));
+			tmp->startTime = animConfig.GetFloat("Start Time");
+			tmp->endTime = animConfig.GetFloat("End Time");
+
+			animationList.push_back(tmp);
+		}
+	}
 }
 
 void ComponentAnimation::AddResource(int UID)

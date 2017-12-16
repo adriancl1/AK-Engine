@@ -7,6 +7,7 @@
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
 #include "ComponentAnimation.h"
+#include "ComponentRig.h"
 
 #define PROPERTIES_WIDTH 300
 #define PROPERTIES_HEIGHT 500
@@ -456,6 +457,20 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 			ComponentMaterial* compMat = new ComponentMaterial();
 			compMat->OnLoad(componentConfig);
 			AddComponent(compMat);
+			break;
+		}
+		case Component_Animation:
+		{
+			ComponentAnimation* compAnim = new ComponentAnimation();
+			compAnim->OnLoad(componentConfig);
+			AddComponent(compAnim);
+			break;
+		}
+		case Component_Rig:
+		{
+			ComponentRig* compRig = new ComponentRig();
+			compRig->OnLoad(componentConfig);
+			AddComponent(compRig);
 			break;
 		}
 		default:

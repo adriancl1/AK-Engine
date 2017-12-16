@@ -49,7 +49,7 @@ private:
 	float speedFactor = 1;
 	bool blending = true;
 
-	AnimationStatus AnimStatus;
+	AnimationStatus animStatus;
 	Animation* currentAnimation = nullptr;
 	Animation* lastAnimation = nullptr;
 	std::list<Animation*> animationList;

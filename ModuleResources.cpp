@@ -356,6 +356,7 @@ void ModuleResources::LoadResources(Configuration& resources)
 	{
 		Configuration tmpConfig = resources.GetArray("Scene Resources", i);
 		int tmpUID = tmpConfig.GetInt("UID");
+
 		if (Get(tmpUID) == nullptr)
 		{
 			switch(tmpConfig.GetInt("Type"))
@@ -370,6 +371,18 @@ void ModuleResources::LoadResources(Configuration& resources)
 			{
 				ResourceTexture* resourceTexture = (ResourceTexture*)CreateNewResource(Resource_Texture, tmpUID);
 				resourceTexture->Load(tmpConfig);
+				break;
+			}
+			case Resource_Rig:
+			{
+				ResourceRig* resourceRig = (ResourceRig*)CreateNewResource(Resource_Rig, tmpUID);
+				resourceRig->Load(tmpConfig);
+				break;
+			}
+			case Resource_Animation:
+			{
+				ResourceAnimation* resourceAnimation = (ResourceAnimation*)CreateNewResource(Resource_Animation, tmpUID);
+				resourceAnimation->Load(tmpConfig);
 				break;
 			}
 			}

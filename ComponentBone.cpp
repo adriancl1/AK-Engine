@@ -38,29 +38,33 @@ void ComponentBone::Update()
 
 	//trans.Decompose(pos, rot, sca);
 	Mesh* deformableMesh = attachedMesh->GetMeshDeformable();
-	const float* originalVertices = attachedMesh->GetVertices();
-	const float* originalNormals = attachedMesh->GetNormals();
-	for (int i = 0; i < bone.weights.size(); i++)
+	if (deformableMesh != nullptr)
 	{
-		int ind = bone.weights[i].vertexID;
-		float3 originalVertex(&originalVertices[ind * 3]);
-		float3 vertex(&deformableMesh->vertices[ind * 3]);
-
-		vertex = trans.TransformPos(originalVertex);
-
-		deformableMesh->vertices[ind * 3] += vertex.x * bone.weights[i].weight;
-		deformableMesh->vertices[ind * 3 + 1] += vertex.y * bone.weights[i].weight;
-		deformableMesh->vertices[ind * 3 + 2] += vertex.z * bone.weights[i].weight;
-
-		if (originalNormals != nullptr)
+		const float* originalVertices = attachedMesh->GetVertices();
+		const float* originalNormals = attachedMesh->GetNormals();
+		for (int i = 0; i < bone.weights.size(); i++)
 		{
-			vertex = trans.TransformPos(float3(&originalNormals[ind * 3]));
-			deformableMesh->normals[ind * 3] += vertex.x * bone.weights[i].weight;
-			deformableMesh->normals[ind * 3 + 1] += vertex.y * bone.weights[i].weight;
-			deformableMesh->normals[ind * 3 + 2] += vertex.z * bone.weights[i].weight;
+			int ind = bone.weights[i].vertexID;
+			float3 originalVertex(&originalVertices[ind * 3]);
+			float3 vertex(&deformableMesh->vertices[ind * 3]);
+
+			vertex = trans.TransformPos(originalVertex);
+
+			deformableMesh->vertices[ind * 3] += vertex.x * bone.weights[i].weight;
+			deformableMesh->vertices[ind * 3 + 1] += vertex.y * bone.weights[i].weight;
+			deformableMesh->vertices[ind * 3 + 2] += vertex.z * bone.weights[i].weight;
+
+			if (originalNormals != nullptr)
+			{
+				vertex = trans.TransformPos(float3(&originalNormals[ind * 3]));
+				deformableMesh->normals[ind * 3] += vertex.x * bone.weights[i].weight;
+				deformableMesh->normals[ind * 3 + 1] += vertex.y * bone.weights[i].weight;
+				deformableMesh->normals[ind * 3 + 2] += vertex.z * bone.weights[i].weight;
+			}
 		}
+
+		attachedMesh->UpdateDeformable();
 	}
-	attachedMesh->UpdateDeformable();
 }
 
 void ComponentBone::PostUpdate()
