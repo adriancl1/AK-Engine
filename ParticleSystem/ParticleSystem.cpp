@@ -43,23 +43,20 @@ bool ParticleSystem::Update(float dt)
 	bool ret = true;
 	
 
-	if (ps_state != PS_PLAYING || emiter->data.loop != true /*&& emiter->data.emiterTime > emiter->data.timeToEmite*/)
+	if (ps_state != PS_PLAYING  /*&& emiter->data.emiterTime > emiter->data.timeToEmite*/)
 		return ret;
 
+	this->control += dt;
 	this->ps_dt += dt;
-
-	//if (ps_dt <= emiter->data.particleRate)
-	//{
+	if (control <= emiter->data.timeToEmite /*|| emiter->data.loop == true*/)
+	{
 
 		uint nParticles = ps_dt / emiter->data.particleRate;
-
 		for (int i = 0; i < nParticles; i++)
 			CreateParticle();
 
 		ps_dt -= emiter->data.particleRate * nParticles;
-
-
-//	}
+	}
 
 	for (std::vector<Particle*>::iterator it = particleVec.begin(); it != particleVec.end(); ++it)
 	{

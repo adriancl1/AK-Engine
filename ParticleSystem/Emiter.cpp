@@ -110,9 +110,10 @@ void Emiter::DrawEmiterEditor()
 	/* Enable Disable Draw*/
 	ImGui::Checkbox("Draw Shape", &active);
 
-	ImGui::SliderFloat("Emiting time", (float*)&data.timeToEmite, 0, 50);
+	ImGui::SliderFloat("Emiting time", (float*)&data.timeToEmite, -1, 20);
 
-	if (data.timeToEmite == 0)// in the case that the Emiting time is null the emiter will emite all time
+
+	if (data.timeToEmite < 0)// in the case that the Emiting time is null the emiter will emite all time
 		data.loop = true;
 	
 	ImGui::Checkbox("Loop", &data.loop);

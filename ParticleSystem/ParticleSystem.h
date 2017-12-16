@@ -99,6 +99,7 @@ private: //times   // time variables with _
 	ParticleSystem_State ps_state= PS_STOP;
 
 	float ps_dt = 0.f; //particlesystem dt
+	float control = 0.f;
 	bool active = true;
 
 public:	

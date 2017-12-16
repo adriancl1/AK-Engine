@@ -48,7 +48,7 @@ struct EmiterData
 	EmiterData(); //init transform
 public:
 	//emitor --------
-	float timeToEmite = 0.f; // if the timeToEmite == 0.0f then never ends to emite == bool loop = true
+	float timeToEmite = 20.f; // if the timeToEmite == 0.0f then never ends to emite == bool loop = true
 	bool loop = true;
 
 	float particleRate = 2.f; // quantity of particles droped in a sec
