@@ -53,7 +53,7 @@ struct State
 	float gravity = -9.8f;
 	float size = 0.0f;
 	float4 color = float4::one;
-	
+	float speed = 0.f;
 };
 
 class ParticleSystem;
@@ -76,14 +76,16 @@ public:
 
 	void DrawParticle();
 	bool isAlive();
-	void KillParticle();
+	bool KillParticle();
+
+	bool killThis = false;
 
 private:
 	ParticleSystem * pSystem;
 	ParticleData data;
 	State Initial;
 	State Final;
-	bool killThis = false;
+	
 
 };
 

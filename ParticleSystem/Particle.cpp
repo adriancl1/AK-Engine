@@ -36,16 +36,18 @@ bool Particle::Update(float dt)
 	DrawParticle();
 
 	data.lifeTime += dt;
-	CalcInterpolation();
+	CalcInterpolation();	
+
+	if (data.lifeTime >= data.maxLifeTime & killThis==false)
+	{
+		killThis = true;
+	}
 	return true;
 }
 
 bool Particle::PostUpdate(float dt) 
 {
-	if (data.lifeTime >= data.maxLifeTime)
-	{
-		killThis = true;
-	}
+	
 
 	return true;
 }
@@ -66,6 +68,10 @@ void Particle::SetState(State & myState, const SystemState & sState)
 
 	//Size
 	myState.size = randG.Float(sState.size, 100.f);
+
+	//Speed
+	myState.speed = sState.speed;
+
 }
 
 void Particle::CalcInterpolation()
@@ -73,7 +79,8 @@ void Particle::CalcInterpolation()
 	//Position
 	data.direction.y += data.gravity*data.lifeTime;
 	data.position +=data.direction*data.lifeTime;
-
+	data.speed= Initial.speed + data.lifeTime*(Final.speed - Initial.speed);
+	data.direction *= data.speed;
 	//Size;
 	data.size = Initial.size + data.lifeTime*(Final.size - Initial.size);
 
@@ -146,9 +153,9 @@ bool Particle::isAlive()
 	return !killThis;
 }
 
-void Particle::KillParticle()
+bool Particle::KillParticle()
 {
-	killThis = true;
+	return killThis;
 }
 
 

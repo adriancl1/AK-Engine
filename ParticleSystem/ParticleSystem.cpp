@@ -53,14 +53,22 @@ bool ParticleSystem::Update(float dt)
 
 		uint nParticles = ps_dt / emiter->data.particleRate;
 		for (int i = 0; i < nParticles; i++)
+		{
 			CreateParticle();
+			size++;
+		}
 
 		ps_dt -= emiter->data.particleRate * nParticles;
 	}
 
 	for (std::vector<Particle*>::iterator it = particleVec.begin(); it != particleVec.end(); ++it)
 	{
+	
 		ret = (*it)->Update(dt);
+		if ((*it)->KillParticle() == true)
+		{			
+			size--;
+		}
 	}
 
 
@@ -96,8 +104,8 @@ void ParticleSystem::DrawParticleSystemEditor()
 {
 	if (!windowShow)
 		return;
-
-	ImGui::Text("Number of particles %i",particleVec.size());
+	
+	ImGui::Text("Number of particles %i",size);
 
 
 	if (ImGui::CollapsingHeader("Basic"))

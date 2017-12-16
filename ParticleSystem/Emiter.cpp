@@ -110,7 +110,7 @@ void Emiter::DrawEmiterEditor()
 	/* Enable Disable Draw*/
 	ImGui::Checkbox("Draw Shape", &active);
 
-	ImGui::SliderFloat("Emiting time", (float*)&data.timeToEmite, -1, 20);
+	ImGui::SliderFloat("Emiting time", (float*)&data.timeToEmite, -1, 100);
 
 
 	if (data.timeToEmite < 0)// in the case that the Emiting time is null the emiter will emite all time
@@ -123,7 +123,7 @@ void Emiter::DrawEmiterEditor()
 	if (data.particleRate < 0)
 		data.particleRate = 0;
 
-	ImGui::DragFloat("Particle time life", &data.timePLife, 2.2f);
+	ImGui::SliderFloat("Particle time life", &data.timePLife, -1,40);
 	ImGui::DragFloat("variance of the Particle time life", &data.modTimePlife, 0.1f);
 
 	ImGui::DragFloat("Start Speed", &data.speed, 2.f);

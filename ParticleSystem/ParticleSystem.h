@@ -102,6 +102,7 @@ private: //times   // time variables with _
 	bool active = true;
 
 public:	
+	int size = 0;
 	PTransformation* transformation; 
 	TextureData tData;
 	float3 cameraPos = float3::zero;
