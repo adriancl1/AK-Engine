@@ -4,6 +4,17 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 
 ## Team Members:
 ### [Adrián Castillo](https://github.com/adriancl1)
+Worked on:
+* Drag and Drop functionality.
+* Writing/Reading files.
+* Saving&Loading various Components & Scene.
+* Mouse Picking.
+* Camera component, with culling.
+* Quadtree acceleration.
+* GameObjects hierarchy and transformations.
+* Bones from a skeleton change the vertices from its mesh.
+* Animation blending.
+* Debug features.
 
 ### [Marc López](https://github.com/MarcLF)
  Worked on: 
@@ -47,6 +58,11 @@ Blending is also an optional feature to be abled or disabled depending on the ne
 * While in Demo scene, press 1 to play Skeleton attack animation and 2 to play the Skeleton walk animation.
 
 ## Changelog
+Version 1.0 (Assignment 3)
+* Added component rig and bone, that modify the mesh it is attached to through skinning.
+* Added component animation, which will modify bones transformations to play an animation. You can create clips and modify their start and end time. You can choose to blend or not to blend when switching animations.
+* Added a demo scene to try the previous new features without any problems.
+
 Version 0.5.5 (Assignment 2) 
 * Added acceleration through quadtree for mouse picking & camera culling.
 * Textures resources are now updated on runtime if the original file is changed.
@@ -119,6 +135,8 @@ Version 0.1:
 Adrian Castillo - https://github.com/adriancl1 
 
 Marc López - https://github.com/MarcLF
+
+[Latest Release](https://github.com/adriancl1/AK-Engine/releases)
 
                                  Apache License
                            Version 2.0, January 2004
@@ -322,4 +340,4 @@ Marc López - https://github.com/MarcLF
    See the License for the specific language governing permissions and
    limitations under the License.
    
-   [Latest Release](https://github.com/adriancl1/AK-Engine/releases)
+
