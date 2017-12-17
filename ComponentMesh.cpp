@@ -24,6 +24,10 @@ ComponentMesh::~ComponentMesh()
 	{
 		mesh->UnloadFromComponent();
 	}
+	if (meshDeformable != nullptr)
+	{
+		delete meshDeformable;
+	}
 }
 
 void ComponentMesh::Update()

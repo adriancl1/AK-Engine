@@ -14,11 +14,13 @@ struct Mesh
 	{
 		if (vertices != nullptr)
 		{
-			delete vertices;
+			delete[] vertices;
+			vertices = nullptr;
 		}
 		if (normals != nullptr)
 		{
-			delete normals;
+			delete[] normals;
+			normals = nullptr;
 		}
 	}
 

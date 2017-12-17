@@ -446,6 +446,11 @@ void ComponentAnimation::OnLoad(Configuration & data)
 
 			animationList.push_back(tmp);
 		}
+		else
+		{
+			(*animationList.begin())->startTime = animConfig.GetFloat("Start Time");
+			(*animationList.begin())->endTime = animConfig.GetFloat("End Time");
+		}
 	}
 }
 
@@ -465,35 +470,7 @@ void ComponentAnimation::AddResource(int UID)
 
 void ComponentAnimation::HandleInput()
 {
-
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		int key = 0;
-		for (std::list<Animation*>::iterator it = animationList.begin(); it != animationList.end(); it++)
-		{
-			if (key == 1)
-			{
-				if ((*it) != nullptr && currentAnimation != (*it))
-				{
-					lastAnimTimer = animTimer;
-					lastAnimation = currentAnimation;
-					currentAnimation = (*it);
-					animTimer = (*it)->startTime;
-					if (blending == true)
-					{
-						animStatus = ANIMATION_BLENDING;
-					}
-					else
-					{
-						animStatus = ANIMATION_PLAY;
-					}
-				}
-				break;
-			}
-			key++;
-		}
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
 	{
 		int key = 0;
 		for (std::list<Animation*>::iterator it = animationList.begin(); it != animationList.end(); it++)
@@ -520,12 +497,31 @@ void ComponentAnimation::HandleInput()
 			key++;
 		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	else if(App->input->GetKey(SDL_SCANCODE_2) == KEY_UP)
+	{
+		if (currentAnimation != (*animationList.begin()))
+		{
+			lastAnimTimer = animTimer;
+			lastAnimation = currentAnimation;
+			currentAnimation = (*animationList.begin());
+			animTimer = (*animationList.begin())->startTime;
+			if (blending == true)
+			{
+				animStatus = ANIMATION_BLENDING;
+			}
+			else
+			{
+				animStatus = ANIMATION_PLAY;
+			}
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		int key = 0;
 		for (std::list<Animation*>::iterator it = animationList.begin(); it != animationList.end(); it++)
 		{
-			if (key == 3)
+			if (key == 1)
 			{
 				if ((*it) != nullptr && currentAnimation != (*it))
 				{

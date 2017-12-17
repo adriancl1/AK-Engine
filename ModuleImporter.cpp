@@ -36,6 +36,7 @@ ModuleImporter::~ModuleImporter()
 {
 	delete meshImporter;
 	delete rigImporter;
+	delete animImporter;
 }
 
 bool ModuleImporter::Init(Configuration data)

@@ -29,6 +29,8 @@ bool ModuleSceneEditor::Init(Configuration data)
 
 	saveLoadTimer.Start();
 
+	WantToLoadScene("Demo.akS");
+
 	return true;
 }
 
