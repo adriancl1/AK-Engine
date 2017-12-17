@@ -93,13 +93,13 @@ public:
 	void DrawPoligon(const AABB& box);
 	void DrawCircle(const Circle& circle);
 
-	
+	EmiterData data;
 private:
 	bool active = true; //can be draw the shape or not
 	
 	ParticleSystem* pSystem;
 
-	EmiterData data;
+
 	Etype type = E_SPHERE;
 	Shape shape; 
 	

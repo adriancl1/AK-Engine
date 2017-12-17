@@ -68,6 +68,9 @@ public:
 
 	void Load(std::vector<float> vectEmiter, std::vector<float>initPart, std::vector<float>finalPart);
 	void Save(std::vector<float>& vectEmiter, std::vector<float> & initPart, std::vector<float> &finalPart);
+	std::vector<float> SaveEmiter();
+	std::vector<float> SaveEndState();
+	std::vector<float> SaveInitialState();
 	//UI -------------------------------
 	
 	//Draws ---
