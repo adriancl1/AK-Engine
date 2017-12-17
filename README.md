@@ -1,21 +1,49 @@
-﻿[![Build status](https://ci.appveyor.com/api/projects/status/3gsv4qx0eknqhfkr?retina=true)](https://ci.appveyor.com/project/MarcLF/ak-engine)
-
 # AK Engine
 
-AK Engine purpose is to be used as an experimentation and learning tool as well as a project for Game Design & Development degree that we are currently coursing.
+AK Engine purpose is to be used as an experimentation and learning tool as well as a project for a Game Design & Development degree that we are currently coursing. This project is part of the subject [Videogame Engines](http://www.upc.edu/estudispdf/guia_docent.php?codi=804246&lang=cat).
+
+## Team Members:
+### [Adrián Castillo](https://github.com/adriancl1)
+
+### [Marc López](https://github.com/MarcLF)
+ Worked on: 
+* ImGui Integration & Brofiler.
+* Geometry rendered with OpenGL.
+* Various modules like Importer or Window.
+* Resource Mesh.
+* Saving&Loading various Components & Scene.
+* Quadtree implementation.
+* Time Manager.
+* Web.
+
+## Main Core Sub-systems:
+* Scene serialization: AK Engine is able to save, and then if ever needed load, every game object inside the main scene using our own format .akS.
+* Mouse picking: You can select any game object currently being displayed into the scene by left-clicking on them.
+* Quadtree: Every game object is currently organized inside a Quadtree for a possible future Quadtree acceleration if ever required.
+* Resource Manager: AK Engine feature its own Resource Manager, currently administering every extern resources adapting them to our own format for a faster lecture process and only loads them once in memory even when they are used multiple times in the same scene.
+* Time Management: Once running the engine you can enter in play mode and swap between Play, Pause, Stop and Play One Frame states giving you control over as how time goes in your game.
+
+### Skeletal Animation
+* AK Engine main sub-system that features is Skeletal Animation. This allows the user to Load animations using .DAE or .FBX format and play them on a skeleton which later on can be attached to a deformable mesh that will modify its position according to the bones transformation. 
+
+Below you will find several gifs showing several functions of AK Engine Skeletal animation sub-system:
+![GIF1](https://user-images.githubusercontent.com/17148658/34083627-c5dfb492-e373-11e7-940e-0965ee869282.gif)
+
+![GIF2](https://user-images.githubusercontent.com/17148658/34083655-2f5272c0-e374-11e7-8488-e186a5f18c7c.gif)
+
+Blending is also an optional feature to be abled or disabled depending on the needs of the user. AK Engine Skeletal Animation also allows you to create as many animation clips as needed for each individual animation or you can also set a custom start/end point in each one of them.
 
 ## Controls
-- To Collapse - Uncollapse windows use LMB.
-- To click red buttons use LMB.
-- To interact with check boxes use LMB.
-- To add or remove any kind of integer value use LMB on the respective button (press + if you want to add +1 or - if you want to add -1 to the corresponding integer).
-- To rotate the camera use right click.
-- To move the camera use: A/D (left/right), W/S (forwards/backwards), R/F (up/down). To move faster hold down L-Shift.
-- Drag and drop a .fbx file to import it into the scene.
-- Drag and drop a .wav file to play it.
-- Click into a game object to select it.
-- Use configuration to activate quadtree acceleration, drawing of quadtree and debug features.
-
+* To Collapse - Uncollapse windows use LMB.
+* To interact with check boxes use LMB.
+* To add or remove any kind of integer value use LMB on the respective button (press + if you want to add +1 or - if you want to add -1 * to the corresponding integer).
+* To rotate the camera use right click.
+* To move the camera use: A/D (left/right), W/S (forwards/backwards), R/F (up/down). To move faster hold down L-Shift.
+* Drag and drop a .fbx or .dae file to import it into the scene.
+* Drag and drop a .wav file to play it.
+* Click into a game object to select it.
+* Use configuration to activate quadtree acceleration, drawing of quadtree and debug features.
+* While in Demo scene, press 1 to play Skeleton attack animation and 2 to play the Skeleton walk animation.
 
 ## Changelog
 Version 0.5.5 (Assignment 2) 
@@ -90,8 +118,6 @@ Version 0.1:
 Adrian Castillo - https://github.com/adriancl1 
 
 Marc López - https://github.com/MarcLF
-
-Marc Fabián - https://github.com/xDragan
 
                                  Apache License
                            Version 2.0, January 2004
