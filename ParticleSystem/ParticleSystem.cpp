@@ -102,12 +102,147 @@ void ParticleSystem::Pause()
 	ps_state = PS_PAUSE;
 }
 
+void ParticleSystem::Load(std::vector<float> vectEmiter, std::vector<float>initPart, std::vector<float>finalPart)
+{
+	// EMITER
+	emiter->data.emiterTime = vectEmiter[0];
+
+	float booll = vectEmiter[1];
+
+	if (booll > 0.5) 	
+		emiter->data.loop = true;
+	else 
+		emiter->data.loop = false;
+
+	emiter->data.particleRate = vectEmiter[2];
+	emiter->data.timePLife = vectEmiter[3];
+	emiter->data.modTimePlife = vectEmiter[4];
+	emiter->data.speed = vectEmiter[5];
+	emiter->data.modSpeed = vectEmiter[6];
+	emiter->data.emiterTime = vectEmiter[7];
+
+	//INIT
+
+	this->initialState.size1 = initPart[0];
+	this->initialState.size2 = initPart[1];
+
+	this->initialState.gravity = initPart[2];
+	this->initialState.gravityVariation = initPart[3];
+
+	this->initialState.rotation = initPart[4];
+	this->initialState.rotation2 = initPart[5];
+
+	this->initialState.speed = initPart[6];
+
+	this->initialState.color.x = initPart[7];
+	this->initialState.color.y = initPart[8];
+	this->initialState.color.z = initPart[9];
+	this->initialState.color.w = initPart[10];
+
+	this->initialState.color2.x = initPart[11];
+	this->initialState.color2.y = initPart[12];
+	this->initialState.color2.z = initPart[13];
+	this->initialState.color2.w = initPart[14];
+
+
+	//END
+	this->finalState.size1 = finalPart[0];
+	this->finalState.size2 = finalPart[1];
+
+	this->finalState.gravity = finalPart[2];
+	this->finalState.gravityVariation = finalPart[3];
+
+	this->finalState.rotation = finalPart[4];
+	this->finalState.rotation2 = finalPart[5];
+
+	this->finalState.speed = finalPart[6];
+
+	this->finalState.color.x = finalPart[7];
+	this->finalState.color.y = finalPart[8];
+	this->finalState.color.z = finalPart[9];
+	this->finalState.color.w = finalPart[10];
+
+	this->finalState.color2.x = finalPart[11];
+	this->finalState.color2.y = finalPart[12];
+	this->finalState.color2.z = finalPart[13];
+	this->finalState.color2.w = finalPart[14];
+
+
+}
+
+void ParticleSystem::Save(std::vector<float>& vectEmiter, std::vector<float>& initPart, std::vector<float>& finalPart)
+{
+	//emiter ------------------------------------
+
+	vectEmiter[0] = emiter->data.emiterTime;
+
+	if (emiter->data.loop == true)
+		vectEmiter[1] = 1;
+	else
+		vectEmiter[1] = 0;
+
+	vectEmiter[2] = emiter->data.particleRate;
+	vectEmiter[3] = emiter->data.timePLife;
+	vectEmiter[4] =  emiter->data.modTimePlife;
+	vectEmiter[5] = emiter->data.speed;
+	vectEmiter[6] = emiter->data.modSpeed;
+	vectEmiter[7] = emiter->data.emiterTime;
+
+
+	//INIT--------------------------------------
+
+	initPart[0] = this->initialState.size1;
+	initPart[1] = this->initialState.size2;
+
+	initPart[2] = this->initialState.gravity;
+	initPart[3] = this->initialState.gravityVariation;
+
+	initPart[4] = this->initialState.rotation;
+	initPart[5] = this->initialState.rotation2;
+
+	initPart[6] = this->initialState.speed;
+
+	initPart[7] = this->initialState.color.x;
+	initPart[8] = this->initialState.color.y;
+	initPart[9] = this->initialState.color.z;
+	initPart[10] = this->initialState.color.w;
+
+	initPart[11] = this->initialState.color2.x;
+	initPart[12] = this->initialState.color2.y;
+	initPart[13] = this->initialState.color2.z;
+	initPart[14] = this->initialState.color2.w;
+
+	//SAVE--------------------------------------
+
+	finalPart[0] = this->finalState.size1;
+	finalPart[1] = this->finalState.size2;
+
+	finalPart[2] = this->finalState.gravity;
+	finalPart[3] = this->finalState.gravityVariation;
+
+	finalPart[4] = this->finalState.rotation;
+	finalPart[5] = this->finalState.rotation2;
+
+	finalPart[6] = this->finalState.speed;
+
+	finalPart[7] = this->finalState.color.x;
+	finalPart[8] = this->finalState.color.y;
+	finalPart[9] = this->finalState.color.z;
+	finalPart[10] = this->finalState.color.w;
+
+	finalPart[11] = this->finalState.color2.x;
+	finalPart[12] = this->finalState.color2.y;
+	finalPart[13] = this->finalState.color2.z;
+	finalPart[14] = this->finalState.color2.w;
+
+}
+
 void ParticleSystem::DrawParticleSystemEditor()
 {
 	if (!windowShow)
 		return;
 	
-	ImGui::Text("Number of particles %i",size);
+	ImGui::Text("Number of particles %i", particleVec.size());
 
 
 	if (ImGui::CollapsingHeader("Basic"))
@@ -134,7 +269,11 @@ void ParticleSystem::DrawBasicEditor()
 	if (ImGui::TreeNodeEx("Initial"))
 	{
 			ImGui::SliderFloat("Speed", (float*)&initialState.speed, 0, 50);
-			ImGui::SliderFloat("Gravity", (float*)&initialState.gravity, -50, 50);
+			ImGui::SliderFloat("Gravity", (float*)&initialState.gravity, -10, 10);
+			ImGui::SliderFloat("Gravity Variation", (float*)&initialState.gravityVariation, -5, 5);
+			ImGui::Separator();
+			ImGui::SliderFloat("rot1", (float*)&initialState.rotation, 0, 10);
+			ImGui::SliderFloat("rot2", (float*)&initialState.rotation2, 0, 10);
 			ImGui::Separator();
 			ImGui::SliderFloat("Size1", (float*)&initialState.size1, 0, 30);
 			ImGui::SliderFloat("Size2", (float*)&initialState.size2, 0, 30);
@@ -171,8 +310,12 @@ void ParticleSystem::DrawBasicEditor()
 	if (ImGui::TreeNodeEx("Final"))
 	{
 			ImGui::SliderFloat("Speed", (float*)&finalState.speed, 0, 50);
-			ImGui::SliderFloat("Gravity", (float*)&finalState.gravity, -50, 50);
-
+			ImGui::SliderFloat("Gravity", (float*)&finalState.gravity, -10, 10);
+			ImGui::SliderFloat("Gravity Variation", (float*)&finalState.gravityVariation, -5, 5);
+			ImGui::Separator();
+			ImGui::SliderFloat("rot1", (float*)&finalState.rotation, 0, 10);
+			ImGui::SliderFloat("rot2", (float*)&finalState.rotation2, 0, 10);
+			ImGui::Separator();
 			ImGui::Separator();
 			ImGui::SliderFloat("Size1", (float*)&finalState.size1, 0, 100);
 			ImGui::SliderFloat("Size2", (float*)&finalState.size2, 0, 100);

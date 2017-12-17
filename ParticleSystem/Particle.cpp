@@ -33,6 +33,7 @@ bool Particle::Update(float dt)
 	float3 Orientation = pSystem->cameraPos - data.position;
 	Orientation.y = data.position.y;
 	data.rotation = Quat::LookAt(float3(0.0f, 0.0f, 1.0f), Orientation, float3(0.0f, 1.0f, 0.0f), float3(0.0f, 1.0f, 0.0f));
+	data.rotation.RotateY(30);
 	DrawParticle();
 
 	data.lifeTime += dt;
@@ -66,6 +67,9 @@ void Particle::SetState(State & myState, const SystemState & sState)
 	myState.color.z = randG.Float(sState.color.z, sState.color2.z);
 	myState.color.w = randG.Float(sState.color.w, sState.color2.w);
 
+	//rotationSpeed 
+	myState.rotationSpeed = randG.Float(sState.rotation, sState.rotation2);
+
 	//Size
 	myState.size = randG.Float(sState.size1, sState.size2);
 
@@ -78,9 +82,12 @@ void Particle::CalcInterpolation()
 {
 	//Position
 	data.direction.y += data.gravity*data.lifeTime;
-	data.position +=data.direction*data.lifeTime;
+	data.position +=data.direction*data.lifeTime*0.02;
 	data.speed= Initial.speed + data.lifeTime*(Final.speed - Initial.speed);
 	data.direction *= data.speed;
+	
+	data.rotationF = Initial.rotationSpeed + data.lifeTime*(Final.rotationSpeed - Initial.rotationSpeed);
+	
 	//Size;
 	data.size = Initial.size + data.lifeTime*(Final.size - Initial.size);
 
@@ -90,6 +97,8 @@ void Particle::CalcInterpolation()
 	data.color.z = Initial.color.z + data.lifeTime*(Final.color.z - Initial.color.z);
 	data.color.w = Initial.color.w + data.lifeTime*(Final.color.w - Initial.color.w);
 
+
+
 	//Gravity
 
 	data.gravity = Initial.gravity + data.lifeTime*(Final.gravity - Initial.gravity);
@@ -98,7 +107,7 @@ void Particle::CalcInterpolation()
 void Particle::DrawParticle()
 {
 	ParticleMesh* mesh = pSystem->GetMesh();
-
+	data.rotation.RotateAxisAngle({0,0,1}, data.rotationF);
 	float3 newScale = data.scale * data.size*0.1;
 	//glDisable(GL_CULL_FACE);
 

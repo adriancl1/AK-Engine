@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "Application.h"
+#include <vector>
 
 ComponentParticles::ComponentParticles() : Component(Component_Particles)
 {
@@ -62,63 +63,71 @@ void ComponentParticles::OnEditor()
 
 void ComponentParticles::OnSave(Configuration & data) const
 {
-	data.SetFloat("duration", duration);
+	std::vector<float>* vectEmiter[8];
+	std::vector<float>* initPart[15];
+	std::vector<float>* finalPart[15];
 
-	data.SetBool("looping", looping);
-	data.SetBool("prewarm", prewarm);
+//	particleSystem->Save(*vectEmiter[8], *initPart[15], *finalPart[15]);
 
-	data.SetFloat("startDelay", startDelay);
-	data.SetFloat("startLifeTime", startLifeTime);
-	data.SetFloat("startSpeed", startSpeed);
 
-	data.SetBool("startSize3D", startSize3D);
-	data.SetFloat("startSize", startSize);
-	data.SetBool("startRotation3D", startRotation3D);
-	data.SetFloat("startRotation", startRotation);
 
-	data.SetFloat("randomizeRotation", randomizeRotation);
 
-	//color is miss
-
-	//Gravity modifier
-	//enum simulation Space 
-	data.SetBool("simulationSpeed", simulationSpeed);
-	//enum scaling mode -local -world
-	data.SetBool("playOnAwake", playOnAwake);
-	data.SetInt("maxParticles", maxParticles);
-
-	data.SetBool("playOnAwake", playOnAwake);
-	data.SetInt("seed", seed);
 }
 
 void ComponentParticles::OnLoad(Configuration & data)
 {
+	float temp;
+	std::vector<float> vectEmiter[8];
 
-	duration = data.GetFloat("duration");
-	looping = data.GetBool("looping");
-	prewarm = data.GetBool("prewarm");
+	vectEmiter->push_back(data.GetFloat("e_emiterTime"));
+	vectEmiter->push_back(data.GetFloat("e_loop"));
+	vectEmiter->push_back(data.GetFloat("e_particleRate"));
+	vectEmiter->push_back(data.GetFloat("e_timePLife"));
 
-	startDelay = data.GetFloat("startDelay");
-	startLifeTime = data.GetFloat("startLifeTime");
-	startSpeed = data.GetFloat("startSpeed");
+	vectEmiter->push_back(data.GetFloat("e_modTimePlife"));
+	vectEmiter->push_back(data.GetFloat("e_speed"));
+	vectEmiter->push_back(data.GetFloat("e_modSpeed"));
+	vectEmiter->push_back(data.GetFloat("e_emiterTime"));
+
+	std::vector<float> initPart[15];
+
+	initPart->push_back(data.GetFloat("i_size1"));
+	initPart->push_back(data.GetFloat("i_size2"));
+	initPart->push_back(data.GetFloat("i_gravity"));
+	initPart->push_back(data.GetFloat("i_gravityVariation"));
+	initPart->push_back(data.GetFloat("i_rotation"));
+	initPart->push_back(data.GetFloat("i_rotation2"));
+	initPart->push_back(data.GetFloat("i_speed"));
+
+	initPart->push_back(data.GetFloat("i_color_x"));
+	initPart->push_back(data.GetFloat("i_color_y"));
+	initPart->push_back(data.GetFloat("i_color_z"));
+	initPart->push_back(data.GetFloat("i_color_w"));
+
+	initPart->push_back(data.GetFloat("i_color2_x"));
+	initPart->push_back(data.GetFloat("i_color2_y"));
+	initPart->push_back(data.GetFloat("i_color2_z"));
+	initPart->push_back(data.GetFloat("i_color2_w"));
 
 
-	startSize3D = data.GetBool("startSize3D");
-	startSize = data.GetFloat("startSize");
-	startRotation3D = data.GetBool("startRotation3D");
-	startRotation = data.GetFloat("startRotation");
+	std::vector<float> finalPart[15];
 
-	randomizeRotation = data.GetFloat("randomizeRotation");
-	//color is miss
+	finalPart->push_back(data.GetFloat("f_size1"));
+	finalPart->push_back(data.GetFloat("f_size2"));
+	finalPart->push_back(data.GetFloat("f_gravity"));
+	finalPart->push_back(data.GetFloat("f_gravityVariation"));
+	finalPart->push_back(data.GetFloat("f_rotation"));
+	finalPart->push_back(data.GetFloat("f_rotation2"));
+	finalPart->push_back(data.GetFloat("f_speed"));
 
-	//Gravity modifier
-	//enum simulation Space 
-	simulationSpeed = data.GetFloat("simulationSpeed");
-	//enum scaling mode -local -world
-	playOnAwake = data.GetBool("playOnAwake");
-	maxParticles = data.GetInt("maxParticles");
+	finalPart->push_back(data.GetFloat("f_color_x"));
+	finalPart->push_back(data.GetFloat("f_color_y"));
+	finalPart->push_back(data.GetFloat("f_color_z"));
+	finalPart->push_back(data.GetFloat("f_color_w"));
 
-	autoRandomSeed = data.GetBool("autoRandomSeed");
-	seed = data.GetInt("seed");
+	finalPart->push_back(data.GetFloat("f_color2_x"));
+	finalPart->push_back(data.GetFloat("f_color2_y"));
+	finalPart->push_back(data.GetFloat("f_color2_z"));
+	finalPart->push_back(data.GetFloat("f_color2_w"));
 
 }

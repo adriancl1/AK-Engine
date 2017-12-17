@@ -48,18 +48,18 @@ bool ModuleSceneEditor::Start()
 
 	root = new GameObject();
 	root->SetName("Root");
-	GameObject* scene = new GameObject();
-	root->AddChild(scene);
-	scene->SetName("Scene");
+	//GameObject* scene = new GameObject();
+	//root->AddChild(scene);
+	//scene->SetName("Scene");
 
-	ComponentCamera* camera = new ComponentCamera();
+	//ComponentCamera* camera = new ComponentCamera();
 
-	App->camera->SetMainCamera(camera);
-	scene->AddComponent(camera);
+	//App->camera->SetMainCamera(camera);
+	//scene->AddComponent(camera);
 
 	GameObject* newGO = new GameObject();
 	root->AddChild(newGO);
-	scene->SetName("Particles");
+	newGO->SetName("Particles");
 	ComponentTransform* newTrans = new ComponentTransform();
 	newGO->AddComponent(newTrans);	
 	ComponentParticles* newPart = new ComponentParticles();

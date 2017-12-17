@@ -11,7 +11,8 @@
 struct ParticleData
 {
 	float3 position = float3::zero;				
-	Quat rotation = Quat::identity;					
+	Quat rotation = Quat::identity;		
+	float rotationF = 0.f;
 	float3 scale = float3::one;					
 	float size = 0.0f;							
 	float speed = 0.0f;				
@@ -54,6 +55,8 @@ struct State
 	float size = 0.0f;
 	float4 color = float4::one;
 	float speed = 0.f;
+	float rotationSpeed = 1.f;
+
 };
 
 class ParticleSystem;
