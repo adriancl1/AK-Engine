@@ -45,6 +45,10 @@ Below you will find several gifs showing several functions of AK Engine Skeletal
 
 Blending is also an optional feature to be abled or disabled depending on the needs of the user. AK Engine Skeletal Animation also allows you to create as many animation clips as needed for each individual animation or you can also set a custom start/end point in each one of them.
 
+Video Showcase:
+
+[![Video Showcase](http://img.youtube.com/vi/6bqPE30jTU0/0.jpg)](http://www.youtube.com/watch?v=6bqPE30jTU0 "Skeletal Animation Showcase - AK Engine")
+
 ## Controls
 * To Collapse - Uncollapse windows use LMB.
 * To interact with check boxes use LMB.
