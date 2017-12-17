@@ -67,7 +67,7 @@ void Particle::SetState(State & myState, const SystemState & sState)
 	myState.color.w = randG.Float(sState.color.w, sState.color2.w);
 
 	//Size
-	myState.size = randG.Float(sState.size, 100.f);
+	myState.size = randG.Float(sState.size1, sState.size2);
 
 	//Speed
 	myState.speed = sState.speed;
@@ -99,6 +99,7 @@ void Particle::DrawParticle()
 {
 	ParticleMesh* mesh = pSystem->GetMesh();
 
+	float3 newScale = data.scale * data.size*0.1;
 	//glDisable(GL_CULL_FACE);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -122,7 +123,8 @@ void Particle::DrawParticle()
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->idNormals);
 		glNormalPointer(GL_FLOAT, 0, NULL);
 	}
-	if (mesh->colors != nullptr) {
+	if (mesh->colors != nullptr)
+	{
 		
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->idColors);
@@ -130,7 +132,7 @@ void Particle::DrawParticle()
 	}
 
 	glPushMatrix();
-	float4x4 ParticleMatrix = float4x4::FromTRS(data.position, data.rotation, data.scale).Transposed();
+	float4x4 ParticleMatrix = float4x4::FromTRS(data.position, data.rotation, newScale).Transposed();
 	glMultMatrixf(ParticleMatrix.ptr());
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->idIndices);

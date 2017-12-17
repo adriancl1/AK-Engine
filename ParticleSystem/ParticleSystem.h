@@ -15,7 +15,8 @@
 // -------------------------------------- [STATE]
 struct SystemState //going to global state to set on particles latter
 {	
-	float size = 1.0f;
+	float size1 = 0.5f;
+	float size2 = 1.f;
 	float gravity = 9.8f;
 	float gravityVariation = 0.0f;
 	float speed = 1.0f;

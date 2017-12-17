@@ -47,7 +47,9 @@ bool ParticleSystem::Update(float dt)
 		return ret;
 
 	this->control += dt;
+
 	this->ps_dt += dt;
+
 	if (control <= emiter->data.timeToEmite || emiter->data.loop == true)
 	{
 
@@ -129,12 +131,14 @@ void ParticleSystem::Draw()
 
 void ParticleSystem::DrawBasicEditor()
 {
-
 	if (ImGui::TreeNodeEx("Initial"))
 	{
 			ImGui::SliderFloat("Speed", (float*)&initialState.speed, 0, 50);
 			ImGui::SliderFloat("Gravity", (float*)&initialState.gravity, -50, 50);
-			ImGui::SliderFloat("Size", (float*)&initialState.size, 0, 1000);
+			ImGui::Separator();
+			ImGui::SliderFloat("Size1", (float*)&initialState.size1, 0, 30);
+			ImGui::SliderFloat("Size2", (float*)&initialState.size2, 0, 30);
+			ImGui::Separator();
 
 			if (ImGui::TreeNodeEx("Color"))
 			{
@@ -160,7 +164,7 @@ void ParticleSystem::DrawBasicEditor()
 				initialState.color2.w = col3[3];
 				ImGui::TreePop();
 			}
-
+			ImGui::Separator();
 		ImGui::TreePop();
 	}
 
@@ -168,8 +172,11 @@ void ParticleSystem::DrawBasicEditor()
 	{
 			ImGui::SliderFloat("Speed", (float*)&finalState.speed, 0, 50);
 			ImGui::SliderFloat("Gravity", (float*)&finalState.gravity, -50, 50);
-			ImGui::SliderFloat("Size", (float*)&finalState.size, 0, 1000);
 
+			ImGui::Separator();
+			ImGui::SliderFloat("Size1", (float*)&finalState.size1, 0, 100);
+			ImGui::SliderFloat("Size2", (float*)&finalState.size2, 0, 100);
+			ImGui::Separator();
 			if (ImGui::TreeNodeEx("Color"))
 			{
 				float col1[4] = { finalState.color.x,finalState.color.y,finalState.color.z,finalState.color.w };
@@ -194,7 +201,7 @@ void ParticleSystem::DrawBasicEditor()
 				finalState.color2.w = col2[3];
 
 				ImGui::TreePop();
-			}
+			}			ImGui::Separator();
 
 		ImGui::TreePop();
 	}
@@ -235,8 +242,9 @@ void ParticleSystem::SetPlaneMesh()
 	particleMesh->numVertices = 4;
 	particleMesh->numFaces = 2;
 
+	float startSize = this->initialState.size1;
 
-	float vertex[] = {-0.5f, 0.5f, 0.f, 0.5f, 0.5f, 0.f, -0.5f, -0.5f, 0.f, 0.5f, -0.5f, 0.f};
+	float vertex[] = {-startSize, startSize, 0.f, startSize, startSize, 0.f, -startSize, -startSize, 0.f, startSize, -startSize, 0.f};
 
 	particleMesh->vertices = new float[particleMesh->numVertices * 3];
 	memcpy(particleMesh->vertices, vertex, sizeof(float) * particleMesh->numVertices * 3);
