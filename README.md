@@ -27,6 +27,7 @@ AK Engine purpose is to be used as an experimentation and learning tool as well 
 * AK Engine main sub-system that features is Skeletal Animation. This allows the user to Load animations using .DAE or .FBX format and play them on a skeleton which later on can be attached to a deformable mesh that will modify its position according to the bones transformation. 
 
 Below you will find several gifs showing several functions of AK Engine Skeletal animation sub-system:
+
 ![GIF1](https://user-images.githubusercontent.com/17148658/34083627-c5dfb492-e373-11e7-940e-0965ee869282.gif)
 
 ![GIF2](https://user-images.githubusercontent.com/17148658/34083655-2f5272c0-e374-11e7-8488-e186a5f18c7c.gif)
@@ -320,3 +321,5 @@ Marc López - https://github.com/MarcLF
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
+   [Latest Release](https://github.com/adriancl1/AK-Engine/releases)
