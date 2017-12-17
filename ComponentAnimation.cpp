@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ModuleInput.h"
+#include "ModuleTimeManager.h"
 
 ComponentAnimation::ComponentAnimation() : Component(Component_Animation)
 {
@@ -29,6 +30,10 @@ ComponentAnimation::~ComponentAnimation()
 
 void ComponentAnimation::Update()
 {
+	if (App->timeManager->IsGamePaused() == true && App->timeManager->GetPlayOneFrame() == false)
+	{
+		return;
+	}
 	PositionKey currentPosKey;
 	PositionKey nextPosKey;
 	RotationKey currentRotKey;

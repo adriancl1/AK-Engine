@@ -29,7 +29,6 @@ ModuleTimeManager::~ModuleTimeManager()
 
 bool ModuleTimeManager::Init(Configuration data)
 {
-
 	return true;
 }
 
@@ -61,7 +60,11 @@ update_status ModuleTimeManager::PostUpdate(float dt)
 			PauseGame(!isGamePaused);
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Play One Frame"))
+		if (playOneFrame == true)
+		{
+			playOneFrame = false;
+		}
+		if (ImGui::Button("Play One Frame") && isGamePaused == true)
 		{
 			PlayOneFrame();
 		}
@@ -182,4 +185,9 @@ float ModuleTimeManager::GetRealTime()
 float ModuleTimeManager::GetRealDeltaTime() const
 {
 	return rTimeDeltaTime;
+}
+
+bool ModuleTimeManager::GetPlayOneFrame() const
+{
+	return playOneFrame;
 }
