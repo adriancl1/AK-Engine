@@ -43,7 +43,8 @@ bool ResourceRig::LoadInMemory()
 
 bool ResourceRig::UnloadFromMemory()
 {
-	return false;
+	bones.clear();
+	return true;
 }
 
 int ResourceRig::GetBoneNum() const

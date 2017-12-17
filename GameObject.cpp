@@ -473,6 +473,9 @@ void GameObject::OnDeserialize(Configuration& dataToLoad)
 			AddComponent(compRig);
 			break;
 		}
+		case Component_Bone:
+		{
+		}
 		default:
 		{
 			LOG("Error in component %i of %s, unknown type", &i, name.c_str());

@@ -186,9 +186,7 @@ void ComponentTransform::OnLoad(Configuration & data)
 	scale.y = data.GetFloat("Scale", 1);
 	scale.z = data.GetFloat("Scale", 2);
 	
-	globalTransformMatrix = float4x4::FromQuat(rotation);
-	globalTransformMatrix = float4x4::Scale(scale, float3(0, 0, 0)) * globalTransformMatrix;
-	globalTransformMatrix.float4x4::SetTranslatePart(position.x, position.y, position.z);
+	globalTransformMatrix = float4x4::FromTRS(position, rotation, scale);
 
 	localTransformMatrix = globalTransformMatrix;
 }
