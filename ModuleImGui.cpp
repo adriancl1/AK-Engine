@@ -79,6 +79,14 @@ update_status ModuleImGui::Update(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("Save Scene"))
+			{
+				App->sceneEditor->SaveScene("AKScene");
+			}
+			if (ImGui::MenuItem("Load Scene"))
+			{
+				App->sceneEditor->WantToLoadScene("Assets/Scenes/AKScene.akS");
+			}
 			if (ImGui::MenuItem("Quit", "ESC"))
 			{
 				return UPDATE_STOP;

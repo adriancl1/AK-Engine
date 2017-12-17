@@ -76,14 +76,6 @@ update_status ModuleSceneEditor::Update(float dt)
 				App->camera->CenterToGO(box);
 			}
 	}
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		wantToLoad = true;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-	{
-		wantToSave = true;
-	}
 
 	root->Update();
 
